@@ -2,10 +2,10 @@
 
 # AHK-to-js
 
-![GitHub repo size](https://img.shields.io/github/repo-size/yourusername/AHK-to-js)
-![GitHub contributors](https://img.shields.io/github/contributors/yourusername/AHK-to-js)
-![GitHub stars](https://img.shields.io/github/stars/yourusername/AHK-to-js?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/AHK-to-js?style=social)
+![GitHub repo size](https://img.shields.io/github/repo-size/TheMaster1127/AHK-to-js)
+![GitHub contributors](https://img.shields.io/github/contributors/TheMaster1127/AHK-to-js)
+![GitHub stars](https://img.shields.io/github/stars/TheMaster1127/AHK-to-js?style=social)
+![GitHub forks](https://img.shields.io/github/forks/TheMaster1127/AHK-to-js?style=social)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 **AHK-to-js** is a transpiler from AutoHotkey (AHK) to JavaScript (JS) with HTML in a full HTML file. It aims to simulate AHK inside a browser on any device.
