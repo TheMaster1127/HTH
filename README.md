@@ -54,8 +54,8 @@ So far, AHK-to-js supports:
 InputBox, OutputVar, We will only see this title in AutoHotKey, And this will be seen as the only thing in js and this will be the text in ahk
 
 ; also you can do it like this
-
 InputBox, OutputVar, And this will be seen as the only thing in js and in ahk this will be the title and the text of the InputBox 
+; please don't add more parameters or commas `,`
 ```
 
 - OutputDebug (equivalent to `console.log` in JS)
