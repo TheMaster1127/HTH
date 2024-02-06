@@ -1,4 +1,5 @@
 "This is a new project called AHK-to-js."
+This is only for AutoHotKey V1
 This project is still in development.
 This is a transpiler from AHK to JS with HTML in a full HTML file.
 Documentation coming soon. Just one thing: if you want to try it now, after an IfMsgBox at the end, add } ; end of IfMsgBox.
@@ -22,3 +23,4 @@ IfMsgBox, Yes
 } ; end of ifmsgbox
 
 ```
+You need to add ahk code in `AHKcode.ahk` then run `AHK to js.ahk` and you get `temp.html`
