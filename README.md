@@ -1,0 +1,1 @@
+"This is a new project called AHK-to-js"
