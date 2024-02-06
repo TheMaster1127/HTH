@@ -122,7 +122,8 @@ Some features that haven't been fully tested but should work include:
 - Asc
 
 Built-in Variables
-
+- A_Index
+- A_LoopField
 - A_ScreenWidth
 - A_ScreenHeight
 - A_GuiControl comming soon 👀
