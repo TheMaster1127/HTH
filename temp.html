@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ahk to js</title>
+    <style>
+      body {
+        background-color: #121212;
+        font-family:
+          "Open Sans",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Oxygen-Sans,
+          Ubuntu,
+          Cantarell,
+          "Helvetica Neue",
+          Helvetica,
+          Arial,
+          sans-serif;
+      }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11" rel="stylesheet" />
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      // JavaScript equivalent code with variables
+
+      function showCustomMessageBox(options, title, text, value, timeout) {
+        return new Promise((resolve) => {
+          // Define default options for the message box
+          let defaultOptions = {
+            title: title || "", // Default title is empty
+            text: text || "Press OK to continue.", // Default text if not provided
+            showCancelButton: false, // Default is to not show Cancel button
+            showDenyButton: false, // Default is to not show Deny button
+            confirmButtonText: "OK", // Default text for OK button
+            focusConfirm: true, // Default focus on OK button
+          };
+
+          let numOriginal = value;
+
+          let num = numOriginal;
+
+          let done1 = 0;
+
+          let done2 = 0;
+
+          let done3 = 0;
+
+          let AIndex = 0;
+
+          for (AIndex = 1; AIndex <= 1; AIndex++) {
+            // this is about if you add always on top in a msgbox it will be removed in js cuz its kinda useless...
+            // becouse if you like adding always on top in ahk in js we dont realy do it so yeah
+            if (num >= 262144) {
+              num = num - 262144;
+              numOriginal = numOriginal - 262144;
+            }
+
+            if (num >= 256 && num < 500) {
+              num = num - 256;
+
+              done3 = 256;
+            }
+
+            if (num >= 512) {
+              num = num - 512;
+
+              done3 = 512;
+            }
+
+            if (num == 0) {
+              done1 = 0;
+
+              break;
+            }
+
+            if (num <= 6) {
+              done1 = num;
+
+              break;
+            }
+
+            if (num >= 64 && num < 64 * 2) {
+              done2 = 64;
+
+              if (num == 64) {
+                done1 = 0;
+
+                break;
+              } else {
+                done1 = num - 64;
+
+                break;
+              }
+            }
+
+            if (num >= 48 && num < 63) {
+              done2 = 48;
+
+              if (num == 48) {
+                done1 = 0;
+
+                break;
+              } else {
+                done1 = num - 48;
+
+                break;
+              }
+            }
+
+            if (num >= 32 && num < 47) {
+              done2 = 32;
+
+              if (num == 32) {
+                done1 = 0;
+
+                break;
+              } else {
+                done1 = num - 32;
+
+                break;
+              }
+            }
+
+            if (num >= 16 && num < 30) {
+              done2 = 16;
+
+              if (num == 16) {
+                done1 = 0;
+
+                break;
+              } else {
+                done1 = num - 16;
+
+                break;
+              }
+            }
+          }
+
+          let doneAdded = done1 + done2 + done3;
+
+          if (doneAdded !== numOriginal) {
+            // displayMessage("The calc was wrong!");
+          } else {
+            // displayMessage("num was: " + numOriginal + "\ndone1: " + done1 + "\ndone2: " + done2 + "\ndone3: " + done3);
+          }
+
+          // Parse the value to determine the options for the message box
+          if (done1 === 1) defaultOptions.showCancelButton = true; // OK/Cancel in ahk but here it will show Ok/Cancel wiat its same haha
+
+          // not gonna work if you can make it work i will appreciate
+          //   if (done1 === 2) {
+          //     defaultOptions.showCancelButton = true; // Abort/Retry/Ignore
+          //     defaultOptions.showDenyButton = true;
+          //   }
+          if (done1 === 3) {
+            defaultOptions.showCancelButton = true; // Yes/No/Cancel in ahk but here it will show Ok/No/Cancel
+            defaultOptions.showDenyButton = true;
+          }
+          if (done1 === 4) {
+            // defaultOptions.showCancelButton = true;
+            defaultOptions.showDenyButton = true; // Yes/No in ahk but here it will show Ok/No
+          }
+          if (done1 === 5) {
+            defaultOptions.showCancelButton = true; // Retry/Cancel in ahk but here it will show Ok/Cancel tip you can write in the Msgbox press ok to retry
+          }
+          // not gonna work if you can make it work i will appreciate
+          //   if (done1 === 6) {
+          //     defaultOptions.showCancelButton = true; // Cancel/Try Again/Continue
+          //     defaultOptions.showDenyButton = true;
+          //   }
+
+          if (done2 === 16) defaultOptions.icon = "error"; // Icon Hand (stop/error)
+          if (done2 === 32) defaultOptions.icon = "question"; // Icon Question
+          if (done2 === 48) defaultOptions.icon = "warning"; // Icon Exclamation
+          if (done2 === 64) defaultOptions.icon = "info"; // Icon Asterisk (info)
+
+          if (done3 === 256) defaultOptions.focusDeny = true; // Makes the 3rd button the default
+          if (done3 === 512) defaultOptions.focusCancel = true; // Makes the 2nd button the default
+
+          // Set timeout if provided
+          if (timeout) {
+            defaultOptions.timer = timeout * 1000; // Convert timeout to milliseconds
+          }
+
+          // Merge default options with provided options
+          Object.assign(defaultOptions, options);
+
+          // Display the message box with the constructed options
+          Swal.fire(defaultOptions).then((result) => {
+            if (result.isConfirmed) {
+              resolve("OK");
+            } else if (result.isDenied) {
+              resolve("No");
+            } else {
+              resolve("Cancel");
+            }
+          });
+        });
+      }
+
+      // Absolute value
+      function Abs(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.abs(num);
+      }
+
+      // Arc cosine
+      function ACos(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.acos(num);
+      }
+
+      // Arc sine
+      function ASin(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.asin(num);
+      }
+
+      // Arc tangent
+      function ATan(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.atan(num);
+      }
+
+      // Ceiling
+      function Ceil(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.ceil(num);
+      }
+
+      // Cosine
+      function Cos(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.cos(num);
+      }
+
+      // Exponential
+      function Exp(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.exp(num);
+      }
+
+      // Flooring
+      function Floor(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.floor(num);
+      }
+
+      // Natural logarithm
+      function Ln(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.log(num);
+      }
+
+      // Base-10 logarithm
+      function Log(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.log10(num);
+      }
+
+      // Rounding
+      function Round(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.round(num);
+      }
+
+      // Sine
+      function Sin(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.sin(num);
+      }
+
+      // Square root
+      function Sqrt(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.sqrt(num);
+      }
+
+      // Tangent
+      function Tan(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.tan(num);
+      }
+
+      function Chr(number) {
+        // Check if the number is null
+        if (number === null) {
+          // Return an empty string
+          return "";
+        }
+
+        // Check if the number is within the valid range
+        if (number >= 0 && number <= 0x10ffff) {
+          // Convert the number to a character using String.fromCharCode
+          return String.fromCharCode(number);
+        } else {
+          // Return an empty string for invalid numbers
+          return "";
+        }
+      }
+
+      // Function to simulate Sleep
+      function sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+
+      // InStr
+      function InStr(Haystack, Needle, CaseSensitive = true, StartingPos = 1, Occurrence = 1) {
+        if (Haystack === null || Needle === null) return null;
+
+        // Adjust starting position if less than 1
+        StartingPos = Math.max(StartingPos, 1);
+
+        // Case-sensitive search by default
+        if (!CaseSensitive) {
+          Haystack = Haystack.toLowerCase();
+          Needle = Needle.toLowerCase();
+        }
+
+        let pos = -1;
+        let count = 0;
+        for (let i = StartingPos - 1; i < Haystack.length; i++) {
+          if (Haystack.substring(i, i + Needle.length) === Needle) {
+            count++;
+            if (count === Occurrence) {
+              pos = i + 1;
+              break;
+            }
+          }
+        }
+
+        return pos;
+      }
+
+      // RegExMatch
+      function RegExMatch(Haystack, NeedleRegEx, OutputVar, StartingPos) {
+        if (Haystack === null || NeedleRegEx === null) return null;
+
+        const regex = new RegExp(NeedleRegEx);
+        const match = Haystack.match(regex);
+
+        if (match) {
+          if (OutputVar) {
+            OutputVar.push(match[0]);
+          }
+          return match.index + 1;
+        } else {
+          return 0;
+        }
+      }
+
+      // RegExReplace
+
+      // RegExReplace
+      function RegExReplace(Haystack, NeedleRegEx, Replacement, OutputVarCount, Limit, StartingPos) {
+        if (Haystack === null || NeedleRegEx === null || Replacement === null) return null;
+
+        const regex = new RegExp(NeedleRegEx, "g");
+        let count = 0;
+        const result = Haystack.replace(regex, (match) => {
+          if (count < Limit || Limit === 0) {
+            count++;
+            return Replacement;
+          } else {
+            return match;
+          }
+        });
+
+        if (OutputVarCount) {
+          OutputVarCount.push(count);
+        }
+
+        return result;
+      }
+
+      // StrLen
+      function StrLen(str) {
+        return str === null ? null : str.length;
+      }
+
+      // StrSplit function
+      async function StrSplit(String, Delimiters, OmitChars, MaxParts) {
+        if (String === null || Delimiters === null) return null;
+
+        const regex = new RegExp(`[${Delimiters}${OmitChars}]`, "g");
+        const parts = String.split(regex, MaxParts).map((part) => part.trim());
+
+        return parts;
+      }
+
+      // Format (simplified version)
+      function Format(formatString, ...values) {
+        return formatString.replace(/{(\d+)}/g, (match, index) => (values[index] !== undefined ? values[index] : match));
+      }
+
+      // Ord
+      function Ord(str) {
+        return str === null ? null : str.charCodeAt(0);
+      }
+
+      // Function to generate a random number between min (inclusive) and max (inclusive)
+      function getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+
+      function SubStr(inputString, startingPos, length) {
+        if (inputString === null) {
+          return "";
+        }
+
+        if (startingPos < 1) {
+          // Calculate starting position from the end of the string
+          startingPos = inputString.length + startingPos;
+        }
+
+        // Adjust starting position if it's beyond the string's length
+        if (startingPos > inputString.length) {
+          return "";
+        }
+
+        // Handle negative length to omit characters from the end
+        if (length < 0) {
+          length = inputString.length + length - startingPos;
+        }
+
+        // Return the requested substring
+        return inputString.substring(startingPos - 1, startingPos - 1 + length);
+      }
+
+      function Trim(inputString) {
+        // Check if inputString is null or undefined
+        if (inputString == null) {
+          return ""; // Return an empty string if inputString is null or undefined
+        }
+        return inputString.replace(/^\s+|\s+$/g, ""); // Removes leading and trailing whitespace
+      }
+
+      function StrReplace(originalString, find, replaceWith) {
+        // Check if originalString is a string
+        if (typeof originalString !== "string") {
+          return originalString; // Return originalString as is
+        }
+        // Use replace method to replace find with replaceWith
+        return originalString.replace(new RegExp(find, "g"), replaceWith);
+      }
+
+      // Custom Mod function
+      function Mod(dividend, divisor) {
+        return dividend % divisor;
+      }
+
+      function Asc(char) {
+        return char.charCodeAt(0);
+      }
+
+      // Function to trim specified number of characters from the left side of a string
+      function StringTrimLeft(input, numChars) {
+        if (input && input.length >= numChars) {
+          return input.substring(numChars);
+        } else {
+          console.error("Invalid input provided.");
+          return input; // Return original input if trimming is not possible
+        }
+      }
+
+      // Function to trim specified number of characters from the right side of a string
+      function StringTrimRight(input, numChars) {
+        if (input && input.length >= numChars) {
+          return input.substring(0, input.length - numChars);
+        } else {
+          console.error("Invalid input provided.");
+          return input; // Return original input if trimming is not possible
+        }
+      }
+
+      // Function to display a message
+      function displayMessage(message) {
+        return new Promise((resolve) => {
+          alert(message);
+          resolve();
+        });
+      }
+
+      // Single async function to structure the entire script
+      async function runScript() {
+        // Declare and assign a variable
+        let variables = {
+          A_Index: null,
+          A_IsTranspiled: 1,
+          A_LoopField: null,
+          characters: null,
+          isPalindrome: null,
+          last: null,
+          normalWord: null,
+          ReversedWord: null,
+          testWords: null,
+          word: null,
+          wordLen: null,
+        };
+
+        for (/* Normal Loop */ variables.A_Index1 = 1; variables.A_Index1 <= 1; variables.A_Index1++) {
+          await showCustomMessageBox({}, " ", "A_Index1 ", 0, 0);
+
+          for (/* Normal Loop */ variables.A_Index2 = 1; variables.A_Index2 <= 1; variables.A_Index2++) {
+            await showCustomMessageBox({}, " ", "A_Index2 ", 0, 0);
+
+            for (/* Normal Loop */ variables.A_Index3 = 1; variables.A_Index3 <= 1; variables.A_Index3++) {
+              await showCustomMessageBox({}, " ", "A_Index3 ", 0, 0);
+
+              for (/* Normal Loop */ variables.A_Index4 = 1; variables.A_Index4 <= 1; variables.A_Index4++) {
+                await showCustomMessageBox({}, " ", "A_Index4 ", 0, 0);
+
+                for (/* Normal Loop */ variables.A_Index5 = 1; variables.A_Index5 <= 1; variables.A_Index5++) {
+                  await showCustomMessageBox({}, " ", "A_Index5 ", 0, 0);
+
+                  for (/* Normal Loop */ variables.A_Index6 = 1; variables.A_Index6 <= 1; variables.A_Index6++) {
+                    await showCustomMessageBox({}, " ", "A_Index6 ", 0, 0);
+
+                    variables.characters7 = variables.var.split("");
+                    variables.charLength7 = variables.characters7.length;
+
+                    for (/* Loop parse */ variables.A_Index7 = 1; variables.A_Index7 <= variables.charLength7; variables.A_Index7++) {
+                      variables.A_LoopField7 = variables.characters7[variables.A_Index7 - 1]; // Using array notation to access characters
+
+                      await showCustomMessageBox({}, " ", variables.A_LoopField7, 0, 0);
+                    }
+                  }
+                }
+              }
+
+              for (/* Normal Loop */ variables.A_Index8 = 1; variables.A_Index8 <= 1; variables.A_Index8++) {
+                await showCustomMessageBox({}, " ", "A_Index8 ", 0, 0);
+              }
+            }
+          }
+
+          for (/* Normal Loop */ variables.A_Index9 = 1; variables.A_Index9 <= 1; variables.A_Index9++) {
+            await showCustomMessageBox({}, " ", "A_Index9 ", 0, 0);
+          }
+
+          for (/* Normal Loop */ variables.A_Index10 = 1; variables.A_Index10 <= 1; variables.A_Index10++) {
+            await showCustomMessageBox({}, " ", "A_Index10 ", 0, 0);
+          }
+        }
+
+        //
+
+        //
+
+        //
+
+        //
+
+        //
+
+        //
+
+        //
+
+        //
+
+        //
+
+        //
+
+        //
+
+        //
+
+        //
+
+        async function isPalindrome(word) {
+          variables.word = word;
+
+          variables.word = Trim(variables.word);
+
+          variables.normalWord = variables.word;
+
+          // get the lenght of the word
+
+          variables.wordLen = 0;
+
+          variables.characters11 = variables.word.split("");
+          variables.charLength11 = variables.characters11.length;
+
+          for (/* Loop parse */ variables.A_Index11 = 1; variables.A_Index11 <= variables.charLength11; variables.A_Index11++) {
+            variables.A_LoopField11 = variables.characters11[variables.A_Index11 - 1]; // Using array notation to access characters
+
+            variables.wordLen++;
+          }
+
+          variables.ReversedWord = "";
+
+          for (/* Normal Loop */ variables.A_Index12 = 1; variables.A_Index12 <= variables.wordLen; variables.A_Index12++) {
+            variables.last = "";
+
+            variables.characters13 = variables.word.split("");
+            variables.charLength13 = variables.characters13.length;
+
+            for (/* Loop parse */ variables.A_Index13 = 1; variables.A_Index13 <= variables.charLength13; variables.A_Index13++) {
+              variables.A_LoopField13 = variables.characters13[variables.A_Index13 - 1]; // Using array notation to access characters
+
+              variables.last = variables.A_LoopField13;
+            }
+
+            variables.word = StringTrimRight(variables.word, 1);
+
+            variables.ReversedWord += variables.last;
+          } // end of Loop, % wordLen
+
+          // await showCustomMessageBox({}," ", ReversedWord, 0, 0.)
+
+          if (variables.normalWord == variables.ReversedWord) {
+            return "true";
+          } else {
+            return "false";
+          }
+        } //  end of func
+
+        // tests
+
+        variables.testWords = "bob, hello, racecar";
+
+        variables.testWords = StrReplace(variables.testWords, ", ", "|");
+
+        variables.characters14 = variables.testWords.split(/["|"]/);
+        variables.charLength14 = variables.characters14.length;
+
+        for (/* Loop parse */ variables.A_Index14 = 1; variables.A_Index14 <= variables.charLength14; variables.A_Index14++) {
+          variables.A_LoopField14 = variables.characters14[variables.A_Index14 - 1]; // Using array notation to access characters
+
+          await showCustomMessageBox({}, " ", await isPalindrome(variables.A_LoopField14), 0, 0);
+        }
+      }
+
+      // Call the async function to start the script
+      runScript();
+    </script>
+  </body>
+</html>
