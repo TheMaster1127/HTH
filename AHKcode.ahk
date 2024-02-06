@@ -6,6 +6,32 @@ MsgBox, % A_Min
 Sleep, 420
 MsgBox, % A_TimeIdle
 MsgBox, % A_TickCount
+
+
+
+SetTimer, man, 1500
+
+
+man:
+MsgBox, hi
+Return
+
+
+gosub, man
+goto, man
+
+
+if (A_IsTranspiled = 1)
+{
+; do something if its transpiled
+MsgBox, Yes
+}
+else
+{
+; do something if its not transpiled
+MsgBox, No
+}
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -194,3 +220,21 @@ ElapsedTime123 := ""
 ElapsedTime123 .= hours . "h " . minutes . "m " . seconds . "s " . milliseconds . "ms"
 
 MsgBox, % ElapsedTime123
+
+
+
+SetTimer, man, Off
+
+Sleep, 5000
+
+SetTimer, man, on
+
+
+Sleep, 5000
+
+
+SetTimer, man, Off
+
+
+Sleep, 4000
+ExitApp

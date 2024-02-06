@@ -574,10 +574,43 @@
         });
       }
 
+      // Object to store timer intervals for different functions
+      const timerIntervals = {};
+
+      async function SetTimer(func, timeOrOnOff) {
+        if (typeof func !== "function" || typeof timeOrOnOff === "undefined") {
+          console.error("Invalid arguments. Please provide a valid function and time/On/Off state.");
+          return;
+        }
+
+        if (typeof timeOrOnOff === "number") {
+          // If a number is provided, set the timer to that time in milliseconds and start it.
+          func.interval = timeOrOnOff; // Store the interval within the function
+          func(); // Call the function initially
+          func.intervalId = setInterval(func, timeOrOnOff);
+          timerIntervals[func] = func.intervalId; // Store the interval ID
+        } else if (timeOrOnOff === "On") {
+          // If 'On' is provided, start the timer if it's not already running.
+          if (!func.intervalId && func.interval) {
+            func(); // Call the function initially
+            func.intervalId = setInterval(func, func.interval); // Start with the stored interval
+            timerIntervals[func] = func.intervalId; // Store the interval ID
+          } else {
+            console.error("Timer is not set. Please provide a valid interval.");
+          }
+        } else if (timeOrOnOff === "Off") {
+          // If 'Off' is provided, clear the timer if it's running.
+          clearInterval(func.intervalId);
+          func.intervalId = null;
+          delete timerIntervals[func]; // Remove the interval ID from storage
+        } else {
+          console.error("Invalid time/On/Off state. Please provide a valid time in milliseconds or 'On'/'Off'.");
+        }
+      }
+
       // Single async function to structure the entire script
       async function runScript() {
         // Declare and assign a variable
-
         let variables = {
           A_Index: null,
           A_IsTranspiled: 1,
@@ -618,7 +651,6 @@
           wordLen: null,
         };
 
-<<<<<<< HEAD
         let funcs = {
           hi1: hi1,
           hi2: hi2,
@@ -642,6 +674,26 @@
         await showCustomMessageBox({}, " ", BuildInVars("A_TimeIdle"), 0, 0);
 
         await showCustomMessageBox({}, " ", BuildInVars("A_TickCount"), 0, 0);
+
+        SetTimer(man, 1500);
+
+        async function man() {
+          await showCustomMessageBox({}, " ", "hi ", 0, 0);
+        }
+
+        await man();
+
+        await man();
+
+        if (variables.A_IsTranspiled == 1) {
+          // do something if its transpiled
+
+          await showCustomMessageBox({}, " ", "Yes ", 0, 0);
+        } else {
+          // do something if its not transpiled
+
+          await showCustomMessageBox({}, " ", "No ", 0, 0);
+        }
 
         //
 
@@ -768,9 +820,6 @@
         variables.hi = "hi" + variables.hello1;
 
         await funcs["" + variables.hi]();
-=======
-     
->>>>>>> c15dea7f03dfb758b80b6ebaef6c80af28372e47
 
         async function isPalindrome(word) {
           variables.word = word;
@@ -860,6 +909,20 @@
         variables.ElapsedTime123 += variables.hours + "h " + variables.minutes + "m " + variables.seconds + "s " + variables.milliseconds + "ms";
 
         await showCustomMessageBox({}, " ", variables.ElapsedTime123, 0, 0);
+
+        SetTimer(man, "Off");
+
+        await sleep(5000);
+
+        SetTimer(man, "On");
+
+        await sleep(5000);
+
+        SetTimer(man, "Off");
+
+        await sleep(4000);
+
+        window.close();
       }
 
       // Call the async function to start the script

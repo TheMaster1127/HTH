@@ -1649,6 +1649,75 @@ variables.%ou1% = prompt('%ou3%');
 jsCode .= var1 . "`n"
 
 }
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = "gosub, ") or (SubStr(Trim(StrLower(A_LoopField)), 1, 6) = "goto, ")
+{
+
+;MsgBox, % A_LoopField
+
+
+str := A_LoopField
+
+s:=StrSplit(str,",").2
+out1 := s
+
+out1 := Trim(out1)
+
+out2 := "await " . out1 . "()"
+
+;MsgBox, % out2
+lineDone := 1
+jsCode .= out2 . "`n"
+
+}
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 10) = "settimer, ")
+{
+
+IsNumber(var) {
+    return RegExMatch(var, "^\d+(\.\d+)?$")
+}
+
+str := A_LoopField
+
+s:=StrSplit(str,",").2
+out1 := Trim(s)
+
+s:=StrSplit(str,",").3
+out2 := Trim(s)
+
+;~ MsgBox, |%out1%|
+;~ MsgBox, |%out2%|
+
+
+myVar := out2
+
+if (IsNumber(myVar)) {
+    ;MsgBox, % "The variable is a number."
+
+out3 := "SetTimer(" . out1 . ", " . out2 . ")"
+
+}
+else
+{
+
+if (StrLower(out2) = "off")
+{
+  out2 := "Off"
+}
+else
+{
+out2 := "On"
+}
+
+;MsgBox, % "The variable is not a number."
+out3 := "SetTimer(" . out1 . ", """ . out2 . """)"
+}
+MsgBox, % out3
+
+jsCode .= out3 . "`n"
+
+
+lineDone := 1
+}
 else if RegExMatch(A_LoopField, "\b\w+\s*\+{2,}")
 {
 lineDone := 1
@@ -1657,6 +1726,24 @@ str := A_LoopField
 str := Trim(str)
 
 jsCode .= "variables." . str . "`n"
+}
+else if (RegExMatch(A_LoopField, "^\w+:$")) && (Trim(SubStr(A_LoopField, 0)) = ":")
+{
+
+;MsgBox, % A_LoopField
+
+out1 := A_LoopField
+
+out1 := Trim(out1)
+
+StringTrimRight, out1, out1, 1
+
+;MsgBox, % out1
+
+;~ see := "async function " . out1 . "()`n{"
+;~ MsgBox, % see
+jsCode .= "async function " . out1 . "()`n{`n"
+lineDone := 1
 }
 else if (CheckVariable(A_LoopField))
 {
@@ -1670,19 +1757,30 @@ CheckVariable(var) {
     countPercent := 0
     countParentheses := 0
 
+
+if (InStr(var, " := ")) or (InStr(var, " .= ")) or (InStr(var, " += ")) or (InStr(var, " -= ")) or (InStr(var, " *= "))
+{
+return false
+}
+
     ; Loop through each character in the variable
     Loop, Parse, var
     {
         ; Check for percentage symbols
-        if (A_LoopField = "%") {
+        if (A_LoopField = "%")
+        {
             countPercent++
         }
+
+
         ; Check for parentheses
         else if (A_LoopField = "(" or A_LoopField = ")")
         {
             countParentheses++
         }
     }
+
+
 
     ; Check if conditions are met
     if (countPercent >= 2 and countParentheses >= 2)
@@ -2749,7 +2847,7 @@ out4758686d86d86d86578991abc := ""
 Loop, Parse, jsCode, `n, `r
 {
 
-str := A_LoopField
+str := Trim(A_LoopField)
 
 
 if (Instr(str, "itsfortheloopfixinghhhhhhhhcksdvbdshjvds"))
@@ -2778,6 +2876,10 @@ str := StrReplace(str, "variables.A_Sec", "BuildInVars(""A_Sec"")")
 str := StrReplace(str, "variables.A_Space", "BuildInVars(""A_Space"")")
 str := StrReplace(str, "variables.A_Tab", "BuildInVars(""A_Tab"")")
 
+if (Trim(str) == "Return")
+{
+str := "}"
+}
 
 
 out4758686d86d86d86578991abc .= str . "`n"
@@ -3432,11 +3534,43 @@ upCode2 =
         });
       }
 
+      // Object to store timer intervals for different functions
+      const timerIntervals = {};
+
+      async function SetTimer(func, timeOrOnOff) {
+        if (typeof func !== "function" || typeof timeOrOnOff === "undefined") {
+          console.error("Invalid arguments. Please provide a valid function and time/On/Off state.");
+          return;
+        }
+
+        if (typeof timeOrOnOff === "number") {
+          // If a number is provided, set the timer to that time in milliseconds and start it.
+          func.interval = timeOrOnOff; // Store the interval within the function
+          func(); // Call the function initially
+          func.intervalId = setInterval(func, timeOrOnOff);
+          timerIntervals[func] = func.intervalId; // Store the interval ID
+        } else if (timeOrOnOff === "On") {
+          // If 'On' is provided, start the timer if it's not already running.
+          if (!func.intervalId && func.interval) {
+            func(); // Call the function initially
+            func.intervalId = setInterval(func, func.interval); // Start with the stored interval
+            timerIntervals[func] = func.intervalId; // Store the interval ID
+          } else {
+            console.error("Timer is not set. Please provide a valid interval.");
+          }
+        } else if (timeOrOnOff === "Off") {
+          // If 'Off' is provided, clear the timer if it's running.
+          clearInterval(func.intervalId);
+          func.intervalId = null;
+          delete timerIntervals[func]; // Remove the interval ID from storage
+        } else {
+          console.error("Invalid time/On/Off state. Please provide a valid time in milliseconds or 'On'/'Off'.");
+        }
+      }
+
       // Single async function to structure the entire script
       async function runScript() {
         // Declare and assign a variable
-
-
 
 )
 
