@@ -13,7 +13,7 @@
 
 Example:
 ```ahk
-MsgBox, 36, TitleHere, Yes or No
+MsgBox, 36, Title Here, Yes or No
 IfMsgBox, Yes
 {
 	MsgBox, You clicked on Yes	
@@ -22,7 +22,7 @@ IfMsgBox, Yes
 ```
 or
 ```ahk
-MsgBox, 36, TitleHere, Yes or No
+MsgBox, 36, Title Here, Yes or No
 IfMsgBox, Yes
 {
 	MsgBox, You clicked on Yes	
