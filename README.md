@@ -13,6 +13,7 @@
 
 Example:
 ```ahk
+MsgBox, 36, TitleHere, Yes or No
 IfMsgBox, Yes
 {
 	
@@ -21,6 +22,7 @@ IfMsgBox, Yes
 ```
 or
 ```ahk
+MsgBox, 36, TitleHere, Yes or No
 IfMsgBox, Yes
 {
 	
