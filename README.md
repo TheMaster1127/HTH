@@ -41,6 +41,26 @@ To use AHK-to-js:
 3. Run `AHK to js.ahk`.
 4. You'll get `temp.html` as output.
 
+For coding style, you should use Allman style since functions won't be recognized here is an example:
+
+Do this:
+
+```ahk
+nameOfFunc(a, b)
+{
+return a + b
+}
+```
+Not this:
+
+```ahk
+nameOfFunc(a, b) {
+return a + b
+}
+```
+
+Also, `return` must be in lowercase.
+
 So far, AHK-to-js supports:
 
 - Functions
