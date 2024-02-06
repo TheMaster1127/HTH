@@ -1,81 +1,66 @@
-"This is a new project called AHK-to-js."
+---
 
-This is only for AutoHotKey V1.
+# AHK-to-js
 
-This project is still in development.
+![GitHub repo size](https://img.shields.io/github/repo-size/yourusername/AHK-to-js)
+![GitHub contributors](https://img.shields.io/github/contributors/yourusername/AHK-to-js)
+![GitHub stars](https://img.shields.io/github/stars/yourusername/AHK-to-js?style=social)
+![GitHub forks](https://img.shields.io/github/forks/yourusername/AHK-to-js?style=social)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-This is a transpiler from AHK to JS with HTML in a full HTML file.
+**AHK-to-js** is a transpiler from AutoHotkey (AHK) to JavaScript (JS) with HTML in a full HTML file. It aims to simulate AHK inside a browser on any device.
 
-This tries to simulate AHK inside a browser on ANY device.
+**Note:**
+- This project is specifically for AutoHotKey V1.
+- AHK-to-js is still in development. Documentation is coming soon.
 
-Documentation coming soon. Just one thing: if you want to try it now, after an `IfMsgBox` at the end, add `} ; end of ifmsgbox`
+## Usage
 
-Example:
+To use AHK-to-js:
+
+1. Ensure you have AutoHotKey V1 installed. You can download it from [here](https://www.autohotkey.com/download/ahk-install.exe).
+2. Add your AHK code in `AHKcode.ahk`.
+3. Run `AHK to js.ahk`.
+4. You'll get `temp.html` as output.
+
+## Example
+
 ```ahk
 IfMsgBox, Yes
 {
-	
+    ; Your code here
 }
 else
 {
-	
+    ; Your code here
 } ; end of ifmsgbox
-
 ```
-or
-```ahk
-IfMsgBox, Yes
-{
-	
-} ; end of ifmsgbox
 
-```
-You need to add AHK code in `AHKcode.ahk` then run `AHK to js.ahk` and you get `temp.html`.
+## Supported Features
 
-Make sure you have ahk V1 installed you can install it from https://www.autohotkey.com/download/ahk-install.exe
+So far, AHK-to-js supports:
 
-Aslo AutoHotKey ONLY runs on Windows
-
-So far we can do:
 - Functions
 - If, else, else if
 - Random
 - Sleep
 - Msgbox 
-- OutputDebug = console.log in JS
+- OutputDebug (equivalent to `console.log` in JS)
 - Loop
 - Loop, Parse
-- you can do var++
-- you need to do var := 0 this was an example you can't do `var = something` also we only have `var := .= += -= *=`
-- you can add comments in AHK like normal but sometimes it might translate the code in the comments idk don't trust comments
-- StringTrimRight
-- StringTrimLeft
+- Increment (e.g., `var++`)
+- Assignment operators (`:=`, `.=`, `+=`, `-=`, `*=`)
+- Comments (Note: Comments might be translated in some cases)
 
-Some of them haven't been tested but should work:
-- Abs
-- ACos
-- ASin
-- ATan
-- Ceil
-- Cos
-- Exp
-- Floor
-- Ln
-- Log
-- Round
-- Sin
-- Sqrt
-- Tan
-- Chr
-- InStr
-- RegExMatch
-- RegExReplace
-- StrLen
-- StrSplit
-- Format
-- Ord
-- SubStr
-- Trim
-- StrReplace
-- Mod
-- Asc
+Some features that haven't been fully tested but should work include:
+
+- Abs, ACos, ASin, ATan
+- Ceil, Cos, Exp, Floor, Ln, Log, Round, Sin, Sqrt, Tan
+- Chr, InStr, RegExMatch, RegExReplace, StrLen, StrSplit, Format, Ord
+- SubStr, Trim, StrReplace, Mod, Asc
+
+## Platform Compatibility
+
+- AutoHotKey only runs on Windows.
+
+---
