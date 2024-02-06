@@ -63,7 +63,6 @@ Some of them haven't been tested but should work:
 - StrSplit
 - Format
 - Ord
-- getRandomNumber
 - SubStr
 - Trim
 - StrReplace
