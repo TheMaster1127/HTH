@@ -40,6 +40,7 @@ So far we can do:
 - you can add comments in AHK like normal but sometimes it might translate the code in the comments idk don't trust comments
 - StringTrimRight
 - StringTrimLeft
+
 Some of them haven't been tested but should work:
 - Abs
 - ACos
