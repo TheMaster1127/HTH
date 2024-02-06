@@ -32,6 +32,8 @@ IfMsgBox, Yes
 ```
 You need to add AHK code in `AHKcode.ahk` then run `AHK to js.ahk` and you get `temp.html`.
 
+Make sure you have ahk V1 installed you can install it from https://www.autohotkey.com/download/ahk-install.exe
+
 So far we can do:
 - Functions
 - If, else, else if
