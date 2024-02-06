@@ -16,7 +16,7 @@ Example:
 MsgBox, 36, TitleHere, Yes or No
 IfMsgBox, Yes
 {
-	
+MsgBox, You clicked on Yes	
 } ; end of ifmsgbox
 
 ```
@@ -25,11 +25,11 @@ or
 MsgBox, 36, TitleHere, Yes or No
 IfMsgBox, Yes
 {
-	
+	MsgBox, You clicked on Yes	
 }
 else
 {
-	
+	MsgBox, You clicked on No	
 } ; end of ifmsgbox
 ```
 
