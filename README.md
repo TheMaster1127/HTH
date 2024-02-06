@@ -9,7 +9,7 @@
 - This project is specifically for AutoHotKey V1.
 - AHK-to-js is still in development. 
 - Documentation coming soon. 
--Just one thing: if you want to try it now, after an `IfMsgBox` at the end, add `} ; end of ifmsgbox`
+- Just one thing: if you want to try it now, after an `IfMsgBox` at the end, add `} ; end of ifmsgbox`
 
 Example:
 ```ahk
