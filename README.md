@@ -16,7 +16,7 @@ Example:
 MsgBox, 36, TitleHere, Yes or No
 IfMsgBox, Yes
 {
-MsgBox, You clicked on Yes	
+	MsgBox, You clicked on Yes	
 } ; end of ifmsgbox
 
 ```
