@@ -51,7 +51,7 @@ So far, AHK-to-js supports:
 - InputBox can only pass 2 or 3 parameters here is an example:
 
 ```ahk
-InputBox, OutputVar, We will only see this title in AutoHotKey, And this will be seen as the only thing in js
+InputBox, OutputVar, We will only see this title in AutoHotKey, And this will be seen as the only thing in js and this will be the text in ahk
 
 ; also you can do it like this
 
