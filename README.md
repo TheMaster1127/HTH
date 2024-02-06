@@ -1,9 +1,15 @@
 "This is a new project called AHK-to-js."
+
 This is only for AutoHotKey V1.
+
 This project is still in development.
+
 This is a transpiler from AHK to JS with HTML in a full HTML file.
+
 This tries to simulate AHK inside a browser on ANY device.
+
 Documentation coming soon. Just one thing: if you want to try it now, after an `IfMsgBox` at the end, add `} ; end of ifmsgbox`
+
 Example:
 ```ahk
 IfMsgBox, Yes
