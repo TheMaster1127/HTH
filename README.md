@@ -9,29 +9,6 @@
 - This project is specifically for AutoHotKey V1.
 - AHK-to-js is still in development. 
 - Documentation coming soon. 
-- Just one thing: if you want to try it now, after an `IfMsgBox` at the end, add `} ; end of ifmsgbox`
-
-Example:
-```ahk
-MsgBox, 36, Title Here, Yes or No
-IfMsgBox, Yes
-{
-	MsgBox, You clicked on Yes	
-} ; end of ifmsgbox
-
-```
-or
-```ahk
-MsgBox, 36, Title Here, Yes or No
-IfMsgBox, Yes
-{
-	MsgBox, You clicked on Yes	
-}
-else
-{
-	MsgBox, You clicked on No	
-} ; end of ifmsgbox
-```
 
 ## Usage
 
@@ -81,6 +58,30 @@ InputBox, OutputVar, We will only see this title in AutoHotKey, And this will be
 ; also you can do it like this
 InputBox, OutputVar, And this will be seen as the only thing in js and in ahk this will be the title and the text of the InputBox 
 ; please don't add more parameters or commas ","
+```
+
+- IfMsgBox after an `IfMsgBox` at the end, add `} ; end of ifmsgbox`
+
+Example:
+```ahk
+MsgBox, 36, Title Here, Yes or No
+IfMsgBox, Yes
+{
+	MsgBox, You clicked on Yes	
+} ; end of ifmsgbox
+
+```
+or
+```ahk
+MsgBox, 36, Title Here, Yes or No
+IfMsgBox, Yes
+{
+	MsgBox, You clicked on Yes	
+}
+else
+{
+	MsgBox, You clicked on No	
+} ; end of ifmsgbox
 ```
 
 - OutputDebug (equivalent to `console.log` in JS)
