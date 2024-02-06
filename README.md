@@ -120,7 +120,7 @@ Built-in Variables
 
 - A_ScreenWidth
 - A_ScreenHeight
-- A_GuiControl comming soon 
+- A_GuiControl comming soon 👀
 - A_TimeIdle
 - A_TickCount
 - A_NowUTC
