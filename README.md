@@ -16,10 +16,6 @@ Example:
 IfMsgBox, Yes
 {
 	
-}
-else
-{
-	
 } ; end of ifmsgbox
 
 ```
@@ -28,8 +24,11 @@ or
 IfMsgBox, Yes
 {
 	
+}
+else
+{
+	
 } ; end of ifmsgbox
-
 ```
 
 ## Usage
