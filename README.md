@@ -49,7 +49,17 @@ So far, AHK-to-js supports:
 - If, else, else if
 - Random
 - Sleep
-- Msgbox 
+- Msgbox
+- SetTimer
+- gosub/goto they literally do the same thing
+- lables here a lable:
+```ahk
+gosub Label1
+
+Label1:
+MsgBox, we are in Label1
+return
+```
 - InputBox can only pass 2 or 3 parameters here is an example:
 
 ```ahk
