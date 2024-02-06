@@ -45,8 +45,6 @@ To use AHK-to-js:
 7. Format the code and then put it it back in `temp.html`
 8. Open the `temp.html`
 
-Done
-
 For coding style, you should use Allman style since functions won't be recognized here is an example:
 
 Do this:
