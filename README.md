@@ -92,7 +92,7 @@ else
 - Assignment operators (`:=`, `.=`, `+=`, `-=`, `*=`)
 - Comments dont use comments in the same line as the code (Note: Comments might be translated in some cases)
 
-Some features that haven't been fully tested but should work include:
+Some features haven't been fully tested but should work include:
 
 - Abs
 - ACos
