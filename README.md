@@ -48,6 +48,16 @@ So far, AHK-to-js supports:
 - Random
 - Sleep
 - Msgbox 
+- InputBox can only pass 2 or 3 parameters here is an example:
+
+```ahk
+InputBox, OutputVar, We will only see this title in AutoHotKey, And this will be seen as the only thing in js
+
+; also you can do it like this
+
+InputBox, OutputVar, And this will be seen as the only thing in js and in ahk this will be the title and the text of the InputBox 
+```
+
 - OutputDebug (equivalent to `console.log` in JS)
 - Loop
 - Loop, Parse
