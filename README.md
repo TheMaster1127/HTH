@@ -142,6 +142,17 @@ Built-in Variables
 - A_Sec
 - A_Space
 - A_Tab
+- A_IsTranspiled in js it will be set to 1 in ahk its will be blank so you can do somting like:
+```ahk
+if (A_IsTranspiled = 1)
+{
+; do something if its transpiled
+}
+else
+{
+; do something if its not transpiled
+}
+```
 
 ## Platform Compatibility
 
