@@ -204,6 +204,93 @@
         });
       }
 
+      let lastInputTime = Date.now(); // Initialize with current timestamp
+      let startTimestamp = Date.now(); // Initialize with current timestamp
+
+      // Event listener to track user activity
+      function resetIdleTimer() {
+        lastInputTime = Date.now(); // Update last input time
+      }
+
+      document.addEventListener("mousemove", resetIdleTimer);
+      document.addEventListener("keypress", resetIdleTimer);
+
+      // Function to calculate time since last input event
+      function A_TimeIdle() {
+        return Date.now() - lastInputTime; // Calculate time difference
+      }
+
+      // Function to calculate tick count in milliseconds
+      function A_TickCount() {
+        return Date.now() - startTimestamp;
+      }
+
+      function BuildInVars(varName) {
+        switch (varName) {
+          case "A_ScreenWidth":
+            // Return screen width
+            return window.screen.width;
+          case "A_ScreenHeight":
+            // Return screen height
+            return window.screen.height;
+          case "A_GuiControl":
+            // Simulate GUI control (You can implement as needed)
+            return "A_GuiControl not added yet";
+          case "A_TimeIdle":
+            // Return time idle
+            return A_TimeIdle();
+          case "A_TickCount":
+            // Return tick count in milliseconds
+            return A_TickCount();
+          case "A_NowUTC":
+            // Return current UTC timestamp
+            return new Date().toISOString();
+          case "A_Now":
+            // Return current local timestamp
+            return new Date().toLocaleString();
+          case "A_YYYY":
+            // Return current year
+            return new Date().getFullYear();
+          case "A_MM":
+            // Return current month
+            return (new Date().getMonth() + 1).toString().padStart(2, "0");
+          case "A_DD":
+            // Return current day
+            return new Date().getDate().toString().padStart(2, "0");
+          case "A_MMMM":
+            // Return full month name
+            return new Date().toLocaleDateString(undefined, { month: "long" });
+          case "A_MMM":
+            // Return short month name
+            return new Date().toLocaleDateString(undefined, { month: "short" });
+          case "A_DDDD":
+            // Return full day name
+            return new Date().toLocaleDateString(undefined, { weekday: "long" });
+          case "A_DDD":
+            // Return short day name
+            return new Date().toLocaleDateString(undefined, { weekday: "short" });
+          case "A_Hour":
+            // Return current hour
+            return new Date().getHours().toString().padStart(2, "0");
+          case "A_Min":
+            // Return current minute
+            return new Date().getMinutes().toString().padStart(2, "0");
+          case "A_Sec":
+            // Return current second
+            return new Date().getSeconds().toString().padStart(2, "0");
+          case "A_Space":
+            // Return space character
+            return " ";
+          case "A_Tab":
+            // Return tab character
+            return "\t";
+
+          default:
+            // Handle unknown variable names
+            return null;
+        }
+      }
+
       // Absolute value
       function Abs(num) {
         if (num === null || isNaN(num)) return null;
@@ -490,66 +577,134 @@
       // Single async function to structure the entire script
       async function runScript() {
         // Declare and assign a variable
+
         let variables = {
           A_Index: null,
           A_IsTranspiled: 1,
           A_LoopField: null,
           characters: null,
+          ElapsedTime123: null,
+          ElapsedTime: null,
+          hi10: null,
+          hi1: null,
+          hi2: null,
+          hi3: null,
+          hi4: null,
+          hi5: null,
+          hi6: null,
+          hi7: null,
+          hi8: null,
+          hi9: null,
+          hi: null,
+          hours: null,
+          i: null,
           isPalindrome: null,
+          j: null,
           last: null,
+          MAX: null,
+          milliseconds: null,
+          MIN: null,
+          minutes: null,
+          ms: null,
+          N: null,
+          nnn: null,
           normalWord: null,
+          outTestRanNums: null,
           ReversedWord: null,
+          seconds: null,
+          StartTime: null,
           testWords: null,
           word: null,
           wordLen: null,
         };
 
-        for (/* Normal Loop */ variables.A_Index1 = 1; variables.A_Index1 <= 1; variables.A_Index1++) {
-          await showCustomMessageBox({}, " ", "A_Index1 ", 0, 0);
+        let funcs = {
+          hi1: hi1,
+          hi2: hi2,
+          hi3: hi3,
+          hi4: hi4,
+          hi5: hi5,
+          hi6: hi6,
+          hi7: hi7,
+          hi8: hi8,
+          hi9: hi9,
+          hi10: hi10,
+          isPalindrome: isPalindrome,
+        };
 
-          for (/* Normal Loop */ variables.A_Index2 = 1; variables.A_Index2 <= 1; variables.A_Index2++) {
-            await showCustomMessageBox({}, " ", "A_Index2 ", 0, 0);
+        variables.StartTime = BuildInVars("A_TickCount");
 
-            for (/* Normal Loop */ variables.A_Index3 = 1; variables.A_Index3 <= 1; variables.A_Index3++) {
-              await showCustomMessageBox({}, " ", "A_Index3 ", 0, 0);
+        await showCustomMessageBox({}, " ", BuildInVars("A_Min"), 0, 0);
 
-              for (/* Normal Loop */ variables.A_Index4 = 1; variables.A_Index4 <= 1; variables.A_Index4++) {
-                await showCustomMessageBox({}, " ", "A_Index4 ", 0, 0);
+        await sleep(420);
 
-                for (/* Normal Loop */ variables.A_Index5 = 1; variables.A_Index5 <= 1; variables.A_Index5++) {
-                  await showCustomMessageBox({}, " ", "A_Index5 ", 0, 0);
+        await showCustomMessageBox({}, " ", BuildInVars("A_TimeIdle"), 0, 0);
 
-                  for (/* Normal Loop */ variables.A_Index6 = 1; variables.A_Index6 <= 1; variables.A_Index6++) {
-                    await showCustomMessageBox({}, " ", "A_Index6 ", 0, 0);
+        await showCustomMessageBox({}, " ", BuildInVars("A_TickCount"), 0, 0);
 
-                    variables.characters7 = variables.var.split("");
-                    variables.charLength7 = variables.characters7.length;
+        //
 
-                    for (/* Loop parse */ variables.A_Index7 = 1; variables.A_Index7 <= variables.charLength7; variables.A_Index7++) {
-                      variables.A_LoopField7 = variables.characters7[variables.A_Index7 - 1]; // Using array notation to access characters
+        //
 
-                      await showCustomMessageBox({}, " ", variables.A_LoopField7, 0, 0);
-                    }
-                  }
-                }
-              }
+        //
 
-              for (/* Normal Loop */ variables.A_Index8 = 1; variables.A_Index8 <= 1; variables.A_Index8++) {
-                await showCustomMessageBox({}, " ", "A_Index8 ", 0, 0);
+        //
+
+        //
+
+        //
+
+        //
+
+        //
+
+        //
+
+        variables.N = 10;
+
+        variables.MIN = 1;
+
+        variables.MAX = 10;
+
+        for (/* Normal Loop */ variables.A_Index1 = 1; variables.A_Index1 <= variables.N; variables.A_Index1++) {
+          variables.i = variables.A_Index1;
+
+          for (/* Normal Loop */ variables.A_Index2 = 1; ; variables.A_Index2++) {
+            variables.R = getRandomNumber(variables.MIN, variables.MAX);
+
+            variables.j = variables["Index_" + variables.R];
+
+            if (variables.j >= 1 && variables.j <= variables.i - 1) {
+              if (variables["R_" + variables.j] == variables.R) {
+                continue;
               }
             }
-          }
 
-          for (/* Normal Loop */ variables.A_Index9 = 1; variables.A_Index9 <= 1; variables.A_Index9++) {
-            await showCustomMessageBox({}, " ", "A_Index9 ", 0, 0);
-          }
+            variables["Index_" + variables.R] = variables.i;
 
-          for (/* Normal Loop */ variables.A_Index10 = 1; variables.A_Index10 <= 1; variables.A_Index10++) {
-            await showCustomMessageBox({}, " ", "A_Index10 ", 0, 0);
+            variables["R_" + variables.i] = variables.R;
+
+            break;
           }
         }
 
-        //
+        variables.nnn = 1;
+
+        variables.outTestRanNums = "";
+
+        for (/* Normal Loop */ variables.A_Index3 = 1; variables.A_Index3 <= variables.N; variables.A_Index3++) {
+          // add name here
+
+          variables["hello" + variables.nnn] = variables["R_" + variables.nnn];
+
+          variables.outTestRanNums += variables["R_" + variables.nnn] + " ";
+
+          variables.nnn++;
+        }
+
+        variables.outTestRanNums = StringTrimRight(variables.outTestRanNums, 1);
+
+        await showCustomMessageBox({}, " ", "" + variables.outTestRanNums + " ", 0, 0);
 
         //
 
@@ -569,11 +724,49 @@
 
         //
 
-        //
+        async function hi1() {
+          await showCustomMessageBox({}, " ", "1 ", 0, 0);
+        }
 
-        //
+        async function hi2() {
+          await showCustomMessageBox({}, " ", "2 ", 0, 0);
+        }
 
-        //
+        async function hi3() {
+          await showCustomMessageBox({}, " ", "3 ", 0, 0);
+        }
+
+        async function hi4() {
+          await showCustomMessageBox({}, " ", "4 ", 0, 0);
+        }
+
+        async function hi5() {
+          await showCustomMessageBox({}, " ", "5 ", 0, 0);
+        }
+
+        async function hi6() {
+          await showCustomMessageBox({}, " ", "6 ", 0, 0);
+        }
+
+        async function hi7() {
+          await showCustomMessageBox({}, " ", "7 ", 0, 0);
+        }
+
+        async function hi8() {
+          await showCustomMessageBox({}, " ", "8 ", 0, 0);
+        }
+
+        async function hi9() {
+          await showCustomMessageBox({}, " ", "9 ", 0, 0);
+        }
+
+        async function hi10() {
+          await showCustomMessageBox({}, " ", "10 ", 0, 0);
+        }
+
+        variables.hi = "hi" + variables.hello1;
+
+        await funcs["" + variables.hi]();
 
         async function isPalindrome(word) {
           variables.word = word;
@@ -586,27 +779,27 @@
 
           variables.wordLen = 0;
 
-          variables.characters11 = variables.word.split("");
-          variables.charLength11 = variables.characters11.length;
+          variables.characters4 = variables.word.split("");
+          variables.charLength4 = variables.characters4.length;
 
-          for (/* Loop parse */ variables.A_Index11 = 1; variables.A_Index11 <= variables.charLength11; variables.A_Index11++) {
-            variables.A_LoopField11 = variables.characters11[variables.A_Index11 - 1]; // Using array notation to access characters
+          for (/* Loop parse */ variables.A_Index4 = 1; variables.A_Index4 <= variables.charLength4; variables.A_Index4++) {
+            variables.A_LoopField4 = variables.characters4[variables.A_Index4 - 1]; // Using array notation to access characters
 
             variables.wordLen++;
           }
 
           variables.ReversedWord = "";
 
-          for (/* Normal Loop */ variables.A_Index12 = 1; variables.A_Index12 <= variables.wordLen; variables.A_Index12++) {
+          for (/* Normal Loop */ variables.A_Index5 = 1; variables.A_Index5 <= variables.wordLen; variables.A_Index5++) {
             variables.last = "";
 
-            variables.characters13 = variables.word.split("");
-            variables.charLength13 = variables.characters13.length;
+            variables.characters6 = variables.word.split("");
+            variables.charLength6 = variables.characters6.length;
 
-            for (/* Loop parse */ variables.A_Index13 = 1; variables.A_Index13 <= variables.charLength13; variables.A_Index13++) {
-              variables.A_LoopField13 = variables.characters13[variables.A_Index13 - 1]; // Using array notation to access characters
+            for (/* Loop parse */ variables.A_Index6 = 1; variables.A_Index6 <= variables.charLength6; variables.A_Index6++) {
+              variables.A_LoopField6 = variables.characters6[variables.A_Index6 - 1]; // Using array notation to access characters
 
-              variables.last = variables.A_LoopField13;
+              variables.last = variables.A_LoopField6;
             }
 
             variables.word = StringTrimRight(variables.word, 1);
@@ -629,14 +822,40 @@
 
         variables.testWords = StrReplace(variables.testWords, ", ", "|");
 
-        variables.characters14 = variables.testWords.split(/["|"]/);
-        variables.charLength14 = variables.characters14.length;
+        variables.characters7 = variables.testWords.split(/["|"]/);
+        variables.charLength7 = variables.characters7.length;
 
-        for (/* Loop parse */ variables.A_Index14 = 1; variables.A_Index14 <= variables.charLength14; variables.A_Index14++) {
-          variables.A_LoopField14 = variables.characters14[variables.A_Index14 - 1]; // Using array notation to access characters
+        for (/* Loop parse */ variables.A_Index7 = 1; variables.A_Index7 <= variables.charLength7; variables.A_Index7++) {
+          variables.A_LoopField7 = variables.characters7[variables.A_Index7 - 1]; // Using array notation to access characters
 
-          await showCustomMessageBox({}, " ", await isPalindrome(variables.A_LoopField14), 0, 0);
+          await showCustomMessageBox({}, " ", await isPalindrome(variables.A_LoopField7), 0, 0);
         }
+
+        variables.ElapsedTime = BuildInVars("A_TickCount") - variables.StartTime;
+
+        variables.ms = variables.ElapsedTime;
+
+        // Calculate the components
+
+        variables.hours = Math.floor(variables.ms / 3600000);
+
+        variables.ms = Mod(variables.ms, 3600000);
+
+        variables.minutes = Math.floor(variables.ms / 60000);
+
+        variables.ms = Mod(variables.ms, 60000);
+
+        variables.seconds = Math.floor(variables.ms / 1000);
+
+        variables.milliseconds = Mod(variables.ms, 1000);
+
+        // Display the result
+
+        variables.ElapsedTime123 = "";
+
+        variables.ElapsedTime123 += variables.hours + "h " + variables.minutes + "m " + variables.seconds + "s " + variables.milliseconds + "ms";
+
+        await showCustomMessageBox({}, " ", variables.ElapsedTime123, 0, 0);
       }
 
       // Call the async function to start the script

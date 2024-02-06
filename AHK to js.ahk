@@ -106,7 +106,21 @@ out123456 := ""
 
 textAfterSemicolonNum := 0
 
+out123456ggFixTrim := ""
 
+Loop, Parse, AHKcode, `n, `r
+{
+
+out := A_LoopField
+
+out := Trim(out)
+out := StrReplace(out, A_Tab, "")
+
+out123456ggFixTrim .= out . "`n"
+}
+StringTrimRight, out123456ggFixTrim, out123456ggFixTrim, 1
+
+AHKcode := out123456ggFixTrim
 
 
 ; Initialize a counter for tracking the current line
@@ -167,7 +181,7 @@ out1 := s
 
 
 
-funcNames := out1 . "`n"
+funcNames .= out1 . "`n"
 ;MsgBox, funcNames |%funcNames%|
 
 funcNamesLen123 := 0
@@ -239,11 +253,19 @@ Loop, Parse, funcNamesLen, `n, `r
   funcNamesLen%A_Index% := A_LoopField
 }
 
+funcs := ""
+funcs .= "let funcs = {`n"
+
 Loop, Parse, funcNames, `n, `r
 {
   funcNames%A_Index% := A_LoopField
   maxNumLenStrNum := A_Index + 1
+funcs .= "  " . "" . A_LoopField . "" . ": " . A_LoopField . "," . "`n"
+
 }
+funcs .= "}"
+;MsgBox, % funcs
+
 
 AHKcodeUot123 := ""
 outuig7f867if := ""
@@ -460,6 +482,8 @@ StringTrimRight, out123456, out123456, 1
 
 
 AHKcode := out123456
+
+
 
 AindexcharLength := 1
 
@@ -1553,7 +1577,7 @@ variables.%ou1% = StringTrimLeft(variables.%ou2%, %ou3%);
 jsCode .= var1 . "`n"
 
 }
-else if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = StrLower("return "))
+else if (SubStr(Trim(A_LoopField), 1, 7) == "return ")
 {
 lineDone := 1
 
@@ -1634,9 +1658,74 @@ str := Trim(str)
 
 jsCode .= "variables." . str . "`n"
 }
+else if (CheckVariable(A_LoopField))
+{
+ ; Check if a variable contains at least two percentage symbols (%) and at least one set of parentheses ()
+
+;~ ; Example variable
+;~ exampleVar := "This is a %example% with (some) parentheses"
+
+; Function to check the variable
+CheckVariable(var) {
+    countPercent := 0
+    countParentheses := 0
+
+    ; Loop through each character in the variable
+    Loop, Parse, var
+    {
+        ; Check for percentage symbols
+        if (A_LoopField = "%") {
+            countPercent++
+        }
+        ; Check for parentheses
+        else if (A_LoopField = "(" or A_LoopField = ")")
+        {
+            countParentheses++
+        }
+    }
+
+    ; Check if conditions are met
+    if (countPercent >= 2 and countParentheses >= 2)
+    {
+       ; MsgBox, Variable meets the conditions.
+        return true
+    } else {
+     ;   MsgBox, Variable does not meet the conditions.
+    return false
+    }
+}
+
+
+out2 := A_LoopField
+;MsgBox, % out2
+out2 := Trim(out2)
+
+
+
+var1 := out2
+
+
+
+str := var1
+
+s:=StrSplit(str,"%").1
+out3 := s
+s:=StrSplit(str,"%").2
+out4 := s
+
+
+
+
+
+
+out := "await funcs[""" . out3 . """ + variables." . out4 . "]()" . "`n"
+jsCode .= out . "`n"
+;MsgBox, % out
+lineDone := 1
+
+}
 else if ((InStr(A_LoopField, " := ")) or (InStr(A_LoopField, " .= ")) or (InStr(A_LoopField, " += ")) or (InStr(A_LoopField, " -= ")) or (InStr(A_LoopField, " *= "))) && (lineDone = 0)
 {
-
 
 ; variables
 ; variables
@@ -2303,6 +2392,7 @@ str := StrReplace(str, "variables[\""", "variables[""""")
 str := StrReplace(str, "variables.])", """""])")
 str := StrReplace(str, "variables.false", "false")
 str := StrReplace(str, "variables.true", "true")
+str := StrReplace(str, "funcs[\""", "funcs[""""")
 
 
 if (StrLower(str) = "exitapp")
@@ -2667,6 +2757,29 @@ if (Instr(str, "itsfortheloopfixinghhhhhhhhcksdvbdshjvds"))
   str := ""
 }
 
+
+str := StrReplace(str, "variables.A_ScreenWidth", "BuildInVars(""A_ScreenWidth"")")
+str := StrReplace(str, "variables.A_ScreenHeight", "BuildInVars(""A_ScreenHeight"")")
+str := StrReplace(str, "variables.A_GuiControl", "BuildInVars(""A_GuiControl"")")
+str := StrReplace(str, "variables.A_TimeIdle", "BuildInVars(""A_TimeIdle"")")
+str := StrReplace(str, "variables.A_TickCount", "BuildInVars(""A_TickCount"")")
+str := StrReplace(str, "variables.A_NowUTC", "BuildInVars(""A_NowUTC"")")
+str := StrReplace(str, "variables.A_Now", "BuildInVars(""A_Now"")")
+str := StrReplace(str, "variables.A_YYYY", "BuildInVars(""A_YYYY"")")
+str := StrReplace(str, "variables.A_MM", "BuildInVars(""A_MM"")")
+str := StrReplace(str, "variables.A_DD", "BuildInVars(""A_DD"")")
+str := StrReplace(str, "variables.A_MMMM", "BuildInVars(""A_MMMM"")")
+str := StrReplace(str, "variables.A_MMM", "BuildInVars(""A_MMM"")")
+str := StrReplace(str, "variables.A_DDDD", "BuildInVars(""A_DDDD"")")
+str := StrReplace(str, "variables.A_DDD", "BuildInVars(""A_DDD"")")
+str := StrReplace(str, "variables.A_Hour", "BuildInVars(""A_Hour"")")
+str := StrReplace(str, "variables.A_Min", "BuildInVars(""A_Min"")")
+str := StrReplace(str, "variables.A_Sec", "BuildInVars(""A_Sec"")")
+str := StrReplace(str, "variables.A_Space", "BuildInVars(""A_Space"")")
+str := StrReplace(str, "variables.A_Tab", "BuildInVars(""A_Tab"")")
+
+
+
 out4758686d86d86d86578991abc .= str . "`n"
 }
 
@@ -2710,6 +2823,7 @@ StringTrimRight, outVarsFixBugs, outVarsFixBugs, 1
 
 variables := outVarsFixBugs
 
+;MsgBox, % variables
 sort, variables, U
 
 
@@ -2731,10 +2845,10 @@ let variables = {
 
 
 
-jsCode := variables . "`n`n" . jsCode
+jsCode := variables . "`n`n" . funcs . "`n`n" . jsCode
 
 
-upCode =
+upCode1 =
 (
 <!doctype html>
 <html lang="en">
@@ -2942,6 +3056,94 @@ upCode =
         });
       }
 
+      let lastInputTime = Date.now(); // Initialize with current timestamp
+      let startTimestamp = Date.now(); // Initialize with current timestamp
+
+      // Event listener to track user activity
+      function resetIdleTimer() {
+          lastInputTime = Date.now(); // Update last input time
+      }
+
+      document.addEventListener('mousemove', resetIdleTimer);
+      document.addEventListener('keypress', resetIdleTimer);
+
+      // Function to calculate time since last input event
+      function A_TimeIdle() {
+          return Date.now() - lastInputTime; // Calculate time difference
+      }
+
+      // Function to calculate tick count in milliseconds
+      function A_TickCount() {
+          return Date.now() - startTimestamp;
+      }
+
+      function BuildInVars(varName) {
+          switch(varName) {
+              case "A_ScreenWidth":
+                  // Return screen width
+                  return window.screen.width;
+              case "A_ScreenHeight":
+                  // Return screen height
+                  return window.screen.height;
+              case "A_GuiControl":
+                  // Simulate GUI control (You can implement as needed)
+                  return "A_GuiControl not added yet";
+              case "A_TimeIdle":
+                  // Return time idle
+                  return A_TimeIdle();
+              case "A_TickCount":
+                  // Return tick count in milliseconds
+                  return A_TickCount();
+              case "A_NowUTC":
+                  // Return current UTC timestamp
+                  return new Date().toISOString();
+              case "A_Now":
+                  // Return current local timestamp
+                  return new Date().toLocaleString();
+              case "A_YYYY":
+                  // Return current year
+                  return new Date().getFullYear();
+              case "A_MM":
+                  // Return current month
+                  return (new Date().getMonth() + 1).toString().padStart(2, '0');
+              case "A_DD":
+                  // Return current day
+                  return new Date().getDate().toString().padStart(2, '0');
+              case "A_MMMM":
+                  // Return full month name
+                  return new Date().toLocaleDateString(undefined, { month: 'long' });
+              case "A_MMM":
+                  // Return short month name
+                  return new Date().toLocaleDateString(undefined, { month: 'short' });
+              case "A_DDDD":
+                  // Return full day name
+                  return new Date().toLocaleDateString(undefined, { weekday: 'long' });
+              case "A_DDD":
+                  // Return short day name
+                  return new Date().toLocaleDateString(undefined, { weekday: 'short' });
+              case "A_Hour":
+                  // Return current hour
+                  return new Date().getHours().toString().padStart(2, '0');
+              case "A_Min":
+                  // Return current minute
+                  return new Date().getMinutes().toString().padStart(2, '0');
+              case "A_Sec":
+                  // Return current second
+                  return new Date().getSeconds().toString().padStart(2, '0');
+              case "A_Space":
+                  // Return space character
+                  return ' ';
+              case "A_Tab":
+                  // Return tab character
+                  return '\t';
+
+              default:
+                  // Handle unknown variable names
+                  return null;
+          }
+      }
+
+
       // Absolute value
       function Abs(num) {
         if (num === null || isNaN(num)) return null;
@@ -3042,6 +3244,11 @@ upCode =
           return "";
         }
       }
+
+)
+
+upCode2 =
+(
 
       // Function to simulate Sleep
       function sleep(ms) {
@@ -3229,6 +3436,8 @@ upCode =
       async function runScript() {
         // Declare and assign a variable
 
+
+
 )
 
 
@@ -3245,7 +3454,7 @@ downCode =
 
 )
 
-jsCode := upCode . jsCode . DownCode
+jsCode := upCode1 . upCode2 . jsCode . DownCode
 
 
 ;MsgBox % jsCode
@@ -3649,7 +3858,7 @@ out2 := StrReplace(out2, "Exp(", "Math.exp(")
 out2 := StrReplace(out2, "Floor(", "Math.floor(")
 out2 := StrReplace(out2, "Ln(", "Math.log(")
 out2 := StrReplace(out2, "Log(", "Math.log10(")
-out2 := StrReplace(out2, "Mod(", "%")
+out2 := StrReplace(out2, "Mod(", "Mod(")
 out2 := StrReplace(out2, "Round(", "Math.round(")
 out2 := StrReplace(out2, "Sin(", "Math.sin(")
 out2 := StrReplace(out2, "Sqrt(", "Math.sqrt(")
@@ -3666,7 +3875,7 @@ out2 := StrReplace(out2, "Exp (", "Math.exp(")
 out2 := StrReplace(out2, "Floor (", "Math.floor(")
 out2 := StrReplace(out2, "Ln (", "Math.log(")
 out2 := StrReplace(out2, "Log (", "Math.log10(")
-out2 := StrReplace(out2, "Mod (", "%")
+out2 := StrReplace(out2, "Mod (", "Mod(")
 out2 := StrReplace(out2, "Round (", "Math.round(")
 out2 := StrReplace(out2, "Sin (", "Math.sin(")
 out2 := StrReplace(out2, "Sqrt (", "Math.sqrt(")
