@@ -95,6 +95,28 @@ Some features that haven't been fully tested but should work include:
 - Mod
 - Asc
 
+Built-in Variables
+
+- A_ScreenWidth
+- A_ScreenHeight
+- A_GuiControl
+- A_TimeIdle
+- A_TickCount
+- A_NowUTC
+- A_Now
+- A_YYYY
+- A_MM
+- A_DD
+- A_MMMM
+- A_MMM
+- A_DDDD
+- A_DDD
+- A_Hour
+- A_Min
+- A_Sec
+- A_Space
+- A_Tab
+
 ## Platform Compatibility
 
 - AutoHotKey only runs on Windows.
