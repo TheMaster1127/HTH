@@ -62,6 +62,7 @@ InputBox, OutputVar, And this will be seen as the only thing in js and in ahk th
 - Loop
 - Loop, Parse
 - Increment (e.g., `var++`)
+- Simple dynamically function calls. Example: `func%num%()` cant do `%num%func()` also not `func%num%name()` you can only have one `%var%` at the end.
 - Assignment operators (`:=`, `.=`, `+=`, `-=`, `*=`)
 - Comments (Note: Comments might be translated in some cases)
 
