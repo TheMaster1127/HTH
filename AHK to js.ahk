@@ -1649,7 +1649,7 @@ variables.%ou1% = prompt('%ou3%');
 jsCode .= var1 . "`n"
 
 }
-else if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = "gosub, ") or (SubStr(Trim(StrLower(A_LoopField)), 1, 6) = "goto, ")
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = "gosub, ")
 {
 
 ;MsgBox, % A_LoopField
@@ -1668,6 +1668,33 @@ out2 := "await " . out1 . "()"
 lineDone := 1
 jsCode .= out2 . "`n"
 
+}
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 12) = "fileappend, ")
+{
+
+str := A_LoopField
+
+s:=StrSplit(str,",").2
+out1 := Trim(s)
+
+s:=StrSplit(str,",").3
+out2 := Trim(s)
+
+
+out1 := varTraspiler(out1, 0)
+
+;~ MsgBox, |%out1%|
+;~ MsgBox, |%out2%|
+
+
+
+out3 := "FileAppend(" . out1 . ", """ . out2 . """)"
+
+;MsgBox, % out3
+
+jsCode .= out3 . "`n"
+
+lineDone := 1
 }
 else if (SubStr(Trim(StrLower(A_LoopField)), 1, 10) = "settimer, ")
 {
@@ -1711,7 +1738,7 @@ out2 := "On"
 ;MsgBox, % "The variable is not a number."
 out3 := "SetTimer(" . out1 . ", """ . out2 . """)"
 }
-MsgBox, % out3
+;MsgBox, % out3
 
 jsCode .= out3 . "`n"
 
@@ -3566,6 +3593,28 @@ upCode2 =
         } else {
           console.error("Invalid time/On/Off state. Please provide a valid time in milliseconds or 'On'/'Off'.");
         }
+      }
+
+      function FileAppend(data, filename) {
+        // Create a blob with the provided data
+        const blob = new Blob([data], { type: "text/plain" });
+
+        // Create a temporary anchor element
+        const anchor = document.createElement("a");
+        anchor.style.display = "none";
+
+        // Set the download attribute and filename
+        anchor.setAttribute("href", window.URL.createObjectURL(blob));
+        anchor.setAttribute("download", filename);
+
+        // Append the anchor element to the body
+        document.body.appendChild(anchor);
+
+        // Trigger a click event on the anchor element
+        anchor.click();
+
+        // Remove the anchor element
+        document.body.removeChild(anchor);
       }
 
       // Single async function to structure the entire script

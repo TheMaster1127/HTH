@@ -8,17 +8,14 @@ MsgBox, % A_TimeIdle
 MsgBox, % A_TickCount
 
 
+var := "hey whats up"
 
-SetTimer, man, 1500
+FileAppend, %var%, file.txt
 
-
-man:
-MsgBox, hi
-Return
 
 
 gosub, man
-goto, man
+
 
 
 if (A_IsTranspiled = 1)
@@ -41,6 +38,7 @@ MsgBox, No
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; random numbers whit no repetition
 N := 10
 MIN := 1
 MAX := 10
@@ -222,19 +220,10 @@ ElapsedTime123 .= hours . "h " . minutes . "m " . seconds . "s " . milliseconds 
 MsgBox, % ElapsedTime123
 
 
-
-SetTimer, man, Off
-
-Sleep, 5000
-
-SetTimer, man, on
-
-
-Sleep, 5000
-
-
-SetTimer, man, Off
-
-
-Sleep, 4000
 ExitApp
+
+return
+
+man:
+MsgBox, hi
+Return

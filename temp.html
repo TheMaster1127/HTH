@@ -608,6 +608,28 @@
         }
       }
 
+      function FileAppend(data, filename) {
+        // Create a blob with the provided data
+        const blob = new Blob([data], { type: "text/plain" });
+
+        // Create a temporary anchor element
+        const anchor = document.createElement("a");
+        anchor.style.display = "none";
+
+        // Set the download attribute and filename
+        anchor.setAttribute("href", window.URL.createObjectURL(blob));
+        anchor.setAttribute("download", filename);
+
+        // Append the anchor element to the body
+        document.body.appendChild(anchor);
+
+        // Trigger a click event on the anchor element
+        anchor.click();
+
+        // Remove the anchor element
+        document.body.removeChild(anchor);
+      }
+
       // Single async function to structure the entire script
       async function runScript() {
         // Declare and assign a variable
@@ -647,6 +669,7 @@
           seconds: null,
           StartTime: null,
           testWords: null,
+          var: null,
           word: null,
           wordLen: null,
         };
@@ -675,13 +698,9 @@
 
         await showCustomMessageBox({}, " ", BuildInVars("A_TickCount"), 0, 0);
 
-        SetTimer(man, 1500);
+        variables.var = "hey whats up";
 
-        async function man() {
-          await showCustomMessageBox({}, " ", "hi ", 0, 0);
-        }
-
-        await man();
+        FileAppend(variables.var, "file.txt");
 
         await man();
 
@@ -712,6 +731,8 @@
         //
 
         //
+
+        // random numbers whit no repetition
 
         variables.N = 10;
 
@@ -910,19 +931,13 @@
 
         await showCustomMessageBox({}, " ", variables.ElapsedTime123, 0, 0);
 
-        SetTimer(man, "Off");
-
-        await sleep(5000);
-
-        SetTimer(man, "On");
-
-        await sleep(5000);
-
-        SetTimer(man, "Off");
-
-        await sleep(4000);
-
         window.close();
+
+        return;
+
+        async function man() {
+          await showCustomMessageBox({}, " ", "hi ", 0, 0);
+        }
       }
 
       // Call the async function to start the script
