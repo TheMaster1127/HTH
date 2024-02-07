@@ -50,7 +50,7 @@ So far, AHK-to-js supports:
 - Random
 - Sleep
 - Msgbox
-- SetTimer
+- SetTimer Note: if you put a msgbox in the timer it will not stop the execution which is not the same as in real AutoHotKey
 - gosub/goto they literally do the same thing
 - lables here a lable:
 ```ahk
