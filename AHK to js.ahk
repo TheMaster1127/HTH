@@ -1680,9 +1680,10 @@ out1 := Trim(s)
 s:=StrSplit(str,",").3
 out2 := Trim(s)
 
-
+if (InStr(out1, "%"))
+{
 out1 := varTraspiler(out1, 0)
-
+}
 ;~ MsgBox, |%out1%|
 ;~ MsgBox, |%out2%|
 
@@ -2987,7 +2988,7 @@ upCode1 =
     <title>ahk to js</title>
     <style>
       body {
-        background-color: #121212;
+        background-color: #202020;
         font-family:
           "Open Sans",
           -apple-system,
