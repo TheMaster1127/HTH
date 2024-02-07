@@ -54,11 +54,16 @@ So far, AHK-to-js supports:
 - gosub/goto they literally do the same thing
 - lables here a lable:
 ```ahk
-gosub Label1
+; We will go the label
+gosub, Label1
 
+; We put return in lowercase to stop the code executing after otherwise; otherwise, it will go to the label twice.
+return
 Label1:
 MsgBox, we are in Label1
-return
+
+; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is not the same case in real AutoHotkey, but here we need to do that.
+Return
 ```
 - InputBox can only pass 2 or 3 parameters here is an example:
 
