@@ -229,10 +229,10 @@
         switch (varName) {
           case "A_ScreenWidth":
             // Return screen width
-            return window.screen.width;
+            return window.innerWidth;
           case "A_ScreenHeight":
             // Return screen height
-            return window.screen.height;
+            return window.innerHeight;
           case "A_GuiControl":
             // Simulate GUI control (You can implement as needed)
             return "A_GuiControl not added yet";
@@ -574,6 +574,37 @@
         });
       }
 
+      function GuiControl(action, id, param1, param2, param3, param4) {
+        const element = document.getElementById(id);
+        if (element) {
+          if (action === "move") {
+            // Set position and size
+            element.style.left = param1 + "px";
+            element.style.top = param2 + "px";
+            element.style.width = param3 + "px";
+            element.style.height = param4 + "px";
+          } else if (action === "focus" && (element instanceof HTMLInputElement || element instanceof HTMLElement)) {
+            // Focus on the element
+            element.focus();
+          } else if (action === "text") {
+            // Set new text content
+            element.textContent = param1;
+          } else if (action === "hide") {
+            // Hide the element
+            element.style.display = "none";
+          } else if (action === "show") {
+            // Show the element
+            element.style.display = "";
+          } else if (action === "enable") {
+            // Enable the element
+            element.disabled = false;
+          } else if (action === "disable") {
+            // Disable the element
+            element.disabled = true;
+          }
+        }
+      }
+
       // Object to store timer intervals for different functions
       const timerIntervals = {};
 
@@ -638,305 +669,179 @@
           A_IsTranspiled: 1,
           A_LoopField: null,
           characters: null,
-          ElapsedTime123: null,
-          ElapsedTime: null,
-          hi10: null,
-          hi1: null,
-          hi2: null,
-          hi3: null,
-          hi4: null,
-          hi5: null,
-          hi6: null,
-          hi7: null,
-          hi8: null,
-          hi9: null,
-          hi: null,
-          hours: null,
-          i: null,
-          isPalindrome: null,
-          j: null,
-          last: null,
-          MAX: null,
-          milliseconds: null,
-          MIN: null,
-          minutes: null,
-          ms: null,
-          N: null,
-          nnn: null,
-          normalWord: null,
-          outTestRanNums: null,
-          ReversedWord: null,
-          seconds: null,
-          StartTime: null,
-          testWords: null,
           var: null,
-          word: null,
-          wordLen: null,
         };
 
-        let funcs = {
-          hi1: hi1,
-          hi2: hi2,
-          hi3: hi3,
-          hi4: hi4,
-          hi5: hi5,
-          hi6: hi6,
-          hi7: hi7,
-          hi8: hi8,
-          hi9: hi9,
-          hi10: hi10,
-          isPalindrome: isPalindrome,
-        };
+        let funcs = {};
 
-        variables.StartTime = BuildInVars("A_TickCount");
-
-        await showCustomMessageBox({}, " ", BuildInVars("A_Min"), 0, 0);
-
-        await sleep(420);
-
-        await showCustomMessageBox({}, " ", BuildInVars("A_TimeIdle"), 0, 0);
-
-        await showCustomMessageBox({}, " ", BuildInVars("A_TickCount"), 0, 0);
-
-        variables.var = "hey whats up";
-
-        FileAppend(variables.var, "file.txt");
-
-        await man();
+        variables.var = "man, idk, hey, uhh, words, duh";
 
         if (variables.A_IsTranspiled == 1) {
           // do something if its transpiled
 
-          await showCustomMessageBox({}, " ", "Yes ", 0, 0);
+          variables.characters1 = variables.var.split(/[","]/);
+          variables.charLength1 = variables.characters1.length;
+
+          for (/* Loop parse */ variables.A_Index1 = 1; variables.A_Index1 <= variables.charLength1; variables.A_Index1++) {
+            variables.A_LoopField1 = variables.characters1[variables.A_Index1 - 1]; // Using array notation to access characters
+
+            await showCustomMessageBox({}, " ", await Trim(variables.A_LoopField1), 0, 0);
+          }
         } else {
           // do something if its not transpiled
 
-          await showCustomMessageBox({}, " ", "No ", 0, 0);
-        }
+          variables.characters2 = variables.var.split(/[\,]/);
+          variables.charLength2 = variables.characters2.length;
 
-        //
+          for (/* Loop parse */ variables.A_Index2 = 1; variables.A_Index2 <= variables.charLength2; variables.A_Index2++) {
+            variables.A_LoopField2 = variables.characters2[variables.A_Index2 - 1]; // Using array notation to access characters
 
-        //
-
-        //
-
-        //
-
-        //
-
-        //
-
-        //
-
-        //
-
-        //
-
-        // random numbers whit no repetition
-
-        variables.N = 10;
-
-        variables.MIN = 1;
-
-        variables.MAX = 10;
-
-        for (/* Normal Loop */ variables.A_Index1 = 1; variables.A_Index1 <= variables.N; variables.A_Index1++) {
-          variables.i = variables.A_Index1;
-
-          for (/* Normal Loop */ variables.A_Index2 = 1; ; variables.A_Index2++) {
-            variables.R = getRandomNumber(variables.MIN, variables.MAX);
-
-            variables.j = variables["Index_" + variables.R];
-
-            if (variables.j >= 1 && variables.j <= variables.i - 1) {
-              if (variables["R_" + variables.j] == variables.R) {
-                continue;
-              }
-            }
-
-            variables["Index_" + variables.R] = variables.i;
-
-            variables["R_" + variables.i] = variables.R;
-
-            break;
+            await showCustomMessageBox({}, " ", await Trim(variables.A_LoopField2), 0, 0);
           }
         }
 
-        variables.nnn = 1;
-
-        variables.outTestRanNums = "";
-
-        for (/* Normal Loop */ variables.A_Index3 = 1; variables.A_Index3 <= variables.N; variables.A_Index3++) {
-          // add name here
-
-          variables["hello" + variables.nnn] = variables["R_" + variables.nnn];
-
-          variables.outTestRanNums += variables["R_" + variables.nnn] + " ";
-
-          variables.nnn++;
-        }
-
-        variables.outTestRanNums = StringTrimRight(variables.outTestRanNums, 1);
-
-        await showCustomMessageBox({}, " ", "" + variables.outTestRanNums + " ", 0, 0);
-
-        //
-
-        //
-
-        //
-
-        //
-
-        //
-
-        //
-
-        //
-
-        //
-
-        //
-
-        async function hi1() {
-          await showCustomMessageBox({}, " ", "1 ", 0, 0);
-        }
-
-        async function hi2() {
-          await showCustomMessageBox({}, " ", "2 ", 0, 0);
-        }
-
-        async function hi3() {
-          await showCustomMessageBox({}, " ", "3 ", 0, 0);
-        }
-
-        async function hi4() {
-          await showCustomMessageBox({}, " ", "4 ", 0, 0);
-        }
-
-        async function hi5() {
-          await showCustomMessageBox({}, " ", "5 ", 0, 0);
-        }
-
-        async function hi6() {
-          await showCustomMessageBox({}, " ", "6 ", 0, 0);
-        }
-
-        async function hi7() {
-          await showCustomMessageBox({}, " ", "7 ", 0, 0);
-        }
-
-        async function hi8() {
-          await showCustomMessageBox({}, " ", "8 ", 0, 0);
-        }
-
-        async function hi9() {
-          await showCustomMessageBox({}, " ", "9 ", 0, 0);
-        }
-
-        async function hi10() {
-          await showCustomMessageBox({}, " ", "10 ", 0, 0);
-        }
-
-        variables.hi = "hi" + variables.hello1;
-
-        await funcs["" + variables.hi]();
-
-        async function isPalindrome(word) {
-          variables.word = word;
-
-          variables.word = Trim(variables.word);
-
-          variables.normalWord = variables.word;
-
-          // get the lenght of the word
-
-          variables.wordLen = 0;
-
-          variables.characters4 = variables.word.split("");
-          variables.charLength4 = variables.characters4.length;
-
-          for (/* Loop parse */ variables.A_Index4 = 1; variables.A_Index4 <= variables.charLength4; variables.A_Index4++) {
-            variables.A_LoopField4 = variables.characters4[variables.A_Index4 - 1]; // Using array notation to access characters
-
-            variables.wordLen++;
-          }
-
-          variables.ReversedWord = "";
-
-          for (/* Normal Loop */ variables.A_Index5 = 1; variables.A_Index5 <= variables.wordLen; variables.A_Index5++) {
-            variables.last = "";
-
-            variables.characters6 = variables.word.split("");
-            variables.charLength6 = variables.characters6.length;
-
-            for (/* Loop parse */ variables.A_Index6 = 1; variables.A_Index6 <= variables.charLength6; variables.A_Index6++) {
-              variables.A_LoopField6 = variables.characters6[variables.A_Index6 - 1]; // Using array notation to access characters
-
-              variables.last = variables.A_LoopField6;
-            }
-
-            variables.word = StringTrimRight(variables.word, 1);
-
-            variables.ReversedWord += variables.last;
-          } // end of Loop, % wordLen
-
-          // await showCustomMessageBox({}," ", ReversedWord, 0, 0.)
-
-          if (variables.normalWord == variables.ReversedWord) {
-            return "true";
-          } else {
-            return "false";
-          }
-        } //  end of func
-
-        // tests
-
-        variables.testWords = "bob, hello, racecar";
-
-        variables.testWords = StrReplace(variables.testWords, ", ", "|");
-
-        variables.characters7 = variables.testWords.split(/["|"]/);
-        variables.charLength7 = variables.characters7.length;
-
-        for (/* Loop parse */ variables.A_Index7 = 1; variables.A_Index7 <= variables.charLength7; variables.A_Index7++) {
-          variables.A_LoopField7 = variables.characters7[variables.A_Index7 - 1]; // Using array notation to access characters
-
-          await showCustomMessageBox({}, " ", await isPalindrome(variables.A_LoopField7), 0, 0);
-        }
-
-        variables.ElapsedTime = BuildInVars("A_TickCount") - variables.StartTime;
-
-        variables.ms = variables.ElapsedTime;
-
-        // Calculate the components
-
-        variables.hours = Math.floor(variables.ms / 3600000);
-
-        variables.ms = Mod(variables.ms, 3600000);
-
-        variables.minutes = Math.floor(variables.ms / 60000);
-
-        variables.ms = Mod(variables.ms, 60000);
-
-        variables.seconds = Math.floor(variables.ms / 1000);
-
-        variables.milliseconds = Mod(variables.ms, 1000);
-
-        // Display the result
-
-        variables.ElapsedTime123 = "";
-
-        variables.ElapsedTime123 += variables.hours + "h " + variables.minutes + "m " + variables.seconds + "s " + variables.milliseconds + "ms";
-
-        await showCustomMessageBox({}, " ", variables.ElapsedTime123, 0, 0);
-
-        window.close();
+        const Gui3 = document.createElement("div");
+
+        const Gui3button1 = document.createElement("button");
+        Gui3button1.id = "Gui3button1"; // Set ID for referencing
+        Gui3button1.textContent = "TextButton";
+        Gui3button1.style.position = "absolute"; // Set position to absolute
+        Gui3button1.style.left = "10px"; // Set initial x position
+        Gui3button1.style.top = "10px"; // Set initial y position
+        Gui3button1.style.width = "150px"; // Set width
+        Gui3button1.style.height = "50px"; // Set height
+        Gui3button1.onclick = function (event) {
+          Button(event);
+        };
+        Gui3.appendChild(Gui3button1);
+
+        Gui3.style.position = "absolute";
+        Gui3.style.width = "300px"; // Set the width
+        Gui3.style.height = "300px"; // Set the height
+        Gui3.style.backgroundColor = "#121212";
+        Gui3.style.color = "white";
+        Gui3.style.fontSize = "15px";
+        Gui3.style.padding = "10px";
+        Gui3.style.border = "2px solid white";
+
+        // Calculate center position
+        Gui3.style.left = (window.innerWidth - parseInt(Gui3.style.width)) / 2 + "px";
+        Gui3.style.top = (window.innerHeight - parseInt(Gui3.style.height)) / 2 + "px";
+
+        Gui3.style.left = "0px";
+        Gui3.style.top = "0px";
+
+        document.body.appendChild(Gui3); // Append the GUI window to the body
+
+        const Gui1 = document.createElement("div");
+
+        const Gui1Buttonssssssssss21 = document.createElement("button");
+        Gui1Buttonssssssssss21.id = "Gui1Buttonssssssssss21"; // Set ID for referencing
+        Gui1Buttonssssssssss21.textContent = "Text Button";
+        Gui1Buttonssssssssss21.style.position = "absolute"; // Set position to absolute
+        Gui1Buttonssssssssss21.style.left = "10px"; // Set initial x position
+        Gui1Buttonssssssssss21.style.top = "10px"; // Set initial y position
+        Gui1Buttonssssssssss21.style.width = "150px"; // Set width
+        Gui1Buttonssssssssss21.style.height = "50px"; // Set height
+        Gui1Buttonssssssssss21.onclick = function (event) {
+          Button(event);
+        };
+        Gui1.appendChild(Gui1Buttonssssssssss21);
+
+        const Gui1Buttonssssssssss2 = document.createElement("button");
+        Gui1Buttonssssssssss2.id = "Gui1Buttonssssssssss2"; // Set ID for referencing
+        Gui1Buttonssssssssss2.textContent = "Text Button";
+        Gui1Buttonssssssssss2.style.position = "absolute"; // Set position to absolute
+        Gui1Buttonssssssssss2.style.left = "10px"; // Set initial x position
+        Gui1Buttonssssssssss2.style.top = "100px"; // Set initial y position
+        Gui1Buttonssssssssss2.style.width = "150px"; // Set width
+        Gui1Buttonssssssssss2.style.height = "50px"; // Set height
+        Gui1Buttonssssssssss2.onclick = function (event) {
+          Button(event);
+        };
+        Gui1.appendChild(Gui1Buttonssssssssss2);
+
+        Gui1.style.position = "absolute";
+        Gui1.style.width = "300px"; // Set the width
+        Gui1.style.height = "300px"; // Set the height
+        Gui1.style.backgroundColor = "#121212";
+        Gui1.style.color = "white";
+        Gui1.style.fontSize = "15px";
+        Gui1.style.padding = "10px";
+        Gui1.style.border = "2px solid white";
+
+        // Calculate center position
+        Gui1.style.left = (window.innerWidth - parseInt(Gui1.style.width)) / 2 + "px";
+        Gui1.style.top = (window.innerHeight - parseInt(Gui1.style.height)) / 2 + "px";
+
+        Gui1.style.left = "320px";
+        Gui1.style.top = "320px";
+
+        document.body.appendChild(Gui1); // Append the GUI window to the body
+
+        const Gui2 = document.createElement("div");
+
+        const Gui2Button32 = document.createElement("button");
+        Gui2Button32.id = "Gui2Button32"; // Set ID for referencing
+        Gui2Button32.textContent = "Text dsfgbv zzs dz";
+        Gui2Button32.style.position = "absolute"; // Set position to absolute
+        Gui2Button32.style.left = "10px"; // Set initial x position
+        Gui2Button32.style.top = "10px"; // Set initial y position
+        Gui2Button32.style.width = "150px"; // Set width
+        Gui2Button32.style.height = "50px"; // Set height
+        Gui2Button32.onclick = function (event) {
+          Button(event);
+        };
+        Gui2.appendChild(Gui2Button32);
+
+        const Gui2Button322 = document.createElement("button");
+        Gui2Button322.id = "Gui2Button322"; // Set ID for referencing
+        Gui2Button322.textContent = "Text dsfgbv zzs dz";
+        Gui2Button322.style.position = "absolute"; // Set position to absolute
+        Gui2Button322.style.left = "10px"; // Set initial x position
+        Gui2Button322.style.top = "100px"; // Set initial y position
+        Gui2Button322.style.width = "150px"; // Set width
+        Gui2Button322.style.height = "50px"; // Set height
+        Gui2Button322.onclick = function (event) {
+          Button(event);
+        };
+        Gui2.appendChild(Gui2Button322);
+
+        const Gui2Button3222 = document.createElement("button");
+        Gui2Button3222.id = "Gui2Button3222"; // Set ID for referencing
+        Gui2Button3222.textContent = "Text dsfgbv zzs dz";
+        Gui2Button3222.style.position = "absolute"; // Set position to absolute
+        Gui2Button3222.style.left = "10px"; // Set initial x position
+        Gui2Button3222.style.top = "210px"; // Set initial y position
+        Gui2Button3222.style.width = "150px"; // Set width
+        Gui2Button3222.style.height = "50px"; // Set height
+        Gui2Button3222.onclick = function (event) {
+          Button(event);
+        };
+        Gui2.appendChild(Gui2Button3222);
+
+        Gui2.style.position = "absolute";
+        Gui2.style.width = "300px"; // Set the width
+        Gui2.style.height = "300px"; // Set the height
+        Gui2.style.backgroundColor = "#121212";
+        Gui2.style.color = "white";
+        Gui2.style.fontSize = "15px";
+        Gui2.style.padding = "10px";
+        Gui2.style.border = "2px solid white";
+
+        // Calculate center position
+        Gui2.style.left = (window.innerWidth - parseInt(Gui2.style.width)) / 2 + "px";
+        Gui2.style.top = (window.innerHeight - parseInt(Gui2.style.height)) / 2 + "px";
+
+        Gui2.style.left = "0px";
+        Gui2.style.top = "320px";
+
+        document.body.appendChild(Gui2); // Append the GUI window to the body
 
         return;
 
-        async function man() {
-          await showCustomMessageBox({}, " ", "hi ", 0, 0);
+        async function Button() {
+          await showCustomMessageBox({}, " ", "Hi ", 0, 0);
         }
       }
 

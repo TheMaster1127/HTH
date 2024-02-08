@@ -157,7 +157,7 @@ Loop, Parse, AHKcode, `n, `r
 
 
 
-if (SubStr(lastLine2, 1, 4) = "if (") or (SubStr(lastLine2, 1, 3) = "if(") or (SubStr(lastLine2, 1, 4) = "if!(") or (SubStr(lastLine2, 1, 5) = "if !(") or (SubStr(TlastLine2, 1, 4) = "loop") or (SubStr(lastLine2, 1, 9) = "else if (") or (SubStr(lastLine2, 1, 8) = "else if(")
+if (SubStr(StrLower(lastLine2), 1, 4) = "if (") or (SubStr(StrLower(lastLine2), 1, 3) = "if(") or (SubStr(StrLower(lastLine2), 1, 4) = "if!(") or (SubStr(StrLower(lastLine2), 1, 5) = "if !(") or (SubStr(StrLower(lastLine2), 1, 4) = "loop") or (SubStr(StrLower(lastLine2), 1, 9) = "else if (") or (SubStr(StrLower(lastLine2), 1, 8) = "else if(")
 {
 ;MsgBox % "Last Line 1: " lastLine2 "`nLast Line 2: " lastLine1
 }
@@ -1206,14 +1206,14 @@ out2 := s
 
 str := out1
 
-s:=StrSplit(str,",").1
+s:=StrSplit(str,", ").1
 out1 := s
 
-s:=StrSplit(str,",").2
+s:=StrSplit(str,", ").2
 out3 := s
 out3 := Trim(out3)
 ;MsgBox, |%out3%|
-s:=StrSplit(str,",").3
+s:=StrSplit(str,", ").3
 out4 := s
 out4 := Trim(out4)
 ;MsgBox, |%out4%|
@@ -1744,6 +1744,419 @@ out3 := "SetTimer(" . out1 . ", """ . out2 . """)"
 jsCode .= out3 . "`n"
 
 
+lineDone := 1
+}
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 5) = StrLower("Gui, ")) or (SubStr(Trim(StrLower(A_LoopField)), 1, 4) = StrLower("Gui "))
+{
+
+
+
+
+str := A_LoopField
+
+str := StrReplace(str, ": ", ", ")
+
+s:=StrSplit(str,",").1
+out1 := Trim(s)
+;MsgBox, % out1
+
+GuiNumberOld := GuiNumber
+GuiNumber := RegExReplace(out1, "\D", "")
+
+
+if (GuiNumber = "")
+{
+GuiNumber := 1
+
+}
+
+
+if (GuiNumberOld != GuiNumber)
+{
+onceGuiAdd := 1
+}
+
+
+s:=StrSplit(str,", ").2
+out2 := StrLower(Trim(s))
+
+s:=StrSplit(str,", ").3
+out3 := StrLower(Trim(s))
+
+s:=StrSplit(str,", ").4
+out4 := Trim(s)
+
+s:=StrSplit(str,", ").5
+out5 := Trim(s)
+
+
+if (onceGuiAdd = 1)
+{
+jsCode .= "const Gui" . GuiNumber . " = document.createElement(""div"")`;`n"
+NumOfButtons := 0
+}
+onceGuiAdd++
+
+
+;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;
+
+if (out2 = "add")
+{
+
+if (out3 = "text")
+{
+guiOutOfTextNum := 0
+guiOutOfTextC := 0
+guiOutOfTextX := 0
+guiOutOfTextY := 0
+guiOutOfTextW := 0
+guiOutOfTextH := 0
+guiOutOfTextV := 0
+guiOutOfTextG := 0
+guiOutOfText0 := ""
+Loop, 6
+{
+guiOutOfText%A_Index% := ""
+}
+
+Loop, Parse, out4, " "
+{
+;MsgBox, |%A_LoopField%|
+
+guiOutOfTextNum++
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("c"))
+{
+guiOutOfTextC := 1
+guiOutOfText0 := A_LoopField
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfTextX := 1
+guiOutOfText1 := A_LoopField
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfTextY := 1
+guiOutOfText2 := A_LoopField
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfTextW := 1
+guiOutOfText3 := A_LoopField
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfTextH := 1
+guiOutOfText4 := A_LoopField
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
+{
+guiOutOfTextV := 1
+guiOutOfText5 := A_LoopField
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
+{
+guiOutOfTextG := 1
+guiOutOfText6 := A_LoopField
+}
+}
+
+
+
+}
+
+
+
+if (out3 = "button")
+{
+guiOutOfButtonNum := 0
+guiOutOfButtonX := 0
+guiOutOfButtonY := 0
+guiOutOfButtonW := 0
+guiOutOfButtonH := 0
+guiOutOfButtonV := 0
+guiOutOfButtonG := 0
+Loop, 6
+{
+guiOutOfButton%A_Index% := ""
+}
+Loop, Parse, out4, " "
+{
+;MsgBox, |%A_LoopField%|
+
+guiOutOfButtonNum++
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfButtonX := 1
+guiOutOfButton1 := A_LoopField
+StringTrimLeft, guiOutOfButton1, guiOutOfButton1, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfButtonY := 1
+guiOutOfButton2 := A_LoopField
+StringTrimLeft, guiOutOfButton2, guiOutOfButton2, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfButtonW := 1
+guiOutOfButton3 := A_LoopField
+StringTrimLeft, guiOutOfButton3, guiOutOfButton3, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfButtonH := 1
+guiOutOfButton4 := A_LoopField
+StringTrimLeft, guiOutOfButton4, guiOutOfButton4, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
+{
+guiOutOfButtonV := 1
+guiOutOfButton5 := A_LoopField
+StringTrimLeft, guiOutOfButton5, guiOutOfButton5, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
+{
+guiOutOfButtonG := 1
+guiOutOfButton6 := A_LoopField
+StringTrimLeft, guiOutOfButton6, guiOutOfButton6, 1
+}
+}
+
+NumOfButtons++
+
+if (guiOutOfButtonV = 1)
+{
+if (guiOutOfButtonG = 1)
+{
+jsCode0 =
+(
+
+const Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%%guiOutOfButton5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
+Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfButton5%.style.left = "%guiOutOfButton1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfButton5%.style.top = "%guiOutOfButton2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfButton5%.style.width = "%guiOutOfButton3%px"; // Set width
+Gui%GuiNumber%%guiOutOfButton5%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%%guiOutOfButton5%.onclick = function (event) {
+  %guiOutOfButton6%(event);
+};
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfButton5%);
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+else
+{
+jsCode0 =
+(
+
+const Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%%guiOutOfButton5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
+Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfButton5%.style.left = "%guiOutOfButton1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfButton5%.style.top = "%guiOutOfButton2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfButton5%.style.width = "%guiOutOfButton3%px"; // Set width
+Gui%GuiNumber%%guiOutOfButton5%.style.height = "%guiOutOfButton4%px"; // Set height
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+}
+else
+{
+if (guiOutOfButtonG = 1)
+{
+jsCode0 =
+(
+
+const Gui%GuiNumber%button%NumOfButtons% = document.createElement("button");
+Gui%GuiNumber%button%NumOfButtons%.id = "Gui%GuiNumber%button%NumOfButtons%"; // Set ID for referencing
+Gui%GuiNumber%button%NumOfButtons%.textContent = "%out5%";
+Gui%GuiNumber%button%NumOfButtons%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%button%NumOfButtons%.style.left = "%guiOutOfButton1%px"; // Set initial x position
+Gui%GuiNumber%button%NumOfButtons%.style.top = "%guiOutOfButton2%px"; // Set initial y position
+Gui%GuiNumber%button%NumOfButtons%.style.width = "%guiOutOfButton3%px"; // Set width
+Gui%GuiNumber%button%NumOfButtons%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%button%NumOfButtons%.onclick = function (event) {
+  %guiOutOfButton6%(event);
+};
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%button%NumOfButtons%);
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+else
+{
+jsCode0 =
+(
+
+const Gui%GuiNumber%button%NumOfButtons% = document.createElement("button");
+Gui%GuiNumber%button%NumOfButtons%.id = "Gui%GuiNumber%button%NumOfButtons%"; // Set ID for referencing
+Gui%GuiNumber%button%NumOfButtons%.textContent = "%out5%";
+Gui%GuiNumber%button%NumOfButtons%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%button%NumOfButtons%.style.left = "%guiOutOfButton1%px"; // Set initial x position
+Gui%GuiNumber%button%NumOfButtons%.style.top = "%guiOutOfButton2%px"; // Set initial y position
+Gui%GuiNumber%button%NumOfButtons%.style.width = "%guiOutOfButton3%px"; // Set width
+Gui%GuiNumber%button%NumOfButtons%.style.height = "%guiOutOfButton4%px"; // Set height
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+}
+
+
+
+
+
+}
+
+
+
+if (out3 = "edit")
+{
+guiOutOfEditNum := 0
+guiOutOfEditX := 0
+guiOutOfEditY := 0
+guiOutOfEditW := 0
+guiOutOfEditH := 0
+guiOutOfEditV := 0
+guiOutOfEditG := 0
+Loop, 6
+{
+guiOutOfEdit%A_Index% := ""
+}
+Loop, Parse, out4, " "
+{
+;MsgBox, |%A_LoopField%|
+
+guiOutOfEditNum++
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfEditX := 1
+guiOutOfEdit1 := A_LoopField
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfEditY := 1
+guiOutOfEdit2 := A_LoopField
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfEditW := 1
+guiOutOfEdit3 := A_LoopField
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfEditH := 1
+guiOutOfEdit4 := A_LoopField
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
+{
+guiOutOfEditV := 1
+guiOutOfEdit5 := A_LoopField
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
+{
+guiOutOfEditG := 1
+guiOutOfEdit6 := A_LoopField
+}
+
+}
+
+
+}
+
+
+}
+
+
+guiColorShow := "121212"
+if (out2 = "color")
+{
+
+
+}
+
+
+if (out2 = "show")
+{
+guiOutOfShowX := 0
+guiOutOfShowY := 0
+guiOutOfShowW := 0
+guiOutOfShowH := 0
+Loop, 4
+{
+guiOutOfShow%A_Index% := ""
+}
+Loop, Parse, out3, " "
+{
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfShowX := 1
+guiOutOfShow1 := A_LoopField
+StringTrimLeft, guiOutOfShow1, guiOutOfShow1, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfShowY := 1
+guiOutOfShow2 := A_LoopField
+StringTrimLeft, guiOutOfShow2, guiOutOfShow2, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfShowW := 1
+guiOutOfShow3 := A_LoopField
+StringTrimLeft, guiOutOfShow3, guiOutOfShow3, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfShowH := 1
+guiOutOfShow4 := A_LoopField
+StringTrimLeft, guiOutOfShow4, guiOutOfShow4, 1
+}
+}
+
+
+jsCode0 =
+(
+
+Gui%GuiNumber%.style.position = "absolute";
+Gui%GuiNumber%.style.width = "%guiOutOfShow3%px"; // Set the width
+Gui%GuiNumber%.style.height = "%guiOutOfShow4%px"; // Set the height
+Gui%GuiNumber%.style.backgroundColor = "#%guiColorShow%";
+Gui%GuiNumber%.style.color = "white";
+Gui%GuiNumber%.style.fontSize = "15px";
+Gui%GuiNumber%.style.padding = "10px";
+Gui%GuiNumber%.style.border = "2px solid white";
+
+// Calculate center position
+Gui%GuiNumber%.style.left = (window.innerWidth - parseInt(Gui%GuiNumber%.style.width)) / 2 + "px";
+Gui%GuiNumber%.style.top = (window.innerHeight - parseInt(Gui%GuiNumber%.style.height)) / 2 + "px";
+
+
+Gui%GuiNumber%.style.left = "%guiOutOfShow1%px";
+Gui%GuiNumber%.style.top = "%guiOutOfShow2%px";
+
+
+
+document.body.appendChild(Gui%GuiNumber%); // Append the GUI window to the body
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
 lineDone := 1
 }
 else if RegExMatch(A_LoopField, "\b\w+\s*\+{2,}")
@@ -3208,69 +3621,69 @@ upCode1 =
       }
 
       function BuildInVars(varName) {
-          switch(varName) {
-              case "A_ScreenWidth":
-                  // Return screen width
-                  return window.screen.width;
-              case "A_ScreenHeight":
-                  // Return screen height
-                  return window.screen.height;
-              case "A_GuiControl":
-                  // Simulate GUI control (You can implement as needed)
-                  return "A_GuiControl not added yet";
-              case "A_TimeIdle":
-                  // Return time idle
-                  return A_TimeIdle();
-              case "A_TickCount":
-                  // Return tick count in milliseconds
-                  return A_TickCount();
-              case "A_NowUTC":
-                  // Return current UTC timestamp
-                  return new Date().toISOString();
-              case "A_Now":
-                  // Return current local timestamp
-                  return new Date().toLocaleString();
-              case "A_YYYY":
-                  // Return current year
-                  return new Date().getFullYear();
-              case "A_MM":
-                  // Return current month
-                  return (new Date().getMonth() + 1).toString().padStart(2, '0');
-              case "A_DD":
-                  // Return current day
-                  return new Date().getDate().toString().padStart(2, '0');
-              case "A_MMMM":
-                  // Return full month name
-                  return new Date().toLocaleDateString(undefined, { month: 'long' });
-              case "A_MMM":
-                  // Return short month name
-                  return new Date().toLocaleDateString(undefined, { month: 'short' });
-              case "A_DDDD":
-                  // Return full day name
-                  return new Date().toLocaleDateString(undefined, { weekday: 'long' });
-              case "A_DDD":
-                  // Return short day name
-                  return new Date().toLocaleDateString(undefined, { weekday: 'short' });
-              case "A_Hour":
-                  // Return current hour
-                  return new Date().getHours().toString().padStart(2, '0');
-              case "A_Min":
-                  // Return current minute
-                  return new Date().getMinutes().toString().padStart(2, '0');
-              case "A_Sec":
-                  // Return current second
-                  return new Date().getSeconds().toString().padStart(2, '0');
-              case "A_Space":
-                  // Return space character
-                  return ' ';
-              case "A_Tab":
-                  // Return tab character
-                  return '\t';
+        switch (varName) {
+          case "A_ScreenWidth":
+            // Return screen width
+            return window.innerWidth;
+          case "A_ScreenHeight":
+            // Return screen height
+            return window.innerHeight;
+          case "A_GuiControl":
+            // Simulate GUI control (You can implement as needed)
+            return "A_GuiControl not added yet";
+          case "A_TimeIdle":
+            // Return time idle
+            return A_TimeIdle();
+          case "A_TickCount":
+            // Return tick count in milliseconds
+            return A_TickCount();
+          case "A_NowUTC":
+            // Return current UTC timestamp
+            return new Date().toISOString();
+          case "A_Now":
+            // Return current local timestamp
+            return new Date().toLocaleString();
+          case "A_YYYY":
+            // Return current year
+            return new Date().getFullYear();
+          case "A_MM":
+            // Return current month
+            return (new Date().getMonth() + 1).toString().padStart(2, "0");
+          case "A_DD":
+            // Return current day
+            return new Date().getDate().toString().padStart(2, "0");
+          case "A_MMMM":
+            // Return full month name
+            return new Date().toLocaleDateString(undefined, { month: "long" });
+          case "A_MMM":
+            // Return short month name
+            return new Date().toLocaleDateString(undefined, { month: "short" });
+          case "A_DDDD":
+            // Return full day name
+            return new Date().toLocaleDateString(undefined, { weekday: "long" });
+          case "A_DDD":
+            // Return short day name
+            return new Date().toLocaleDateString(undefined, { weekday: "short" });
+          case "A_Hour":
+            // Return current hour
+            return new Date().getHours().toString().padStart(2, "0");
+          case "A_Min":
+            // Return current minute
+            return new Date().getMinutes().toString().padStart(2, "0");
+          case "A_Sec":
+            // Return current second
+            return new Date().getSeconds().toString().padStart(2, "0");
+          case "A_Space":
+            // Return space character
+            return " ";
+          case "A_Tab":
+            // Return tab character
+            return "\t";
 
-              default:
-                  // Handle unknown variable names
-                  return null;
-          }
+          default:
+            // Handle unknown variable names
+            return null;
+        }
       }
 
 
@@ -3560,6 +3973,37 @@ upCode2 =
           alert(message);
           resolve();
         });
+      }
+
+      function GuiControl(action, id, param1, param2, param3, param4) {
+        const element = document.getElementById(id);
+        if (element) {
+          if (action === "move") {
+            // Set position and size
+            element.style.left = param1 + "px";
+            element.style.top = param2 + "px";
+            element.style.width = param3 + "px";
+            element.style.height = param4 + "px";
+          } else if (action === "focus" && (element instanceof HTMLInputElement || element instanceof HTMLElement)) {
+            // Focus on the element
+            element.focus();
+          } else if (action === "text") {
+            // Set new text content
+            element.textContent = param1;
+          } else if (action === "hide") {
+            // Hide the element
+            element.style.display = "none";
+          } else if (action === "show") {
+            // Show the element
+            element.style.display = "";
+          } else if (action === "enable") {
+            // Enable the element
+            element.disabled = false;
+          } else if (action === "disable") {
+            // Disable the element
+            element.disabled = true;
+          }
+        }
       }
 
       // Object to store timer intervals for different functions
