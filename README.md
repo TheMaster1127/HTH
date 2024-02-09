@@ -143,7 +143,7 @@ Built-in Variables
 - A_LoopField
 - A_ScreenWidth
 - A_ScreenHeight
-- A_GuiControl comming soon 👀
+- A_GuiControl
 - A_TimeIdle
 - A_TickCount
 - A_NowUTC
