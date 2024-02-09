@@ -233,9 +233,6 @@
           case "A_ScreenHeight":
             // Return screen height
             return window.innerHeight;
-          case "A_GuiControl":
-            // Simulate GUI control (You can implement as needed)
-            return "A_GuiControl not added yet";
           case "A_TimeIdle":
             // Return time idle
             return A_TimeIdle();
@@ -668,102 +665,147 @@
           A_Index: null,
           A_IsTranspiled: 1,
           A_LoopField: null,
+          AHour: null,
+          ampm: null,
           characters: null,
-          var: null,
+          ElapsedTime123: null,
+          ElapsedTime: null,
+          EndTime: null,
+          fileAPPP: null,
+          hours: null,
+          isRunning: null,
+          milliseconds: null,
+          minutes: null,
+          ms: null,
+          OutputVar: null,
+          seconds: null,
+          StartTime: null,
+          StartTimee: null,
         };
 
         let funcs = {};
 
-        variables.var = "man, idk, hey, uhh, words, duh";
+        let Gui1 = {};
+        Gui1 = document.createElement("div");
 
-        if (variables.A_IsTranspiled == 1) {
-          // do something if its transpiled
+        //
+        //
+        // Name:
+        // Projects time tracker AHK
+        //
+        //
+        // A lightweight AutoHotkey script to track the time spent on your projects.
+        //
+        //
 
-          variables.characters1 = variables.var.split(/[","]/);
-          variables.charLength1 = variables.characters1.length;
+        Gui1Static1 = document.createElement("div");
+        Gui1Static1.id = "Gui1Static1"; // Set ID for referencing
+        Gui1Static1.textContent = "Track your time for a project";
+        Gui1Static1.style.color = "#white";
+        Gui1Static1.style.fontSize = "15px"; // Set font size
+        Gui1Static1.style.position = "absolute"; // Set position to absolute
+        Gui1Static1.style.left = "0px"; // Set initial x position
+        Gui1Static1.style.top = "10px"; // Set initial y position
+        Gui1Static1.style.width = "1000px"; // Set width
+        Gui1Static1.style.height = "30px"; // Set height
+        Gui1.appendChild(Gui1Static1);
 
-          for (/* Loop parse */ variables.A_Index1 = 1; variables.A_Index1 <= variables.charLength1; variables.A_Index1++) {
-            variables.A_LoopField1 = variables.characters1[variables.A_Index1 - 1]; // Using array notation to access characters
+        Gui1TextSelectedFolder = document.createElement("div");
+        Gui1TextSelectedFolder.id = "Gui1" + "TextSelectedFolder"; // Set ID for referencing
+        Gui1TextSelectedFolder.textContent = "";
+        Gui1TextSelectedFolder.style.color = "#white";
+        Gui1TextSelectedFolder.style.fontSize = "15px"; // Set font size
+        Gui1TextSelectedFolder.style.position = "absolute"; // Set position to absolute
+        Gui1TextSelectedFolder.style.left = "10px"; // Set initial x position
+        Gui1TextSelectedFolder.style.top = "550px"; // Set initial y position
+        Gui1TextSelectedFolder.style.width = "1000px"; // Set width
+        Gui1TextSelectedFolder.style.height = "100px"; // Set height
+        Gui1.appendChild(Gui1TextSelectedFolder);
 
-            await showCustomMessageBox({}, " ", await Trim(variables.A_LoopField1), 0, 0);
-          }
-        } else {
-          // do something if its not transpiled
-
-          variables.characters2 = variables.var.split(/[\,]/);
-          variables.charLength2 = variables.characters2.length;
-
-          for (/* Loop parse */ variables.A_Index2 = 1; variables.A_Index2 <= variables.charLength2; variables.A_Index2++) {
-            variables.A_LoopField2 = variables.characters2[variables.A_Index2 - 1]; // Using array notation to access characters
-
-            await showCustomMessageBox({}, " ", await Trim(variables.A_LoopField2), 0, 0);
-          }
-        }
-
-        const Gui3 = document.createElement("div");
-
-        const Gui3button1 = document.createElement("button");
-        Gui3button1.id = "Gui3button1"; // Set ID for referencing
-        Gui3button1.textContent = "TextButton";
-        Gui3button1.style.position = "absolute"; // Set position to absolute
-        Gui3button1.style.left = "10px"; // Set initial x position
-        Gui3button1.style.top = "10px"; // Set initial y position
-        Gui3button1.style.width = "150px"; // Set width
-        Gui3button1.style.height = "50px"; // Set height
-        Gui3button1.onclick = function (event) {
-          Button(event);
+        Gui1Start = document.createElement("button");
+        Gui1Start.id = "Gui1" + "Start"; // Set ID for referencing
+        Gui1Start.textContent = "Start/Resume";
+        Gui1Start.style.fontSize = "13px"; // Set font size
+        Gui1Start.style.position = "absolute"; // Set position to absolute
+        Gui1Start.style.left = "10px"; // Set initial x position
+        Gui1Start.style.top = "150px"; // Set initial y position
+        Gui1Start.style.width = "150px"; // Set width
+        Gui1Start.style.height = "50px"; // Set height
+        Gui1Start.onclick = function (event) {
+          A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
+          Start(A_GuiControl);
         };
-        Gui3.appendChild(Gui3button1);
+        Gui1.appendChild(Gui1Start);
 
-        Gui3.style.position = "absolute";
-        Gui3.style.width = "300px"; // Set the width
-        Gui3.style.height = "300px"; // Set the height
-        Gui3.style.backgroundColor = "#121212";
-        Gui3.style.color = "white";
-        Gui3.style.fontSize = "15px";
-        Gui3.style.padding = "10px";
-        Gui3.style.border = "2px solid white";
-
-        // Calculate center position
-        Gui3.style.left = (window.innerWidth - parseInt(Gui3.style.width)) / 2 + "px";
-        Gui3.style.top = (window.innerHeight - parseInt(Gui3.style.height)) / 2 + "px";
-
-        Gui3.style.left = "0px";
-        Gui3.style.top = "0px";
-
-        document.body.appendChild(Gui3); // Append the GUI window to the body
-
-        const Gui1 = document.createElement("div");
-
-        const Gui1Buttonssssssssss21 = document.createElement("button");
-        Gui1Buttonssssssssss21.id = "Gui1Buttonssssssssss21"; // Set ID for referencing
-        Gui1Buttonssssssssss21.textContent = "Text Button";
-        Gui1Buttonssssssssss21.style.position = "absolute"; // Set position to absolute
-        Gui1Buttonssssssssss21.style.left = "10px"; // Set initial x position
-        Gui1Buttonssssssssss21.style.top = "10px"; // Set initial y position
-        Gui1Buttonssssssssss21.style.width = "150px"; // Set width
-        Gui1Buttonssssssssss21.style.height = "50px"; // Set height
-        Gui1Buttonssssssssss21.onclick = function (event) {
-          Button(event);
+        Gui1Stop = document.createElement("button");
+        Gui1Stop.id = "Gui1" + "Stop"; // Set ID for referencing
+        Gui1Stop.textContent = "Stop/Pause";
+        Gui1Stop.style.fontSize = "15px"; // Set font size
+        Gui1Stop.style.position = "absolute"; // Set position to absolute
+        Gui1Stop.style.left = "10px"; // Set initial x position
+        Gui1Stop.style.top = "210px"; // Set initial y position
+        Gui1Stop.style.width = "150px"; // Set width
+        Gui1Stop.style.height = "50px"; // Set height
+        Gui1Stop.onclick = function (event) {
+          A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
+          Stop(A_GuiControl);
         };
-        Gui1.appendChild(Gui1Buttonssssssssss21);
+        Gui1.appendChild(Gui1Stop);
 
-        const Gui1Buttonssssssssss2 = document.createElement("button");
-        Gui1Buttonssssssssss2.id = "Gui1Buttonssssssssss2"; // Set ID for referencing
-        Gui1Buttonssssssssss2.textContent = "Text Button";
-        Gui1Buttonssssssssss2.style.position = "absolute"; // Set position to absolute
-        Gui1Buttonssssssssss2.style.left = "10px"; // Set initial x position
-        Gui1Buttonssssssssss2.style.top = "100px"; // Set initial y position
-        Gui1Buttonssssssssss2.style.width = "150px"; // Set width
-        Gui1Buttonssssssssss2.style.height = "50px"; // Set height
-        Gui1Buttonssssssssss2.onclick = function (event) {
-          Button(event);
+        Gui1Reset = document.createElement("button");
+        Gui1Reset.id = "Gui1" + "Reset"; // Set ID for referencing
+        Gui1Reset.textContent = "Reset";
+        Gui1Reset.style.fontSize = "15px"; // Set font size
+        Gui1Reset.style.position = "absolute"; // Set position to absolute
+        Gui1Reset.style.left = "10px"; // Set initial x position
+        Gui1Reset.style.top = "270px"; // Set initial y position
+        Gui1Reset.style.width = "150px"; // Set width
+        Gui1Reset.style.height = "50px"; // Set height
+        Gui1Reset.onclick = function (event) {
+          A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
+          Reset(A_GuiControl);
         };
-        Gui1.appendChild(Gui1Buttonssssssssss2);
+        Gui1.appendChild(Gui1Reset);
+
+        Gui1Time = document.createElement("div");
+        Gui1Time.id = "Gui1" + "Time"; // Set ID for referencing
+        Gui1Time.textContent = "";
+        Gui1Time.style.color = "#white";
+        Gui1Time.style.fontSize = "15px"; // Set font size
+        Gui1Time.style.position = "absolute"; // Set position to absolute
+        Gui1Time.style.left = "10px"; // Set initial x position
+        Gui1Time.style.top = "350px"; // Set initial y position
+        Gui1Time.style.width = "350px"; // Set width
+        Gui1Time.style.height = "50px"; // Set height
+        Gui1.appendChild(Gui1Time);
+
+        Gui1Save = document.createElement("button");
+        Gui1Save.id = "Gui1" + "Save"; // Set ID for referencing
+        Gui1Save.textContent = "Save";
+        Gui1Save.style.fontSize = "15px"; // Set font size
+        Gui1Save.style.position = "absolute"; // Set position to absolute
+        Gui1Save.style.left = "10px"; // Set initial x position
+        Gui1Save.style.top = "410px"; // Set initial y position
+        Gui1Save.style.width = "150px"; // Set width
+        Gui1Save.style.height = "50px"; // Set height
+        Gui1Save.onclick = function (event) {
+          A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
+          Save(A_GuiControl);
+        };
+        Gui1.appendChild(Gui1Save);
+
+        GuiControl("hide", "Gui1Start");
+        GuiControl("hide", "Gui1Stop");
+        GuiControl("hide", "Gui1Save");
+        GuiControl("hide", "Gui1Reset");
+
+        GuiControl("disable", "Gui1Stop");
+        GuiControl("disable", "Gui1Save");
+        GuiControl("disable", "Gui1Start");
 
         Gui1.style.position = "absolute";
-        Gui1.style.width = "300px"; // Set the width
-        Gui1.style.height = "300px"; // Set the height
+        Gui1.style.width = "1000px"; // Set the width
+        Gui1.style.height = "700px"; // Set the height
         Gui1.style.backgroundColor = "#121212";
         Gui1.style.color = "white";
         Gui1.style.fontSize = "15px";
@@ -774,74 +816,158 @@
         Gui1.style.left = (window.innerWidth - parseInt(Gui1.style.width)) / 2 + "px";
         Gui1.style.top = (window.innerHeight - parseInt(Gui1.style.height)) / 2 + "px";
 
-        Gui1.style.left = "320px";
-        Gui1.style.top = "320px";
-
         document.body.appendChild(Gui1); // Append the GUI window to the body
 
-        const Gui2 = document.createElement("div");
-
-        const Gui2Button32 = document.createElement("button");
-        Gui2Button32.id = "Gui2Button32"; // Set ID for referencing
-        Gui2Button32.textContent = "Text dsfgbv zzs dz";
-        Gui2Button32.style.position = "absolute"; // Set position to absolute
-        Gui2Button32.style.left = "10px"; // Set initial x position
-        Gui2Button32.style.top = "10px"; // Set initial y position
-        Gui2Button32.style.width = "150px"; // Set width
-        Gui2Button32.style.height = "50px"; // Set height
-        Gui2Button32.onclick = function (event) {
-          Button(event);
-        };
-        Gui2.appendChild(Gui2Button32);
-
-        const Gui2Button322 = document.createElement("button");
-        Gui2Button322.id = "Gui2Button322"; // Set ID for referencing
-        Gui2Button322.textContent = "Text dsfgbv zzs dz";
-        Gui2Button322.style.position = "absolute"; // Set position to absolute
-        Gui2Button322.style.left = "10px"; // Set initial x position
-        Gui2Button322.style.top = "100px"; // Set initial y position
-        Gui2Button322.style.width = "150px"; // Set width
-        Gui2Button322.style.height = "50px"; // Set height
-        Gui2Button322.onclick = function (event) {
-          Button(event);
-        };
-        Gui2.appendChild(Gui2Button322);
-
-        const Gui2Button3222 = document.createElement("button");
-        Gui2Button3222.id = "Gui2Button3222"; // Set ID for referencing
-        Gui2Button3222.textContent = "Text dsfgbv zzs dz";
-        Gui2Button3222.style.position = "absolute"; // Set position to absolute
-        Gui2Button3222.style.left = "10px"; // Set initial x position
-        Gui2Button3222.style.top = "210px"; // Set initial y position
-        Gui2Button3222.style.width = "150px"; // Set width
-        Gui2Button3222.style.height = "50px"; // Set height
-        Gui2Button3222.onclick = function (event) {
-          Button(event);
-        };
-        Gui2.appendChild(Gui2Button3222);
-
-        Gui2.style.position = "absolute";
-        Gui2.style.width = "300px"; // Set the width
-        Gui2.style.height = "300px"; // Set the height
-        Gui2.style.backgroundColor = "#121212";
-        Gui2.style.color = "white";
-        Gui2.style.fontSize = "15px";
-        Gui2.style.padding = "10px";
-        Gui2.style.border = "2px solid white";
-
-        // Calculate center position
-        Gui2.style.left = (window.innerWidth - parseInt(Gui2.style.width)) / 2 + "px";
-        Gui2.style.top = (window.innerHeight - parseInt(Gui2.style.height)) / 2 + "px";
-
-        Gui2.style.left = "0px";
-        Gui2.style.top = "320px";
-
-        document.body.appendChild(Gui2); // Append the GUI window to the body
-
+        await Button();
         return;
 
-        async function Button() {
-          await showCustomMessageBox({}, " ", "Hi ", 0, 0);
+        async function Button(A_GuiControl) {
+          // await showCustomMessageBox({}," ", "You selected folder \" + variables.OutputVar + \". ", 0, 0)
+          variables.OutputVar = "Project Time.txt";
+
+          GuiControl("text", "Gui1TextSelectedFolder", "You're selected text is Project Time.txt");
+          GuiControl("show", "Gui1Start");
+          GuiControl("show", "Gui1Stop");
+          GuiControl("show", "Gui1Reset");
+          GuiControl("disable", "Gui1Reset");
+
+          GuiControl("disable", "Gui1Stop");
+          GuiControl("enable", "Gui1Start");
+        }
+
+        async function Save(A_GuiControl) {
+          variables.isRunning = 1;
+
+          GuiControl("disable", "Gui1Stop");
+          GuiControl("disable", "Gui1Save");
+          variables.fileAPPP = "The duration of that session between " + variables.StartTimee + " and " + variables.EndTime + " is " + variables.ElapsedTime123 + "\n";
+
+          FileAppend(variables.fileAPPP, "Project Time.txt");
+          await showCustomMessageBox({}, " ", variables.fileAPPP + "Project Time.txt", 0, 0);
+          await Reset();
+        }
+
+        async function Start(A_GuiControl) {
+          if (variables.isRunning !== 1) {
+            variables.StartTime = BuildInVars("A_TickCount");
+          }
+          variables.isRunning = 1;
+
+          GuiControl("enable", "Gui1Stop");
+          GuiControl("disable", "Gui1Start");
+          GuiControl("disable", "Gui1Save");
+          GuiControl("disable", "Gui1Reset");
+          SetTimer(Time, 1);
+
+          if (BuildInVars("A_Hour") >= 13) {
+            variables.AHour = BuildInVars("A_Hour") - 12;
+
+            variables.ampm = "PM";
+          } else {
+            variables.AHour = BuildInVars("A_Hour");
+
+            variables.ampm = "AM";
+          }
+          variables.StartTimee = variables.AHour + ":" + BuildInVars("A_Min") + " " + variables.ampm;
+        }
+
+        async function Stop(A_GuiControl) {
+          variables.isRunning = 1;
+
+          GuiControl("enable", "Gui1Start");
+          GuiControl("enable", "Gui1Reset");
+          GuiControl("disable", "Gui1Stop");
+          GuiControl("show", "Gui1Save");
+          GuiControl("enable", "Gui1Save");
+          SetTimer(Time, "Off");
+
+          if (BuildInVars("A_Hour") >= 13) {
+            variables.AHour = BuildInVars("A_Hour") - 12;
+
+            variables.ampm = "PM";
+          } else {
+            variables.AHour = BuildInVars("A_Hour");
+
+            variables.ampm = "AM";
+          }
+          variables.EndTime = variables.AHour + ":" + BuildInVars("A_Min") + " " + variables.ampm;
+
+          variables.ElapsedTime = BuildInVars("A_TickCount") - variables.StartTime;
+
+          variables.ms = variables.ElapsedTime;
+
+          // Calculate the components
+          variables.hours = Math.floor(variables.ms / 3600000);
+
+          variables.ms = Mod(variables.ms, 3600000);
+
+          variables.minutes = Math.floor(variables.ms / 60000);
+
+          variables.ms = Mod(variables.ms, 60000);
+
+          variables.seconds = Math.floor(variables.ms / 1000);
+
+          variables.milliseconds = Mod(variables.ms, 1000);
+
+          // Display the result
+          variables.ElapsedTime123 = "";
+
+          variables.ElapsedTime123 += variables.hours + " hours " + variables.minutes + " minutes " + variables.seconds + " seconds and " + variables.milliseconds + " ms.";
+        }
+
+        async function Reset(A_GuiControl) {
+          variables.isRunning = 0;
+
+          GuiControl("enable", "Gui1Start");
+          GuiControl("disable", "Gui1Stop");
+          SetTimer(Time, "Off");
+          variables.milliseconds = 0;
+
+          variables.seconds = 0;
+
+          variables.minutes = 0;
+
+          variables.hours = 0;
+
+          variables.ElapsedTime123 = variables.hours + "h " + variables.minutes + "m " + variables.seconds + "s " + variables.milliseconds + "ms";
+
+          GuiControl("text", "Gui1Time", variables.ElapsedTime123);
+        }
+
+        async function Time(A_GuiControl) {
+          variables.ElapsedTime = BuildInVars("A_TickCount") - variables.StartTime;
+
+          variables.ms = variables.ElapsedTime;
+
+          // Calculate the components
+          variables.hours = Math.floor(variables.ms / 3600000);
+
+          variables.ms = Mod(variables.ms, 3600000);
+
+          variables.minutes = Math.floor(variables.ms / 60000);
+
+          variables.ms = Mod(variables.ms, 60000);
+
+          variables.seconds = Math.floor(variables.ms / 1000);
+
+          variables.milliseconds = Mod(variables.ms, 1000);
+
+          // Display the result
+          variables.ElapsedTime123 = "";
+
+          variables.ElapsedTime123 = variables.hours + "h " + variables.minutes + "m " + variables.seconds + "s " + variables.milliseconds + "ms";
+
+          GuiControl("text", "Gui1Time", variables.ElapsedTime123);
+        }
+
+        async function GuiClose(A_GuiControl) {
+          if (variables.isRunning == 1) {
+            await Stop();
+            await sleep(100);
+            await Save();
+            await sleep(100);
+          }
+          window.close();
         }
       }
 

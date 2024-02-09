@@ -101,6 +101,7 @@ variables .= "  " . "A_LoopField" . ": null," . "`n"
 variables .= "  " . "A_IsTranspiled" . ": 1," . "`n"
 variables .= "  " . "characters" . ": null," . "`n"
 
+jsCodeGui := ""
 
 out123456 := ""
 
@@ -483,7 +484,8 @@ StringTrimRight, out123456, out123456, 1
 
 AHKcode := out123456
 
-
+guiColorShow := "121212"
+guiFontShow := "15"
 
 AindexcharLength := 1
 
@@ -1792,7 +1794,7 @@ out5 := Trim(s)
 
 if (onceGuiAdd = 1)
 {
-jsCode .= "const Gui" . GuiNumber . " = document.createElement(""div"")`;`n"
+jsCodeGui .= "`nlet Gui" . GuiNumber . " = {};`nGui" . GuiNumber . " = document.createElement(""div"")`;`n"
 NumOfButtons := 0
 }
 onceGuiAdd++
@@ -1800,6 +1802,26 @@ onceGuiAdd++
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;
+
+if (out2 = "color")
+{
+
+out3 := Trim(out3)
+guiColorShow := out3
+;MsgBox, % guiColorShow
+}
+
+
+
+if (out2 = "font")
+{
+
+out3 := Trim(out3)
+StringTrimLeft, out3, out3, 1
+guiFontShow := out3
+}
+
+
 
 if (out2 = "add")
 {
@@ -1814,52 +1836,333 @@ guiOutOfTextW := 0
 guiOutOfTextH := 0
 guiOutOfTextV := 0
 guiOutOfTextG := 0
-guiOutOfText0 := ""
 Loop, 6
 {
 guiOutOfText%A_Index% := ""
 }
-
+guiOutOfText0 := "black"
+dynamicGuiSet := 0
 Loop, Parse, out4, " "
 {
 ;MsgBox, |%A_LoopField%|
 
 guiOutOfTextNum++
-
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("c"))
 {
 guiOutOfTextC := 1
-guiOutOfText0 := A_LoopField
+guiOutOfText0 := StrLower(A_LoopField)
+if (InStr(guiOutOfText0, "%"))
+{
+str := guiOutOfText0
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfText0 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfText0, guiOutOfText0, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
 {
 guiOutOfTextX := 1
 guiOutOfText1 := A_LoopField
+if (InStr(guiOutOfText1, "%"))
+{
+str := guiOutOfText1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfText1 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfText1, guiOutOfText1, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
 {
 guiOutOfTextY := 1
 guiOutOfText2 := A_LoopField
+if (InStr(guiOutOfText2, "%"))
+{
+str := guiOutOfText2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfText2 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfText2, guiOutOfText2, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
 {
 guiOutOfTextW := 1
 guiOutOfText3 := A_LoopField
+if (InStr(guiOutOfText3, "%"))
+{
+str := guiOutOfText3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfText3 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfText3, guiOutOfText3, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
 {
 guiOutOfTextH := 1
 guiOutOfText4 := A_LoopField
+if (InStr(guiOutOfText4, "%"))
+{
+str := guiOutOfText4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfText4 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfText4, guiOutOfText4, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
 {
 guiOutOfTextV := 1
 guiOutOfText5 := A_LoopField
+dynamicGuiSet := 1
+if (InStr(guiOutOfText5, "%"))
+{
+str := guiOutOfText5
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfText5 :=  " [variables." . var1 . "]"
+}
+StringTrimLeft, guiOutOfText5, guiOutOfText5, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
 {
 guiOutOfTextG := 1
 guiOutOfText6 := A_LoopField
+StringTrimLeft, guiOutOfText6, guiOutOfText6, 1
+}
+}
+
+NumOfTexts++
+
+
+if (InStr(out5, "%"))
+{
+str := out5
+s:=StrSplit(str,"%").2
+var1 := s
+
+out5 :=  """"" + variables." . var1 . " + """""
+
+
+}
+
+if (dynamicGuiSet = 0)
+{
+
+if (guiOutOfTextV = 1)
+{
+if (guiOutOfTextG = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%%guiOutOfText5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
+Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
+Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfText5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfText5%.style.left = "%guiOutOfText1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfText5%.style.top = "%guiOutOfText2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfText5%.style.width = "%guiOutOfText3%px"; // Set width
+Gui%GuiNumber%%guiOutOfText5%.style.height = "%guiOutOfText4%px"; // Set height
+Gui%GuiNumber%%guiOutOfText5%.onclick = function (event) {
+variables.A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
+  %guiOutOfText6%(variables.A_GuiControl);
+};
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfText5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%%guiOutOfText5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
+Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
+Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfText5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfText5%.style.left = "%guiOutOfText1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfText5%.style.top = "%guiOutOfText2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfText5%.style.width = "%guiOutOfText3%px"; // Set width
+Gui%GuiNumber%%guiOutOfText5%.style.height = "%guiOutOfText4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfText5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+}
+else
+{
+if (guiOutOfTextG = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Static%NumOfTexts% = document.createElement("div");
+Gui%GuiNumber%Static%NumOfTexts%.id = "Gui%GuiNumber%Static%NumOfTexts%"; // Set ID for referencing
+Gui%GuiNumber%Static%NumOfTexts%.textContent = "%out5%";
+Gui%GuiNumber%Static%NumOfTexts%.style.color = "#%guiOutOfText0%"
+Gui%GuiNumber%Static%NumOfTexts%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Static%NumOfTexts%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Static%NumOfTexts%.style.left = "%guiOutOfText1%px"; // Set initial x position
+Gui%GuiNumber%Static%NumOfTexts%.style.top = "%guiOutOfText2%px"; // Set initial y position
+Gui%GuiNumber%Static%NumOfTexts%.style.width = "%guiOutOfText3%px"; // Set width
+Gui%GuiNumber%Static%NumOfTexts%.style.height = "%guiOutOfText4%px"; // Set height
+Gui%GuiNumber%Static%NumOfTexts%.onclick = function (event) {
+variables.A_GuiControl = event.target.textContent
+  %guiOutOfText6%(variables.A_GuiControl);
+};
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Static%NumOfTexts%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Static%NumOfTexts% = document.createElement("div");
+Gui%GuiNumber%Static%NumOfTexts%.id = "Gui%GuiNumber%Static%NumOfTexts%"; // Set ID for referencing
+Gui%GuiNumber%Static%NumOfTexts%.textContent = "%out5%";
+Gui%GuiNumber%Static%NumOfTexts%.style.color = "#%guiOutOfText0%"
+Gui%GuiNumber%Static%NumOfTexts%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Static%NumOfTexts%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Static%NumOfTexts%.style.left = "%guiOutOfText1%px"; // Set initial x position
+Gui%GuiNumber%Static%NumOfTexts%.style.top = "%guiOutOfText2%px"; // Set initial y position
+Gui%GuiNumber%Static%NumOfTexts%.style.width = "%guiOutOfText3%px"; // Set width
+Gui%GuiNumber%Static%NumOfTexts%.style.height = "%guiOutOfText4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Static%NumOfTexts%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+}
+
+}
+else ; else ; else ; else ; else ; else ; else ; else ; else
+{
+if (guiOutOfTextV = 1)
+{
+if (guiOutOfTextG = 1)
+{
+jsCode0 =
+(
+
+
+
+Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + "%guiOutOfText5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
+Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
+Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfText5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfText5%.style.left = "%guiOutOfText1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfText5%.style.top = "%guiOutOfText2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfText5%.style.width = "%guiOutOfText3%px"; // Set width
+Gui%GuiNumber%%guiOutOfText5%.style.height = "%guiOutOfText4%px"; // Set height
+Gui%GuiNumber%%guiOutOfText5%.onclick = function (event) {
+variables.A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
+  %guiOutOfText6%(variables.A_GuiControl);
+};
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfText5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + "%guiOutOfText5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
+Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
+Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfText5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfText5%.style.left = "%guiOutOfText1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfText5%.style.top = "%guiOutOfText2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfText5%.style.width = "%guiOutOfText3%px"; // Set width
+Gui%GuiNumber%%guiOutOfText5%.style.height = "%guiOutOfText4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfText5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+}
+else
+{
+if (guiOutOfTextG = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Static%NumOfTexts% = document.createElement("div");
+Gui%GuiNumber%Static%NumOfTexts%.id = "Gui%GuiNumber%" + "Static" + "%NumOfTexts%"; // Set ID for referencing
+Gui%GuiNumber%Static%NumOfTexts%.textContent = "%out5%";
+Gui%GuiNumber%Static%NumOfTexts%.style.color = "#%guiOutOfText0%"
+Gui%GuiNumber%Static%NumOfTexts%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Static%NumOfTexts%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Static%NumOfTexts%.style.left = "%guiOutOfText1%px"; // Set initial x position
+Gui%GuiNumber%Static%NumOfTexts%.style.top = "%guiOutOfText2%px"; // Set initial y position
+Gui%GuiNumber%Static%NumOfTexts%.style.width = "%guiOutOfText3%px"; // Set width
+Gui%GuiNumber%Static%NumOfTexts%.style.height = "%guiOutOfText4%px"; // Set height
+Gui%GuiNumber%Static%NumOfTexts%.onclick = function (event) {
+variables.A_GuiControl = event.target.textContent
+  %guiOutOfText6%(variables.A_GuiControl);
+};
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Static%NumOfTexts%);
+
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Static%NumOfTexts% = document.createElement("div");
+Gui%GuiNumber%Static%NumOfTexts%.id = "Gui%GuiNumber%" + "Static" + "%NumOfTexts%"; // Set ID for referencing
+Gui%GuiNumber%Static%NumOfTexts%.textContent = "%out5%";
+Gui%GuiNumber%Static%NumOfTexts%.style.color = "#%guiOutOfText0%"
+Gui%GuiNumber%Static%NumOfTexts%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Static%NumOfTexts%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Static%NumOfTexts%.style.left = "%guiOutOfText1%px"; // Set initial x position
+Gui%GuiNumber%Static%NumOfTexts%.style.top = "%guiOutOfText2%px"; // Set initial y position
+Gui%GuiNumber%Static%NumOfTexts%.style.width = "%guiOutOfText3%px"; // Set width
+Gui%GuiNumber%Static%NumOfTexts%.style.height = "%guiOutOfText4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Static%NumOfTexts%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
 }
 }
 
@@ -1871,6 +2174,7 @@ guiOutOfText6 := A_LoopField
 
 if (out3 = "button")
 {
+
 guiOutOfButtonNum := 0
 guiOutOfButtonX := 0
 guiOutOfButtonY := 0
@@ -1882,6 +2186,7 @@ Loop, 6
 {
 guiOutOfButton%A_Index% := ""
 }
+dynamicGuiSet := 0
 Loop, Parse, out4, " "
 {
 ;MsgBox, |%A_LoopField%|
@@ -1892,30 +2197,71 @@ if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
 {
 guiOutOfButtonX := 1
 guiOutOfButton1 := A_LoopField
+if (InStr(guiOutOfButton1, "%"))
+{
+str := guiOutOfButton1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfButton1 :=  " """" + variables." . var1 . " + """
+}
 StringTrimLeft, guiOutOfButton1, guiOutOfButton1, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
 {
 guiOutOfButtonY := 1
 guiOutOfButton2 := A_LoopField
+if (InStr(guiOutOfButton2, "%"))
+{
+str := guiOutOfButton2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfButton2 :=  " """" + variables." . var1 . " + """
+}
 StringTrimLeft, guiOutOfButton2, guiOutOfButton2, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
 {
 guiOutOfButtonW := 1
 guiOutOfButton3 := A_LoopField
+if (InStr(guiOutOfButton3, "%"))
+{
+str := guiOutOfButton3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfButton3 :=  " """" + variables." . var1 . " + """
+}
 StringTrimLeft, guiOutOfButton3, guiOutOfButton3, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
 {
 guiOutOfButtonH := 1
 guiOutOfButton4 := A_LoopField
+if (InStr(guiOutOfButton4, "%"))
+{
+str := guiOutOfButton4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfButton4 :=  " """" + variables." . var1 . " + """
+}
 StringTrimLeft, guiOutOfButton4, guiOutOfButton4, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
 {
 guiOutOfButtonV := 1
 guiOutOfButton5 := A_LoopField
+dynamicGuiSet := 1
+if (InStr(guiOutOfButton5, "%"))
+{
+str := guiOutOfButton5
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfButton5 :=  " [variables." . var1 . "]"
+}
 StringTrimLeft, guiOutOfButton5, guiOutOfButton5, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
@@ -1928,6 +2274,21 @@ StringTrimLeft, guiOutOfButton6, guiOutOfButton6, 1
 
 NumOfButtons++
 
+
+if (InStr(out5, "%"))
+{
+str := out5
+s:=StrSplit(str,"%").2
+var1 := s
+
+out5 :=  """"" + variables." . var1 . " + """""
+
+
+}
+
+if (dynamicGuiSet = 0)
+{
+
 if (guiOutOfButtonV = 1)
 {
 if (guiOutOfButtonG = 1)
@@ -1935,18 +2296,21 @@ if (guiOutOfButtonG = 1)
 jsCode0 =
 (
 
-const Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
+Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
 Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%%guiOutOfButton5%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
+Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
 Gui%GuiNumber%%guiOutOfButton5%.style.left = "%guiOutOfButton1%px"; // Set initial x position
 Gui%GuiNumber%%guiOutOfButton5%.style.top = "%guiOutOfButton2%px"; // Set initial y position
 Gui%GuiNumber%%guiOutOfButton5%.style.width = "%guiOutOfButton3%px"; // Set width
 Gui%GuiNumber%%guiOutOfButton5%.style.height = "%guiOutOfButton4%px"; // Set height
 Gui%GuiNumber%%guiOutOfButton5%.onclick = function (event) {
-  %guiOutOfButton6%(event);
+variables.A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
+  %guiOutOfButton6%(variables.A_GuiControl);
 };
 Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfButton5%);
+
 )
 
 jsCode .= "`n" . jsCode0 . "`n"
@@ -1957,14 +2321,16 @@ else
 jsCode0 =
 (
 
-const Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
+Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
 Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%%guiOutOfButton5%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
+Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
 Gui%GuiNumber%%guiOutOfButton5%.style.left = "%guiOutOfButton1%px"; // Set initial x position
 Gui%GuiNumber%%guiOutOfButton5%.style.top = "%guiOutOfButton2%px"; // Set initial y position
 Gui%GuiNumber%%guiOutOfButton5%.style.width = "%guiOutOfButton3%px"; // Set width
 Gui%GuiNumber%%guiOutOfButton5%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfButton5%);
 
 )
 
@@ -1979,18 +2345,21 @@ if (guiOutOfButtonG = 1)
 jsCode0 =
 (
 
-const Gui%GuiNumber%button%NumOfButtons% = document.createElement("button");
-Gui%GuiNumber%button%NumOfButtons%.id = "Gui%GuiNumber%button%NumOfButtons%"; // Set ID for referencing
-Gui%GuiNumber%button%NumOfButtons%.textContent = "%out5%";
-Gui%GuiNumber%button%NumOfButtons%.style.position = "absolute"; // Set position to absolute
-Gui%GuiNumber%button%NumOfButtons%.style.left = "%guiOutOfButton1%px"; // Set initial x position
-Gui%GuiNumber%button%NumOfButtons%.style.top = "%guiOutOfButton2%px"; // Set initial y position
-Gui%GuiNumber%button%NumOfButtons%.style.width = "%guiOutOfButton3%px"; // Set width
-Gui%GuiNumber%button%NumOfButtons%.style.height = "%guiOutOfButton4%px"; // Set height
-Gui%GuiNumber%button%NumOfButtons%.onclick = function (event) {
-  %guiOutOfButton6%(event);
+Gui%GuiNumber%Button%NumOfButtons% = document.createElement("button");
+Gui%GuiNumber%Button%NumOfButtons%.id = "Gui%GuiNumber%Button%NumOfButtons%"; // Set ID for referencing
+Gui%GuiNumber%Button%NumOfButtons%.textContent = "%out5%";
+Gui%GuiNumber%Button%NumOfButtons%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Button%NumOfButtons%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Button%NumOfButtons%.style.left = "%guiOutOfButton1%px"; // Set initial x position
+Gui%GuiNumber%Button%NumOfButtons%.style.top = "%guiOutOfButton2%px"; // Set initial y position
+Gui%GuiNumber%Button%NumOfButtons%.style.width = "%guiOutOfButton3%px"; // Set width
+Gui%GuiNumber%Button%NumOfButtons%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%Button%NumOfButtons%.onclick = function (event) {
+variables.A_GuiControl = event.target.textContent
+  %guiOutOfButton6%(variables.A_GuiControl);
 };
-Gui%GuiNumber%.appendChild(Gui%GuiNumber%button%NumOfButtons%);
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Button%NumOfButtons%);
+
 )
 
 jsCode .= "`n" . jsCode0 . "`n"
@@ -2000,18 +2369,124 @@ else
 jsCode0 =
 (
 
-const Gui%GuiNumber%button%NumOfButtons% = document.createElement("button");
-Gui%GuiNumber%button%NumOfButtons%.id = "Gui%GuiNumber%button%NumOfButtons%"; // Set ID for referencing
-Gui%GuiNumber%button%NumOfButtons%.textContent = "%out5%";
-Gui%GuiNumber%button%NumOfButtons%.style.position = "absolute"; // Set position to absolute
-Gui%GuiNumber%button%NumOfButtons%.style.left = "%guiOutOfButton1%px"; // Set initial x position
-Gui%GuiNumber%button%NumOfButtons%.style.top = "%guiOutOfButton2%px"; // Set initial y position
-Gui%GuiNumber%button%NumOfButtons%.style.width = "%guiOutOfButton3%px"; // Set width
-Gui%GuiNumber%button%NumOfButtons%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%Button%NumOfButtons% = document.createElement("button");
+Gui%GuiNumber%Button%NumOfButtons%.id = "Gui%GuiNumber%Button%NumOfButtons%"; // Set ID for referencing
+Gui%GuiNumber%Button%NumOfButtons%.textContent = "%out5%";
+Gui%GuiNumber%Button%NumOfButtons%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Button%NumOfButtons%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Button%NumOfButtons%.style.left = "%guiOutOfButton1%px"; // Set initial x position
+Gui%GuiNumber%Button%NumOfButtons%.style.top = "%guiOutOfButton2%px"; // Set initial y position
+Gui%GuiNumber%Button%NumOfButtons%.style.width = "%guiOutOfButton3%px"; // Set width
+Gui%GuiNumber%Button%NumOfButtons%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Button%NumOfButtons%);
 
 )
 
 jsCode .= "`n" . jsCode0 . "`n"
+}
+}
+
+}
+else ; else ; else ; else ; else ; else ; else ; else ; else
+{
+if (guiOutOfButtonV = 1)
+{
+if (guiOutOfButtonG = 1)
+{
+jsCode0 =
+(
+
+
+
+Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + "%guiOutOfButton5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
+Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfButton5%.style.left = "%guiOutOfButton1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfButton5%.style.top = "%guiOutOfButton2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfButton5%.style.width = "%guiOutOfButton3%px"; // Set width
+Gui%GuiNumber%%guiOutOfButton5%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%%guiOutOfButton5%.onclick = function (event) {
+variables.A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
+  %guiOutOfButton6%(variables.A_GuiControl);
+};
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfButton5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + "%guiOutOfButton5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
+Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfButton5%.style.left = "%guiOutOfButton1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfButton5%.style.top = "%guiOutOfButton2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfButton5%.style.width = "%guiOutOfButton3%px"; // Set width
+Gui%GuiNumber%%guiOutOfButton5%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfButton5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+}
+else
+{
+if (guiOutOfButtonG = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Button%NumOfButtons% = document.createElement("button");
+Gui%GuiNumber%Button%NumOfButtons%.id = "Gui%GuiNumber%" + "Button" + "%NumOfButtons%"; // Set ID for referencing
+Gui%GuiNumber%Button%NumOfButtons%.textContent = "%out5%";
+Gui%GuiNumber%Button%NumOfButtons%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Button%NumOfButtons%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Button%NumOfButtons%.style.left = "%guiOutOfButton1%px"; // Set initial x position
+Gui%GuiNumber%Button%NumOfButtons%.style.top = "%guiOutOfButton2%px"; // Set initial y position
+Gui%GuiNumber%Button%NumOfButtons%.style.width = "%guiOutOfButton3%px"; // Set width
+Gui%GuiNumber%Button%NumOfButtons%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%Button%NumOfButtons%.onclick = function (event) {
+variables.A_GuiControl = event.target.textContent
+  %guiOutOfButton6%(variables.A_GuiControl);
+};
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Button%NumOfButtons%);
+
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Button%NumOfButtons% = document.createElement("button");
+Gui%GuiNumber%Button%NumOfButtons%.id = "Gui%GuiNumber%" + "Button" + "%NumOfButtons%"; // Set ID for referencing
+Gui%GuiNumber%Button%NumOfButtons%.textContent = "%out5%";
+Gui%GuiNumber%Button%NumOfButtons%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Button%NumOfButtons%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Button%NumOfButtons%.style.left = "%guiOutOfButton1%px"; // Set initial x position
+Gui%GuiNumber%Button%NumOfButtons%.style.top = "%guiOutOfButton2%px"; // Set initial y position
+Gui%GuiNumber%Button%NumOfButtons%.style.width = "%guiOutOfButton3%px"; // Set width
+Gui%GuiNumber%Button%NumOfButtons%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Button%NumOfButtons%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
 }
 }
 
@@ -2036,6 +2511,7 @@ Loop, 6
 {
 guiOutOfEdit%A_Index% := ""
 }
+dynamicGuiSet := 0
 Loop, Parse, out4, " "
 {
 ;MsgBox, |%A_LoopField%|
@@ -2046,48 +2522,316 @@ if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
 {
 guiOutOfEditX := 1
 guiOutOfEdit1 := A_LoopField
+if (InStr(guiOutOfEdit1, "%"))
+{
+str := guiOutOfEdit1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfEdit1 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfEdit1, guiOutOfEdit1, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
 {
 guiOutOfEditY := 1
 guiOutOfEdit2 := A_LoopField
+if (InStr(guiOutOfEdit2, "%"))
+{
+str := guiOutOfEdit2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfEdit2 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfEdit2, guiOutOfEdit2, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
 {
 guiOutOfEditW := 1
 guiOutOfEdit3 := A_LoopField
+if (InStr(guiOutOfEdit3, "%"))
+{
+str := guiOutOfEdit3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfEdit3 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfEdit3, guiOutOfEdit3, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
 {
 guiOutOfEditH := 1
 guiOutOfEdit4 := A_LoopField
+if (InStr(guiOutOfEdit4, "%"))
+{
+str := guiOutOfEdit4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfEdit4 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfEdit4, guiOutOfEdit4, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
 {
 guiOutOfEditV := 1
 guiOutOfEdit5 := A_LoopField
+dynamicGuiSet := 1
+if (InStr(guiOutOfEdit5, "%"))
+{
+str := guiOutOfEdit5
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfEdit5 :=  " [variables." . var1 . "]"
+}
+StringTrimLeft, guiOutOfEdit5, guiOutOfEdit5, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
 {
 guiOutOfEditG := 1
 guiOutOfEdit6 := A_LoopField
+StringTrimLeft, guiOutOfEdit6, guiOutOfEdit6, 1
+}
 }
 
-}
+NumOfEdits++
+
+
+if (InStr(out5, "%"))
+{
+str := out5
+s:=StrSplit(str,"%").2
+var1 := s
+
+out5 :=  """"" + variables." . var1 . " + """""
 
 
 }
 
-
-}
-
-
-guiColorShow := "121212"
-if (out2 = "color")
+if (dynamicGuiSet = 0)
 {
 
+if (guiOutOfEditV = 1)
+{
+if (guiOutOfEditG = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%%guiOutOfEdit5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
+Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
+Gui%GuiNumber%%guiOutOfEdit5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfEdit5%.style.left = "%guiOutOfEdit1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfEdit5%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfEdit5%.style.width = "%guiOutOfEdit3%px"; // Set width
+Gui%GuiNumber%%guiOutOfEdit5%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%%guiOutOfEdit5%.addEventListener("input", function () {
+variables.A_GuiControl = Gui%GuiNumber%%guiOutOfEdit5%.value
+  %guiOutOfEdit6%(variables.A_GuiControl);
+});
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfEdit5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
 
 }
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%%guiOutOfEdit5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
+Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
+Gui%GuiNumber%%guiOutOfEdit5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfEdit5%.style.left = "%guiOutOfEdit1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfEdit5%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfEdit5%.style.width = "%guiOutOfEdit3%px"; // Set width
+Gui%GuiNumber%%guiOutOfEdit5%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfEdit5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+}
+else
+{
+if (guiOutOfEditG = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Edit%NumOfEdits% = document.createElement("textarea");
+Gui%GuiNumber%Edit%NumOfEdits%.id = "Gui%GuiNumber%Edit%NumOfEdits%"; // Set ID for referencing
+Gui%GuiNumber%Edit%NumOfEdits%.placeholder = "%out5%";
+Gui%GuiNumber%Edit%NumOfEdits%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Edit%NumOfEdits%.style.resize = "none"; // Disable resizing
+Gui%GuiNumber%Edit%NumOfEdits%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Edit%NumOfEdits%.style.left = "%guiOutOfEdit1%px"; // Set initial x position
+Gui%GuiNumber%Edit%NumOfEdits%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
+Gui%GuiNumber%Edit%NumOfEdits%.style.width = "%guiOutOfEdit3%px"; // Set width
+Gui%GuiNumber%Edit%NumOfEdits%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%Edit%NumOfEdits%.addEventListener("input", function () {
+variables.A_GuiControl = Gui%GuiNumber%Edit%NumOfEdits%.value
+  %guiOutOfEdit6%(variables.A_GuiControl);
+});
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Edit%NumOfEdits%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Edit%NumOfEdits% = document.createElement("textarea");
+Gui%GuiNumber%Edit%NumOfEdits%.id = "Gui%GuiNumber%Edit%NumOfEdits%"; // Set ID for referencing
+Gui%GuiNumber%Edit%NumOfEdits%.placeholder = "%out5%";
+Gui%GuiNumber%Edit%NumOfEdits%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Edit%NumOfEdits%.style.resize = "none"; // Disable resizing
+Gui%GuiNumber%Edit%NumOfEdits%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Edit%NumOfEdits%.style.left = "%guiOutOfEdit1%px"; // Set initial x position
+Gui%GuiNumber%Edit%NumOfEdits%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
+Gui%GuiNumber%Edit%NumOfEdits%.style.width = "%guiOutOfEdit3%px"; // Set width
+Gui%GuiNumber%Edit%NumOfEdits%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Edit%NumOfEdits%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+}
+
+}
+else ; else ; else ; else ; else ; else ; else ; else ; else
+{
+if (guiOutOfEditV = 1)
+{
+if (guiOutOfEditG = 1)
+{
+jsCode0 =
+(
+
+
+
+Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + "%guiOutOfEdit5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
+Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
+Gui%GuiNumber%%guiOutOfEdit5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfEdit5%.style.left = "%guiOutOfEdit1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfEdit5%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfEdit5%.style.width = "%guiOutOfEdit3%px"; // Set width
+Gui%GuiNumber%%guiOutOfEdit5%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%%guiOutOfEdit5%.addEventListener("input", function () {
+variables.A_GuiControl = Gui%GuiNumber%%guiOutOfEdit5%.value
+  %guiOutOfEdit6%(variables.A_GuiControl);
+});
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfEdit5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + "%guiOutOfEdit5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
+Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
+Gui%GuiNumber%%guiOutOfEdit5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfEdit5%.style.left = "%guiOutOfEdit1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfEdit5%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfEdit5%.style.width = "%guiOutOfEdit3%px"; // Set width
+Gui%GuiNumber%%guiOutOfEdit5%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfEdit5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+}
+else
+{
+if (guiOutOfEditG = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Edit%NumOfEdits% = document.createElement("textarea");
+Gui%GuiNumber%Edit%NumOfEdits%.id = "Gui%GuiNumber%" + "Edit" + "%NumOfEdits%"; // Set ID for referencing
+Gui%GuiNumber%Edit%NumOfEdits%.placeholder = "%out5%";
+Gui%GuiNumber%Edit%NumOfEdits%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Edit%NumOfEdits%.style.resize = "none"; // Disable resizing
+Gui%GuiNumber%Edit%NumOfEdits%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Edit%NumOfEdits%.style.left = "%guiOutOfEdit1%px"; // Set initial x position
+Gui%GuiNumber%Edit%NumOfEdits%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
+Gui%GuiNumber%Edit%NumOfEdits%.style.width = "%guiOutOfEdit3%px"; // Set width
+Gui%GuiNumber%Edit%NumOfEdits%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%Edit%NumOfEdits%.addEventListener("input", function () {
+variables.A_GuiControl = Gui%GuiNumber%Edit%NumOfEdits%.value
+  %guiOutOfEdit6%(variables.A_GuiControl);
+});
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Edit%NumOfEdits%);
+
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Edit%NumOfEdits% = document.createElement("textarea");
+Gui%GuiNumber%Edit%NumOfEdits%.id = "Gui%GuiNumber%" + "Edit" + "%NumOfEdits%"; // Set ID for referencing
+Gui%GuiNumber%Edit%NumOfEdits%.placeholder = "%out5%";
+Gui%GuiNumber%Edit%NumOfEdits%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Edit%NumOfEdits%.style.resize = "none"; // Disable resizing
+Gui%GuiNumber%Edit%NumOfEdits%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Edit%NumOfEdits%.style.left = "%guiOutOfEdit1%px"; // Set initial x position
+Gui%GuiNumber%Edit%NumOfEdits%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
+Gui%GuiNumber%Edit%NumOfEdits%.style.width = "%guiOutOfEdit3%px"; // Set width
+Gui%GuiNumber%Edit%NumOfEdits%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Edit%NumOfEdits%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+}
+}
+
+
+
+}
+
+
+}
+
+
+
 
 
 if (out2 = "show")
@@ -2106,26 +2850,88 @@ if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
 {
 guiOutOfShowX := 1
 guiOutOfShow1 := A_LoopField
+if (InStr(guiOutOfShow1, "%"))
+{
+str := guiOutOfShow1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfShow1 :=  " """" + variables." . var1 . " + """
+}
 StringTrimLeft, guiOutOfShow1, guiOutOfShow1, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
 {
 guiOutOfShowY := 1
 guiOutOfShow2 := A_LoopField
+if (InStr(guiOutOfShow2, "%"))
+{
+str := guiOutOfShow2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfShow2 :=  " """" + variables." . var1 . " + """
+}
 StringTrimLeft, guiOutOfShow2, guiOutOfShow2, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
 {
 guiOutOfShowW := 1
 guiOutOfShow3 := A_LoopField
+if (InStr(guiOutOfShow3, "%"))
+{
+str := guiOutOfShow3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfShow3 :=  " """" + variables." . var1 . " + """
+}
 StringTrimLeft, guiOutOfShow3, guiOutOfShow3, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
 {
 guiOutOfShowH := 1
 guiOutOfShow4 := A_LoopField
+if (InStr(guiOutOfShow4, "%"))
+{
+str := guiOutOfShow4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfShow4 :=  " """" + variables." . var1 . " + """
+}
 StringTrimLeft, guiOutOfShow4, guiOutOfShow4, 1
 }
+}
+
+if (guiOutOfShowX = 1)
+{
+jsCode01 =
+(
+Gui%GuiNumber%.style.left = "%guiOutOfShow1%px";
+)
+}
+else
+{
+jsCode01 =
+(
+Gui%GuiNumber%.style.left = (window.innerWidth - parseInt(Gui%GuiNumber%.style.width)) / 2 + "px";
+)
+}
+
+if (guiOutOfShowY = 1)
+{
+jsCode02 =
+(
+Gui%GuiNumber%.style.top = "%guiOutOfShow2%px";
+)
+}
+else
+{
+jsCode02 =
+(
+Gui%GuiNumber%.style.top = (window.innerHeight - parseInt(Gui%GuiNumber%.style.height)) / 2 + "px";
+)
 }
 
 
@@ -2142,12 +2948,11 @@ Gui%GuiNumber%.style.padding = "10px";
 Gui%GuiNumber%.style.border = "2px solid white";
 
 // Calculate center position
-Gui%GuiNumber%.style.left = (window.innerWidth - parseInt(Gui%GuiNumber%.style.width)) / 2 + "px";
-Gui%GuiNumber%.style.top = (window.innerHeight - parseInt(Gui%GuiNumber%.style.height)) / 2 + "px";
+%jsCode01%
+%jsCode02%
 
 
-Gui%GuiNumber%.style.left = "%guiOutOfShow1%px";
-Gui%GuiNumber%.style.top = "%guiOutOfShow2%px";
+
 
 
 
@@ -2157,6 +2962,55 @@ document.body.appendChild(Gui%GuiNumber%); // Append the GUI window to the body
 
 jsCode .= "`n" . jsCode0 . "`n"
 }
+lineDone := 1
+}
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 12) = StrLower("GuiControl, ")) or (SubStr(Trim(StrLower(A_LoopField)), 1, 11) = StrLower("GuiControl "))
+{
+
+
+str := A_LoopField
+
+str := StrReplace(str, ": ", ", ")
+
+s:=StrSplit(str,",").1
+out1 := Trim(s)
+;MsgBox, % out1
+
+GuiNumberOld := GuiNumber
+GuiNumber := RegExReplace(out1, "\D", "")
+
+
+if (GuiNumber = "")
+{
+GuiNumber := 1
+
+}
+
+
+s:=StrSplit(str,", ").2
+out2 := StrLower(Trim(s))
+
+s:=StrSplit(str,", ").3
+out3 := Trim(s)
+
+s:=StrSplit(str,", ").4
+out4 := Trim(s)
+
+s:=StrSplit(str,", ").5
+out5 := Trim(s)
+
+Loop, Parse, out4, `n, `r
+{
+
+}
+
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%", %out4%);
+)
+
+jsCode .= out0 . "`n"
+
 lineDone := 1
 }
 else if RegExMatch(A_LoopField, "\b\w+\s*\+{2,}")
@@ -2183,7 +3037,7 @@ StringTrimRight, out1, out1, 1
 
 ;~ see := "async function " . out1 . "()`n{"
 ;~ MsgBox, % see
-jsCode .= "async function " . out1 . "()`n{`n"
+jsCode .= "async function " . out1 . "(A_GuiControl)`n{`n"
 lineDone := 1
 }
 else if (CheckVariable(A_LoopField))
@@ -3299,7 +4153,7 @@ if (Instr(str, "itsfortheloopfixinghhhhhhhhcksdvbdshjvds"))
 
 str := StrReplace(str, "variables.A_ScreenWidth", "BuildInVars(""A_ScreenWidth"")")
 str := StrReplace(str, "variables.A_ScreenHeight", "BuildInVars(""A_ScreenHeight"")")
-str := StrReplace(str, "variables.A_GuiControl", "BuildInVars(""A_GuiControl"")")
+str := StrReplace(str, "variables.A_GuiControl", "A_GuiControl")
 str := StrReplace(str, "variables.A_TimeIdle", "BuildInVars(""A_TimeIdle"")")
 str := StrReplace(str, "variables.A_TickCount", "BuildInVars(""A_TickCount"")")
 str := StrReplace(str, "variables.A_NowUTC", "BuildInVars(""A_NowUTC"")")
@@ -3316,6 +4170,13 @@ str := StrReplace(str, "variables.A_Min", "BuildInVars(""A_Min"")")
 str := StrReplace(str, "variables.A_Sec", "BuildInVars(""A_Sec"")")
 str := StrReplace(str, "variables.A_Space", "BuildInVars(""A_Space"")")
 str := StrReplace(str, "variables.A_Tab", "BuildInVars(""A_Tab"")")
+
+
+str := StrReplace(str, "= \""""", "= """"")
+str := StrReplace(str, "= \""", "= """"")
+str := StrReplace(str, "= \""""", "= """"")
+str := StrReplace(str, "+ \""""", "+ """"")
+str := StrReplace(str, "(/^Gui\d*/=  """")", "(/^Gui\d*/, """")")
 
 if (Trim(str) == "Return")
 {
@@ -3388,7 +4249,7 @@ let variables = {
 
 
 
-jsCode := variables . "`n`n" . funcs . "`n`n" . jsCode
+jsCode := variables . "`n`n" . funcs . "`n`n" . jsCodeGui . "`n`n" . jsCode
 
 
 upCode1 =
@@ -3628,9 +4489,6 @@ upCode1 =
           case "A_ScreenHeight":
             // Return screen height
             return window.innerHeight;
-          case "A_GuiControl":
-            // Simulate GUI control (You can implement as needed)
-            return "A_GuiControl not added yet";
           case "A_TimeIdle":
             // Return time idle
             return A_TimeIdle();
