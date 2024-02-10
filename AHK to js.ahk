@@ -2999,16 +2999,92 @@ out4 := Trim(s)
 s:=StrSplit(str,", ").5
 out5 := Trim(s)
 
-Loop, Parse, out4, `n, `r
-{
 
+
+
+
+if (out2 = "move")
+{
+guiOutOfMoveX := 0
+guiOutOfMoveY := 0
+guiOutOfMoveW := 0
+guiOutOfMoveH := 0
+Loop, 4
+{
+guiOutOfMove%A_Index% := ""
+}
+Loop, Parse, out3, " "
+{
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfMoveX := 1
+guiOutOfMove1 := A_LoopField
+if (InStr(guiOutOfMove1, "%"))
+{
+str := guiOutOfMove1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfMove1 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfMove1, guiOutOfMove1, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfMoveY := 1
+guiOutOfMove2 := A_LoopField
+if (InStr(guiOutOfMove2, "%"))
+{
+str := guiOutOfMove2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfMove2 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfMove2, guiOutOfMove2, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfMoveW := 1
+guiOutOfMove3 := A_LoopField
+if (InStr(guiOutOfMove3, "%"))
+{
+str := guiOutOfMove3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfMove3 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfMove3, guiOutOfMove3, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfMoveH := 1
+guiOutOfMove4 := A_LoopField
+if (InStr(guiOutOfMove4, "%"))
+{
+str := guiOutOfMove4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfMove4 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfMove4, guiOutOfMove4, 1
+}
 }
 
+
+
+
+
+
+
+
+}
 out0 =
 (
 GuiControl("%out2%", "Gui%GuiNumber%%out3%", %out4%);
 )
-
 jsCode .= out0 . "`n"
 
 lineDone := 1
@@ -4860,6 +4936,12 @@ upCode2 =
           } else if (action === "disable") {
             // Disable the element
             element.disabled = true;
+          } else if (action === "font") {
+            // Set font size
+            element.style.fontSize = param1 + "px";
+          } else if (action === "color") {
+            // Set color
+            element.style.color = param1;
           }
         }
       }

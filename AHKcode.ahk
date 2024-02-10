@@ -8,14 +8,44 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+storeElapsedTime := 0
+
 Gui, Color, 121212
 Gui -DPIScale
+if (A_IsTranspiled = "")
+{
+; do something if its transpiled
 Gui, Font, s15
+}
+else
+{
+; do something if its not transpiled
+Gui, Font, s23
+}
+
 Gui, Add, Text, cWhite x0 y10 w1000 h30, Track your time for a project
 Gui, Add, Text, cWhite x10 w1000 y550 h100 vTextSelectedFolder
+if (A_IsTranspiled = "")
+{
+; do something if its transpiled
 Gui, Font, s13
+}
+else
+{
+; do something if its not transpiled
+Gui, Font, s20
+}
 Gui, Add, Button, x10 y150 w150 h50 vStart gStart, Start/Resume
+if (A_IsTranspiled = "")
+{
+; do something if its not transpiled
 Gui, Font, s15
+}
+else
+{
+; do something if its transpiled
+Gui, Font, s23
+}
 Gui, Add, Button, x10 y210 w150 h50 vStop gStop, Stop/Pause
 Gui, Add, Button, x10 y270 w150 h50 vReset gReset, Reset
 Gui, Add, Text, cWhite x10 y350 w350 h50 vTime
@@ -28,7 +58,9 @@ GuiControl, Hide, Reset
 GuiControl, Disable, Stop
 GuiControl, Disable, Save
 GuiControl, Disable, Start
-Gui, Show, w1000 h700
+h := A_ScreenHeight - 100
+w := A_ScreenWidth - 100
+Gui, Show, w%w% h%h%
 gosub, Button
 return
 
@@ -61,13 +93,6 @@ Start:
 if (isRunning != 1)
 {
 StartTime := A_TickCount
-}
-isRunning := 1
-GuiControl, Enable, Stop
-GuiControl, Disable, Start
-GuiControl, Disable, Save
-GuiControl, Disable, Reset
-SetTimer, Time, 1
 
 if (A_Hour >= 13)
 {
@@ -80,6 +105,17 @@ AHour := A_Hour
 ampm := "AM"
 }
 StartTimee := AHour . ":" . A_Min . " " . ampm
+
+}
+StartTime := A_TickCount - storeElapsedTime
+isRunning := 1
+GuiControl, Enable, Stop
+GuiControl, Disable, Start
+GuiControl, Disable, Save
+GuiControl, Disable, Reset
+SetTimer, Time, 1
+
+
 Return
 
 Stop:
@@ -89,8 +125,10 @@ GuiControl, Enable, Reset
 GuiControl, Disable, Stop
 GuiControl, Show, Save
 GuiControl, Enable, Save
-SetTimer, Time, Off
 
+SetTimer, Time, Off
+storeElapsedTime := A_TickCount - StartTime
+ElapsedTime := A_TickCount - StartTime
 if (A_Hour >= 13)
 {
 AHour := A_Hour - 12
@@ -104,7 +142,8 @@ ampm := "AM"
 EndTime := AHour . ":" . A_Min . " " . ampm
 
 
-ElapsedTime := A_TickCount - StartTime
+
+
 ms := ElapsedTime
 
 ; Calculate the components
@@ -123,6 +162,7 @@ Return
 
 Reset:
 isRunning := 0
+storeElapsedTime := 0
 GuiControl, Enable, Start
 GuiControl, Disable, Stop
 SetTimer, Time, Off
@@ -138,6 +178,7 @@ Return
 
 Time:
 ElapsedTime := A_TickCount - StartTime
+
 ms := ElapsedTime
 
 ; Calculate the components
@@ -165,3 +206,5 @@ Sleep, 100
 }
 ExitApp
 Return
+
+

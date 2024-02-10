@@ -598,6 +598,12 @@
           } else if (action === "disable") {
             // Disable the element
             element.disabled = true;
+          } else if (action === "font") {
+            // Set font size
+            element.style.fontSize = param1 + "px";
+          } else if (action === "color") {
+            // Set color
+            element.style.color = param1;
           }
         }
       }
@@ -672,6 +678,7 @@
           ElapsedTime: null,
           EndTime: null,
           fileAPPP: null,
+          h: null,
           hours: null,
           isRunning: null,
           milliseconds: null,
@@ -681,6 +688,9 @@
           seconds: null,
           StartTime: null,
           StartTimee: null,
+          storeElapsedTime: null,
+
+          w: null,
         };
 
         let funcs = {};
@@ -698,11 +708,19 @@
         //
         //
 
+        variables.storeElapsedTime = 0;
+
+        if (variables.A_IsTranspiled == "") {
+          // do something if its transpiled
+        } else {
+          // do something if its not transpiled
+        }
+
         Gui1Static1 = document.createElement("div");
         Gui1Static1.id = "Gui1Static1"; // Set ID for referencing
         Gui1Static1.textContent = "Track your time for a project";
         Gui1Static1.style.color = "#white";
-        Gui1Static1.style.fontSize = "15px"; // Set font size
+        Gui1Static1.style.fontSize = "23px"; // Set font size
         Gui1Static1.style.position = "absolute"; // Set position to absolute
         Gui1Static1.style.left = "0px"; // Set initial x position
         Gui1Static1.style.top = "10px"; // Set initial y position
@@ -714,7 +732,7 @@
         Gui1TextSelectedFolder.id = "Gui1" + "TextSelectedFolder"; // Set ID for referencing
         Gui1TextSelectedFolder.textContent = "";
         Gui1TextSelectedFolder.style.color = "#white";
-        Gui1TextSelectedFolder.style.fontSize = "15px"; // Set font size
+        Gui1TextSelectedFolder.style.fontSize = "23px"; // Set font size
         Gui1TextSelectedFolder.style.position = "absolute"; // Set position to absolute
         Gui1TextSelectedFolder.style.left = "10px"; // Set initial x position
         Gui1TextSelectedFolder.style.top = "550px"; // Set initial y position
@@ -722,10 +740,16 @@
         Gui1TextSelectedFolder.style.height = "100px"; // Set height
         Gui1.appendChild(Gui1TextSelectedFolder);
 
+        if (variables.A_IsTranspiled == "") {
+          // do something if its transpiled
+        } else {
+          // do something if its not transpiled
+        }
+
         Gui1Start = document.createElement("button");
         Gui1Start.id = "Gui1" + "Start"; // Set ID for referencing
         Gui1Start.textContent = "Start/Resume";
-        Gui1Start.style.fontSize = "13px"; // Set font size
+        Gui1Start.style.fontSize = "20px"; // Set font size
         Gui1Start.style.position = "absolute"; // Set position to absolute
         Gui1Start.style.left = "10px"; // Set initial x position
         Gui1Start.style.top = "150px"; // Set initial y position
@@ -737,10 +761,16 @@
         };
         Gui1.appendChild(Gui1Start);
 
+        if (variables.A_IsTranspiled == "") {
+          // do something if its not transpiled
+        } else {
+          // do something if its transpiled
+        }
+
         Gui1Stop = document.createElement("button");
         Gui1Stop.id = "Gui1" + "Stop"; // Set ID for referencing
         Gui1Stop.textContent = "Stop/Pause";
-        Gui1Stop.style.fontSize = "15px"; // Set font size
+        Gui1Stop.style.fontSize = "23px"; // Set font size
         Gui1Stop.style.position = "absolute"; // Set position to absolute
         Gui1Stop.style.left = "10px"; // Set initial x position
         Gui1Stop.style.top = "210px"; // Set initial y position
@@ -755,7 +785,7 @@
         Gui1Reset = document.createElement("button");
         Gui1Reset.id = "Gui1" + "Reset"; // Set ID for referencing
         Gui1Reset.textContent = "Reset";
-        Gui1Reset.style.fontSize = "15px"; // Set font size
+        Gui1Reset.style.fontSize = "23px"; // Set font size
         Gui1Reset.style.position = "absolute"; // Set position to absolute
         Gui1Reset.style.left = "10px"; // Set initial x position
         Gui1Reset.style.top = "270px"; // Set initial y position
@@ -771,7 +801,7 @@
         Gui1Time.id = "Gui1" + "Time"; // Set ID for referencing
         Gui1Time.textContent = "";
         Gui1Time.style.color = "#white";
-        Gui1Time.style.fontSize = "15px"; // Set font size
+        Gui1Time.style.fontSize = "23px"; // Set font size
         Gui1Time.style.position = "absolute"; // Set position to absolute
         Gui1Time.style.left = "10px"; // Set initial x position
         Gui1Time.style.top = "350px"; // Set initial y position
@@ -782,7 +812,7 @@
         Gui1Save = document.createElement("button");
         Gui1Save.id = "Gui1" + "Save"; // Set ID for referencing
         Gui1Save.textContent = "Save";
-        Gui1Save.style.fontSize = "15px"; // Set font size
+        Gui1Save.style.fontSize = "23px"; // Set font size
         Gui1Save.style.position = "absolute"; // Set position to absolute
         Gui1Save.style.left = "10px"; // Set initial x position
         Gui1Save.style.top = "410px"; // Set initial y position
@@ -802,10 +832,13 @@
         GuiControl("disable", "Gui1Stop");
         GuiControl("disable", "Gui1Save");
         GuiControl("disable", "Gui1Start");
+        variables.h = BuildInVars("A_ScreenHeight") - 100;
+
+        variables.w = BuildInVars("A_ScreenWidth") - 100;
 
         Gui1.style.position = "absolute";
-        Gui1.style.width = "1000px"; // Set the width
-        Gui1.style.height = "700px"; // Set the height
+        Gui1.style.width = "" + variables.w + "px"; // Set the width
+        Gui1.style.height = "" + variables.h + "px"; // Set the height
         Gui1.style.backgroundColor = "#121212";
         Gui1.style.color = "white";
         Gui1.style.fontSize = "15px";
@@ -850,7 +883,20 @@
         async function Start(A_GuiControl) {
           if (variables.isRunning !== 1) {
             variables.StartTime = BuildInVars("A_TickCount");
+
+            if (BuildInVars("A_Hour") >= 13) {
+              variables.AHour = BuildInVars("A_Hour") - 12;
+
+              variables.ampm = "PM";
+            } else {
+              variables.AHour = BuildInVars("A_Hour");
+
+              variables.ampm = "AM";
+            }
+            variables.StartTimee = variables.AHour + ":" + BuildInVars("A_Min") + " " + variables.ampm;
           }
+          variables.StartTime = BuildInVars("A_TickCount") - variables.storeElapsedTime;
+
           variables.isRunning = 1;
 
           GuiControl("enable", "Gui1Stop");
@@ -858,17 +904,6 @@
           GuiControl("disable", "Gui1Save");
           GuiControl("disable", "Gui1Reset");
           SetTimer(Time, 1);
-
-          if (BuildInVars("A_Hour") >= 13) {
-            variables.AHour = BuildInVars("A_Hour") - 12;
-
-            variables.ampm = "PM";
-          } else {
-            variables.AHour = BuildInVars("A_Hour");
-
-            variables.ampm = "AM";
-          }
-          variables.StartTimee = variables.AHour + ":" + BuildInVars("A_Min") + " " + variables.ampm;
         }
 
         async function Stop(A_GuiControl) {
@@ -879,7 +914,11 @@
           GuiControl("disable", "Gui1Stop");
           GuiControl("show", "Gui1Save");
           GuiControl("enable", "Gui1Save");
+
           SetTimer(Time, "Off");
+          variables.storeElapsedTime = BuildInVars("A_TickCount") - variables.StartTime;
+
+          variables.ElapsedTime = BuildInVars("A_TickCount") - variables.StartTime;
 
           if (BuildInVars("A_Hour") >= 13) {
             variables.AHour = BuildInVars("A_Hour") - 12;
@@ -891,8 +930,6 @@
             variables.ampm = "AM";
           }
           variables.EndTime = variables.AHour + ":" + BuildInVars("A_Min") + " " + variables.ampm;
-
-          variables.ElapsedTime = BuildInVars("A_TickCount") - variables.StartTime;
 
           variables.ms = variables.ElapsedTime;
 
@@ -917,6 +954,8 @@
 
         async function Reset(A_GuiControl) {
           variables.isRunning = 0;
+
+          variables.storeElapsedTime = 0;
 
           GuiControl("enable", "Gui1Start");
           GuiControl("disable", "Gui1Stop");
