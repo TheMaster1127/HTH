@@ -143,7 +143,7 @@ Built-in Variables
 - A_LoopField
 - A_ScreenWidth
 - A_ScreenHeight
-- A_GuiControl comming soon 👀
+- A_GuiControl
 - A_TimeIdle
 - A_TickCount
 - A_NowUTC
@@ -162,13 +162,13 @@ Built-in Variables
 - A_Tab
 - A_IsTranspiled in js it will be set to 1 in ahk its will be blank so you can do somting like:
 ```ahk
-if (A_IsTranspiled = 1)
+if (A_IsTranspiled = "")
 {
-; do something if its transpiled
+; do something if its not transpiled
 }
 else
 {
-; do something if its not transpiled
+; do something if its transpiled
 }
 ```
 
