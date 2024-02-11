@@ -3,7 +3,7 @@
 
 
 
-;text := "hello man is some text lets see if you can type fast then you can see how fast you typed and ist done"
+;text := "hello man is some text lets see if you can type fast then you can see how fast can you typed and ist done"
 text := "hello man"
 
 howMany := 0
@@ -31,7 +31,7 @@ x := x + 14 + 3
 Gui, Show, h600 w%w%
 pos := 0
 OldA_LastKey := ""
-;text := "he:lo man is some text lets s]e if you can type fast then you can s]e how fast you typed and ist done"
+;text := "he:lo man is some text lets s]e if you can type fast then you can s]e how fast can you typed and ist done"
 text := "he:lo man"
 
 
