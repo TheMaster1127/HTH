@@ -47,7 +47,7 @@ So far, AHK-to-js supports:
 
 - Gui - Buttons, Text and Edit 
 - GuiContol
-- Hotkyes but simple like you can still do almost all combinations Ctrl+Alt+Shift+AlmostAnyKey
+- Hotkyes but simple like you can still do almost all combinations like Ctrl+Alt+Shift+AlmostAnyKey or Shift+Up or just even one key 
 - Functions
 - If, else, else if
 - Random
