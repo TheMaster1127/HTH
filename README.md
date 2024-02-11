@@ -63,7 +63,7 @@ Return
 - FileAppend it will download the file one time next time it will be a new file also you can only do for example: `FileAppend, %yourVar%, FileName.txt` you cant put vars in the filename argument 
 - SetTimer Note: if you put a msgbox in the timer it will not stop the execution which is not the same as in real AutoHotKey
 - gosub
-- lables here a lable:
+- lables here is a lable:
 ```ahk
 ; We will go the label
 gosub, Label1
