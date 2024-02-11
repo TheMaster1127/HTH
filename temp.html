@@ -770,6 +770,7 @@
           characters: null,
           ElapsedTime123: null,
           ElapsedTime: null,
+          Gui: null,
           hours: null,
           howMany: null,
           milliseconds: null,
@@ -786,6 +787,8 @@
           v: null,
           varRight: null,
           varWrong: null,
+          w2: null,
+          w: null,
           x: null,
           y: null,
         };
@@ -799,13 +802,9 @@
           HotKeyCalledAltL();
         });
 
-        // variables.text =  "hello this is some text lets see if you can type fast then you can see how fast you typed and ist done\;
+        // variables.text =  "hello man is some text lets see if you can type fast then you can see how fast you typed and ist done\;
 
-        variables.text = "hello this";
-
-        variables.x = 10;
-
-        variables.y = 10;
+        variables.text = "hello man";
 
         variables.howMany = 0;
 
@@ -816,29 +815,42 @@
           variables.A_LoopField1 = variables.characters1[variables.A_Index1 - 1]; // Using array notation to access characters
 
           variables.howMany++;
-          variables.v = "l" + variables.A_Index1;
+
+          variables.w = variables.w + 14 + 3;
+        }
+        variables.w = variables.w + 10;
+
+        variables.w2 = variables.w - 10;
+
+        variables.x = 10;
+
+        variables.y = 10;
+
+        variables.characters2 = variables.text.split("");
+        variables.charLength2 = variables.characters2.length;
+
+        for (/* Loop parse */ variables.A_Index2 = 1; variables.A_Index2 <= variables.charLength2; variables.A_Index2++) {
+          variables.A_LoopField2 = variables.characters2[variables.A_Index2 - 1]; // Using array notation to access characters
+
+          variables.v = "l" + variables.A_Index2;
 
           Gui1[variables.v] = document.createElement("div");
           Gui1[variables.v].id = "Gui1" + [variables.v]; // Set ID for referencing
-          Gui1[variables.v].textContent = "" + variables.A_LoopField1 + "";
+          Gui1[variables.v].textContent = "" + variables.A_LoopField2 + "";
           Gui1[variables.v].style.color = "#black";
           Gui1[variables.v].style.fontSize = "18px"; // Set font size
           Gui1[variables.v].style.position = "absolute"; // Set position to absolute
           Gui1[variables.v].style.left = "" + variables.x + "px"; // Set initial x position
           Gui1[variables.v].style.top = "" + variables.y + "px"; // Set initial y position
-          Gui1[variables.v].style.width = "1000px"; // Set width
+          Gui1[variables.v].style.width = "" + variables.w2 + "px"; // Set width
           Gui1[variables.v].style.height = "300px"; // Set height
           Gui1.appendChild(Gui1[variables.v]);
 
-          if (variables.A_LoopField1 == " ") {
-            variables.x = variables.x + 16 + 3;
-          } else {
-            variables.x = variables.x + 12 + 3;
-          }
+          variables.x = variables.x + 14 + 3;
         }
 
         Gui1.style.position = "absolute";
-        Gui1.style.width = "" + BuildInVars("A_ScreenWidth") + "px"; // Set the width
+        Gui1.style.width = "" + variables.w + "px"; // Set the width
         Gui1.style.height = "600px"; // Set the height
         Gui1.style.backgroundColor = "#121212";
         Gui1.style.color = "white";
@@ -856,9 +868,9 @@
 
         variables.OldA_LastKey = "";
 
-        // variables.text =  "he:lo this is some text lets s]e if you can type fast then you can s]e how fast you typed and ist done\;
+        // variables.text =  "he:lo man is some text lets s]e if you can type fast then you can s]e how fast you typed and ist done\;
 
-        variables.text = "he:lo this";
+        variables.text = "he:lo man";
 
         variables.varWrong = 0;
 
@@ -881,7 +893,7 @@
             // Get the character at the specified position
             variables.char = SubStr(variables.text, variables.pos, 1);
 
-            for (/* Normal Loop */ variables.A_Index2 = 1; variables.A_Index2 <= 1; variables.A_Index2++) {
+            for (/* Normal Loop */ variables.A_Index3 = 1; variables.A_Index3 <= 1; variables.A_Index3++) {
               if (variables.char == ":") {
                 variables.char = "l";
 

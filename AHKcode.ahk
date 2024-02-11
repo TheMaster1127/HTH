@@ -3,32 +3,36 @@
 
 
 
-;text := "hello this is some text lets see if you can type fast then you can see how fast you typed and ist done"
-text := "hello this"
-x := 10
-y := 10
-Gui, Font, s18
+;text := "hello man is some text lets see if you can type fast then you can see how fast you typed and ist done"
+text := "hello man"
+
 howMany := 0
 Loop, Parse, text
 {
 howMany++
-v := "l" . A_Index
-Gui, Add, Text, x%x% y%y% w1000 h300 v%v%, %A_LoopField%
-if (A_LoopField = " ")
-{
-x := x + 16 + 3
+
+w := w + 14 + 3
 }
-else
+w := w + 10
+w2 := w - 10
+x := 10
+y := 10
+Gui, Font, s18
+Loop, Parse, text
 {
-x := x + 12 + 3
+
+v := "l" . A_Index
+Gui, Add, Text, x%x% y%y% w%w2% h300 v%v%, %A_LoopField%
+
+x := x + 14 + 3
 
 }
-}
-Gui, Show, h600 w%A_ScreenWidth%
+
+Gui, Show, h600 w%w%
 pos := 0
 OldA_LastKey := ""
-;text := "he:lo this is some text lets s]e if you can type fast then you can s]e how fast you typed and ist done"
-text := "he:lo this"
+;text := "he:lo man is some text lets s]e if you can type fast then you can s]e how fast you typed and ist done"
+text := "he:lo man"
 
 
 varWrong := 0
