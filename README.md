@@ -46,6 +46,7 @@ Also, `return` must be in lowercase.
 So far, AHK-to-js supports:
 
 - Gui
+ Buttons, Text and Edit 
 - GuiContol
 - Hotkyes but simple like you can still do almost all combinations Ctrl+Alt+Shift+AlmostAnyKey
 - Functions
