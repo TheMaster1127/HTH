@@ -52,7 +52,7 @@ So far, AHK-to-js supports:
 !+^g::
 Msgbox, You Clicked Ctrl+Alt+Shift+G
 
-; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the and of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
+; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the end of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
 Return
 ```
 - Functions
@@ -73,7 +73,7 @@ return
 Label1:
 MsgBox, we are in Label1
 
-; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the and of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
+; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the end of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
 Return
 ```
 - InputBox can only pass 2 or 3 parameters here is an example:
