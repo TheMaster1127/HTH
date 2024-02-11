@@ -1965,7 +1965,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%%guiOutOfText5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -1991,7 +1991,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%%guiOutOfText5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2016,7 +2016,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%Static%NumOfTexts% = document.createElement("div");
-Gui%GuiNumber%Static%NumOfTexts%.id = "Gui%GuiNumber%Static%NumOfTexts%"; // Set ID for referencing
+Gui%GuiNumber%Static%NumOfTexts%.id = "Gui%GuiNumber% + "Static" + %NumOfTexts%"; // Set ID for referencing
 Gui%GuiNumber%Static%NumOfTexts%.textContent = "%out5%";
 Gui%GuiNumber%Static%NumOfTexts%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%Static%NumOfTexts%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2041,7 +2041,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%Static%NumOfTexts% = document.createElement("div");
-Gui%GuiNumber%Static%NumOfTexts%.id = "Gui%GuiNumber%Static%NumOfTexts%"; // Set ID for referencing
+Gui%GuiNumber%Static%NumOfTexts%.id = "Gui%GuiNumber% + "Static" + %NumOfTexts%"; // Set ID for referencing
 Gui%GuiNumber%Static%NumOfTexts%.textContent = "%out5%";
 Gui%GuiNumber%Static%NumOfTexts%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%Static%NumOfTexts%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2071,7 +2071,7 @@ jsCode0 =
 
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + "%guiOutOfText5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2097,7 +2097,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + "%guiOutOfText5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2297,7 +2297,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%%guiOutOfButton5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2322,7 +2322,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%%guiOutOfButton5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2346,7 +2346,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%Button%NumOfButtons% = document.createElement("button");
-Gui%GuiNumber%Button%NumOfButtons%.id = "Gui%GuiNumber%Button%NumOfButtons%"; // Set ID for referencing
+Gui%GuiNumber%Button%NumOfButtons%.id = "Gui%GuiNumber% + "Button" + %NumOfButtons%"; // Set ID for referencing
 Gui%GuiNumber%Button%NumOfButtons%.textContent = "%out5%";
 Gui%GuiNumber%Button%NumOfButtons%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%Button%NumOfButtons%.style.position = "absolute"; // Set position to absolute
@@ -2370,7 +2370,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%Button%NumOfButtons% = document.createElement("button");
-Gui%GuiNumber%Button%NumOfButtons%.id = "Gui%GuiNumber%Button%NumOfButtons%"; // Set ID for referencing
+Gui%GuiNumber%Button%NumOfButtons%.id = "Gui%GuiNumber% + "Button" + %NumOfButtons%"; // Set ID for referencing
 Gui%GuiNumber%Button%NumOfButtons%.textContent = "%out5%";
 Gui%GuiNumber%Button%NumOfButtons%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%Button%NumOfButtons%.style.position = "absolute"; // Set position to absolute
@@ -2399,7 +2399,7 @@ jsCode0 =
 
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + "%guiOutOfButton5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2424,7 +2424,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + "%guiOutOfButton5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2622,7 +2622,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
-Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%%guiOutOfEdit5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + %guiOutOfEdit5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
 Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
@@ -2648,7 +2648,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
-Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%%guiOutOfEdit5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + %guiOutOfEdit5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
 Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
@@ -2673,7 +2673,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%Edit%NumOfEdits% = document.createElement("textarea");
-Gui%GuiNumber%Edit%NumOfEdits%.id = "Gui%GuiNumber%Edit%NumOfEdits%"; // Set ID for referencing
+Gui%GuiNumber%Edit%NumOfEdits%.id = "Gui%GuiNumber% + "Edit" + %NumOfEdits%"; // Set ID for referencing
 Gui%GuiNumber%Edit%NumOfEdits%.placeholder = "%out5%";
 Gui%GuiNumber%Edit%NumOfEdits%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%Edit%NumOfEdits%.style.resize = "none"; // Disable resizing
@@ -2698,7 +2698,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%Edit%NumOfEdits% = document.createElement("textarea");
-Gui%GuiNumber%Edit%NumOfEdits%.id = "Gui%GuiNumber%Edit%NumOfEdits%"; // Set ID for referencing
+Gui%GuiNumber%Edit%NumOfEdits%.id = "Gui%GuiNumber% + "Edit" + %NumOfEdits%"; // Set ID for referencing
 Gui%GuiNumber%Edit%NumOfEdits%.placeholder = "%out5%";
 Gui%GuiNumber%Edit%NumOfEdits%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%Edit%NumOfEdits%.style.resize = "none"; // Disable resizing
@@ -2728,7 +2728,7 @@ jsCode0 =
 
 
 Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
-Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + "%guiOutOfEdit5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + %guiOutOfEdit5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
 Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
@@ -2754,7 +2754,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
-Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + "%guiOutOfEdit5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + %guiOutOfEdit5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
 Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
@@ -3001,6 +3001,19 @@ out5 := Trim(s)
 
 
 
+if InStr(out3, "%")
+{
+str := out3
+s:=StrSplit(str,"%").2
+var1 := s
+
+out3 :=  """ + variables." . var1
+}
+else
+{
+out3 := out3 . """"
+}
+
 
 
 if (out2 = "move")
@@ -3106,14 +3119,14 @@ var1 := s
 var1 := "variables." . var1
 out0 =
 (
-GuiControl("%out2%", "Gui%GuiNumber%%out3%", %var1%);
+GuiControl("%out2%", "Gui%GuiNumber%%out3%, %var1%);
 )
 }
 else
 {
 out0 =
 (
-GuiControl("%out2%", "Gui%GuiNumber%%out3%", "%var1%");
+GuiControl("%out2%", "Gui%GuiNumber%%out3%, "%var1%");
 )
 }
 
@@ -3123,7 +3136,7 @@ if (out2 = "hide")
 {
 out0 =
 (
-GuiControl("%out2%", "Gui%GuiNumber%%out3%");
+GuiControl("%out2%", "Gui%GuiNumber%%out3%);
 )
 }
 
@@ -3131,7 +3144,7 @@ if (out2 = "show")
 {
 out0 =
 (
-GuiControl("%out2%", "Gui%GuiNumber%%out3%");
+GuiControl("%out2%", "Gui%GuiNumber%%out3%);
 )
 }
 
@@ -3139,7 +3152,7 @@ if (out2 = "disable")
 {
 out0 =
 (
-GuiControl("%out2%", "Gui%GuiNumber%%out3%");
+GuiControl("%out2%", "Gui%GuiNumber%%out3%);
 )
 }
 
@@ -3147,7 +3160,7 @@ if (out2 = "enable")
 {
 out0 =
 (
-GuiControl("%out2%", "Gui%GuiNumber%%out3%");
+GuiControl("%out2%", "Gui%GuiNumber%%out3%);
 )
 }
 
@@ -3168,14 +3181,14 @@ var1 := s
 var1 := "variables." . var1
 out0 =
 (
-GuiControl("%out2%", "Gui%GuiNumber%%out3%", %var1%);
+GuiControl("%out2%", "Gui%GuiNumber%%out3%, %var1%);
 )
 }
 else
 {
 out0 =
 (
-GuiControl("%out2%", "Gui%GuiNumber%%out3%", %var1%);
+GuiControl("%out2%", "Gui%GuiNumber%%out3%, %var1%);
 )
 }
 }
@@ -3196,7 +3209,7 @@ var1 := "variables." . var1
 var1 := """#"" + " . var1
 out0 =
 (
-GuiControl("%out2%", "Gui%GuiNumber%%out3%", %var1%);
+GuiControl("%out2%", "Gui%GuiNumber%%out3%, %var1%);
 )
 }
 else
@@ -3204,7 +3217,7 @@ else
 var1 := "#" . var1
 out0 =
 (
-GuiControl("%out2%", "Gui%GuiNumber%%out3%", "%var1%");
+GuiControl("%out2%", "Gui%GuiNumber%%out3%, "%var1%");
 )
 }
 }

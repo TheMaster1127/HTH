@@ -766,8 +766,26 @@
           A_Index: null,
           A_IsTranspiled: 1,
           A_LoopField: null,
+          char: null,
           characters: null,
-          Speed: null,
+          ElapsedTime123: null,
+          ElapsedTime: null,
+          hours: null,
+          howMany: null,
+          milliseconds: null,
+          minutes: null,
+          ms: null,
+          msgCorrct: null,
+          OldA_LastKey: null,
+          onceTimerStart: null,
+          percentage: null,
+          pos: null,
+          seconds: null,
+          StartTime: null,
+          text: null,
+          v: null,
+          varRight: null,
+          varWrong: null,
           x: null,
           y: null,
         };
@@ -777,62 +795,51 @@
         let Gui1 = {};
         Gui1 = document.createElement("div");
 
-        MakeHotKey("Alt+Shift+Ctrl+G", function (hotkey) {
-          HotKeyCalledAltShiftCtrlG();
-        });
-
-        MakeHotKey("ArrowUp", function (hotkey) {
-          HotKeyCalledArrowUp();
-        });
-
-        MakeHotKey("ArrowDown", function (hotkey) {
-          HotKeyCalledArrowDown();
-        });
-
-        MakeHotKey("ArrowLeft", function (hotkey) {
-          HotKeyCalledArrowLeft();
-        });
-
-        MakeHotKey("ArrowRight", function (hotkey) {
-          HotKeyCalledArrowRight();
-        });
-
         MakeHotKey("Alt+L", function (hotkey) {
           HotKeyCalledAltL();
         });
 
-        async function HotKeyCalledAltShiftCtrlG() {
-          // console.log("HotKeyCalled AltShiftCtrlG")
+        // variables.text =  "hello this is some text lets see if you can type fast then you can see how fast you typed and ist done\;
 
-          await showCustomMessageBox({}, " ", "You Clicked Ctrl+Alt+Shift+G ", 0, 0);
+        variables.text = "hello this";
 
-          // We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the and of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
+        variables.x = 10;
+
+        variables.y = 10;
+
+        variables.howMany = 0;
+
+        variables.characters1 = variables.text.split("");
+        variables.charLength1 = variables.characters1.length;
+
+        for (/* Loop parse */ variables.A_Index1 = 1; variables.A_Index1 <= variables.charLength1; variables.A_Index1++) {
+          variables.A_LoopField1 = variables.characters1[variables.A_Index1 - 1]; // Using array notation to access characters
+
+          variables.howMany++;
+          variables.v = "l" + variables.A_Index1;
+
+          Gui1[variables.v] = document.createElement("div");
+          Gui1[variables.v].id = "Gui1" + [variables.v]; // Set ID for referencing
+          Gui1[variables.v].textContent = "" + variables.A_LoopField1 + "";
+          Gui1[variables.v].style.color = "#black";
+          Gui1[variables.v].style.fontSize = "18px"; // Set font size
+          Gui1[variables.v].style.position = "absolute"; // Set position to absolute
+          Gui1[variables.v].style.left = "" + variables.x + "px"; // Set initial x position
+          Gui1[variables.v].style.top = "" + variables.y + "px"; // Set initial y position
+          Gui1[variables.v].style.width = "1000px"; // Set width
+          Gui1[variables.v].style.height = "300px"; // Set height
+          Gui1.appendChild(Gui1[variables.v]);
+
+          if (variables.A_LoopField1 == " ") {
+            variables.x = variables.x + 16 + 3;
+          } else {
+            variables.x = variables.x + 12 + 3;
+          }
         }
 
-        variables.x = 0;
-
-        variables.y = 0;
-
-        variables.Speed = 5;
-
-        Gui1Player = document.createElement("button");
-        Gui1Player.id = "Gui1" + "Player"; // Set ID for referencing
-        Gui1Player.textContent = "player";
-        Gui1Player.style.fontSize = "20px"; // Set font size
-        Gui1Player.style.position = "absolute"; // Set position to absolute
-        Gui1Player.style.left = "" + variables.x + "px"; // Set initial x position
-        Gui1Player.style.top = "" + variables.y + "px"; // Set initial y position
-        Gui1Player.style.width = "50px"; // Set width
-        Gui1Player.style.height = "50px"; // Set height
-        Gui1Player.onclick = function (event) {
-          A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
-          player(A_GuiControl);
-        };
-        Gui1.appendChild(Gui1Player);
-
         Gui1.style.position = "absolute";
-        Gui1.style.width = "700px"; // Set the width
-        Gui1.style.height = "700px"; // Set the height
+        Gui1.style.width = "" + BuildInVars("A_ScreenWidth") + "px"; // Set the width
+        Gui1.style.height = "600px"; // Set the height
         Gui1.style.backgroundColor = "#121212";
         Gui1.style.color = "white";
         Gui1.style.fontSize = "15px";
@@ -845,54 +852,103 @@
 
         document.body.appendChild(Gui1); // Append the GUI window to the body
 
-        SetTimer(lastkey, 1);
+        variables.pos = 0;
+
+        variables.OldA_LastKey = "";
+
+        // variables.text =  "he:lo this is some text lets s]e if you can type fast then you can s]e how fast you typed and ist done\;
+
+        variables.text = "he:lo this";
+
+        variables.varWrong = 0;
+
+        variables.varRight = 0;
+
+        variables.onceTimerStart = 0;
+
+        SetTimer(codes, 10);
+        SetTimer(lastkey, 10);
         return;
 
-        async function player(A_GuiControl) {
-          await showCustomMessageBox({}, " ", "im player ", 0, 0);
-        }
+        async function codes(A_GuiControl) {
+          if (variables.OldA_LastKey !== BuildInVars("A_LastKey")) {
+            variables.onceTimerStart++;
+            if (variables.onceTimerStart == 1) {
+              variables.StartTime = BuildInVars("A_TickCount");
+            }
+            variables.pos++;
 
-        async function HotKeyCalledArrowUp() {
-          // console.log("HotKeyCalled ArrowUp")
+            // Get the character at the specified position
+            variables.char = SubStr(variables.text, variables.pos, 1);
 
-          if (variables.y - variables.Speed >= 0) {
-            variables.y -= variables.Speed;
+            for (/* Normal Loop */ variables.A_Index2 = 1; variables.A_Index2 <= 1; variables.A_Index2++) {
+              if (variables.char == ":") {
+                variables.char = "l";
 
-            GuiControl("move", "Gui1Player", variables.x, variables.y);
-            GuiControl("text", "Gui1Player", BuildInVars("A_LastKey"));
-          }
-        }
+                variables.OldA_LastKey = ":";
 
-        async function HotKeyCalledArrowDown() {
-          // console.log("HotKeyCalled ArrowDown")
+                break;
+              } else {
+                variables.OldA_LastKey = BuildInVars("A_LastKey");
 
-          if (variables.y + 50 + variables.Speed <= 700) {
-            variables.y += variables.Speed;
+                break;
+              }
 
-            GuiControl("move", "Gui1Player", variables.x, variables.y);
-            GuiControl("text", "Gui1Player", BuildInVars("A_LastKey"));
-          }
-        }
+              if (variables.char == "]") {
+                variables.char = "e";
 
-        async function HotKeyCalledArrowLeft() {
-          // console.log("HotKeyCalled ArrowLeft")
+                variables.OldA_LastKey = "]";
 
-          if (variables.x - variables.Speed >= 0) {
-            variables.x -= variables.Speed;
+                break;
+              } else {
+                variables.OldA_LastKey = BuildInVars("A_LastKey");
 
-            GuiControl("move", "Gui1Player", variables.x, variables.y);
-            GuiControl("text", "Gui1Player", BuildInVars("A_LastKey"));
-          }
-        }
+                break;
+              }
+            }
 
-        async function HotKeyCalledArrowRight() {
-          // console.log("HotKeyCalled ArrowRight")
+            variables.v = "l" + variables.pos;
 
-          if (variables.x + 50 + variables.Speed <= 700) {
-            variables.x += variables.Speed;
+            if (variables.char == BuildInVars("A_LastKey")) {
+              variables.varRight++;
+              GuiControl("color", "Gui1" + variables.v, "#00ff08");
+            } else {
+              variables.varWrong++;
+              GuiControl("color", "Gui1" + variables.v, "#ff1e00");
+            }
+            console.log("Character at position " + variables.pos + " : " + variables.char + " ");
 
-            GuiControl("move", "Gui1Player", variables.x, variables.y);
-            GuiControl("text", "Gui1Player", BuildInVars("A_LastKey"));
+            if (variables.pos == variables.howMany) {
+              variables.ElapsedTime = BuildInVars("A_TickCount") - variables.StartTime;
+
+              variables.ms = variables.ElapsedTime;
+
+              // Calculate the components
+              variables.hours = Math.floor(variables.ms / 3600000);
+
+              variables.ms = Mod(variables.ms, 3600000);
+
+              variables.minutes = Math.floor(variables.ms / 60000);
+
+              variables.ms = Mod(variables.ms, 60000);
+
+              variables.seconds = Math.floor(variables.ms / 1000);
+
+              variables.milliseconds = Mod(variables.ms, 1000);
+
+              // Display the result
+              variables.ElapsedTime123 = "";
+
+              variables.ElapsedTime123 += variables.hours + "h " + variables.minutes + "m " + variables.seconds + "s " + variables.milliseconds + "ms";
+
+              variables.percentage = Math.round((variables.varRight / (variables.varWrong + variables.varRight)) * 100);
+
+              variables.msgCorrct = "You are " + variables.percentage + "%" + " correct";
+
+              await showCustomMessageBox({}, " ", "done in " + variables.ElapsedTime123 + " and " + variables.msgCorrct + " ", 0, 0);
+              await sleep(10);
+              SetTimer(codes, "Off");
+            }
           }
         }
 
@@ -904,7 +960,6 @@
 
         async function lastkey(A_GuiControl) {
           // Input, A_LastKey, L1 V
-          await sleep(10);
         }
       }
 
