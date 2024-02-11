@@ -138,6 +138,7 @@ Some features haven't been fully tested but should work include:
 - InStr
 - RegExMatch
 - RegExReplace
+- GetKeyState
 - StrLen
 - StrSplit
 - Format
