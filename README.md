@@ -45,6 +45,9 @@ Also, `return` must be in lowercase.
 
 So far, AHK-to-js supports:
 
+- Gui
+- GuiContol
+- Hotkyes but simple like you can still do almost all combinations Ctrl+Alt+Shift+AlmostAnyKey
 - Functions
 - If, else, else if
 - Random
@@ -141,6 +144,7 @@ Some features haven't been fully tested but should work include:
 Built-in Variables
 - A_Index
 - A_LoopField
+- A_LastKey retrieves the last key pressed by the user on the page
 - A_ScreenWidth
 - A_ScreenHeight
 - A_GuiControl
