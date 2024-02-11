@@ -574,6 +574,27 @@
         });
       }
 
+      let keyState = {}; // Object to track key states
+
+      // Function to handle keydown events
+      function handleKeyDown(event) {
+        keyState[event.key] = true; // Set key state to true when pressed
+      }
+
+      // Function to handle keyup events
+      function handleKeyUp(event) {
+        keyState[event.key] = false; // Set key state to false when released
+      }
+
+      // Add event listeners for keydown and keyup events
+      document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("keyup", handleKeyUp);
+
+      // Function to get the state of a key dynamically
+      function GetKeyState(key, DownOrUp) {
+        return DownOrUp === "D" ? keyState[key] : !keyState[key];
+      }
+
       let lastKeyPressed = "";
 
       function trackLastKeyPressed() {
@@ -766,93 +787,84 @@
           A_Index: null,
           A_IsTranspiled: 1,
           A_LoopField: null,
-          char: null,
           characters: null,
-          ElapsedTime123: null,
-          ElapsedTime: null,
-          Gui: null,
-          hours: null,
-          howMany: null,
-          milliseconds: null,
-          minutes: null,
-          ms: null,
-          msgCorrct: null,
-          OldA_LastKey: null,
-          onceTimerStart: null,
-          percentage: null,
-          pos: null,
-          seconds: null,
-          StartTime: null,
-          text: null,
-          v: null,
-          varRight: null,
-          varWrong: null,
-          w2: null,
-          w: null,
+          CheckGround: null,
+          nnn: null,
           x: null,
           y: null,
         };
 
-        let funcs = {};
+        let funcs = {
+          CheckGround: CheckGround,
+        };
 
         let Gui1 = {};
         Gui1 = document.createElement("div");
 
-        MakeHotKey("Alt+L", function (hotkey) {
-          HotKeyCalledAltL();
+        MakeHotKey("K", function (hotkey) {
+          HotKeyCalledK();
         });
 
-        // variables.text =  "hello man is some text lets see if you can type fast then you can see how fast can you typed and ist done\;
+        //
 
-        variables.text = "hello man";
+        //
 
-        variables.howMany = 0;
+        // Name:
 
-        variables.characters1 = variables.text.split("");
-        variables.charLength1 = variables.characters1.length;
+        // AHK game phisics
 
-        for (/* Loop parse */ variables.A_Index1 = 1; variables.A_Index1 <= variables.charLength1; variables.A_Index1++) {
-          variables.A_LoopField1 = variables.characters1[variables.A_Index1 - 1]; // Using array notation to access characters
+        //
 
-          variables.howMany++;
+        //
 
-          variables.w = variables.w + 14 + 3;
-        }
-        variables.w = variables.w + 10;
+        //
 
-        variables.w2 = variables.w - 10;
+        //
 
-        variables.x = 10;
+        //
 
-        variables.y = 10;
+        variables.x = 350;
 
-        variables.characters2 = variables.text.split("");
-        variables.charLength2 = variables.characters2.length;
+        variables.y = 450;
 
-        for (/* Loop parse */ variables.A_Index2 = 1; variables.A_Index2 <= variables.charLength2; variables.A_Index2++) {
-          variables.A_LoopField2 = variables.characters2[variables.A_Index2 - 1]; // Using array notation to access characters
+        Gui1Static1 = document.createElement("div");
+        Gui1Static1.id = "Gui1" + "Static" + "1"; // Set ID for referencing
+        Gui1Static1.textContent = "This is the MATRIX";
+        Gui1Static1.style.color = "#white";
+        Gui1Static1.style.fontSize = "15px"; // Set font size
+        Gui1Static1.style.position = "absolute"; // Set position to absolute
+        Gui1Static1.style.left = "10px"; // Set initial x position
+        Gui1Static1.style.top = "10px"; // Set initial y position
+        Gui1Static1.style.width = "px"; // Set width
+        Gui1Static1.style.height = "px"; // Set height
+        Gui1.appendChild(Gui1Static1);
 
-          variables.v = "l" + variables.A_Index2;
+        Gui1Button1 = document.createElement("button");
+        Gui1Button1.id = "Gui1" + "Button" + "1"; // Set ID for referencing
+        Gui1Button1.textContent = "";
+        Gui1Button1.style.fontSize = "15px"; // Set font size
+        Gui1Button1.style.position = "absolute"; // Set position to absolute
+        Gui1Button1.style.left = "" + variables.x + "px"; // Set initial x position
+        Gui1Button1.style.top = "" + variables.y + "px"; // Set initial y position
+        Gui1Button1.style.width = "50px"; // Set width
+        Gui1Button1.style.height = "50px"; // Set height
+        Gui1.appendChild(Gui1Button1);
 
-          Gui1[variables.v] = document.createElement("div");
-          Gui1[variables.v].id = "Gui1" + [variables.v]; // Set ID for referencing
-          Gui1[variables.v].textContent = "" + variables.A_LoopField2 + "";
-          Gui1[variables.v].style.color = "#black";
-          Gui1[variables.v].style.fontSize = "18px"; // Set font size
-          Gui1[variables.v].style.position = "absolute"; // Set position to absolute
-          Gui1[variables.v].style.left = "" + variables.x + "px"; // Set initial x position
-          Gui1[variables.v].style.top = "" + variables.y + "px"; // Set initial y position
-          Gui1[variables.v].style.width = "" + variables.w2 + "px"; // Set width
-          Gui1[variables.v].style.height = "300px"; // Set height
-          Gui1.appendChild(Gui1[variables.v]);
-
-          variables.x = variables.x + 14 + 3;
-        }
+        Gui1Button2 = document.createElement("button");
+        Gui1Button2.id = "Gui1" + "Button" + "2"; // Set ID for referencing
+        Gui1Button2.textContent = "";
+        Gui1Button2.style.fontSize = "15px"; // Set font size
+        Gui1Button2.style.position = "absolute"; // Set position to absolute
+        Gui1Button2.style.left = "100px"; // Set initial x position
+        Gui1Button2.style.top = "350px"; // Set initial y position
+        Gui1Button2.style.width = "300px"; // Set width
+        Gui1Button2.style.height = "20px"; // Set height
+        Gui1.appendChild(Gui1Button2);
 
         Gui1.style.position = "absolute";
-        Gui1.style.width = "" + variables.w + "px"; // Set the width
-        Gui1.style.height = "600px"; // Set the height
-        Gui1.style.backgroundColor = "#121212";
+        Gui1.style.width = "800px"; // Set the width
+        Gui1.style.height = "500px"; // Set the height
+        Gui1.style.backgroundColor = "#c121212";
         Gui1.style.color = "white";
         Gui1.style.fontSize = "15px";
         Gui1.style.padding = "10px";
@@ -864,114 +876,212 @@
 
         document.body.appendChild(Gui1); // Append the GUI window to the body
 
-        variables.pos = 0;
+        SetTimer(looop, 10);
 
-        variables.OldA_LastKey = "";
-
-        // variables.text =  "he:lo man is some text lets s]e if you can type fast then you can s]e how fast can you typed and ist done\;
-
-        variables.text = "he:lo man";
-
-        variables.varWrong = 0;
-
-        variables.varRight = 0;
-
-        variables.onceTimerStart = 0;
-
-        SetTimer(codes, 10);
-        SetTimer(lastkey, 10);
         return;
 
-        async function codes(A_GuiControl) {
-          if (variables.OldA_LastKey !== BuildInVars("A_LastKey")) {
-            variables.onceTimerStart++;
-            if (variables.onceTimerStart == 1) {
-              variables.StartTime = BuildInVars("A_TickCount");
-            }
-            variables.pos++;
+        async function looop(A_GuiControl) {
+          await sleep(1);
 
-            // Get the character at the specified position
-            variables.char = SubStr(variables.text, variables.pos, 1);
+          {
+            if ((await GetKeyState("ArrowUp", "D")) && (await GetKeyState("ArrowLeft", "D"))) {
+              //
 
-            for (/* Normal Loop */ variables.A_Index3 = 1; variables.A_Index3 <= 1; variables.A_Index3++) {
-              if (variables.char == ":") {
-                variables.char = "l";
+              variables.nnn = 21;
 
-                variables.OldA_LastKey = ":";
+              for (/* Normal Loop */ variables.A_Index1 = 1; variables.A_Index1 <= 20; variables.A_Index1++) {
+                variables.nnn--;
 
-                break;
-              } else {
-                variables.OldA_LastKey = BuildInVars("A_LastKey");
+                for (/* Normal Loop */ variables.A_Index2 = 1; variables.A_Index2 <= variables.nnn; variables.A_Index2++) {
+                  variables.y--;
 
-                break;
+                  variables.x--;
+                }
+
+                await sleep(1);
+
+                await CheckGround();
+
+                GuiControl("move", "Gui1Button1", variables.x, variables.y);
               }
 
-              if (variables.char == "]") {
-                variables.char = "e";
+              variables.nnn = 21;
 
-                variables.OldA_LastKey = "]";
+              for (/* Normal Loop */ variables.A_Index3 = 1; variables.A_Index3 <= 20; variables.A_Index3++) {
+                variables.nnn--;
 
-                break;
-              } else {
-                variables.OldA_LastKey = BuildInVars("A_LastKey");
+                for (/* Normal Loop */ variables.A_Index4 = 1; variables.A_Index4 <= variables.nnn; variables.A_Index4++) {
+                  variables.y++;
+                }
 
-                break;
+                await sleep(1);
+
+                CheckGround();
+
+                GuiControl("move", "Gui1Button1", variables.x, variables.y);
+              }
+
+              //
+            }
+
+            if ((await GetKeyState("ArrowUp", "D")) && (await GetKeyState("ArrowRight", "D"))) {
+              //
+
+              variables.nnn = 21;
+
+              for (/* Normal Loop */ variables.A_Index5 = 1; variables.A_Index5 <= 20; variables.A_Index5++) {
+                variables.nnn--;
+
+                for (/* Normal Loop */ variables.A_Index6 = 1; variables.A_Index6 <= variables.nnn; variables.A_Index6++) {
+                  variables.y--;
+
+                  variables.x++;
+                }
+
+                await sleep(1);
+
+                CheckGround();
+
+                GuiControl("move", "Gui1Button1", variables.x, variables.y);
+              }
+
+              variables.nnn = 21;
+
+              for (/* Normal Loop */ variables.A_Index7 = 1; variables.A_Index7 <= 20; variables.A_Index7++) {
+                variables.nnn--;
+
+                for (/* Normal Loop */ variables.A_Index8 = 1; variables.A_Index8 <= variables.nnn; variables.A_Index8++) {
+                  variables.y++;
+                }
+
+                await sleep(1);
+
+                CheckGround();
+
+                GuiControl("move", "Gui1Button1", variables.x, variables.y);
+              }
+
+              //
+            }
+
+            if (await GetKeyState("ArrowUp", "D")) {
+              //
+
+              variables.nnn = 21;
+
+              for (/* Normal Loop */ variables.A_Index9 = 1; variables.A_Index9 <= 20; variables.A_Index9++) {
+                variables.nnn--;
+
+                for (/* Normal Loop */ variables.A_Index10 = 1; variables.A_Index10 <= variables.nnn; variables.A_Index10++) {
+                  variables.y--;
+                }
+
+                await sleep(1);
+
+                CheckGround();
+
+                GuiControl("move", "Gui1Button1", variables.x, variables.y);
+              }
+
+              variables.nnn = 21;
+
+              for (/* Normal Loop */ variables.A_Index11 = 1; variables.A_Index11 <= 20; variables.A_Index11++) {
+                variables.nnn--;
+
+                for (/* Normal Loop */ variables.A_Index12 = 1; variables.A_Index12 <= variables.nnn; variables.A_Index12++) {
+                  variables.y++;
+                }
+
+                await sleep(1);
+
+                CheckGround();
+
+                GuiControl("move", "Gui1Button1", variables.x, variables.y);
+              }
+
+              //
+            }
+
+            if (await GetKeyState("ArrowLeft", "D")) {
+              variables.nnn = 10;
+
+              for (/* Normal Loop */ variables.A_Index13 = 1; variables.A_Index13 <= 9; variables.A_Index13++) {
+                variables.nnn--;
+
+                for (/* Normal Loop */ variables.A_Index14 = 1; variables.A_Index14 <= variables.nnn; variables.A_Index14++) {
+                  variables.x--;
+                }
+
+                await sleep(1);
+
+                CheckGround();
+
+                GuiControl("move", "Gui1Button1", variables.x, variables.y);
               }
             }
 
-            variables.v = "l" + variables.pos;
+            // if ( await GetKeyState ( "ArrowDown", "D" ) ) ;
 
-            if (variables.char == BuildInVars("A_LastKey")) {
-              variables.varRight++;
-              GuiControl("color", "Gui1" + variables.v, "#00ff08");
-            } else {
-              variables.varWrong++;
-              GuiControl("color", "Gui1" + variables.v, "#ff1e00");
+            // {
+
+            // }
+
+            if (await GetKeyState("ArrowRight", "D")) {
+              variables.nnn = 10;
+
+              for (/* Normal Loop */ variables.A_Index15 = 1; variables.A_Index15 <= 9; variables.A_Index15++) {
+                variables.nnn--;
+
+                for (/* Normal Loop */ variables.A_Index16 = 1; variables.A_Index16 <= variables.nnn; variables.A_Index16++) {
+                  variables.x++;
+                }
+
+                await sleep(1);
+
+                CheckGround();
+
+                GuiControl("move", "Gui1Button1", variables.x, variables.y);
+              }
             }
-            console.log("Character at position " + variables.pos + " : " + variables.char + " ");
 
-            if (variables.pos == variables.howMany) {
-              variables.ElapsedTime = BuildInVars("A_TickCount") - variables.StartTime;
+            variables.y++;
 
-              variables.ms = variables.ElapsedTime;
+            CheckGround();
 
-              // Calculate the components
-              variables.hours = Math.floor(variables.ms / 3600000);
+            GuiControl("move", "Gui1Button1", variables.x, variables.y);
 
-              variables.ms = Mod(variables.ms, 3600000);
-
-              variables.minutes = Math.floor(variables.ms / 60000);
-
-              variables.ms = Mod(variables.ms, 60000);
-
-              variables.seconds = Math.floor(variables.ms / 1000);
-
-              variables.milliseconds = Mod(variables.ms, 1000);
-
-              // Display the result
-              variables.ElapsedTime123 = "";
-
-              variables.ElapsedTime123 += variables.hours + "h " + variables.minutes + "m " + variables.seconds + "s " + variables.milliseconds + "ms";
-
-              variables.percentage = Math.round((variables.varRight / (variables.varWrong + variables.varRight)) * 100);
-
-              variables.msgCorrct = "You are " + variables.percentage + "%" + " correct";
-
-              await showCustomMessageBox({}, " ", "done in " + variables.ElapsedTime123 + " and " + variables.msgCorrct + " ", 0, 0);
-              await sleep(10);
-              SetTimer(codes, "Off");
-            }
+            // end of loop
           }
         }
 
-        async function HotKeyCalledAltL() {
-          // console.log("HotKeyCalled AltL")
-
+        async function GuiClose(A_GuiControl) {
           window.close();
         }
 
-        async function lastkey(A_GuiControl) {
-          // Input, A_LastKey, L1 V
+        async function HotKeyCalledK() {
+          // console.log("HotKeyCalled K")
+
+          await showCustomMessageBox({}, " ", "" + variables.y + " ", 0, 0);
+        }
+
+        async function CheckGround() {
+          // this function is global in ahk
+
+          if (variables.x >= 50 && variables.x <= 400 && variables.y >= 300 && variables.y <= 320) {
+            if (variables.y >= 300) {
+              variables.y = 300;
+
+              GuiControl("move", "Gui1Button1", variables.x, variables.y);
+            }
+
+            GuiControl("move", "Gui1Button1", variables.x, variables.y);
+          }
+
+          if (variables.y >= 450) {
+            variables.y = 450;
+
+            GuiControl("move", "Gui1Button1", variables.x, variables.y);
+          }
         }
       }
 
