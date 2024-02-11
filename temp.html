@@ -777,6 +777,10 @@
         let Gui1 = {};
         Gui1 = document.createElement("div");
 
+        MakeHotKey("Alt+Shift+Ctrl+G", function (hotkey) {
+          HotKeyCalledAltShiftCtrlG();
+        });
+
         MakeHotKey("ArrowUp", function (hotkey) {
           HotKeyCalledArrowUp();
         });
@@ -796,6 +800,14 @@
         MakeHotKey("Alt+L", function (hotkey) {
           HotKeyCalledAltL();
         });
+
+        async function HotKeyCalledAltShiftCtrlG() {
+          // console.log("HotKeyCalled AltShiftCtrlG")
+
+          await showCustomMessageBox({}, " ", "You Clicked Ctrl+Alt+Shift+G ", 0, 0);
+
+          // We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the and of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
+        }
 
         variables.x = 0;
 

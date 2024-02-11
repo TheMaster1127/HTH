@@ -1,7 +1,11 @@
 
 
 
+!+^g::
+Msgbox, You Clicked Ctrl+Alt+Shift+G
 
+; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the and of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
+Return
 
 x := 0
 y := 0
