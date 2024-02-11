@@ -45,6 +45,16 @@ Also, `return` must be in lowercase.
 
 So far, AHK-to-js supports:
 
+- Gui - Buttons, Text and Edit 
+- GuiContol
+- Hotkyes but simple like you can still do almost all combinations like Ctrl+Alt+Shift+AlmostAnyKey or Shift+Up or just even one key
+```ahk
+!+^g::
+Msgbox, You Clicked Ctrl+Alt+Shift+G
+
+; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the and of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
+Return
+```
 - Functions
 - If, else, else if
 - Random
@@ -63,7 +73,7 @@ return
 Label1:
 MsgBox, we are in Label1
 
-; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the and of any label. This is not the same case in real AutoHotkey, but here we need to do that.
+; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the and of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
 Return
 ```
 - InputBox can only pass 2 or 3 parameters here is an example:
@@ -141,6 +151,7 @@ Some features haven't been fully tested but should work include:
 Built-in Variables
 - A_Index
 - A_LoopField
+- A_LastKey retrieves the last key pressed by the user on the page
 - A_ScreenWidth
 - A_ScreenHeight
 - A_GuiControl
