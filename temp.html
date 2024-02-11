@@ -230,6 +230,9 @@
           case "A_ScreenWidth":
             // Return screen width
             return window.innerWidth;
+          case "A_LastKey":
+            // Return screen width
+            return getLastKeyPressed();
           case "A_ScreenHeight":
             // Return screen height
             return window.innerHeight;
@@ -571,6 +574,24 @@
         });
       }
 
+      let lastKeyPressed = "";
+
+      function trackLastKeyPressed() {
+        document.addEventListener("keydown", function (event) {
+          lastKeyPressed = event.key;
+          // console.log(lastKeyPressed);
+        });
+      }
+
+      function getLastKeyPressed() {
+        return lastKeyPressed;
+      }
+
+      // Call the trackLastKeyPressed function to start tracking key presses
+      trackLastKeyPressed();
+
+      // Now you can call getLastKeyPressed() whenever you need to get the last key pressed
+
       function GuiControl(action, id, param1, param2, param3, param4) {
         const element = document.getElementById(id);
         if (element) {
@@ -608,6 +629,49 @@
         }
       }
 
+      function MakeHotKey(hotkey, callback) {
+        document.addEventListener("keydown", function (event) {
+          const keys = hotkey.split("+").map((key) => key.trim().toLowerCase());
+          const modifiers = {
+            ctrl: event.ctrlKey,
+            shift: event.shiftKey,
+            alt: event.altKey,
+          };
+
+          let hotkeyPressed = true;
+          keys.forEach((key) => {
+            if (key === "ctrl" || key === "shift" || key === "alt") {
+              if (!modifiers[key]) {
+                hotkeyPressed = false;
+              }
+            } else if (key.startsWith("arrow")) {
+              const arrowDirection = key.replace("arrow", "");
+              if (arrowDirection === "up" && event.key !== "ArrowUp") {
+                hotkeyPressed = false;
+              } else if (arrowDirection === "down" && event.key !== "ArrowDown") {
+                hotkeyPressed = false;
+              } else if (arrowDirection === "left" && event.key !== "ArrowLeft") {
+                hotkeyPressed = false;
+              } else if (arrowDirection === "right" && event.key !== "ArrowRight") {
+                hotkeyPressed = false;
+              }
+            } else if (!event.key.match(/^[0-9a-zA-Z]$/) && event.key !== key) {
+              hotkeyPressed = false;
+            } else if (event.key.toLowerCase() !== key && event.key.match(/^[a-zA-Z]$/)) {
+              hotkeyPressed = false;
+            }
+          });
+
+          if (hotkeyPressed) {
+            if (modifiers["shift"]) {
+              callback(hotkey.toUpperCase());
+            } else {
+              callback(hotkey.toLowerCase());
+            }
+          }
+        });
+      }
+
       // Object to store timer intervals for different functions
       const timerIntervals = {};
 
@@ -642,6 +706,37 @@
         }
       }
 
+      async function getDataFromEndpoint(data, endpoint, method = "GET") {
+        try {
+          const options = {
+            method: method,
+            headers: {
+              "Content-Type": "application/json", // Adjust content type as needed
+            },
+            body: JSON.stringify(data), // Include data in request body for methods like POST or PUT
+          };
+
+          // Fetch data from the specified endpoint
+          const response = await fetch(endpoint, options);
+
+          // Check if the response is successful (status code 2xx)
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          // Parse the JSON response
+          const responseData = await response.json();
+
+          // Return the fetched data if it exists
+          return responseData;
+        } catch (error) {
+          // Handle any errors that occur during the fetch
+          console.error("Fetch error:", error);
+          // Return null if there are any errors
+          return null;
+        }
+      }
+
       function FileAppend(data, filename) {
         // Create a blob with the provided data
         const blob = new Blob([data], { type: "text/plain" });
@@ -671,26 +766,10 @@
           A_Index: null,
           A_IsTranspiled: 1,
           A_LoopField: null,
-          AHour: null,
-          ampm: null,
           characters: null,
-          ElapsedTime123: null,
-          ElapsedTime: null,
-          EndTime: null,
-          fileAPPP: null,
-          h: null,
-          hours: null,
-          isRunning: null,
-          milliseconds: null,
-          minutes: null,
-          ms: null,
-          OutputVar: null,
-          seconds: null,
-          StartTime: null,
-          StartTimee: null,
-          storeElapsedTime: null,
-
-          w: null,
+          Speed: null,
+          x: null,
+          y: null,
         };
 
         let funcs = {};
@@ -698,147 +777,50 @@
         let Gui1 = {};
         Gui1 = document.createElement("div");
 
-        //
-        //
-        // Name:
-        // Projects time tracker AHK
-        //
-        //
-        // A lightweight AutoHotkey script to track the time spent on your projects.
-        //
-        //
+        MakeHotKey("ArrowUp", function (hotkey) {
+          HotKeyCalledArrowUp();
+        });
 
-        variables.storeElapsedTime = 0;
+        MakeHotKey("ArrowDown", function (hotkey) {
+          HotKeyCalledArrowDown();
+        });
 
-        if (variables.A_IsTranspiled == "") {
-          // do something if its transpiled
-        } else {
-          // do something if its not transpiled
-        }
+        MakeHotKey("ArrowLeft", function (hotkey) {
+          HotKeyCalledArrowLeft();
+        });
 
-        Gui1Static1 = document.createElement("div");
-        Gui1Static1.id = "Gui1Static1"; // Set ID for referencing
-        Gui1Static1.textContent = "Track your time for a project";
-        Gui1Static1.style.color = "#white";
-        Gui1Static1.style.fontSize = "23px"; // Set font size
-        Gui1Static1.style.position = "absolute"; // Set position to absolute
-        Gui1Static1.style.left = "0px"; // Set initial x position
-        Gui1Static1.style.top = "10px"; // Set initial y position
-        Gui1Static1.style.width = "1000px"; // Set width
-        Gui1Static1.style.height = "30px"; // Set height
-        Gui1.appendChild(Gui1Static1);
+        MakeHotKey("ArrowRight", function (hotkey) {
+          HotKeyCalledArrowRight();
+        });
 
-        Gui1TextSelectedFolder = document.createElement("div");
-        Gui1TextSelectedFolder.id = "Gui1" + "TextSelectedFolder"; // Set ID for referencing
-        Gui1TextSelectedFolder.textContent = "";
-        Gui1TextSelectedFolder.style.color = "#white";
-        Gui1TextSelectedFolder.style.fontSize = "23px"; // Set font size
-        Gui1TextSelectedFolder.style.position = "absolute"; // Set position to absolute
-        Gui1TextSelectedFolder.style.left = "10px"; // Set initial x position
-        Gui1TextSelectedFolder.style.top = "550px"; // Set initial y position
-        Gui1TextSelectedFolder.style.width = "1000px"; // Set width
-        Gui1TextSelectedFolder.style.height = "100px"; // Set height
-        Gui1.appendChild(Gui1TextSelectedFolder);
+        MakeHotKey("Alt+L", function (hotkey) {
+          HotKeyCalledAltL();
+        });
 
-        if (variables.A_IsTranspiled == "") {
-          // do something if its transpiled
-        } else {
-          // do something if its not transpiled
-        }
+        variables.x = 0;
 
-        Gui1Start = document.createElement("button");
-        Gui1Start.id = "Gui1" + "Start"; // Set ID for referencing
-        Gui1Start.textContent = "Start/Resume";
-        Gui1Start.style.fontSize = "20px"; // Set font size
-        Gui1Start.style.position = "absolute"; // Set position to absolute
-        Gui1Start.style.left = "10px"; // Set initial x position
-        Gui1Start.style.top = "150px"; // Set initial y position
-        Gui1Start.style.width = "150px"; // Set width
-        Gui1Start.style.height = "50px"; // Set height
-        Gui1Start.onclick = function (event) {
+        variables.y = 0;
+
+        variables.Speed = 5;
+
+        Gui1Player = document.createElement("button");
+        Gui1Player.id = "Gui1" + "Player"; // Set ID for referencing
+        Gui1Player.textContent = "player";
+        Gui1Player.style.fontSize = "20px"; // Set font size
+        Gui1Player.style.position = "absolute"; // Set position to absolute
+        Gui1Player.style.left = "" + variables.x + "px"; // Set initial x position
+        Gui1Player.style.top = "" + variables.y + "px"; // Set initial y position
+        Gui1Player.style.width = "50px"; // Set width
+        Gui1Player.style.height = "50px"; // Set height
+        Gui1Player.onclick = function (event) {
           A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
-          Start(A_GuiControl);
+          player(A_GuiControl);
         };
-        Gui1.appendChild(Gui1Start);
-
-        if (variables.A_IsTranspiled == "") {
-          // do something if its not transpiled
-        } else {
-          // do something if its transpiled
-        }
-
-        Gui1Stop = document.createElement("button");
-        Gui1Stop.id = "Gui1" + "Stop"; // Set ID for referencing
-        Gui1Stop.textContent = "Stop/Pause";
-        Gui1Stop.style.fontSize = "23px"; // Set font size
-        Gui1Stop.style.position = "absolute"; // Set position to absolute
-        Gui1Stop.style.left = "10px"; // Set initial x position
-        Gui1Stop.style.top = "210px"; // Set initial y position
-        Gui1Stop.style.width = "150px"; // Set width
-        Gui1Stop.style.height = "50px"; // Set height
-        Gui1Stop.onclick = function (event) {
-          A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
-          Stop(A_GuiControl);
-        };
-        Gui1.appendChild(Gui1Stop);
-
-        Gui1Reset = document.createElement("button");
-        Gui1Reset.id = "Gui1" + "Reset"; // Set ID for referencing
-        Gui1Reset.textContent = "Reset";
-        Gui1Reset.style.fontSize = "23px"; // Set font size
-        Gui1Reset.style.position = "absolute"; // Set position to absolute
-        Gui1Reset.style.left = "10px"; // Set initial x position
-        Gui1Reset.style.top = "270px"; // Set initial y position
-        Gui1Reset.style.width = "150px"; // Set width
-        Gui1Reset.style.height = "50px"; // Set height
-        Gui1Reset.onclick = function (event) {
-          A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
-          Reset(A_GuiControl);
-        };
-        Gui1.appendChild(Gui1Reset);
-
-        Gui1Time = document.createElement("div");
-        Gui1Time.id = "Gui1" + "Time"; // Set ID for referencing
-        Gui1Time.textContent = "";
-        Gui1Time.style.color = "#white";
-        Gui1Time.style.fontSize = "23px"; // Set font size
-        Gui1Time.style.position = "absolute"; // Set position to absolute
-        Gui1Time.style.left = "10px"; // Set initial x position
-        Gui1Time.style.top = "350px"; // Set initial y position
-        Gui1Time.style.width = "350px"; // Set width
-        Gui1Time.style.height = "50px"; // Set height
-        Gui1.appendChild(Gui1Time);
-
-        Gui1Save = document.createElement("button");
-        Gui1Save.id = "Gui1" + "Save"; // Set ID for referencing
-        Gui1Save.textContent = "Save";
-        Gui1Save.style.fontSize = "23px"; // Set font size
-        Gui1Save.style.position = "absolute"; // Set position to absolute
-        Gui1Save.style.left = "10px"; // Set initial x position
-        Gui1Save.style.top = "410px"; // Set initial y position
-        Gui1Save.style.width = "150px"; // Set width
-        Gui1Save.style.height = "50px"; // Set height
-        Gui1Save.onclick = function (event) {
-          A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
-          Save(A_GuiControl);
-        };
-        Gui1.appendChild(Gui1Save);
-
-        GuiControl("hide", "Gui1Start");
-        GuiControl("hide", "Gui1Stop");
-        GuiControl("hide", "Gui1Save");
-        GuiControl("hide", "Gui1Reset");
-
-        GuiControl("disable", "Gui1Stop");
-        GuiControl("disable", "Gui1Save");
-        GuiControl("disable", "Gui1Start");
-        variables.h = BuildInVars("A_ScreenHeight") - 100;
-
-        variables.w = BuildInVars("A_ScreenWidth") - 100;
+        Gui1.appendChild(Gui1Player);
 
         Gui1.style.position = "absolute";
-        Gui1.style.width = "" + variables.w + "px"; // Set the width
-        Gui1.style.height = "" + variables.h + "px"; // Set the height
+        Gui1.style.width = "700px"; // Set the width
+        Gui1.style.height = "700px"; // Set the height
         Gui1.style.backgroundColor = "#121212";
         Gui1.style.color = "white";
         Gui1.style.fontSize = "15px";
@@ -851,162 +833,66 @@
 
         document.body.appendChild(Gui1); // Append the GUI window to the body
 
-        await Button();
+        SetTimer(lastkey, 1);
         return;
 
-        async function Button(A_GuiControl) {
-          // await showCustomMessageBox({}," ", "You selected folder \" + variables.OutputVar + \". ", 0, 0)
-          variables.OutputVar = "Project Time.txt";
-
-          GuiControl("text", "Gui1TextSelectedFolder", "You're selected text is Project Time.txt");
-          GuiControl("show", "Gui1Start");
-          GuiControl("show", "Gui1Stop");
-          GuiControl("show", "Gui1Reset");
-          GuiControl("disable", "Gui1Reset");
-
-          GuiControl("disable", "Gui1Stop");
-          GuiControl("enable", "Gui1Start");
+        async function player(A_GuiControl) {
+          await showCustomMessageBox({}, " ", "im player ", 0, 0);
         }
 
-        async function Save(A_GuiControl) {
-          variables.isRunning = 1;
+        async function HotKeyCalledArrowUp() {
+          // console.log("HotKeyCalled ArrowUp")
 
-          GuiControl("disable", "Gui1Stop");
-          GuiControl("disable", "Gui1Save");
-          variables.fileAPPP = "The duration of that session between " + variables.StartTimee + " and " + variables.EndTime + " is " + variables.ElapsedTime123 + "\n";
+          if (variables.y - variables.Speed >= 0) {
+            variables.y -= variables.Speed;
 
-          FileAppend(variables.fileAPPP, "Project Time.txt");
-          await showCustomMessageBox({}, " ", variables.fileAPPP + "Project Time.txt", 0, 0);
-          await Reset();
-        }
-
-        async function Start(A_GuiControl) {
-          if (variables.isRunning !== 1) {
-            variables.StartTime = BuildInVars("A_TickCount");
-
-            if (BuildInVars("A_Hour") >= 13) {
-              variables.AHour = BuildInVars("A_Hour") - 12;
-
-              variables.ampm = "PM";
-            } else {
-              variables.AHour = BuildInVars("A_Hour");
-
-              variables.ampm = "AM";
-            }
-            variables.StartTimee = variables.AHour + ":" + BuildInVars("A_Min") + " " + variables.ampm;
+            GuiControl("move", "Gui1Player", variables.x, variables.y);
+            GuiControl("text", "Gui1Player", BuildInVars("A_LastKey"));
           }
-          variables.StartTime = BuildInVars("A_TickCount") - variables.storeElapsedTime;
-
-          variables.isRunning = 1;
-
-          GuiControl("enable", "Gui1Stop");
-          GuiControl("disable", "Gui1Start");
-          GuiControl("disable", "Gui1Save");
-          GuiControl("disable", "Gui1Reset");
-          SetTimer(Time, 1);
         }
 
-        async function Stop(A_GuiControl) {
-          variables.isRunning = 1;
+        async function HotKeyCalledArrowDown() {
+          // console.log("HotKeyCalled ArrowDown")
 
-          GuiControl("enable", "Gui1Start");
-          GuiControl("enable", "Gui1Reset");
-          GuiControl("disable", "Gui1Stop");
-          GuiControl("show", "Gui1Save");
-          GuiControl("enable", "Gui1Save");
+          if (variables.y + 50 + variables.Speed <= 700) {
+            variables.y += variables.Speed;
 
-          SetTimer(Time, "Off");
-          variables.storeElapsedTime = BuildInVars("A_TickCount") - variables.StartTime;
-
-          variables.ElapsedTime = BuildInVars("A_TickCount") - variables.StartTime;
-
-          if (BuildInVars("A_Hour") >= 13) {
-            variables.AHour = BuildInVars("A_Hour") - 12;
-
-            variables.ampm = "PM";
-          } else {
-            variables.AHour = BuildInVars("A_Hour");
-
-            variables.ampm = "AM";
+            GuiControl("move", "Gui1Player", variables.x, variables.y);
+            GuiControl("text", "Gui1Player", BuildInVars("A_LastKey"));
           }
-          variables.EndTime = variables.AHour + ":" + BuildInVars("A_Min") + " " + variables.ampm;
-
-          variables.ms = variables.ElapsedTime;
-
-          // Calculate the components
-          variables.hours = Math.floor(variables.ms / 3600000);
-
-          variables.ms = Mod(variables.ms, 3600000);
-
-          variables.minutes = Math.floor(variables.ms / 60000);
-
-          variables.ms = Mod(variables.ms, 60000);
-
-          variables.seconds = Math.floor(variables.ms / 1000);
-
-          variables.milliseconds = Mod(variables.ms, 1000);
-
-          // Display the result
-          variables.ElapsedTime123 = "";
-
-          variables.ElapsedTime123 += variables.hours + " hours " + variables.minutes + " minutes " + variables.seconds + " seconds and " + variables.milliseconds + " ms.";
         }
 
-        async function Reset(A_GuiControl) {
-          variables.isRunning = 0;
+        async function HotKeyCalledArrowLeft() {
+          // console.log("HotKeyCalled ArrowLeft")
 
-          variables.storeElapsedTime = 0;
+          if (variables.x - variables.Speed >= 0) {
+            variables.x -= variables.Speed;
 
-          GuiControl("enable", "Gui1Start");
-          GuiControl("disable", "Gui1Stop");
-          SetTimer(Time, "Off");
-          variables.milliseconds = 0;
-
-          variables.seconds = 0;
-
-          variables.minutes = 0;
-
-          variables.hours = 0;
-
-          variables.ElapsedTime123 = variables.hours + "h " + variables.minutes + "m " + variables.seconds + "s " + variables.milliseconds + "ms";
-
-          GuiControl("text", "Gui1Time", variables.ElapsedTime123);
-        }
-
-        async function Time(A_GuiControl) {
-          variables.ElapsedTime = BuildInVars("A_TickCount") - variables.StartTime;
-
-          variables.ms = variables.ElapsedTime;
-
-          // Calculate the components
-          variables.hours = Math.floor(variables.ms / 3600000);
-
-          variables.ms = Mod(variables.ms, 3600000);
-
-          variables.minutes = Math.floor(variables.ms / 60000);
-
-          variables.ms = Mod(variables.ms, 60000);
-
-          variables.seconds = Math.floor(variables.ms / 1000);
-
-          variables.milliseconds = Mod(variables.ms, 1000);
-
-          // Display the result
-          variables.ElapsedTime123 = "";
-
-          variables.ElapsedTime123 = variables.hours + "h " + variables.minutes + "m " + variables.seconds + "s " + variables.milliseconds + "ms";
-
-          GuiControl("text", "Gui1Time", variables.ElapsedTime123);
-        }
-
-        async function GuiClose(A_GuiControl) {
-          if (variables.isRunning == 1) {
-            await Stop();
-            await sleep(100);
-            await Save();
-            await sleep(100);
+            GuiControl("move", "Gui1Player", variables.x, variables.y);
+            GuiControl("text", "Gui1Player", BuildInVars("A_LastKey"));
           }
+        }
+
+        async function HotKeyCalledArrowRight() {
+          // console.log("HotKeyCalled ArrowRight")
+
+          if (variables.x + 50 + variables.Speed <= 700) {
+            variables.x += variables.Speed;
+
+            GuiControl("move", "Gui1Player", variables.x, variables.y);
+            GuiControl("text", "Gui1Player", BuildInVars("A_LastKey"));
+          }
+        }
+
+        async function HotKeyCalledAltL() {
+          // console.log("HotKeyCalled AltL")
+
           window.close();
+        }
+
+        async function lastkey(A_GuiControl) {
+          // Input, A_LastKey, L1 V
+          await sleep(10);
         }
       }
 

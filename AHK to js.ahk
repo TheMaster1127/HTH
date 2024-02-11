@@ -481,7 +481,7 @@ out123456 .= var . "`n"
 
 StringTrimRight, out123456, out123456, 1
 
-
+HotKeyCalledHotKyes := ""
 AHKcode := out123456
 
 guiColorShow := "121212"
@@ -3013,7 +3013,7 @@ Loop, 4
 {
 guiOutOfMove%A_Index% := ""
 }
-Loop, Parse, out3, " "
+Loop, Parse, out4, " "
 {
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
 {
@@ -3039,7 +3039,7 @@ str := guiOutOfMove2
 s:=StrSplit(str,"%").2
 var1 := s
 
-guiOutOfMove2 :=  " """" + variables." . var1 . " + """
+guiOutOfMove2 :=  " variables." . var1
 }
 StringTrimLeft, guiOutOfMove2, guiOutOfMove2, 1
 }
@@ -3053,7 +3053,7 @@ str := guiOutOfMove3
 s:=StrSplit(str,"%").2
 var1 := s
 
-guiOutOfMove3 :=  " """" + variables." . var1 . " + """
+guiOutOfMove3 :=  " variables." . var1
 }
 StringTrimLeft, guiOutOfMove3, guiOutOfMove3, 1
 }
@@ -3067,7 +3067,7 @@ str := guiOutOfMove4
 s:=StrSplit(str,"%").2
 var1 := s
 
-guiOutOfMove4 :=  " """" + variables." . var1 . " + """
+guiOutOfMove4 :=  " variables." . var1
 }
 StringTrimLeft, guiOutOfMove4, guiOutOfMove4, 1
 }
@@ -3075,16 +3075,149 @@ StringTrimLeft, guiOutOfMove4, guiOutOfMove4, 1
 
 
 
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%", %guiOutOfMove1%, %guiOutOfMove2%, %guiOutOfMove3%, %guiOutOfMove4%);
+)
+;MsgBox, % out0
+}
 
+
+if (out2 = "focus")
+{
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%");
+)
+}
+
+
+if (out2 = "text")
+{
+
+var1 := out4
+
+if (InStr(var1, "%"))
+{
+str := var1
+s:=StrSplit(str,"%").2
+var1 := s
+
+var1 := "variables." . var1
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%", %var1%);
+)
+}
+else
+{
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%", "%var1%");
+)
+}
+
+}
+
+if (out2 = "hide")
+{
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%");
+)
+}
+
+if (out2 = "show")
+{
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%");
+)
+}
+
+if (out2 = "disable")
+{
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%");
+)
+}
+
+if (out2 = "enable")
+{
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%");
+)
+}
+
+if (out2 = "font")
+{
+
+if (InStr(out4, "s")) ; size
+{
+out2 := "font"
+var1 := out4
+StringTrimLeft, var1, var1, 1
+if (InStr(var1, "%"))
+{
+str := var1
+s:=StrSplit(str,"%").2
+var1 := s
+
+var1 := "variables." . var1
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%", %var1%);
+)
+}
+else
+{
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%", %var1%);
+)
+}
+}
+if (InStr(out4, "c")) ; color
+{
+out2 := "color"
+var1 := out4
+StringTrimLeft, var1, var1, 1
+
+if (InStr(var1, "%"))
+{
+str := var1
+s:=StrSplit(str,"%").2
+var1 := s
+
+var1 := "variables." . var1
+
+var1 := """#"" + " . var1
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%", %var1%);
+)
+}
+else
+{
+var1 := "#" . var1
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%", "%var1%");
+)
+}
+}
 
 
 
 
 }
-out0 =
-(
-GuiControl("%out2%", "Gui%GuiNumber%%out3%", %out4%);
-)
+
+;~ out0 =
+;~ (
+;~ GuiControl("%out2%", "Gui%GuiNumber%%out3%", %out4%);
+;~ )
 jsCode .= out0 . "`n"
 
 lineDone := 1
@@ -3103,6 +3236,8 @@ else if (RegExMatch(A_LoopField, "^\w+:$")) && (Trim(SubStr(A_LoopField, 0)) = "
 
 ;MsgBox, % A_LoopField
 
+
+
 out1 := A_LoopField
 
 out1 := Trim(out1)
@@ -3114,6 +3249,96 @@ StringTrimRight, out1, out1, 1
 ;~ see := "async function " . out1 . "()`n{"
 ;~ MsgBox, % see
 jsCode .= "async function " . out1 . "(A_GuiControl)`n{`n"
+lineDone := 1
+}
+else if (RegExMatch(A_LoopField, "^.*::$"))
+{
+;MsgBox, % A_LoopField
+out1 := A_LoopField
+out1 := Trim(out1)
+
+;MsgBox, % out1
+
+
+HotKeyShift := 0
+HotKeyAlt := 0
+HotKeyCtrl := 0
+
+Loop, Parse, out1
+{
+if (A_LoopField = "!")
+{
+HotKeyAlt := 1
+}
+if (A_LoopField = "+")
+{
+HotKeyShift := 1
+}
+if (A_LoopField = "^")
+{
+HotKeyCtrl := 1
+}
+}
+
+HotKeylettersOnly := ""
+HotKeylettersOnly := RegExReplace(out1, "[^a-zA-Z]")
+StringUpper, HotKeylettersOnly, HotKeylettersOnly, T
+if (StrLen(HotKeylettersOnly) != 1)
+{
+HotKeylettersOnly := "Arrow" . HotKeylettersOnly
+}
+;MsgBox, % HotKeylettersOnly
+HotKeyNumOnly := ""
+HotKeyNumOnly := RegExReplace(out1, "\D")
+
+if (HotKeyNumOnly = "")
+{
+out3 := HotKeylettersOnly
+}
+else
+{
+out3 := HotKeyNumOnly
+}
+
+if (HotKeyCtrl = 1)
+{
+out3 := "Ctrl+" . out3
+}
+if (HotKeyShift = 1)
+{
+out3 := "Shift+" . out3
+}
+if (HotKeyAlt = 1)
+{
+out3 := "Alt+" . out3
+}
+
+out4 := out3
+
+out4 := StrReplace(out4, "+", "")
+
+HotKeyCalledHotKyesOut =
+(
+
+MakeHotKey("%out3%", function(hotkey) {
+HotKeyCalled%out4%()
+});
+
+)
+
+HotKeyCalledHotKyes .= HotKeyCalledHotKyesOut . "`n"
+
+out2 =
+(
+
+async function HotKeyCalled%out4%()
+{
+// console.log("HotKeyCalled %out4%")
+
+
+)
+MsgBox, % out2
+jsCode .= out2 . "`n"
 lineDone := 1
 }
 else if (CheckVariable(A_LoopField))
@@ -4232,6 +4457,7 @@ str := StrReplace(str, "variables.A_ScreenHeight", "BuildInVars(""A_ScreenHeight
 str := StrReplace(str, "variables.A_GuiControl", "A_GuiControl")
 str := StrReplace(str, "variables.A_TimeIdle", "BuildInVars(""A_TimeIdle"")")
 str := StrReplace(str, "variables.A_TickCount", "BuildInVars(""A_TickCount"")")
+str := StrReplace(str, "variables.A_LastKey", "BuildInVars(""A_LastKey"")")
 str := StrReplace(str, "variables.A_NowUTC", "BuildInVars(""A_NowUTC"")")
 str := StrReplace(str, "variables.A_Now", "BuildInVars(""A_Now"")")
 str := StrReplace(str, "variables.A_YYYY", "BuildInVars(""A_YYYY"")")
@@ -4248,11 +4474,14 @@ str := StrReplace(str, "variables.A_Space", "BuildInVars(""A_Space"")")
 str := StrReplace(str, "variables.A_Tab", "BuildInVars(""A_Tab"")")
 
 
+str := StrReplace(str, "Input, A_LastKey, L1 V", "// Input, A_LastKey, L1 V")
+
 str := StrReplace(str, "= \""""", "= """"")
 str := StrReplace(str, "= \""", "= """"")
 str := StrReplace(str, "= \""""", "= """"")
 str := StrReplace(str, "+ \""""", "+ """"")
 str := StrReplace(str, "(/^Gui\d*/=  """")", "(/^Gui\d*/, """")")
+str := StrReplace(str, ", , )", ")")
 
 if (Trim(str) == "Return")
 {
@@ -4323,9 +4552,57 @@ let variables = {
 ;MsgBox %variables%
 
 
+varsOUT123456 := ""
+Loop, Parse, variables, `n, `r
+{
+
+if !(InStr(A_LoopField, "variables."))
+{
+ varsOUT123456 .= A_LoopField . "`n"
+}
+
+}
+
+StringTrimRight, varsOUT123456, varsOUT123456, 1
+variables := varsOUT123456
+
+jsCodeGuiOutNum := ""
+
+Loop, Parse, jsCodeGui, `n ,`r
+{
+if (A_LoopField != "")
+{
+jsCodeGuiOutNum .= RegExReplace(A_LoopField, "\D") . "`n"
+}
+
+}
+
+StringTrimRight, jsCodeGuiOutNum, jsCodeGuiOutNum, 1
+;MsgBox, % jsCodeGuiOutNum
+Sort, jsCodeGuiOutNum, U
+;MsgBox, |%jsCodeGuiOutNum%|
+
+jsCodeGuiOut := ""
+
+var55 := ""
+Loop, Parse, jsCodeGuiOutNum, `n ,`r
+{
 
 
-jsCode := variables . "`n`n" . funcs . "`n`n" . jsCodeGui . "`n`n" . jsCode
+var55 =
+(
+let Gui%A_LoopField% = {};
+Gui%A_LoopField% = document.createElement("div");
+
+
+)
+jsCodeGuiOut .= var55
+}
+
+StringTrimRight, jsCodeGuiOut, jsCodeGuiOut, 1
+jsCodeGui := jsCodeGuiOut
+
+jsCode := variables . "`n`n" . funcs . "`n`n" . jsCodeGui . "`n`n" . HotKeyCalledHotKyes . "`n`n" . jsCode
 
 
 upCode1 =
@@ -4562,6 +4839,9 @@ upCode1 =
           case "A_ScreenWidth":
             // Return screen width
             return window.innerWidth;
+          case "A_LastKey":
+            // Return screen width
+            return getLastKeyPressed();
           case "A_ScreenHeight":
             // Return screen height
             return window.innerHeight;
@@ -4909,6 +5189,24 @@ upCode2 =
         });
       }
 
+      let lastKeyPressed = "";
+
+      function trackLastKeyPressed() {
+        document.addEventListener("keydown", function (event) {
+          lastKeyPressed = event.key;
+          // console.log(lastKeyPressed);
+        });
+      }
+
+      function getLastKeyPressed() {
+        return lastKeyPressed;
+      }
+
+      // Call the trackLastKeyPressed function to start tracking key presses
+      trackLastKeyPressed();
+
+      // Now you can call getLastKeyPressed() whenever you need to get the last key pressed
+
       function GuiControl(action, id, param1, param2, param3, param4) {
         const element = document.getElementById(id);
         if (element) {
@@ -4946,6 +5244,49 @@ upCode2 =
         }
       }
 
+      function MakeHotKey(hotkey, callback) {
+        document.addEventListener("keydown", function (event) {
+          const keys = hotkey.split("+").map((key) => key.trim().toLowerCase());
+          const modifiers = {
+            ctrl: event.ctrlKey,
+            shift: event.shiftKey,
+            alt: event.altKey,
+          };
+
+          let hotkeyPressed = true;
+          keys.forEach((key) => {
+            if (key === "ctrl" || key === "shift" || key === "alt") {
+              if (!modifiers[key]) {
+                hotkeyPressed = false;
+              }
+            } else if (key.startsWith("arrow")) {
+              const arrowDirection = key.replace("arrow", "");
+              if (arrowDirection === "up" && event.key !== "ArrowUp") {
+                hotkeyPressed = false;
+              } else if (arrowDirection === "down" && event.key !== "ArrowDown") {
+                hotkeyPressed = false;
+              } else if (arrowDirection === "left" && event.key !== "ArrowLeft") {
+                hotkeyPressed = false;
+              } else if (arrowDirection === "right" && event.key !== "ArrowRight") {
+                hotkeyPressed = false;
+              }
+            } else if (!event.key.match(/^[0-9a-zA-Z]$/) && event.key !== key) {
+              hotkeyPressed = false;
+            } else if (event.key.toLowerCase() !== key && event.key.match(/^[a-zA-Z]$/)) {
+              hotkeyPressed = false;
+            }
+          });
+
+          if (hotkeyPressed) {
+            if (modifiers["shift"]) {
+              callback(hotkey.toUpperCase());
+            } else {
+              callback(hotkey.toLowerCase());
+            }
+          }
+        });
+      }
+
       // Object to store timer intervals for different functions
       const timerIntervals = {};
 
@@ -4977,6 +5318,37 @@ upCode2 =
           delete timerIntervals[func]; // Remove the interval ID from storage
         } else {
           console.error("Invalid time/On/Off state. Please provide a valid time in milliseconds or 'On'/'Off'.");
+        }
+      }
+
+      async function getDataFromEndpoint(data, endpoint, method = "GET") {
+        try {
+          const options = {
+            method: method,
+            headers: {
+              "Content-Type": "application/json", // Adjust content type as needed
+            },
+            body: JSON.stringify(data), // Include data in request body for methods like POST or PUT
+          };
+
+          // Fetch data from the specified endpoint
+          const response = await fetch(endpoint, options);
+
+          // Check if the response is successful (status code 2xx)
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          // Parse the JSON response
+          const responseData = await response.json();
+
+          // Return the fetched data if it exists
+          return responseData;
+        } catch (error) {
+          // Handle any errors that occur during the fetch
+          console.error("Fetch error:", error);
+          // Return null if there are any errors
+          return null;
         }
       }
 
