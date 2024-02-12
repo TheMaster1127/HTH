@@ -85,7 +85,15 @@ InputBox, OutputVar, We will only see this title in AutoHotKey, And this will be
 InputBox, OutputVar, And this will be seen as the only thing in js and in ahk this will be the title and the text of the InputBox 
 ; please don't add more parameters or commas ","
 ```
+- OnKeyPress: here is an example:
+```ahk
+This is not in AutoHotKey this is custom feature
+OnKeyPress:
+Msgbox, You Pressed %A_ThisHotkey%
 
+; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the end of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
+Return
+```
 - IfMsgBox after an `IfMsgBox` at the end, add `} ; end of ifmsgbox`
 
 Example:
@@ -153,6 +161,7 @@ Built-in Variables
 - A_Index
 - A_LoopField
 - A_LastKey retrieves the last key pressed by the user on the page
+- A_ThisHotkey retrieves the key pressed only inside a label called OnKeyPress:
 - A_ScreenWidth
 - A_ScreenHeight
 - A_GuiControl
