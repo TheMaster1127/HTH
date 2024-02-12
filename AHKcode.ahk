@@ -1,211 +1,128 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; Name:
-; AHK game phisics
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-x := 350
-y := 450
 
-Gui, Font, s15
-Gui, Color, c121212
-Gui, Add, Text, x10 y10 cWhite, This is the MATRIX
-Gui, Add, Button, x%x% y%y% w50 h50
-Gui, Add, Button, x100 y350 w300 h20
-Gui, Show, w800 h500
+;text := "hello man is some text lets see if you can type fast then you can see how fast can you typed and ist done"
+text := "ahk is the best ahk is the best"
 
-SetTimer, looop, 10
+howMany := 0
+Loop, Parse, text
+{
+howMany++
+}
+
+
+x := 10
+y := 10
+
+borderX := Floor(A_ScreenWidth / 2)
+
+
+w2 := borderX
+w := borderX + 20
+
+
+Gui, Font, s18
+Loop, Parse, text
+{
+
+v := "l" . A_Index
+Gui, Add, Text, x%x% y%y% w%w2% h300 v%v%, %A_LoopField%
+
+x := x + 14 + 3
+if (x >= borderX)
+{
+y := y + 50
+x := 10
+}
+
+
+}
+
+Gui, Show, h600 w%w%
+pos := 0
+
+;text := "he:lo man is some text lets s]e if you can type fast then you can s]e how fast can you typed and ist done"
+text := "ahk is the best ahk is the best"
+
+
+varWrong := 0
+varRight := 0
+
+
+onceTimerStart := 0
+done := 0
 return
 
-looop:
-	Sleep, 1
-{
-if (GetKeyState("Up", "D") && GetKeyState("Left", "D"))
-{
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-nnn := 21
-Loop, 20
-{
-nnn--
-Loop, %nnn%
-{
-y--
-x--
-}
-Sleep, 1
-CheckGround()
-GuiControl, Move, Button1, x%x% y%y%
-}
-nnn := 21
-Loop, 20
-{
-nnn--
-Loop, %nnn%
-{
-y++
 
-}
-Sleep, 1
-CheckGround()
-GuiControl, Move, Button1, x%x% y%y%
-}
+OnKeyPress:
 
 
+if (done = 0)
+{
+onceTimerStart++
+if (onceTimerStart = 1)
+{
+StartTime := A_TickCount
+}
+pos++
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-}
-if (GetKeyState("Up", "D") && GetKeyState("Right", "D"))
-{
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-nnn := 21
-Loop, 20
-{
-nnn--
-Loop, %nnn%
-{
-y--
-x++
-}
-Sleep, 1
-CheckGround()
-GuiControl, Move, Button1, x%x% y%y%
-}
-nnn := 21
-Loop, 20
-{
-nnn--
-Loop, %nnn%
-{
-y++
+; Get the character at the specified position
+char := SubStr(text, pos, 1)
+;MsgBox, %char% %A_ThisHotkey%
 
+
+v := "l" . pos
+if (char = A_ThisHotkey)
+{
+
+varRight++
+
+GuiControl, Font, %v%, c00ff08
 }
-Sleep, 1
-CheckGround()
-GuiControl, Move, Button1, x%x% y%y%
+else
+{
+varWrong++
+GuiControl, Font, %v%, cff1e00
 }
+OutputDebug, Character at position %pos% : %char%
+
+if (pos = howMany)
+{
+ElapsedTime := A_TickCount - StartTime
+
+
+ms := ElapsedTime
+
+; Calculate the components
+hours := Floor(ms / 3600000)
+ms := Mod(ms, 3600000)
+minutes := Floor(ms / 60000)
+ms := Mod(ms, 60000)
+seconds := Floor(ms / 1000)
+milliseconds := Mod(ms, 1000)
+
+; Display the result
+ElapsedTime123 := ""
+ElapsedTime123 .= hours . "h " . minutes . "m " . seconds . "s " . milliseconds . "ms"
+
+
+percentage := Round((varRight / (varWrong + varRight)) * 100)
+
+msgCorrct := "You are ". percentage . "%" .  " correct"
 
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+MsgBox, done in %ElapsedTime123% and %msgCorrct%
+done := 1
 }
-if (GetKeyState("Up", "D"))
-{
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-nnn := 21
-Loop, 20
-{
-nnn--
-Loop, %nnn%
-{
-y--
-}
-Sleep, 1
-CheckGround()
-GuiControl, Move, Button1, x%x% y%y%
-}
-nnn := 21
-Loop, 20
-{
-nnn--
-Loop, %nnn%
-{
-y++
-}
-Sleep, 1
-CheckGround()
-GuiControl, Move, Button1, x%x% y%y%
-}
-
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-}
-if (GetKeyState("Left", "D"))
-{
-nnn := 10
-Loop, 9
-{
-nnn--
-Loop, %nnn%
-{
-x--
-}
-Sleep, 1
-CheckGround()
-GuiControl, Move, Button1, x%x% y%y%
-}
-}
-;if (GetKeyState("Down", "D"))
-;{
-
-;}
-if (GetKeyState("Right", "D"))
-{
-nnn := 10
-Loop, 9
-{
-nnn--
-Loop, %nnn%
-{
-x++
-}
-Sleep, 1
-CheckGround()
-GuiControl, Move, Button1, x%x% y%y%
-}
-}
-
-y++
-
-CheckGround()
-GuiControl, Move, Button1, x%x% y%y%
-;end of loop
 }
 
 Return
 
-GuiClose:
+
+
+!L::
 ExitApp
 Return
-
-K::
-MsgBox, %y%
-Return
-
-
-
-
-CheckGround()
-{
-global
-
-
-if (x >= 50) && (x <= 400) && (y >= 300) && (y <= 320)
-{
-if (y >= 300)
-{
-y := 300
-GuiControl, Move, Button1, x%x% y%y%
-}
-GuiControl, Move, Button1, x%x% y%y%
-}
-if (y >= 450)
-{
-y := 450
-GuiControl, Move, Button1, x%x% y%y%
-}
-
-
-
-}
-
-
-

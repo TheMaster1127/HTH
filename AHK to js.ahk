@@ -483,6 +483,7 @@ StringTrimRight, out123456, out123456, 1
 
 HotKeyCalledHotKyes := ""
 AHKcode := out123456
+onKeyPress := ""
 
 guiColorShow := "121212"
 guiFontShow := "15"
@@ -1965,7 +1966,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + "%guiOutOfText5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -1991,7 +1992,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + "%guiOutOfText5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2071,7 +2072,7 @@ jsCode0 =
 
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + "%guiOutOfText5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2097,7 +2098,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + "%guiOutOfText5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2297,7 +2298,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + "%guiOutOfButton5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2322,7 +2323,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + "%guiOutOfButton5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2399,7 +2400,7 @@ jsCode0 =
 
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + "%guiOutOfButton5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2424,7 +2425,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + "%guiOutOfButton5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2622,7 +2623,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
-Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + "%guiOutOfEdit5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + %guiOutOfEdit5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
 Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
@@ -2728,7 +2729,7 @@ jsCode0 =
 
 
 Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
-Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + "%guiOutOfEdit5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + %guiOutOfEdit5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
 Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
@@ -2754,7 +2755,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
-Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + "%guiOutOfEdit5%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + %guiOutOfEdit5%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
 Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
@@ -3256,11 +3257,39 @@ out1 := Trim(out1)
 
 StringTrimRight, out1, out1, 1
 
+if (out1 == "OnKeyPress")
+{
+
+onKeyPress =
+(
+
+     document.addEventListener("keypress", function (event) {
+          // Code to execute when a key is pressed
+          console.log("Key pressed:", event.key);
+
+          OnKeyPress(event.key);
+          });
+
+)
+forJsCode =
+(
+
+ async function OnKeyPress(A_ThisHotkey)
+         {
+          variables.A_ThisHotkey = A_ThisHotkey
+
+)
+jsCode .= forJsCode . "`n"
+}
+else
+{
+jsCode .= "async function " . out1 . "(A_GuiControl)`n{`n"
+}
 ;MsgBox, % out1
 
 ;~ see := "async function " . out1 . "()`n{"
 ;~ MsgBox, % see
-jsCode .= "async function " . out1 . "(A_GuiControl)`n{`n"
+
 lineDone := 1
 }
 else if (RegExMatch(A_LoopField, "^.*::$"))
@@ -4620,7 +4649,7 @@ jsCodeGuiOut .= var55
 StringTrimRight, jsCodeGuiOut, jsCodeGuiOut, 1
 jsCodeGui := jsCodeGuiOut
 
-jsCode := variables . "`n`n" . funcs . "`n`n" . jsCodeGui . "`n`n" . HotKeyCalledHotKyes . "`n`n" . jsCode
+jsCode := variables . "`n`n" . funcs . "`n`n" . onKeyPress . "`n`n" . jsCodeGui . "`n`n" . HotKeyCalledHotKyes . "`n`n" . jsCode
 
 
 upCode1 =
