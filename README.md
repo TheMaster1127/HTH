@@ -45,7 +45,7 @@ Also, `return` must be in lowercase.
 
 So far, AHK-to-js supports:
 
-- Gui - Buttons, Text and Edit 
+- Gui - Buttons, Text, Edit and Picture - which will encode a base64 in the HTML file so you won't need the original picture anymore
 - GuiContol
 - Hotkyes but simple like you can still do almost all combinations like Ctrl+Alt+Shift+AlmostAnyKey or Shift+Up or just even one key
 ```ahk
@@ -128,6 +128,7 @@ else
 
 Some features haven't been fully tested but should work include:
 
+- getDataFromEndpoint(data, endpoint, method) this custom function allows you to get and send data to or from an endpoint. It can also return data. ONLY if have a backend!
 - Abs
 - ACos
 - ASin
