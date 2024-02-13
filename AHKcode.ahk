@@ -1,13 +1,21 @@
 
 
 
+
 ;text := "hello man is some text lets see if you can type fast then you can see how fast can you typed and ist done"
-text := "ahk is the best ahk is the best"
+text := "ahk is the best"
+Gui, Add, Picture, x300 y300 vImage1, 20240213205549.png
+Gui, Add, Edit, x10 y300 , Type Here...
 
 howMany := 0
 Loop, Parse, text
 {
 howMany++
+}
+howManyWords := 0
+Loop, Parse, text, " "
+{
+howManyWords++
 }
 
 
@@ -15,6 +23,7 @@ x := 10
 y := 10
 
 borderX := Floor(A_ScreenWidth / 2)
+
 
 
 w2 := borderX
@@ -41,8 +50,6 @@ x := 10
 Gui, Show, h600 w%w%
 pos := 0
 
-;text := "he:lo man is some text lets s]e if you can type fast then you can s]e how fast can you typed and ist done"
-text := "ahk is the best ahk is the best"
 
 
 varWrong := 0
@@ -64,6 +71,22 @@ if (onceTimerStart = 1)
 {
 StartTime := A_TickCount
 }
+
+if (A_ThisHotkey = "q") && (pos >= 1)
+{
+
+v := "l" . pos
+GuiControl, Font, %v%, cffffff
+pos--
+
+varWrong--
+if (varWrong <= 0)
+{
+varWrong := 0
+}
+return
+}
+
 pos++
 
 
@@ -93,7 +116,7 @@ ElapsedTime := A_TickCount - StartTime
 
 
 ms := ElapsedTime
-
+timeTookInMS := ms
 ; Calculate the components
 hours := Floor(ms / 3600000)
 ms := Mod(ms, 3600000)
@@ -109,12 +132,22 @@ ElapsedTime123 .= hours . "h " . minutes . "m " . seconds . "s " . milliseconds 
 
 percentage := Round((varRight / (varWrong + varRight)) * 100)
 
-msgCorrct := "You are ". percentage . "%" .  " correct"
+msgCorrct := "You are " . percentage . "%" . " correct"
 
 
+words := howManyWords
 
 
-MsgBox, done in %ElapsedTime123% and %msgCorrct%
+;MsgBox, % timeTookInMS
+; Convert milliseconds to minutes
+timeTookInMin := timeTookInMS / 60000
+
+; Calculate words per minute (WPM)
+WPM := (words / timeTookInMin)
+
+WPM := Floor(WPM)
+
+MsgBox, done in %ElapsedTime123% and %msgCorrct%`nWords per minute: %WPM%
 done := 1
 }
 }

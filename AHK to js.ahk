@@ -343,7 +343,8 @@ AHKcode := AHKcodeUot123
 
 
 
-
+base64ImageNum := 0
+base64ImageData := ""
 
 
 Loop, Parse, AHKcode, `n, `r
@@ -1257,7 +1258,181 @@ jsCode .= jsCodeLoopFix1 . "`n" . var1
 
 
 }
-else if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = StrLower("Msgbox,")) && !(SubStr(Trim(StrLower(A_LoopField)), 1, 10) = StrLower("Msgbox, % ")) && (!(InStr(A_LoopField, " % ")))
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = StrLower("Msgbox,")) && !(SubStr(Trim(StrLower(A_LoopField)), 1, 10) = StrLower("Msgbox, % ")) && (InStr(A_LoopField, " % ")) && (CountCommasWithoutBacktick(A_LoopField))
+{
+
+
+
+str := A_LoopField
+
+str := StrReplace(str, "``,", "|comasdhkbdsjvfesvyessfe6uw7igfweiugvseuvk|la|")
+
+
+s:=StrSplit(str,",").2
+Options := s
+Options := Trim(Options)
+
+
+s:=StrSplit(str,",").3
+Title := s
+Title := Trim(Title)
+
+
+s:=StrSplit(str,",").4
+out2 := s
+
+out2 := StrReplace(out2, " % ", "")
+
+s:=StrSplit(str,",").5
+timeoutMsgbox := s
+timeoutMsgbox := Trim(timeoutMsgbox)
+
+
+s:=StrSplit(str,",").6
+toggleAwait := s
+toggleAwait := Trim(toggleAwait)
+
+out2 := StrReplace(out2, "|comasdhkbdsjvfesvyessfe6uw7igfweiugvseuvk|la|", "\,")
+
+;MsgBox, % out2
+out2 := Trim(out2)
+
+line := varTraspiler(out2, 0)
+;MsgBox, % line
+
+if (Title = "")
+{
+Title := " "
+}
+if (line = "")
+{
+line := " "
+}
+if (Options = "")
+{
+Options := 0
+}
+if (timeoutMsgbox = "")
+{
+timeoutMsgbox := 0
+}
+
+
+if (toggleAwait = 1) or (toggleAwait = "")
+{
+var1 := "await showCustomMessageBox({},""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
+}
+else
+{
+var1 := "showCustomMessageBox({},""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
+}
+;MsgBox, % var1
+lineDone := 1
+jsCode .= var1 . "`n"
+
+}
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = StrLower("Msgbox,")) && !(SubStr(Trim(StrLower(A_LoopField)), 1, 10) = StrLower("Msgbox, % ")) && !(InStr(A_LoopField, " % ")) && (CountCommasWithoutBacktick(A_LoopField))
+{
+
+
+
+str := A_LoopField
+
+str := StrReplace(str, "``,", "|comasdhkbdsjvfesvyessfe6uw7igfweiugvseuvk|la|")
+
+
+s:=StrSplit(str,",").2
+Options := s
+Options := Trim(Options)
+
+
+s:=StrSplit(str,",").3
+Title := s
+Title := Trim(Title)
+
+
+s:=StrSplit(str,", ").4
+var1 := s
+numOfProcentSings := 0
+MsgBox, % var1
+Loop, Parse, var1
+{
+if (A_LoopField = "%")
+{
+numOfProcentSings++
+}
+}
+Loop, %numOfProcentSings%
+{
+; Find the position of the first occurrence of "%"
+if (InStr(var1, "%"))
+{
+pos := InStr(var1, "%")
+
+; Replace only the first occurrence of "%" with "|"
+var1 := SubStr(var1, 1, pos-1) . """ + variables." . SubStr(var1, pos+1)
+pos := InStr(var1, "%")
+var1 := SubStr(var1, 1, pos-1) . " + """ . SubStr(var1, pos+1)
+}
+else
+{
+break
+}
+}
+
+out2 := var1
+
+out2 := """" . out2 . """"
+
+s:=StrSplit(str,",").5
+timeoutMsgbox := s
+timeoutMsgbox := Trim(timeoutMsgbox)
+
+
+s:=StrSplit(str,",").6
+toggleAwait := s
+toggleAwait := Trim(toggleAwait)
+
+out2 := StrReplace(out2, "|comasdhkbdsjvfesvyessfe6uw7igfweiugvseuvk|la|", "\,")
+
+;MsgBox, % out2
+out2 := Trim(out2)
+
+line := out2
+;MsgBox, % line
+
+if (Title = "")
+{
+Title := " "
+}
+if (line = "")
+{
+line := " "
+}
+if (Options = "")
+{
+Options := 0
+}
+if (timeoutMsgbox = "")
+{
+timeoutMsgbox := 0
+}
+
+
+if (toggleAwait = 1) or (toggleAwait = "")
+{
+var1 := "await showCustomMessageBox({},""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
+}
+else
+{
+var1 := "showCustomMessageBox({},""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
+}
+;MsgBox, % var1
+lineDone := 1
+jsCode .= var1 . "`n"
+
+}
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = StrLower("Msgbox,")) && !(SubStr(Trim(StrLower(A_LoopField)), 1, 10) = StrLower("Msgbox, % ")) && (!(InStr(A_LoopField, " % "))) && (lineDone != 1) && !(CountCommasWithoutBacktick(A_LoopField))
 {
 
 ;MsgBox, IT WORKS
@@ -1339,78 +1514,6 @@ line := varTraspiler(out2, 0)
 ;MsgBox, % line
 var1 := "await showCustomMessageBox({}," . """ """ .  ", " . line . ", " . 0 . ", " . 0. ")"
 ;MsgBox, % var1
-jsCode .= var1 . "`n"
-
-}
-else if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = StrLower("Msgbox,")) && !(SubStr(Trim(StrLower(A_LoopField)), 1, 10) = StrLower("Msgbox, % ")) && (InStr(A_LoopField, " % "))
-{
-
-
-str := A_LoopField
-
-str := StrReplace(str, "``,", "|comasdhkbdsjvfesvyessfe6uw7igfweiugvseuvk|la|")
-
-
-s:=StrSplit(str,",").2
-Options := s
-Options := Trim(Options)
-
-
-s:=StrSplit(str,",").3
-Title := s
-Title := Trim(Title)
-
-
-s:=StrSplit(str,",").4
-out2 := s
-
-out2 := StrReplace(out2, " % ", "")
-
-s:=StrSplit(str,",").5
-timeoutMsgbox := s
-timeoutMsgbox := Trim(timeoutMsgbox)
-
-
-s:=StrSplit(str,",").6
-toggleAwait := s
-toggleAwait := Trim(toggleAwait)
-
-out2 := StrReplace(out2, "|comasdhkbdsjvfesvyessfe6uw7igfweiugvseuvk|la|", "\,")
-
-;MsgBox, % out2
-out2 := Trim(out2)
-
-line := varTraspiler(out2, 0)
-;MsgBox, % line
-
-if (Title = "")
-{
-Title := " "
-}
-if (line = "")
-{
-line := " "
-}
-if (Options = "")
-{
-Options := 0
-}
-if (timeoutMsgbox = "")
-{
-timeoutMsgbox := 0
-}
-
-
-if (toggleAwait = 1) or (toggleAwait = "")
-{
-var1 := "await showCustomMessageBox({},""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
-}
-else
-{
-var1 := "showCustomMessageBox({},""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
-}
-;MsgBox, % var1
-lineDone := 1
 jsCode .= var1 . "`n"
 
 }
@@ -1922,6 +2025,7 @@ if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
 {
 guiOutOfTextV := 1
 guiOutOfText5 := A_LoopField
+guiOutOfText52 := A_LoopField
 dynamicGuiSet := 1
 if (InStr(guiOutOfText5, "%"))
 {
@@ -1930,8 +2034,10 @@ s:=StrSplit(str,"%").2
 var1 := s
 
 guiOutOfText5 :=  " [variables." . var1 . "]"
+guiOutOfText52 :=  " "" + [variables." . var1 . "]" . " + " . """"
 }
 StringTrimLeft, guiOutOfText5, guiOutOfText5, 1
+StringTrimLeft, guiOutOfText52, guiOutOfText52, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
 {
@@ -1966,7 +2072,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText5%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText52%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -1992,7 +2098,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText5%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + "%guiOutOfText52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2072,7 +2178,7 @@ jsCode0 =
 
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText5%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText52%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2098,7 +2204,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText5%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + "%guiOutOfText52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2254,6 +2360,7 @@ if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
 {
 guiOutOfButtonV := 1
 guiOutOfButton5 := A_LoopField
+guiOutOfButton52 := A_LoopField
 dynamicGuiSet := 1
 if (InStr(guiOutOfButton5, "%"))
 {
@@ -2262,8 +2369,10 @@ s:=StrSplit(str,"%").2
 var1 := s
 
 guiOutOfButton5 :=  " [variables." . var1 . "]"
+guiOutOfButton52 :=  " "" + [variables." . var1 . "]" . " + " . """"
 }
 StringTrimLeft, guiOutOfButton5, guiOutOfButton5, 1
+StringTrimLeft, guiOutOfButton52, guiOutOfButton52, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
 {
@@ -2298,7 +2407,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton5%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton52%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2323,7 +2432,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton5%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + "%guiOutOfButton52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2400,7 +2509,7 @@ jsCode0 =
 
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton5%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton52%; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2425,7 +2534,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton5%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + "%guiOutOfButton52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2579,6 +2688,7 @@ if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
 {
 guiOutOfEditV := 1
 guiOutOfEdit5 := A_LoopField
+guiOutOfEdit52 := A_LoopField
 dynamicGuiSet := 1
 if (InStr(guiOutOfEdit5, "%"))
 {
@@ -2587,7 +2697,9 @@ s:=StrSplit(str,"%").2
 var1 := s
 
 guiOutOfEdit5 :=  " [variables." . var1 . "]"
+guiOutOfEdit52 :=  " "" + [variables." . var1 . "]" . " + " . """"
 }
+StringTrimLeft, guiOutOfEdit52, guiOutOfEdit52, 1
 StringTrimLeft, guiOutOfEdit5, guiOutOfEdit5, 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
@@ -2623,7 +2735,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
-Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + %guiOutOfEdit5%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + "%guiOutOfEdit52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
 Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
@@ -2649,7 +2761,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
-Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + %guiOutOfEdit5%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + "%guiOutOfEdit52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
 Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
@@ -2729,7 +2841,7 @@ jsCode0 =
 
 
 Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
-Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + %guiOutOfEdit5%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + "%guiOutOfEdit52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
 Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
@@ -2755,7 +2867,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfEdit5% = document.createElement("textarea");
-Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + %guiOutOfEdit5%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfEdit5%.id = "Gui%GuiNumber%" + "%guiOutOfEdit52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfEdit5%.placeholder = "%out5%";
 Gui%GuiNumber%%guiOutOfEdit5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfEdit5%.style.resize = "none"; // Disable resizing
@@ -2826,6 +2938,457 @@ jsCode .= "`n" . jsCode0 . "`n"
 
 
 }
+
+
+
+
+if (out3 = "picture")
+{
+base64ImageNum++
+
+
+
+
+File := Trim(out5)
+FileGetSize, nBytes, %File%
+FileRead, Bin, *c %File%
+ImageData := Base64Enc(Bin, nBytes, 100, 2 )
+
+
+; Encode the image data to base64
+Bbase64ImageData := StrReplace(ImageData, "`n", "") ; Remove line breaks
+Bbase64ImageData := StrReplace(Bbase64ImageData, "`r", "") ; Remove carriage returns
+Bbase64ImageData := StrReplace(Bbase64ImageData, "`t", "") ; Remove tabs
+Bbase64ImageData := StrReplace(Bbase64ImageData, " ", "") ; Remove spaces
+base64out := imageTag1 . Bbase64ImageData . imageTag2
+
+
+
+
+
+base64 =
+(
+let base64Image%base64ImageNum% = "%base64out%"
+)
+
+base64ImageData .= base64 . "`n"
+
+
+
+guiOutOfPictureNum := 0
+guiOutOfPictureX := 0
+guiOutOfPictureY := 0
+guiOutOfPictureW := 0
+guiOutOfPictureH := 0
+guiOutOfPictureV := 0
+guiOutOfPictureG := 0
+Loop, 6
+{
+guiOutOfPicture%A_Index% := ""
+}
+dynamicGuiSet := 0
+Loop, Parse, out4, " "
+{
+;MsgBox, |%A_LoopField%|
+
+guiOutOfPictureNum++
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfPictureX := 1
+guiOutOfPicture1 := A_LoopField
+if (InStr(guiOutOfPicture1, "%"))
+{
+str := guiOutOfPicture1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfPicture1 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfPicture1, guiOutOfPicture1, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfPictureY := 1
+guiOutOfPicture2 := A_LoopField
+if (InStr(guiOutOfPicture2, "%"))
+{
+str := guiOutOfPicture2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfPicture2 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfPicture2, guiOutOfPicture2, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfPictureW := 1
+guiOutOfPicture3 := A_LoopField
+if (InStr(guiOutOfPicture3, "%"))
+{
+str := guiOutOfPicture3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfPicture3 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfPicture3, guiOutOfPicture3, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfPictureH := 1
+guiOutOfPicture4 := A_LoopField
+if (InStr(guiOutOfPicture4, "%"))
+{
+str := guiOutOfPicture4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfPicture4 :=  " """" + variables." . var1 . " + """
+}
+StringTrimLeft, guiOutOfPicture4, guiOutOfPicture4, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
+{
+guiOutOfPictureV := 1
+guiOutOfPicture5 := A_LoopField
+guiOutOfPicture52 := A_LoopField
+dynamicGuiSet := 1
+if (InStr(guiOutOfPicture5, "%"))
+{
+str := guiOutOfPicture5
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfPicture5 :=  " [variables." . var1 . "]"
+guiOutOfPicture52 :=  " "" + [variables." . var1 . "]" . " + " . """"
+}
+StringTrimLeft, guiOutOfPicture5, guiOutOfPicture5, 1
+StringTrimLeft, guiOutOfPicture52, guiOutOfPicture52, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
+{
+guiOutOfPictureG := 1
+guiOutOfPicture6 := A_LoopField
+StringTrimLeft, guiOutOfPicture6, guiOutOfPicture6, 1
+}
+}
+
+NumOfPictures++
+
+
+if (InStr(out5, "%"))
+{
+str := out5
+s:=StrSplit(str,"%").2
+var1 := s
+
+out5 :=  """"" + variables." . var1 . " + """""
+
+
+}
+
+if (dynamicGuiSet = 0)
+{
+
+if (guiOutOfPictureV = 1)
+{
+if (guiOutOfPictureG = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%%guiOutOfPicture5% = document.createElement("img");
+Gui%GuiNumber%%guiOutOfPicture5%.id = "Gui%GuiNumber%" + %guiOutOfPicture52%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfPicture5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfPicture5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfPicture5%.style.left = "%guiOutOfPicture1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfPicture5%.style.top = "%guiOutOfPicture2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfPicture5%.style.width = "%guiOutOfPicture3%px"; // Set width
+Gui%GuiNumber%%guiOutOfPicture5%.style.height = "%guiOutOfPicture4%px"; // Set height
+Gui%GuiNumber%%guiOutOfPicture5%.onclick = function (event) {
+variables.A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
+  %guiOutOfPicture6%(variables.A_GuiControl);
+};
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
+
+
+
+// Set the src attribute to the Base64-encoded image string for the second block
+Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+
+// Set CSS styles to resize the image to fit inside the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxHeight = "100`%"; // Resize the image to fit the height of the div
+
+// Append the img element to the div for the second block
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%%guiOutOfPicture5% = document.createElement("img");
+Gui%GuiNumber%%guiOutOfPicture5%.id = "Gui%GuiNumber%" + "%guiOutOfPicture52%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfPicture5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfPicture5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfPicture5%.style.left = "%guiOutOfPicture1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfPicture5%.style.top = "%guiOutOfPicture2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfPicture5%.style.width = "%guiOutOfPicture3%px"; // Set width
+Gui%GuiNumber%%guiOutOfPicture5%.style.height = "%guiOutOfPicture4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
+
+
+
+
+// Set the src attribute to the Base64-encoded image string for the second block
+Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+
+// Set CSS styles to resize the image to fit inside the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxHeight = "100`%"; // Resize the image to fit the height of the div
+
+// Append the img element to the div for the second block
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+}
+else
+{
+if (guiOutOfPictureG = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Picture%NumOfPictures% = document.createElement("img");
+Gui%GuiNumber%Picture%NumOfPictures%.id = "Gui%GuiNumber%" + "Picture" + "%NumOfPictures%"; // Set ID for referencing
+Gui%GuiNumber%Picture%NumOfPictures%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Picture%NumOfPictures%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Picture%NumOfPictures%.style.left = "%guiOutOfPicture1%px"; // Set initial x position
+Gui%GuiNumber%Picture%NumOfPictures%.style.top = "%guiOutOfPicture2%px"; // Set initial y position
+Gui%GuiNumber%Picture%NumOfPictures%.style.width = "%guiOutOfPicture3%px"; // Set width
+Gui%GuiNumber%Picture%NumOfPictures%.style.height = "%guiOutOfPicture4%px"; // Set height
+Gui%GuiNumber%Picture%NumOfPictures%.onclick = function (event) {
+variables.A_GuiControl = event.target.textContent
+  %guiOutOfPicture6%(variables.A_GuiControl);
+};
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Picture%NumOfPictures%);
+
+
+
+
+// Set the src attribute to the Base64-encoded image string for the second block
+Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+
+// Set CSS styles to resize the image to fit inside the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxHeight = "100`%"; // Resize the image to fit the height of the div
+
+// Append the img element to the div for the second block
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Picture%NumOfPictures% = document.createElement("img");
+Gui%GuiNumber%Picture%NumOfPictures%.id = "Gui%GuiNumber%" + "Picture" + "%NumOfPictures%"; // Set ID for referencing
+Gui%GuiNumber%Picture%NumOfPictures%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Picture%NumOfPictures%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Picture%NumOfPictures%.style.left = "%guiOutOfPicture1%px"; // Set initial x position
+Gui%GuiNumber%Picture%NumOfPictures%.style.top = "%guiOutOfPicture2%px"; // Set initial y position
+Gui%GuiNumber%Picture%NumOfPictures%.style.width = "%guiOutOfPicture3%px"; // Set width
+Gui%GuiNumber%Picture%NumOfPictures%.style.height = "%guiOutOfPicture4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Picture%NumOfPictures%);
+
+
+
+
+// Set the src attribute to the Base64-encoded image string for the second block
+Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+
+// Set CSS styles to resize the image to fit inside the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxHeight = "100`%"; // Resize the image to fit the height of the div
+
+// Append the img element to the div for the second block
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+}
+
+}
+else ; else ; else ; else ; else ; else ; else ; else ; else
+{
+if (guiOutOfPictureV = 1)
+{
+if (guiOutOfPictureG = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%%guiOutOfPicture5% = document.createElement("img");
+Gui%GuiNumber%%guiOutOfPicture5%.id = "Gui%GuiNumber%" + %guiOutOfPicture52%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfPicture5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfPicture5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfPicture5%.style.left = "%guiOutOfPicture1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfPicture5%.style.top = "%guiOutOfPicture2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfPicture5%.style.width = "%guiOutOfPicture3%px"; // Set width
+Gui%GuiNumber%%guiOutOfPicture5%.style.height = "%guiOutOfPicture4%px"; // Set height
+Gui%GuiNumber%%guiOutOfPicture5%.onclick = function (event) {
+variables.A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
+  %guiOutOfPicture6%(variables.A_GuiControl);
+};
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
+
+
+
+
+// Set the src attribute to the Base64-encoded image string for the second block
+Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+
+// Set CSS styles to resize the image to fit inside the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxHeight = "100`%"; // Resize the image to fit the height of the div
+
+// Append the img element to the div for the second block
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%%guiOutOfPicture5% = document.createElement("img");
+Gui%GuiNumber%%guiOutOfPicture5%.id = "Gui%GuiNumber%" + "%guiOutOfPicture52%"; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfPicture5%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%%guiOutOfPicture5%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%%guiOutOfPicture5%.style.left = "%guiOutOfPicture1%px"; // Set initial x position
+Gui%GuiNumber%%guiOutOfPicture5%.style.top = "%guiOutOfPicture2%px"; // Set initial y position
+Gui%GuiNumber%%guiOutOfPicture5%.style.width = "%guiOutOfPicture3%px"; // Set width
+Gui%GuiNumber%%guiOutOfPicture5%.style.height = "%guiOutOfPicture4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
+
+
+// Set the src attribute to the Base64-encoded image string for the second block
+Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+
+// Set CSS styles to resize the image to fit inside the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxHeight = "100`%"; // Resize the image to fit the height of the div
+
+// Append the img element to the div for the second block
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+
+}
+}
+else
+{
+if (guiOutOfPictureG = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Picture%NumOfPictures% = document.createElement("img");
+Gui%GuiNumber%Picture%NumOfPictures%.id = "Gui%GuiNumber%" + "Picture" + "%NumOfPictures%"; // Set ID for referencing
+Gui%GuiNumber%Picture%NumOfPictures%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Picture%NumOfPictures%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Picture%NumOfPictures%.style.left = "%guiOutOfPicture1%px"; // Set initial x position
+Gui%GuiNumber%Picture%NumOfPictures%.style.top = "%guiOutOfPicture2%px"; // Set initial y position
+Gui%GuiNumber%Picture%NumOfPictures%.style.width = "%guiOutOfPicture3%px"; // Set width
+Gui%GuiNumber%Picture%NumOfPictures%.style.height = "%guiOutOfPicture4%px"; // Set height
+Gui%GuiNumber%Picture%NumOfPictures%.onclick = function (event) {
+variables.A_GuiControl = event.target.textContent
+  %guiOutOfPicture6%(variables.A_GuiControl);
+};
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Picture%NumOfPictures%);
+
+
+// Set the src attribute to the Base64-encoded image string for the second block
+Gui%GuiNumber%Picture%NumOfPictures%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+
+// Set CSS styles to resize the image to fit inside the div
+Gui%GuiNumber%Picture%NumOfPictures%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
+Gui%GuiNumber%Picture%NumOfPictures%.style.maxHeight = "100`%"; // Resize the image to fit the height of the div
+
+// Append the img element to the div for the second block
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%Picture%NumOfPictures% = document.createElement("img");
+Gui%GuiNumber%Picture%NumOfPictures%.id = "Gui%GuiNumber%" + "Picture" + "%NumOfPictures%"; // Set ID for referencing
+Gui%GuiNumber%Picture%NumOfPictures%.style.fontSize = "%guiFontShow%px"; // Set font size
+Gui%GuiNumber%Picture%NumOfPictures%.style.position = "absolute"; // Set position to absolute
+Gui%GuiNumber%Picture%NumOfPictures%.style.left = "%guiOutOfPicture1%px"; // Set initial x position
+Gui%GuiNumber%Picture%NumOfPictures%.style.top = "%guiOutOfPicture2%px"; // Set initial y position
+Gui%GuiNumber%Picture%NumOfPictures%.style.width = "%guiOutOfPicture3%px"; // Set width
+Gui%GuiNumber%Picture%NumOfPictures%.style.height = "%guiOutOfPicture4%px"; // Set height
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%Picture%NumOfPictures%);
+
+
+
+
+// Set the src attribute to the Base64-encoded image string for the second block
+Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+
+// Set CSS styles to resize the image to fit inside the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
+Gui%GuiNumber%%guiOutOfPicture5%.style.maxHeight = "100`%"; // Resize the image to fit the height of the div
+
+// Append the img element to the div for the second block
+Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
+
+)
+
+jsCode .= "`n" . jsCode0 . "`n"
+}
+}
+}
+
+
+
+
+
+}
+
+
+
 
 
 }
@@ -2944,7 +3507,7 @@ Gui%GuiNumber%.style.height = "%guiOutOfShow4%px"; // Set the height
 Gui%GuiNumber%.style.backgroundColor = "#%guiColorShow%";
 Gui%GuiNumber%.style.color = "white";
 Gui%GuiNumber%.style.fontSize = "15px";
-Gui%GuiNumber%.style.padding = "10px";
+Gui%GuiNumber%.style.padding = "0px";
 Gui%GuiNumber%.style.border = "2px solid white";
 
 // Calculate center position
@@ -4523,6 +5086,10 @@ str := StrReplace(str, "GetKeyState ( ""Up", "GetKeyState ( ""ArrowUp")
 str := StrReplace(str, "GetKeyState ( ""Down", "GetKeyState ( ""ArrowDown")
 
 str := StrReplace(str, "= \""""", "= """"")
+;MsgBox, % str
+str := StrReplace(str, " + \"",", " + """",")
+str := StrReplace(str, " + \"" + ", " + """" + ")
+str := StrReplace(str, " + \"";", " + """";")
 str := StrReplace(str, "\"", ", """, ")
 str := StrReplace(str, "= \""", "= """"")
 str := StrReplace(str, "= \""""", "= """"")
@@ -4683,6 +5250,9 @@ upCode1 =
   <body>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+
+      %base64ImageData%
+
       // JavaScript equivalent code with variables
 
       function showCustomMessageBox(options, title, text, value, timeout) {
@@ -5832,6 +6402,62 @@ StrLower(string) {
    ; MsgBox, % string
 	return string
 }
+
+
+
+CountCommasWithoutBacktick(s)
+{
+bbbackitck := Chr(96)
+howManyCommasWhitBacktickAtTheBegining := 0
+AIndex := 0
+Loop, Parse, s, " "
+{
+
+
+if (InStr(A_LoopField, ",")) && !(InStr(A_LoopField, bbbackitck . ","))
+{
+AIndex++
+;~ MsgBox, %A_LoopField%
+;~ MsgBox, AIndex %AIndex%
+}
+
+;~ MsgBox, % bbbackitck . ","
+;~ MsgBox, % A_LoopField
+if (InStr(A_LoopField, bbbackitck . ","))
+{
+  howManyCommasWhitBacktickAtTheBegining++
+;MsgBox, % howManyCommasWhitBacktickAtTheBegining
+}
+
+} ; Loop, Parse End
+
+
+if (AIndex >= 3)
+{
+return true
+}
+else
+{
+return false
+}
+
+
+} ; end of func
+
+
+Base64Enc( ByRef Bin, nBytes, LineLength := 64, LeadingSpaces := 0 ) { ; By SKAN / 18-Aug-2017
+    Local Rqd := 0, B64, B := "", N := 0 - LineLength + 1  ; CRYPT_STRING_BASE64 := 0x1
+      DllCall( "Crypt32.dll\CryptBinaryToString", "Ptr",&Bin ,"UInt",nBytes, "UInt",0x1, "Ptr",0,   "UIntP",Rqd )
+      VarSetCapacity( B64, Rqd * ( A_Isunicode ? 2 : 1 ), 0 )
+      DllCall( "Crypt32.dll\CryptBinaryToString", "Ptr",&Bin, "UInt",nBytes, "UInt",0x1, "Str",B64, "UIntP",Rqd )
+      If ( LineLength = 64 and ! LeadingSpaces )
+        Return B64
+      B64 := StrReplace( B64, "`r`n" )
+      Loop % Ceil( StrLen(B64) / LineLength )
+        B .= Format("{1:" LeadingSpaces "s}","" ) . SubStr( B64, N += LineLength, LineLength )
+    Return RTrim( B,"`n" )
+    }
+
 
 ; Define a function to find the first and last parentheses and extract the text inside
 FindAndExtractText(text) {
