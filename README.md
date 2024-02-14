@@ -18,7 +18,7 @@ To use AHK-to-js:
 2. Add your AHK code in `AHKcode.ahk`.
 3. Run `AHK to js.ahk`.
 4. You'll get `temp.html` as output.
-5. Open for edit `temp.html` coppy the full file do `Ctrl+A` then `Ctrl+C`
+5. Open for edit `temp.html` copy the full file do `Ctrl+A` then `Ctrl+C`
 6. Open `PrettierFormatter.html`
 7. Format the code and then put it it back in `temp.html`
 8. Open the `temp.html`
