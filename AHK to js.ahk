@@ -3921,6 +3921,9 @@ out4 := out3
 
 out4 := StrReplace(out4, "+", "")
 
+out3 := StrReplace(out3, "ArrowBackspace", "Backspace")
+out4 := StrReplace(out4, "ArrowBackspace", "Backspace")
+
 HotKeyCalledHotKyesOut =
 (
 
@@ -5895,6 +5898,10 @@ upCode2 =
           keys.forEach((key) => {
             if (key === "ctrl" || key === "shift" || key === "alt") {
               if (!modifiers[key]) {
+                hotkeyPressed = false;
+              }
+            } else if (key === "backspace") {
+              if (event.key !== "Backspace") {
                 hotkeyPressed = false;
               }
             } else if (key.startsWith("arrow")) {

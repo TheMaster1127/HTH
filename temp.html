@@ -667,6 +667,10 @@
               if (!modifiers[key]) {
                 hotkeyPressed = false;
               }
+            } else if (key === "backspace") {
+              if (event.key !== "Backspace") {
+                hotkeyPressed = false;
+              }
             } else if (key.startsWith("arrow")) {
               const arrowDirection = key.replace("arrow", "");
               if (arrowDirection === "up" && event.key !== "ArrowUp") {
@@ -799,6 +803,7 @@
           hours: null,
           howMany: null,
           howManyWords: null,
+          IsBackspace: null,
           milliseconds: null,
           minutes: null,
           ms: null,
@@ -833,6 +838,10 @@
 
         let Gui1 = {};
         Gui1 = document.createElement("div");
+
+        MakeHotKey("Backspace", function (hotkey) {
+          HotKeyCalledBackspace();
+        });
 
         MakeHotKey("Alt+L", function (hotkey) {
           HotKeyCalledAltL();
@@ -959,7 +968,18 @@
 
         variables.done = 0;
 
+        variables.IsBackspace = 0;
+
         return;
+
+        async function HotKeyCalledBackspace() {
+          // console.log("HotKeyCalled Backspace")
+
+          variables.IsBackspace = 1;
+
+          await OnKeyPress();
+          variables.IsBackspace = 0;
+        }
 
         async function OnKeyPress(A_ThisHotkey) {
           variables.A_ThisHotkey = A_ThisHotkey;
@@ -970,7 +990,7 @@
               variables.StartTime = BuildInVars("A_TickCount");
             }
 
-            if (variables.A_ThisHotkey == "q" && variables.pos >= 1) {
+            if (variables.IsBackspace == 1 && variables.pos >= 0) {
               variables.v = "l" + variables.pos;
 
               GuiControl("color", "Gui1" + variables.v, "#ffffff");
@@ -980,6 +1000,8 @@
               if (variables.varWrong <= 0) {
                 variables.varWrong = 0;
               }
+              variables.IsBackspace = 0;
+
               return;
             }
 

@@ -58,7 +58,15 @@ varRight := 0
 
 onceTimerStart := 0
 done := 0
+IsBackspace := 0
 return
+
+
+Backspace::
+IsBackspace := 1
+gosub, OnKeyPress
+IsBackspace := 0
+Return
 
 
 OnKeyPress:
@@ -72,7 +80,9 @@ if (onceTimerStart = 1)
 StartTime := A_TickCount
 }
 
-if (A_ThisHotkey = "q") && (pos >= 1)
+
+
+if (IsBackspace = 1) && (pos >= 0)
 {
 
 v := "l" . pos
@@ -84,6 +94,7 @@ if (varWrong <= 0)
 {
 varWrong := 0
 }
+IsBackspace := 0
 return
 }
 
