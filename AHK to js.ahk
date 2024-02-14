@@ -269,6 +269,8 @@ funcs .= "}"
 
 
 AHKcodeUot123 := ""
+numOfTextData := 0
+TextData := ""
 outuig7f867if := ""
 numLenStrNum := 1
 done := 0
@@ -3527,6 +3529,42 @@ jsCode .= "`n" . jsCode0 . "`n"
 }
 lineDone := 1
 }
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 10) = StrLower("FileRead, "))
+{
+
+str := A_LoopField
+
+s:=StrSplit(str,", ").2
+out1 := s
+
+s:=StrSplit(str,", ").3
+out2 := s
+out1 := Trim(out1)
+out2 := Trim(out2)
+
+numOfTextData++
+;MsgBox, % out2
+FileRead, extractedText, %out2%
+
+
+extractedText := StrReplace(extractedText, "``", "\``")
+
+;MsgBox, % extractedText
+tempTextData =
+(
+let textData%numOfTextData% = ``%extractedText%``;
+)
+;MsgBox, %tempTextData%
+
+TextData .= tempTextData . "`n`n"
+
+out3 := "variables." . out1 . " = " . "textData" . numOfTextData
+
+jsCode .= "`n" . out3 . "`n"
+
+lineDone := 1
+
+}
 else if (SubStr(Trim(StrLower(A_LoopField)), 1, 12) = StrLower("GuiControl, ")) or (SubStr(Trim(StrLower(A_LoopField)), 1, 11) = StrLower("GuiControl "))
 {
 
@@ -3798,14 +3836,30 @@ jsCode .= out0 . "`n"
 
 lineDone := 1
 }
-else if RegExMatch(A_LoopField, "\b\w+\s*\+{2,}") or RegExMatch(A_LoopField, "\b\w+\s*\-{2,}")
+else if RegExMatch(A_LoopField, "(\+){2}$")
 {
 lineDone := 1
 str := A_LoopField
 
 str := Trim(str)
+StringTrimRight, str, str, 2
 
-jsCode .= "variables." . str . "`n"
+str := varTraspiler(str, 0)
+;MsgBox, % strs
+jsCode .= str . "++`n"
+}
+else if RegExMatch(A_LoopField, "(\-){2}$")
+{
+lineDone := 1
+str := A_LoopField
+
+str := Trim(str)
+StringTrimRight, str, str, 2
+
+
+str := varTraspiler(str, 0)
+;MsgBox, % str
+jsCode .= str . "--`n"
 }
 else if (RegExMatch(A_LoopField, "^\w+:$")) && (Trim(SubStr(A_LoopField, 0)) = ":")
 {
@@ -4701,6 +4755,11 @@ if (StrLower(str) = "exitapp")
 str := "window.close()"
 }
 
+if (StrLower(str) = "reload")
+{
+str := "location.reload()"
+}
+
 if (str != "await")
 {
 out123456765422 .= str . "`n"
@@ -5253,6 +5312,8 @@ upCode1 =
   <body>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+
+      %TextData%
 
       %base64ImageData%
 
