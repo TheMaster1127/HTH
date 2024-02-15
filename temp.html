@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,19 +7,7 @@
     <style>
       body {
         background-color: #202020;
-        font-family:
-          "Open Sans",
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          Roboto,
-          Oxygen-Sans,
-          Ubuntu,
-          Cantarell,
-          "Helvetica Neue",
-          Helvetica,
-          Arial,
-          sans-serif;
+        font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11" rel="stylesheet" />
@@ -570,6 +558,10 @@
         }
       }
 
+      function isMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent);
+      }
+
       // Function to display a message
       function displayMessage(message) {
         return new Promise((resolve) => {
@@ -795,13 +787,16 @@
           A_Index: null,
           A_IsTranspiled: 1,
           A_LoopField: null,
+          AThisHotkey: null,
           borderX: null,
           byWhatSizeBorderX: null,
           char: null,
           characters: null,
           checkLenWords: null,
+          comeFromEdit: null,
           data: null,
           done: null,
+          EditText: null,
           ElapsedTime123: null,
           ElapsedTime: null,
           endText: null,
@@ -885,7 +880,7 @@
         // await showCustomMessageBox({}," ", startWord, 0, 0.)
         variables.endText += variables.startWord + " ";
 
-        for (/* Normal Loop */ variables.A_Index2 = 1; variables.A_Index2 <= 24; variables.A_Index2++) {
+        for (/* Normal Loop */ variables.A_Index2 = 1; variables.A_Index2 <= 6; variables.A_Index2++) {
           variables.getNextWord = 0;
 
           variables.nextWordsNum = 0;
@@ -946,56 +941,13 @@
 
         // variables.text =  "hello man is some text lets see if you can type fast then you can see how fast can you typed and ist done\;
 
-        // variables.text =  "ahk is the best\;
-
         variables.text = variables.endText;
 
-        Gui1Image1 = document.createElement("img");
-        Gui1Image1.id = "Gui1" + "Image1"; // Set ID for referencing
-        Gui1Image1.style.fontSize = "15px"; // Set font size
-        Gui1Image1.style.position = "absolute"; // Set position to absolute
-        Gui1Image1.style.left = "300px"; // Set initial x position
-        Gui1Image1.style.top = "300px"; // Set initial y position
-        Gui1Image1.style.width = "px"; // Set width
-        Gui1Image1.style.height = "px"; // Set height
-        Gui1.appendChild(Gui1Image1);
-
-        // Set the src attribute to the Base64-encoded image string for the second block
-        Gui1Image1.src = "data:image/*;base64," + base64Image1; // Assuming the image is in PNG format
-
-        // Set CSS styles to resize the image to fit inside the div
-        Gui1Image1.style.maxWidth = "100%"; // Resize the image to fit the width of the div
-        Gui1Image1.style.maxHeight = "100%"; // Resize the image to fit the height of the div
-
-        // Append the img element to the div for the second block
-        Gui1.appendChild(Gui1Image1);
-
-        Gui1Edit1 = document.createElement("textarea");
-        Gui1Edit1.id = "Gui1" + "Edit" + "1"; // Set ID for referencing
-        Gui1Edit1.placeholder = "Type Here...";
-        Gui1Edit1.style.fontSize = "15px"; // Set font size
-        Gui1Edit1.style.resize = "none"; // Disable resizing
-        Gui1Edit1.style.position = "absolute"; // Set position to absolute
-        Gui1Edit1.style.left = "10px"; // Set initial x position
-        Gui1Edit1.style.top = "300px"; // Set initial y position
-        Gui1Edit1.style.width = "px"; // Set width
-        Gui1Edit1.style.height = "px"; // Set height
-        Gui1.appendChild(Gui1Edit1);
-
-        Gui1Button1 = document.createElement("button");
-        Gui1Button1.id = "Gui1" + "Button" + "1"; // Set ID for referencing
-        Gui1Button1.textContent = "New";
-        Gui1Button1.style.fontSize = "15px"; // Set font size
-        Gui1Button1.style.position = "absolute"; // Set position to absolute
-        Gui1Button1.style.left = "10px"; // Set initial x position
-        Gui1Button1.style.top = "360px"; // Set initial y position
-        Gui1Button1.style.width = "px"; // Set width
-        Gui1Button1.style.height = "px"; // Set height
-        Gui1Button1.onclick = function (event) {
-          A_GuiControl = event.target.textContent;
-          New(A_GuiControl);
-        };
-        Gui1.appendChild(Gui1Button1);
+        if (await isMobileDevice()) {
+          variables.text = "Ahk is the best";
+        } else {
+          variables.text = "AHK is the Best";
+        }
 
         variables.howMany = 0;
 
@@ -1077,6 +1029,59 @@
 
         document.body.appendChild(Gui1); // Append the GUI window to the body
 
+        Gui1Image1 = document.createElement("img");
+        Gui1Image1.id = "Gui1" + "Image1"; // Set ID for referencing
+        Gui1Image1.style.fontSize = "18px"; // Set font size
+        Gui1Image1.style.position = "absolute"; // Set position to absolute
+        Gui1Image1.style.left = "300px"; // Set initial x position
+        Gui1Image1.style.top = "300px"; // Set initial y position
+        Gui1Image1.style.width = "px"; // Set width
+        Gui1Image1.style.height = "px"; // Set height
+        Gui1.appendChild(Gui1Image1);
+
+        // Set the src attribute to the Base64-encoded image string for the second block
+        Gui1Image1.src = "data:image/*;base64," + base64Image1; // Assuming the image is in PNG format
+
+        // Set CSS styles to resize the image to fit inside the div
+        Gui1Image1.style.maxWidth = "100%"; // Resize the image to fit the width of the div
+        Gui1Image1.style.maxHeight = "100%"; // Resize the image to fit the height of the div
+
+        // Append the img element to the div for the second block
+        Gui1.appendChild(Gui1Image1);
+
+        if (await isMobileDevice()) {
+          Gui1Edit1 = document.createElement("textarea");
+          Gui1Edit1.id = "Gui1" + "Edit1"; // Set ID for referencing
+          Gui1Edit1.placeholder = "Type Here...";
+          Gui1Edit1.style.fontSize = "18px"; // Set font size
+          Gui1Edit1.style.resize = "none"; // Disable resizing
+          Gui1Edit1.style.position = "absolute"; // Set position to absolute
+          Gui1Edit1.style.left = "10px"; // Set initial x position
+          Gui1Edit1.style.top = "300px"; // Set initial y position
+          Gui1Edit1.style.width = "px"; // Set width
+          Gui1Edit1.style.height = "px"; // Set height
+          Gui1Edit1.addEventListener("input", function () {
+            A_GuiControl = Gui1Edit1.value;
+            Edit(A_GuiControl);
+          });
+          Gui1.appendChild(Gui1Edit1);
+        }
+
+        Gui1Button1 = document.createElement("button");
+        Gui1Button1.id = "Gui1" + "Button" + "1"; // Set ID for referencing
+        Gui1Button1.textContent = "New";
+        Gui1Button1.style.fontSize = "18px"; // Set font size
+        Gui1Button1.style.position = "absolute"; // Set position to absolute
+        Gui1Button1.style.left = "10px"; // Set initial x position
+        Gui1Button1.style.top = "360px"; // Set initial y position
+        Gui1Button1.style.width = "px"; // Set width
+        Gui1Button1.style.height = "px"; // Set height
+        Gui1Button1.onclick = function (event) {
+          A_GuiControl = event.target.textContent;
+          New(A_GuiControl);
+        };
+        Gui1.appendChild(Gui1Button1);
+
         variables.pos = 0;
 
         variables.varWrong = 0;
@@ -1088,11 +1093,30 @@
         variables.done = 0;
 
         variables.IsBackspace = 0;
-GuiControl("focus", "Gui1Edit1")
+
+        variables.comeFromEdit = 0;
+
         return;
 
         async function New(A_GuiControl) {
           location.reload();
+        }
+
+        async function Edit(A_GuiControl) {
+          variables.comeFromEdit = 1;
+
+          // await showCustomMessageBox({}," ", A_GuiControl, 0, 0.)
+          variables.EditText = A_GuiControl;
+
+          variables.characters10 = variables.EditText.split("");
+          variables.charLength10 = variables.characters10.length;
+
+          for (/* Loop parse */ variables.A_Index10 = 1; variables.A_Index10 <= variables.charLength10; variables.A_Index10++) {
+            variables.A_LoopField10 = variables.characters10[variables.A_Index10 - 1]; // Using array notation to access characters
+
+            variables.EditText = variables.A_LoopField10;
+          }
+          await OnKeyPress();
         }
 
         async function HotKeyCalledBackspace() {
@@ -1106,6 +1130,16 @@ GuiControl("focus", "Gui1Edit1")
 
         async function OnKeyPress(A_ThisHotkey) {
           variables.A_ThisHotkey = A_ThisHotkey;
+
+          if (await isMobileDevice()) {
+            if (variables.comeFromEdit == 1) {
+              variables.AThisHotkey = variables.EditText;
+            } else {
+              variables.AThisHotkey = variables.A_ThisHotkey;
+            }
+          } else {
+            variables.AThisHotkey = variables.A_ThisHotkey;
+          }
 
           if (variables.done == 0) {
             variables.onceTimerStart++;
@@ -1140,7 +1174,7 @@ GuiControl("focus", "Gui1Edit1")
 
             variables.v = "l" + variables.pos;
 
-            if (variables.char == variables.A_ThisHotkey) {
+            if (variables.char == variables.AThisHotkey) {
               variables.varRight++;
 
               GuiControl("color", "Gui1" + variables.v, "#00ff08");
