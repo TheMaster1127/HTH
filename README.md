@@ -25,6 +25,8 @@ To use AHK-to-js:
 
 For coding style, you should use Allman style since functions won't be recognized here is an example:
 
+Do this:
+
 ```ahk
 nameOfFunc(a, b)
 {
