@@ -1,7 +1,6 @@
 
 ---
-![favicon (4)](https://github.com/TheMaster1127/AHK-to-js/assets/134737935/1a0efe63-726e-49ca-a13c-d0ed627f2ea7) # AHK-to-js
-
+![favicon (4)](https://github.com/TheMaster1127/AHK-to-js/assets/134737935/1a0efe63-726e-49ca-a13c-d0ed627f2ea7)
 **AHK-to-js** is a transpiler from AutoHotkey (AHK) to JavaScript (JS) that puts it all in a full HTML file. It aims to simulate AHK inside a browser on almost any device.
 
 **Note:**
