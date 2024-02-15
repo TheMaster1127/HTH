@@ -1,3 +1,4 @@
+
 ---
 
 # AHK-to-js
@@ -23,8 +24,6 @@ To use AHK-to-js:
 8. Open the `temp.html`
 
 For coding style, you should use Allman style since functions won't be recognized here is an example:
-
-Do this:
 
 ```ahk
 nameOfFunc(a, b)
@@ -186,7 +185,9 @@ Built-in Variables
 ```ahk
 if (A_IsTranspiled = "")
 {
-; do something if its not transpiled
+; do something if its
+
+ not transpiled
 }
 else
 {
