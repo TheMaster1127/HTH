@@ -1,7 +1,8 @@
 
 ---
 
-![image-removebg-removebg-preview-removebg-preview](https://github.com/TheMaster1127/AHK-to-js/assets/134737935/806a3203-abf6-42f0-b7c6-00a427e5bdad)
+![favicon (4)](https://github.com/TheMaster1127/AHK-to-js/assets/134737935/1a0efe63-726e-49ca-a13c-d0ed627f2ea7)
+
 
 
 # AHK-to-js
