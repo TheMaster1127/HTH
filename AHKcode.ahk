@@ -16,7 +16,7 @@ startWord := wordNum%ran%
 ;MsgBox, % startWord
 endText .= startWord . " "
 
-Loop, 24
+Loop, 6
 {
 getNextWord := 0
 nextWordsNum := 0
@@ -64,11 +64,16 @@ checkLenWords := howLongWord%A_Index%
 checkLenWords := checkLenWords + 1
 
 ;text := "hello man is some text lets see if you can type fast then you can see how fast can you typed and ist done"
-;text := "ahk is the best"
 text := endText
-Gui, Add, Picture, x300 y300 vImage1, 20240213205549.png
-Gui, Add, Edit, x10 y300 , Type Here...
-Gui, Add, Button, x10 y360 gNew, New
+if (isMobileDevice())
+{
+text := "Ahk is the best"
+}
+else
+{
+text := "AHK is the Best"
+
+}
 
 howMany := 0
 Loop, Parse, text
@@ -113,6 +118,12 @@ x := 10
 }
 
 Gui, Show, h600 w%w%
+Gui, Add, Picture, x300 y300 vImage1, 20240213205549.png
+if (isMobileDevice())
+{
+Gui, Add, Edit, x10 y300 gEdit vEdit1, Type Here...
+}
+Gui, Add, Button, x10 y360 gNew, New
 pos := 0
 
 
@@ -124,15 +135,28 @@ varRight := 0
 onceTimerStart := 0
 done := 0
 IsBackspace := 0
+comeFromEdit := 0
 return
 
 New:
 Reload
 Return
 
+Edit:
+comeFromEdit := 1
+;MsgBox, % A_GuiControl
+EditText := A_GuiControl
+Loop, Parse, EditText
+{
+EditText := A_LoopField
+}
+gosub, OnKeyPress
+Return
+
 
 
 Backspace::
+
 IsBackspace := 1
 gosub, OnKeyPress
 IsBackspace := 0
@@ -140,7 +164,21 @@ Return
 
 
 OnKeyPress:
-
+if (isMobileDevice())
+{
+if (comeFromEdit = 1)
+{
+AThisHotkey := EditText
+}
+else
+{
+AThisHotkey := A_ThisHotkey
+}
+}
+else
+{
+AThisHotkey := A_ThisHotkey
+}
 
 if (done = 0)
 {
@@ -180,7 +218,7 @@ char := SubStr(text, pos, 1)
 
 
 v := "l" . pos
-if (char = A_ThisHotkey)
+if (char = AThisHotkey)
 {
 
 varRight++

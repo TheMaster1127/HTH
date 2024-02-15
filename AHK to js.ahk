@@ -5862,6 +5862,10 @@ upCode2 =
         }
       }
 
+      function isMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent);
+      }
+
       // Function to display a message
       function displayMessage(message) {
         return new Promise((resolve) => {

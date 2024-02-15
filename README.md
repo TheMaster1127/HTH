@@ -1,4 +1,3 @@
-
 ---
 
 # AHK-to-js
@@ -18,7 +17,7 @@ To use AHK-to-js:
 2. Add your AHK code in `AHKcode.ahk`.
 3. Run `AHK to js.ahk`.
 4. You'll get `temp.html` as output.
-5. Open for edit `temp.html` copy the full file do `Ctrl+A` then `Ctrl+C`
+5. Open for edit `temp.html` coppy the full file do `Ctrl+A` then `Ctrl+C`
 6. Open `PrettierFormatter.html`
 7. Format the code and then put it it back in `temp.html`
 8. Open the `temp.html`
@@ -60,7 +59,6 @@ Return
 - Random
 - Sleep
 - Msgbox
-- FileRead will read the file and hardcode it as a string. This means you no longer need the text file since the text will be hardcoded.
 - FileAppend it will download the file one time next time it will be a new file also you can only do for example: `FileAppend, %yourVar%, FileName.txt` you cant put vars in the filename argument 
 - SetTimer Note: if you put a msgbox in the timer it will not stop the execution which is not the same as in real AutoHotKey
 - gosub
@@ -120,7 +118,6 @@ else
 ```
 
 - OutputDebug (equivalent to `console.log` in JS)
-- Reload it will reload the page
 - Loop
 - Loop, Parse
 - Increment (e.g., `var++`)
@@ -131,6 +128,7 @@ else
 Some features haven't been fully tested but should work include:
 
 - getDataFromEndpoint(data, endpoint, method) this custom function allows you to get and send data to or from an endpoint. It can also return data. ONLY if have a backend!
+- isMobileDevice will check if its a mobile device no need for perimeters
 - Abs
 - ACos
 - ASin
