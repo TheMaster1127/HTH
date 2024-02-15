@@ -195,7 +195,7 @@ else
 ```
 
 ## Platform Compatibility
-
+ 
 - AutoHotKey only runs on Windows.
 
 ---
