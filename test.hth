@@ -1,0 +1,13 @@
+
+
+var1 := "asdfv`niuihj`n"
+Loop, 5
+{
+
+Loop, Parse, var1, `n, `r
+{
+MsgBox, % A_LoopField
+}
+}
+MsgBox, AY
+;var1 := getDataFromEndpoint(var1, "\button1", "GET")

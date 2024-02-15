@@ -44,6 +44,14 @@ BorderWidth := OutputVarRight
 FileRead, buildInFunc, buildInFunc.txt
 test := 1 ; test your code
 
+for n, param in A_Args  ; For each parameter:
+{
+if (n = 1)
+{
+fileNameHTH := param
+}
+}
+
 
 StartTime := A_TickCount
 
@@ -53,7 +61,7 @@ if not A_IsAdmin
 	Run *RunAs "%A_ScriptFullPath%"
 }
 
-FileRead, AHKcode, AHKcode.ahk
+FileRead, AHKcode, %fileNameHTH%
 
 if (test = 1)
 {
@@ -349,6 +357,7 @@ base64ImageNum := 0
 base64ImageData := ""
 
 
+
 Loop, Parse, AHKcode, `n, `r
 {
 lineDone := 0
@@ -493,6 +502,11 @@ guiFontShow := "15"
 
 AindexcharLength := 1
 
+;MsgBox, % AHKcode
+
+AHKcode := StrReplace(AHKcode, "\"")", """"")")
+AHKcode := StrReplace(AHKcode, "return \""", "return """"")
+
 Loop, Parse, AHKcode, `n, `r
 {
 lineDone := 0
@@ -580,7 +594,8 @@ if (SubStr(Trim(StrLower(A_LoopField)), 1, 10) = "else if !(") or (SubStr(Trim(S
 str := A_LoopField
 
 
-;MsgBox, % str
+
+
 curledLikeThere := 0
 if (InStr(str, "}"))
 {
@@ -642,7 +657,6 @@ out .= A_LoopField
 }
 
 str := out
-
 
 
 
@@ -985,18 +999,7 @@ else
 }
 
 
-line := StrReplace(line, " ( variables.if ", " ")
-line := StrReplace(line, " = ", " == ")
 
-line := StrReplace(line, " != ", " !== ")
-
-line := StrReplace(line, "  ", " ")
-line := StrReplace(line, "   ", " ")
-line := StrReplace(line, "    ", " ")
-line := StrReplace(line, ") && (", " && ")
-line := StrReplace(line, ") || (", " || ")
-line := StrReplace(line, ") `;", ")")
-line := StrReplace(line, ");", ")")
 
 
 Loop, %posStartQuotesNum%
@@ -1013,7 +1016,20 @@ line := StrReplace(line, "\\""", """\""")
 line := StrReplace(line, """\"" ", "\"""" ")
 line := StrReplace(line, """\"";", "\"""" ")
 }
+line := StrReplace(line, " ( variables.if ", " ")
+line := StrReplace(line, " = ", " == ")
 
+line := StrReplace(line, " != ", " !== ")
+line := StrReplace(line, "= \""", "= """"")
+
+line := StrReplace(line, "  ", " ")
+line := StrReplace(line, "   ", " ")
+line := StrReplace(line, "    ", " ")
+line := StrReplace(line, ") && (", " && ")
+line := StrReplace(line, ") || (", " || ")
+line := StrReplace(line, ") `;", ")")
+line := StrReplace(line, ");", ")")
+;MsgBox, % line
 jsCode .= line . "`n"
 
 lineDone := 1
@@ -1698,10 +1714,20 @@ out2 := s
 
 ;MsgBox, % out2
 out2 := Trim(out2)
+;MsgBox, % out2
+if (SubStr(Trim(out2), 1, 1) = """")
+{
+line := Trim(out2)
+var1 := "return " . line
 
+}
+else
+{
 line := varTraspiler(out2, 0)
 line := Trim(line)
 var1 := "return " . line
+}
+var1 := StrReplace(var1, "return \""", "return """"")
 
 jsCode .= var1 . "`n"
 
@@ -4079,6 +4105,37 @@ jsCode .= out . "`n"
 lineDone := 1
 
 }
+else if (InStr(A_LoopField, "getDataFromEndpoint("))
+{
+
+
+str := A_LoopField
+
+s:=StrSplit(str,", ").2
+out1 := Trim(s)
+
+; Define the regex pattern
+regex := "i)^[\w_]+$"
+
+; Apply regex to keep only words, letters, numbers, and underscores
+if RegExMatch(out1, regex)
+{
+    ; The filtered string contains only allowed characters
+    output := out1
+}
+else
+{
+    ; The filtered string contains characters other than words, letters, numbers, and underscores
+    output := RegExReplace(out1, "[^\w_]", "")
+}
+
+; Output the result
+MsgBox, |%output%|
+
+
+MsgBox, % out1
+
+}
 else if ((InStr(A_LoopField, " := ")) or (InStr(A_LoopField, " .= ")) or (InStr(A_LoopField, " += ")) or (InStr(A_LoopField, " -= ")) or (InStr(A_LoopField, " *= "))) && (lineDone = 0)
 {
 
@@ -5147,6 +5204,8 @@ str := StrReplace(str, "GetKeyState ( ""Left", "GetKeyState ( ""ArrowLeft")
 str := StrReplace(str, "GetKeyState ( ""Up", "GetKeyState ( ""ArrowUp")
 str := StrReplace(str, "GetKeyState ( ""Down", "GetKeyState ( ""ArrowDown")
 
+str := StrReplace(str, "return \""", "return """"")
+
 str := StrReplace(str, "= \""""", "= """"")
 ;MsgBox, % str
 str := StrReplace(str, " + \"",", " + """",")
@@ -5723,20 +5782,25 @@ upCode2 =
 
       // RegExMatch
       function RegExMatch(Haystack, NeedleRegEx, OutputVar, StartingPos) {
-        if (Haystack === null || NeedleRegEx === null) return null;
+          if (Haystack === null || NeedleRegEx === null) return null;
 
-        const regex = new RegExp(NeedleRegEx);
-        const match = Haystack.match(regex);
+          const regex = new RegExp(NeedleRegEx);
+          let match;
 
-        if (match) {
-          if (OutputVar) {
-            OutputVar.push(match[0]);
+          if (typeof Haystack === 'string') {
+              match = Haystack.match(regex);
           }
-          return match.index + 1;
-        } else {
-          return 0;
-        }
+
+          if (match) {
+              if (OutputVar) {
+                  OutputVar.push(match[0]);
+              }
+              return match.index + 1;
+          } else {
+              return 0;
+          }
       }
+
 
       // RegExReplace
 
