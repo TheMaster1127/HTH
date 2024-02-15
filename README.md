@@ -1,3 +1,4 @@
+
 ---
 
 # AHK-to-js
@@ -186,7 +187,9 @@ Built-in Variables
 ```ahk
 if (A_IsTranspiled = "")
 {
-; do something if its not transpiled
+; do something if its
+
+ not transpiled
 }
 else
 {
@@ -195,7 +198,7 @@ else
 ```
 
 ## Platform Compatibility
-
+ 
 - AutoHotKey only runs on Windows.
 
 ---
