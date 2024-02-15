@@ -54,7 +54,7 @@ To use HTH HeavenToHell:
 2. Add your HTH code in a `.hth` file.
 3. Open the cmd in the directory of the HTH.exe or HTH.ahk Transpiler
 4. You can run `HTH filename.hth` or `HTH.ahk filename.hth` or `HTH.exe filename.hth`
-5. You'll get `index.html` as output. Also if you use the function `getDataFromEndpoint` anywhere in the code HTH will generate a `server.py` file for better backend connectivity.
+5. You'll get `index.html` as output. Also if you use the function `getDataFromEndpoint` anywhere in the code HTH will generate a `server`Name`.py` file for better backend connectivity.
 6. (Optional) Open for edit `index.html` coppy the full file do `Ctrl+A` then `Ctrl+C`
 7. (Optional) Open `PrettierFormatter.html`
 8. (Optional) Format the code and then put it it back in `index.html`
