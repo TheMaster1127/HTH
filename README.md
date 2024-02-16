@@ -55,12 +55,12 @@ To use HTH HeavenToHell:
 3. Open the cmd in the directory of the HTH.exe or HTH.ahk Transpiler
 4. You can run `HTH filename.hth` or `HTH.ahk filename.hth` or `HTH.exe filename.hth`
 5. You'll get `index.html` as output. Also if you use the function `getDataFromEndpoint` anywhere in the code HTH will generate a `server.py` file for better backend connectivity.
-6. (Optional) Open for edit `index.html` coppy the full file do `Ctrl+A` then `Ctrl+C`
+6. (Optional) Open for edit `index.html` copy the full file do `Ctrl+A` then `Ctrl+C`
 7. (Optional) Open `PrettierFormatter.html`
 8. (Optional) Format the code and then put it it back in `index.html`
 9. (Optional) Open the `index.html`
 
-For coding style, you should use Allman style since functions won't be recognized here is an example:
+For coding style, you should use Allman Style since functions won't be recognized here is an example:
 
 Do this:
 
@@ -176,7 +176,7 @@ else
 
 Some features haven't been fully tested but should work include:
 
-- getDataFromEndpoint(data, endpoint) this function allows you to get and send data to or from an endpoint. It will also return data. ONLY if you are running a backend witch will be generated in a python file in the same dir!
+- getDataFromEndpoint(data, endpoint) this function allows you to get and send data to or from an endpoint. It will also return data. ONLY if you are running a backend which will be generated in a python file in the same dir!
 - isMobileDevice will check if its a mobile device no need for parameters
 - Abs
 - ACos
@@ -232,7 +232,7 @@ Built-in Variables
 - A_Sec
 - A_Space
 - A_Tab
-- A_IsTranspiled in js it will be set to 1 in HTH its will be blank so you can do somting like:
+- A_IsTranspiled in js it will be set to 1 in HTH its will be blank so you can do something like:
 
 ```ahk
 if (A_IsTranspiled = "")
