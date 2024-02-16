@@ -54,7 +54,7 @@ To use HTH HeavenToHell:
 2. Add your HTH code in a `.hth` file.
 3. Open the cmd in the directory of the HTH.exe or HTH.ahk Transpiler
 4. You can run `HTH filename.hth` or `HTH.ahk filename.hth` or `HTH.exe filename.hth`
-5. You'll get `index.html` as output. Also if you use the function `getDataFromEndpoint` anywhere in the code HTH will generate a `server`Name`.py` file for better backend connectivity.
+5. You'll get `index.html` as output. Also if you use the function `getDataFromEndpoint` anywhere in the code HTH will generate a `server.py` file for better backend connectivity.
 6. (Optional) Open for edit `index.html` coppy the full file do `Ctrl+A` then `Ctrl+C`
 7. (Optional) Open `PrettierFormatter.html`
 8. (Optional) Format the code and then put it it back in `index.html`
@@ -176,7 +176,7 @@ else
 
 Some features haven't been fully tested but should work include:
 
-- getDataFromEndpoint(data, endpoint, method) this custom function allows you to get and send data to or from an endpoint. It can also return data. ONLY if have a backend!
+- getDataFromEndpoint(data, endpoint) this function allows you to get and send data to or from an endpoint. It will also return data. ONLY if you are running a backend witch will be generated in a python file in the same dir!
 - isMobileDevice will check if its a mobile device no need for parameters
 - Abs
 - ACos
@@ -252,5 +252,3 @@ else
 - AutoHotKey only runs on Windows.
 
 ---
-
-
