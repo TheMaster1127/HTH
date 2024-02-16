@@ -52,6 +52,24 @@ fileNameHTH := param
 }
 }
 
+;MsgBox, % fileNameHTH
+
+
+input := fileNameHTH
+
+; Extract text after the last backslash
+regex := ".*\\([^\\]+)\.[^\\.]+$"
+if (RegExMatch(input, regex, match))
+{
+    extractedText := match1
+    ;MsgBox % "File name without extension: " extractedText
+}
+else
+{
+    ;MsgBox % "No match found!"
+}
+
+nameOfHTHscript := extractedText
 
 StartTime := A_TickCount
 
@@ -502,6 +520,8 @@ guiFontShow := "15"
 
 AindexcharLength := 1
 
+allEndponitsInPython := ""
+endpoints := ""
 ;MsgBox, % AHKcode
 
 AHKcode := StrReplace(AHKcode, "\"")", """"")")
@@ -3862,6 +3882,83 @@ jsCode .= out0 . "`n"
 
 lineDone := 1
 }
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 20) = StrLower("getDataFromEndpoint("))
+{
+
+;MsgBox, asdkhsfgvjhfdusadgfhjkusdjvhn
+
+
+
+
+
+str := A_LoopField
+
+;MsgBox, % str
+
+s:=StrSplit(str,", ").2
+out1 := Trim(s)
+
+
+s:=StrSplit(str,"Endponit(").1
+out0 := Trim(s)
+;MsgBox, % out0
+s:=StrSplit(out0,", ").1
+out0 := Trim(s)
+;MsgBox, % out0
+s:=StrSplit(out0,"(").2
+out0 := Trim(s)
+;MsgBox, % out0
+
+s:=StrSplit(str,", ").2
+out2 := Trim(s)
+
+
+; Define the regex pattern
+regex := "i)^[\w_]+$"
+if RegExMatch(out2, regex)
+{
+    output := out2
+}
+else
+{
+    endpoint := RegExReplace(out2, "[^\w_]", "")
+}
+
+
+if !(Instr(out0, """"))
+{
+out0 := "variables." . out0
+}
+
+if !(Instr(out2, """"))
+{
+out2 := "variables." . out2
+}
+
+out =
+(
+await getDataFromEndpoint(%out0%, %out2%)
+)
+
+
+method := StrReplace(method, """", "")
+;MsgBox, % method
+
+
+
+;MsgBox, % out
+
+
+endpoints .= endpoint . "`n"
+
+
+jsCode .= out . "`n"
+
+;MsgBox, % out
+lineDone := 1
+
+
+}
 else if RegExMatch(A_LoopField, "(\+){2}$")
 {
 lineDone := 1
@@ -4103,37 +4200,6 @@ out := "await funcs[""" . out3 . """ + variables." . out4 . "]()" . "`n"
 jsCode .= out . "`n"
 ;MsgBox, % out
 lineDone := 1
-
-}
-else if (InStr(A_LoopField, "getDataFromEndpoint("))
-{
-
-
-str := A_LoopField
-
-s:=StrSplit(str,", ").2
-out1 := Trim(s)
-
-; Define the regex pattern
-regex := "i)^[\w_]+$"
-
-; Apply regex to keep only words, letters, numbers, and underscores
-if RegExMatch(out1, regex)
-{
-    ; The filtered string contains only allowed characters
-    output := out1
-}
-else
-{
-    ; The filtered string contains characters other than words, letters, numbers, and underscores
-    output := RegExReplace(out1, "[^\w_]", "")
-}
-
-; Output the result
-MsgBox, |%output%|
-
-
-MsgBox, % out1
 
 }
 else if ((InStr(A_LoopField, " := ")) or (InStr(A_LoopField, " .= ")) or (InStr(A_LoopField, " += ")) or (InStr(A_LoopField, " -= ")) or (InStr(A_LoopField, " *= "))) && (lineDone = 0)
@@ -5223,6 +5289,54 @@ if (Trim(str) == "Return")
 str := "}"
 }
 
+if (InStr(str, "("))
+{
+
+checkParenetctiesCheckFix1 := 0
+checkParenetctiesCheckFix2 := 0
+Loop, Parse, str
+{
+  if (A_LoopField = "(")
+  {
+   checkParenetctiesCheckFix1++
+  }
+  if (A_LoopField = ")")
+  {
+   checkParenetctiesCheckFix2++
+  }
+
+}
+
+if (checkParenetctiesCheckFix1 != checkParenetctiesCheckFix2)
+{
+str := Trim(str)
+
+if (InStr(str, "))")) && (InStr(str, "getDataFromEndpoint"))
+{
+StringTrimRight, str, str, 1
+}
+}
+}
+
+
+; Regular expression pattern
+pattern := """\/(\w+)"""
+
+; Match the pattern in the text
+RegExMatch(str, pattern, matches)
+
+; Extract the captured word
+word := matches1
+
+endpoints .= word . "`n"
+
+
+
+
+
+
+
+
 
 out4758686d86d86d86578991abc .= str . "`n"
 }
@@ -5231,6 +5345,38 @@ StringTrimRight, out4758686d86d86d86578991abc, out4758686d86d86d86578991abc, 1
 
 jsCode := out4758686d86d86d86578991abc
 
+
+
+sort, endpoints, U
+
+
+;MsgBox, % endpoints
+
+Loop, Parse, endpoints, `n, `r
+{
+if (A_LoopField != "")
+{
+ endpoint := A_LoopField
+flaskFunction =
+(
+
+
+@app.route('/%endpoint%', methods=['POST'])
+def %endpoint%():
+    request_data = request.get_json()
+    print(f"Data from Hell: {request_data}")
+    return "hello from Python"
+
+
+)
+
+
+
+allEndponitsInPython .= flaskFunction . "`n"
+;MsgBox, % allEndponitsInPython
+
+}
+}
 
 
 
@@ -5336,6 +5482,40 @@ jsCodeGuiOut .= var55
 
 StringTrimRight, jsCodeGuiOut, jsCodeGuiOut, 1
 jsCodeGui := jsCodeGuiOut
+
+pythonCode =
+(
+from flask import Flask, send_file, request, jsonify
+import os
+
+app = Flask(__name__)
+
+
+
+@app.route('/')
+def app_route():
+    return send_file(os.path.join(os.path.dirname(__file__), 'index.html')), 200
+
+
+
+
+%allEndponitsInPython%
+
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return "Page not found", 404
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000, debug=True)
+
+)
+
+
+FileDelete, server_%nameOfHTHscript%.py
+FileAppend, %pythonCode%, server_%nameOfHTHscript%.py
+
 
 jsCode := variables . "`n`n" . funcs . "`n`n" . onKeyPress . "`n`n" . jsCodeGui . "`n`n" . HotKeyCalledHotKyes . "`n`n" . jsCode
 
@@ -6095,34 +6275,33 @@ upCode2 =
         }
       }
 
-      async function getDataFromEndpoint(data, endpoint, method = "GET") {
-        try {
-          const options = {
-            method: method,
-            headers: {
-              "Content-Type": "application/json", // Adjust content type as needed
-            },
-            body: JSON.stringify(data), // Include data in request body for methods like POST or PUT
-          };
+      async function getDataFromEndpoint(data, endpoint) {
+        // Convert data to JSON string
+        const requestData = JSON.stringify(data);
 
-          // Fetch data from the specified endpoint
-          const response = await fetch(endpoint, options);
+        // Set up fetch request options
+        const requestOptions = {
+          method: "POST", // or 'GET' depending on your server's requirements
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: requestData,
+        };
 
-          // Check if the response is successful (status code 2xx)
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
+        // Fetch data from the specified endpoint
+        const response = await fetch(endpoint, requestOptions);
 
-          // Parse the JSON response
-          const responseData = await response.json();
+        // Check if response is successful
+        if (!response.ok) {
+          throw new Error(``Failed to fetch data from ${endpoint}. Status: ${response.status}``);
+        }
 
-          // Return the fetched data if it exists
-          return responseData;
-        } catch (error) {
-          // Handle any errors that occur during the fetch
-          console.error("Fetch error:", error);
-          // Return null if there are any errors
-          return null;
+        // Parse response data based on Content-Type header
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          return response.json(); // Parse JSON response
+        } else {
+          return response.text(); // Parse plain text response
         }
       }
 
@@ -6174,19 +6353,19 @@ jsCode := upCode1 . upCode2 . jsCode . DownCode
 ;MsgBox % jsCode
 
 ; Save clipboard content to a temporary file
-FileDelete, temp.html
+FileDelete, index.html
 
-FileAppend, %jsCode%, temp.html
+FileAppend, %jsCode%, index.html
 
 if (test != 1)
 {
 
 
 ; Format the HTML file using Prettier
-RunWait, %comspec% /K npx prettier --write temp.html & exit, , Hide
+RunWait, %comspec% /K npx prettier --write index.html & exit, , Hide
 
 ; Copy formatted content back to clipboard
-FileRead, Clipboard, temp.html
+FileRead, Clipboard, index.html
 
 MsgBox %Clipboard%
 }
