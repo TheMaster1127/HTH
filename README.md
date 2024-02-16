@@ -248,5 +248,6 @@ else
 ## Platform Compatibility
 
 - AutoHotKey only runs on Windows.
+- HTH only transpiles using Windows since the transpiler is written in AutoHotKey.
 
 ---
