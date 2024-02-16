@@ -6,11 +6,11 @@ HTH, which stands for HeavenToHell, is a dynamically typed, transpiled high-leve
 
 With HTH, developers can write code in a straightforward and intuitive syntax, making it accessible even to those with little to no programming experience. The language is dynamically typed, allowing for flexibility in variable declarations and reducing the need for explicit type annotations.
 
-One of the key features of HTH is its transpilation process, which converts HTH code into JavaScript and embeds it into an HTML file. This enables applications built with HTH to be run on any device with a web browser, providing portability and accessibility.
+One of the key features of HTH is it's transpilation process, which converts HTH code into JavaScript and embeds it into an HTML file. This enables applications built with HTH to be run on any device with a web browser, providing portability and accessibility.
 
-HTH simplifies GUI development by eliminating the need for complex initialization, allowing developers to create user interfaces quickly and easily. Additionally, HTH streamlines backend connectivity with its built-in function for sending and retrieving data from specified endpoints.
+HTH simplifies GUI development by eliminating the need for complex initialization, allowing developers to create user interfaces quickly and easily. Additionally, HTH streamlines backend connectivity with it's built-in function for sending and retrieving data from specified endpoints.
 
-## Overall, HTH is a powerful yet approachable programming language that empowers beginners to learn programming and build web applications with ease. Its simplicity, portability, and comprehensive documentation make it a valuable tool for developers of all skill levels.
+## Overall, HTH is a powerful yet approachable programming language that empowers beginners to learn programming and build web applications with ease. it's simplicity, portability, and comprehensive documentation make it a valuable tool for developers of all skill levels.
 
 ## Pros and Cons of HTH
 
@@ -24,7 +24,7 @@ HTH simplifies GUI development by eliminating the need for complex initializatio
 
 4. **GUI Development:** HTH simplifies GUI development by eliminating the need for complex initialization, allowing developers to create user interfaces quickly and easily.
 
-5. **Backend Connectivity:** HTH streamlines backend connectivity with its built-in function called `getDataFromEndpoint`, enabling developers to easily send and retrieve data from a specified endpoint with just one function call.
+5. **Backend Connectivity:** HTH streamlines backend connectivity with it's built-in function called `getDataFromEndpoint`, enabling developers to easily send and retrieve data from a specified endpoint with just one function call.
 
 6. **Comprehensive Documentation:** HTH provides comprehensive documentation that not only explains how the language works but also covers programming concepts and best practices, making it a valuable resource for developers of all skill levels.
 
@@ -32,17 +32,17 @@ HTH simplifies GUI development by eliminating the need for complex initializatio
 
 **Cons:**
 
-1. **Platform Dependency:** HTH requires Windows for compilation or transpilation, limiting its usability for developers using other operating systems.
+1. **Platform Dependency:** HTH requires Windows for compilation or transpilation, limiting it's usability for developers using other operating systems.
 
-2. **Limited Advanced Features:** HTH may lack some advanced features and functionalities found in other programming languages, potentially limiting its suitability for complex or specialized applications.
+2. **Limited Advanced Features:** HTH may lack some advanced features and functionalities found in other programming languages, potentially limiting it's suitability for complex or specialized applications.
 
 3. **Limited GUI Elements:** The range of GUI elements available in HTH may be limited compared to other GUI frameworks, restricting the design options for user interfaces.
 
-Overall, HTH offers a user-friendly and versatile platform for beginners to learn programming and develop web applications quickly and easily. While it has some limitations, its simplicity, portability, and comprehensive documentation make it a valuable tool for developers looking to get started in web development.
+Overall, HTH offers a user-friendly and versatile platform for beginners to learn programming and develop web applications quickly and easily. While it has some limitations, it's simplicity, portability, and comprehensive documentation make it a valuable tool for developers looking to get started in web development.
 
 **Note:**
 
-- This project is specifically inspired from AutoHotKey V1 and its syntax.
+- This project is specifically inspired from AutoHotKey V1 and it's syntax.
 - HTH HeavenToHell is still in development.
 - Documentation coming soon.
 
@@ -83,9 +83,9 @@ Also, `return` must be in lowercase.
 
 So far, HTH supports:
 
-- Gui - Buttons, Text, Edit and Picture - which will encode a base64 in the HTML file so you won't need the original picture anymore
+- Gui - Buttons, Text, Edit and Picture - which will encode as base64 in the HTML file so you won't need the original picture anymore
 - GuiContol
-- Hotkyes but simple like you can still do almost all combinations like Ctrl+Alt+Shift+AlmostAnyKey or Shift+Up or just even one key
+- Hotkeys but simple like you can still do almost all combinations like Ctrl+Alt+Shift+AlmostAnyKey or Shift+Up or just even one key
 
 ```ahk
 !+^g::
@@ -103,7 +103,7 @@ Return
 - FileAppend it will download the file one time next time it will be a new file also you can only do for example: `FileAppend, %yourVar%, FileName.txt` you cant put vars in the filename argument
 - SetTimer Note: if you put a msgbox in the timer it will not stop the execution which is not the same as in real AutoHotKey
 - gosub
-- lables here is a lable:
+- labels here is a label:
 
 ```ahk
 ; We will go the label
@@ -177,7 +177,7 @@ else
 Some features haven't been fully tested but should work include:
 
 - getDataFromEndpoint(data, endpoint) this function allows you to get and send data to or from an endpoint. It will also return data. ONLY if you are running a backend which will be generated in a python file in the same dir!
-- isMobileDevice will check if its a mobile device no need for parameters
+- isMobileDevice will check if it's a mobile device no need for parameters
 - Abs
 - ACos
 - ASin
@@ -232,16 +232,16 @@ Built-in Variables
 - A_Sec
 - A_Space
 - A_Tab
-- A_IsTranspiled in js it will be set to 1 in HTH its will be blank so you can do something like:
+- A_IsTranspiled in js it will be set to 1 in HTH it's will be blank so you can do something like:
 
 ```ahk
 if (A_IsTranspiled = "")
 {
-; do something if its not transpiled
+; do something if it's not transpiled
 }
 else
 {
-; do something if its transpiled
+; do something if it's transpiled
 }
 ```
 
