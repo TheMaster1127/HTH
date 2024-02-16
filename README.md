@@ -50,7 +50,7 @@ Overall, HTH offers a user-friendly and versatile platform for beginners to lear
 
 To use HTH HeavenToHell:
 
-1. Ensure you have AutoHotKey V1 installed (Unless you wanna run the HTH.exe file). You can download AutoHotKey it from [here](https://www.autohotkey.com/download/ahk-install.exe).
+1. Ensure you have AutoHotKey V1 installed (Unless you wanna run the HTH.exe file). You can download AutoHotKey from [here](https://www.autohotkey.com/download/ahk-install.exe).
 2. Add your HTH code in a `.hth` file.
 3. Open the cmd in the directory of the HTH.exe or HTH.ahk Transpiler
 4. You can run `HTH filename.hth` or `HTH.ahk filename.hth` or `HTH.exe filename.hth`
