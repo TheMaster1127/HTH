@@ -522,6 +522,7 @@ AindexcharLength := 1
 
 allEndponitsInPython := ""
 endpoints := ""
+DoWeHaveEndpoints := 0
 ;MsgBox, % AHKcode
 
 AHKcode := StrReplace(AHKcode, "\"")", """"")")
@@ -3948,7 +3949,7 @@ method := StrReplace(method, """", "")
 
 ;MsgBox, % out
 
-
+DoWeHaveEndpoints := 1
 endpoints .= endpoint . "`n"
 
 
@@ -5328,6 +5329,7 @@ RegExMatch(str, pattern, matches)
 ; Extract the captured word
 word := matches1
 
+DoWeHaveEndpoints := 1
 endpoints .= word . "`n"
 
 
@@ -5512,51 +5514,32 @@ if __name__ == '__main__':
 
 )
 
-
-FileDelete, server_%nameOfHTHscript%.py
-FileAppend, %pythonCode%, server_%nameOfHTHscript%.py
+if (DoWeHaveEndpoints = 1) {
+    ; Check if the main Python file doesn't exist
+    if !FileExist("server_" . nameOfHTHscript . ".py") {
+        ; If it doesn't exist, create it and append pythonCode to it
+        FileAppend, % pythonCode, server_%nameOfHTHscript%.py
+    } else {
+        ; If it exists, try appending to a numbered file
+        Loop {
+            ; Construct the filename with a numeric suffix using A_Index
+            filename := "server_" . nameOfHTHscript . " (" . A_Index . ").py"
+            ; Check if this numbered file doesn't exist
+            if !FileExist(filename) {
+                ; If it doesn't exist, create it and append pythonCode to it
+                FileAppend, % pythonCode, % filename
+                break  ; Exit the loop
+            }
+        }
+    }
+}
 
 
 jsCode := variables . "`n`n" . funcs . "`n`n" . onKeyPress . "`n`n" . jsCodeGui . "`n`n" . HotKeyCalledHotKyes . "`n`n" . jsCode
 
 
-upCode1 =
+addFuncIfWeUseIt_showCustomMessageBox =
 (
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ahk to js</title>
-    <style>
-      body {
-        background-color: #202020;
-        font-family:
-          "Open Sans",
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          Roboto,
-          Oxygen-Sans,
-          Ubuntu,
-          Cantarell,
-          "Helvetica Neue",
-          Helvetica,
-          Arial,
-          sans-serif;
-      }
-    </style>
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11" rel="stylesheet" />
-  </head>
-  <body>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-
-      %TextData%
-
-      %base64ImageData%
-
-      // JavaScript equivalent code with variables
 
       function showCustomMessageBox(options, title, text, value, timeout) {
         return new Promise((resolve) => {
@@ -5733,26 +5716,10 @@ upCode1 =
         });
       }
 
-      let lastInputTime = Date.now(); // Initialize with current timestamp
-      let startTimestamp = Date.now(); // Initialize with current timestamp
+)
 
-      // Event listener to track user activity
-      function resetIdleTimer() {
-          lastInputTime = Date.now(); // Update last input time
-      }
-
-      document.addEventListener('mousemove', resetIdleTimer);
-      document.addEventListener('keypress', resetIdleTimer);
-
-      // Function to calculate time since last input event
-      function A_TimeIdle() {
-          return Date.now() - lastInputTime; // Calculate time difference
-      }
-
-      // Function to calculate tick count in milliseconds
-      function A_TickCount() {
-          return Date.now() - startTimestamp;
-      }
+addFuncIfWeUseIt_BuildInVars =
+(
 
       function BuildInVars(varName) {
         switch (varName) {
@@ -5820,379 +5787,10 @@ upCode1 =
         }
       }
 
-
-      // Absolute value
-      function Abs(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.abs(num);
-      }
-
-      // Arc cosine
-      function ACos(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.acos(num);
-      }
-
-      // Arc sine
-      function ASin(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.asin(num);
-      }
-
-      // Arc tangent
-      function ATan(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.atan(num);
-      }
-
-      // Ceiling
-      function Ceil(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.ceil(num);
-      }
-
-      // Cosine
-      function Cos(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.cos(num);
-      }
-
-      // Exponential
-      function Exp(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.exp(num);
-      }
-
-      // Flooring
-      function Floor(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.floor(num);
-      }
-
-      // Natural logarithm
-      function Ln(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.log(num);
-      }
-
-      // Base-10 logarithm
-      function Log(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.log10(num);
-      }
-
-      // Rounding
-      function Round(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.round(num);
-      }
-
-      // Sine
-      function Sin(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.sin(num);
-      }
-
-      // Square root
-      function Sqrt(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.sqrt(num);
-      }
-
-      // Tangent
-      function Tan(num) {
-        if (num === null || isNaN(num)) return null;
-        return Math.tan(num);
-      }
-
-      function Chr(number) {
-        // Check if the number is null
-        if (number === null) {
-          // Return an empty string
-          return "";
-        }
-
-        // Check if the number is within the valid range
-        if (number >= 0 && number <= 0x10ffff) {
-          // Convert the number to a character using String.fromCharCode
-          return String.fromCharCode(number);
-        } else {
-          // Return an empty string for invalid numbers
-          return "";
-        }
-      }
-
 )
 
-upCode2 =
+addFuncIfWeUseIt_MakeHotKey =
 (
-
-      // Function to simulate Sleep
-      function sleep(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      }
-
-      // InStr
-      function InStr(Haystack, Needle, CaseSensitive = true, StartingPos = 1, Occurrence = 1) {
-        if (Haystack === null || Needle === null) return null;
-
-        // Adjust starting position if less than 1
-        StartingPos = Math.max(StartingPos, 1);
-
-        // Case-sensitive search by default
-        if (!CaseSensitive) {
-          Haystack = Haystack.toLowerCase();
-          Needle = Needle.toLowerCase();
-        }
-
-        let pos = -1;
-        let count = 0;
-        for (let i = StartingPos - 1; i < Haystack.length; i++) {
-          if (Haystack.substring(i, i + Needle.length) === Needle) {
-            count++;
-            if (count === Occurrence) {
-              pos = i + 1;
-              break;
-            }
-          }
-        }
-
-        return pos;
-      }
-
-      // RegExMatch
-      function RegExMatch(Haystack, NeedleRegEx, OutputVar, StartingPos) {
-          if (Haystack === null || NeedleRegEx === null) return null;
-
-          const regex = new RegExp(NeedleRegEx);
-          let match;
-
-          if (typeof Haystack === 'string') {
-              match = Haystack.match(regex);
-          }
-
-          if (match) {
-              if (OutputVar) {
-                  OutputVar.push(match[0]);
-              }
-              return match.index + 1;
-          } else {
-              return 0;
-          }
-      }
-
-
-      // RegExReplace
-
-      // RegExReplace
-      function RegExReplace(Haystack, NeedleRegEx, Replacement, OutputVarCount, Limit, StartingPos) {
-        if (Haystack === null || NeedleRegEx === null || Replacement === null) return null;
-
-        const regex = new RegExp(NeedleRegEx, "g");
-        let count = 0;
-        const result = Haystack.replace(regex, (match) => {
-          if (count < Limit || Limit === 0) {
-            count++;
-            return Replacement;
-          } else {
-            return match;
-          }
-        });
-
-        if (OutputVarCount) {
-          OutputVarCount.push(count);
-        }
-
-        return result;
-      }
-
-      // StrLen
-      function StrLen(str) {
-        return str === null ? null : str.length;
-      }
-
-      // StrSplit function
-      async function StrSplit(String, Delimiters, OmitChars, MaxParts) {
-        if (String === null || Delimiters === null) return null;
-
-        const regex = new RegExp(``[${Delimiters}${OmitChars}]``, "g");
-        const parts = String.split(regex, MaxParts).map((part) => part.trim());
-
-        return parts;
-      }
-
-      // Format (simplified version)
-      function Format(formatString, ...values) {
-        return formatString.replace(/{(\d+)}/g, (match, index) => (values[index] !== undefined ? values[index] : match));
-      }
-
-      // Ord
-      function Ord(str) {
-        return str === null ? null : str.charCodeAt(0);
-      }
-
-      // Function to generate a random number between min (inclusive) and max (inclusive)
-      function getRandomNumber(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
-      }
-
-      function SubStr(inputString, startingPos, length) {
-        if (inputString === null) {
-          return "";
-        }
-
-        if (startingPos < 1) {
-          // Calculate starting position from the end of the string
-          startingPos = inputString.length + startingPos;
-        }
-
-        // Adjust starting position if it's beyond the string's length
-        if (startingPos > inputString.length) {
-          return "";
-        }
-
-        // Handle negative length to omit characters from the end
-        if (length < 0) {
-          length = inputString.length + length - startingPos;
-        }
-
-        // Return the requested substring
-        return inputString.substring(startingPos - 1, startingPos - 1 + length);
-      }
-
-      function Trim(inputString) {
-        // Check if inputString is null or undefined
-        if (inputString == null) {
-          return ""; // Return an empty string if inputString is null or undefined
-        }
-        return inputString.replace(/^\s+|\s+$/g, ""); // Removes leading and trailing whitespace
-      }
-
-      function StrReplace(originalString, find, replaceWith) {
-        // Check if originalString is a string
-        if (typeof originalString !== "string") {
-          return originalString; // Return originalString as is
-        }
-        // Use replace method to replace find with replaceWith
-        return originalString.replace(new RegExp(find, "g"), replaceWith);
-      }
-
-      // Custom Mod function
-      function Mod(dividend, divisor) {
-        return dividend `% divisor;
-      }
-
-      function Asc(char) {
-        return char.charCodeAt(0);
-      }
-
-      // Function to trim specified number of characters from the left side of a string
-      function StringTrimLeft(input, numChars) {
-        if (input && input.length >= numChars) {
-          return input.substring(numChars);
-        } else {
-          console.error("Invalid input provided.");
-          return input; // Return original input if trimming is not possible
-        }
-      }
-
-      // Function to trim specified number of characters from the right side of a string
-      function StringTrimRight(input, numChars) {
-        if (input && input.length >= numChars) {
-          return input.substring(0, input.length - numChars);
-        } else {
-          console.error("Invalid input provided.");
-          return input; // Return original input if trimming is not possible
-        }
-      }
-
-      function isMobileDevice() {
-        return /Mobi|Android/i.test(navigator.userAgent);
-      }
-
-      // Function to display a message
-      function displayMessage(message) {
-        return new Promise((resolve) => {
-          alert(message);
-          resolve();
-        });
-      }
-
-      let keyState = {}; // Object to track key states
-
-      // Function to handle keydown events
-      function handleKeyDown(event) {
-        keyState[event.key] = true; // Set key state to true when pressed
-      }
-
-      // Function to handle keyup events
-      function handleKeyUp(event) {
-        keyState[event.key] = false; // Set key state to false when released
-      }
-
-      // Add event listeners for keydown and keyup events
-      document.addEventListener("keydown", handleKeyDown);
-      document.addEventListener("keyup", handleKeyUp);
-
-      // Function to get the state of a key dynamically
-      function GetKeyState(key, DownOrUp) {
-        return DownOrUp === "D" ? keyState[key] : !keyState[key];
-      }
-
-      let lastKeyPressed = "";
-
-      function trackLastKeyPressed() {
-        document.addEventListener("keydown", function (event) {
-          lastKeyPressed = event.key;
-          // console.log(lastKeyPressed);
-        });
-      }
-
-      function getLastKeyPressed() {
-        return lastKeyPressed;
-      }
-
-      // Call the trackLastKeyPressed function to start tracking key presses
-      trackLastKeyPressed();
-
-      // Now you can call getLastKeyPressed() whenever you need to get the last key pressed
-
-      function GuiControl(action, id, param1, param2, param3, param4) {
-        const element = document.getElementById(id);
-        if (element) {
-          if (action === "move") {
-            // Set position and size
-            element.style.left = param1 + "px";
-            element.style.top = param2 + "px";
-            element.style.width = param3 + "px";
-            element.style.height = param4 + "px";
-          } else if (action === "focus" && (element instanceof HTMLInputElement || element instanceof HTMLElement)) {
-            // Focus on the element
-            element.focus();
-          } else if (action === "text") {
-            // Set new text content
-            element.textContent = param1;
-          } else if (action === "hide") {
-            // Hide the element
-            element.style.display = "none";
-          } else if (action === "show") {
-            // Show the element
-            element.style.display = "";
-          } else if (action === "enable") {
-            // Enable the element
-            element.disabled = false;
-          } else if (action === "disable") {
-            // Disable the element
-            element.disabled = true;
-          } else if (action === "font") {
-            // Set font size
-            element.style.fontSize = param1 + "px";
-          } else if (action === "color") {
-            // Set color
-            element.style.color = param1;
-          }
-        }
-      }
 
       function MakeHotKey(hotkey, callback) {
         document.addEventListener("keydown", function (event) {
@@ -6241,6 +5839,453 @@ upCode2 =
         });
       }
 
+)
+
+addFuncIfWeUseIt_Abs =
+(
+
+      // Absolute value
+      function Abs(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.abs(num);
+      }
+
+)
+
+
+addFuncIfWeUseIt_ACos =
+(
+
+      // Arc cosine
+      function ACos(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.acos(num);
+      }
+
+)
+
+addFuncIfWeUseIt_ASin =
+(
+
+      // Arc sine
+      function ASin(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.asin(num);
+      }
+
+)
+
+addFuncIfWeUseIt_ATan =
+(
+
+      // Arc tangent
+      function ATan(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.atan(num);
+      }
+
+)
+
+addFuncIfWeUseIt_Ceil =
+(
+
+      // Ceiling
+      function Ceil(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.ceil(num);
+      }
+
+)
+
+addFuncIfWeUseIt_Cos =
+(
+
+      // Cosine
+      function Cos(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.cos(num);
+      }
+
+)
+
+addFuncIfWeUseIt_Exp =
+(
+
+      // Exponential
+      function Exp(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.exp(num);
+      }
+
+)
+
+addFuncIfWeUseIt_Floor =
+(
+
+      // Flooring
+      function Floor(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.floor(num);
+      }
+
+)
+
+addFuncIfWeUseIt_Ln =
+(
+
+      // Natural logarithm
+      function Ln(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.log(num);
+      }
+
+)
+
+addFuncIfWeUseIt_Log =
+(
+
+      // Base-10 logarithm
+      function Log(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.log10(num);
+      }
+
+)
+
+addFuncIfWeUseIt_Round =
+(
+
+      // Rounding
+      function Round(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.round(num);
+      }
+
+)
+
+addFuncIfWeUseIt_Sin =
+(
+
+      // Sin
+      function Sin(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.sin(num);
+      }
+
+)
+
+addFuncIfWeUseIt_Sqrt =
+(
+
+      // Square root
+      function Sqrt(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.sqrt(num);
+      }
+
+)
+
+addFuncIfWeUseIt_Tan =
+(
+
+      // Tangent
+      function Tan(num) {
+        if (num === null || isNaN(num)) return null;
+        return Math.tan(num);
+      }
+
+)
+
+addFuncIfWeUseIt_Chr =
+(
+
+      function Chr(number) {
+        // Check if the number is null
+        if (number === null) {
+          // Return an empty string
+          return "";
+        }
+
+        // Check if the number is within the valid range
+        if (number >= 0 && number <= 0x10ffff) {
+          // Convert the number to a character using String.fromCharCode
+          return String.fromCharCode(number);
+        } else {
+          // Return an empty string for invalid numbers
+          return "";
+        }
+      }
+
+)
+
+addFuncIfWeUseIt_sleep =
+(
+
+      // Function to simulate Sleep
+      function sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+
+)
+
+addFuncIfWeUseIt_InStr =
+(
+
+      // InStr
+      function InStr(Haystack, Needle, CaseSensitive = true, StartingPos = 1, Occurrence = 1) {
+        if (Haystack === null || Needle === null) return null;
+
+        // Adjust starting position if less than 1
+        StartingPos = Math.max(StartingPos, 1);
+
+        // Case-sensitive search by default
+        if (!CaseSensitive) {
+          Haystack = Haystack.toLowerCase();
+          Needle = Needle.toLowerCase();
+        }
+
+        let pos = -1;
+        let count = 0;
+        for (let i = StartingPos - 1; i < Haystack.length; i++) {
+          if (Haystack.substring(i, i + Needle.length) === Needle) {
+            count++;
+            if (count === Occurrence) {
+              pos = i + 1;
+              break;
+            }
+          }
+        }
+
+        return pos;
+      }
+
+)
+
+addFuncIfWeUseIt_RegExMatch =
+(
+
+      // RegExMatch
+      function RegExMatch(Haystack, NeedleRegEx, OutputVar, StartingPos) {
+          if (Haystack === null || NeedleRegEx === null) return null;
+
+          const regex = new RegExp(NeedleRegEx);
+          let match;
+
+          if (typeof Haystack === 'string') {
+              match = Haystack.match(regex);
+          }
+
+          if (match) {
+              if (OutputVar) {
+                  OutputVar.push(match[0]);
+              }
+              return match.index + 1;
+          } else {
+              return 0;
+          }
+      }
+
+)
+
+addFuncIfWeUseIt_RegExReplace =
+(
+
+      // RegExReplace
+      function RegExReplace(Haystack, NeedleRegEx, Replacement, OutputVarCount, Limit, StartingPos) {
+        if (Haystack === null || NeedleRegEx === null || Replacement === null) return null;
+
+        const regex = new RegExp(NeedleRegEx, "g");
+        let count = 0;
+        const result = Haystack.replace(regex, (match) => {
+          if (count < Limit || Limit === 0) {
+            count++;
+            return Replacement;
+          } else {
+            return match;
+          }
+        });
+
+        if (OutputVarCount) {
+          OutputVarCount.push(count);
+        }
+
+        return result;
+      }
+
+)
+
+addFuncIfWeUseIt_StrLen =
+(
+
+      // StrLen
+      function StrLen(str) {
+        return str === null ? null : str.length;
+      }
+
+)
+
+addFuncIfWeUseIt_StrSplit =
+(
+
+      // StrSplit function
+      async function StrSplit(String, Delimiters, OmitChars, MaxParts) {
+        if (String === null || Delimiters === null) return null;
+
+        const regex = new RegExp(`[${Delimiters}${OmitChars}]`, "g");
+        const parts = String.split(regex, MaxParts).map((part) => part.trim());
+
+        return parts;
+      }
+
+)
+
+addFuncIfWeUseIt_Format =
+(
+
+      // Format (simplified version)
+      function Format(formatString, ...values) {
+        return formatString.replace(/{(\d+)}/g, (match, index) => (values[index] !== undefined ? values[index] : match));
+      }
+
+)
+
+addFuncIfWeUseIt_Ord =
+(
+
+      // Ord
+      function Ord(str) {
+        return str === null ? null : str.charCodeAt(0);
+      }
+
+)
+
+addFuncIfWeUseIt_getRandomNumber =
+(
+
+      // Function to generate a random number between min (inclusive) and max (inclusive)
+      function getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+
+)
+
+addFuncIfWeUseIt_SubStr =
+(
+
+      function SubStr(inputString, startingPos, length) {
+        if (inputString === null) {
+          return "";
+        }
+
+        if (startingPos < 1) {
+          // Calculate starting position from the end of the string
+          startingPos = inputString.length + startingPos;
+        }
+
+        // Adjust starting position if it's beyond the string's length
+        if (startingPos > inputString.length) {
+          return "";
+        }
+
+        // Handle negative length to omit characters from the end
+        if (length < 0) {
+          length = inputString.length + length - startingPos;
+        }
+
+        // Return the requested substring
+        return inputString.substring(startingPos - 1, startingPos - 1 + length);
+      }
+
+)
+
+addFuncIfWeUseIt_Trim =
+(
+
+      function Trim(inputString) {
+        // Check if inputString is null or undefined
+        if (inputString == null) {
+          return ""; // Return an empty string if inputString is null or undefined
+        }
+        return inputString.replace(/^\s+|\s+$/g, ""); // Removes leading and trailing whitespace
+      }
+
+)
+
+addFuncIfWeUseIt_StrReplace =
+(
+
+      function StrReplace(originalString, find, replaceWith) {
+        // Check if originalString is a string
+        if (typeof originalString !== "string") {
+          return originalString; // Return originalString as is
+        }
+        // Use replace method to replace find with replaceWith
+        return originalString.replace(new RegExp(find, "g"), replaceWith);
+      }
+
+)
+
+addFuncIfWeUseIt_Mod =
+(
+
+      // Custom Mod function
+      function Mod(dividend, divisor) {
+        return dividend `% divisor;
+      }
+
+)
+
+addFuncIfWeUseIt_Asc =
+(
+
+      function Asc(char) {
+        return char.charCodeAt(0);
+      }
+
+)
+
+addFuncIfWeUseIt_StringTrimLeft =
+(
+
+      // Function to trim specified number of characters from the left side of a string
+      function StringTrimLeft(input, numChars) {
+        if (input && input.length >= numChars) {
+          return input.substring(numChars);
+        } else {
+          console.error("Invalid input provided.");
+          return input; // Return original input if trimming is not possible
+        }
+      }
+
+)
+
+addFuncIfWeUseIt_StringTrimRight =
+(
+
+      // Function to trim specified number of characters from the right side of a string
+      function StringTrimRight(input, numChars) {
+        if (input && input.length >= numChars) {
+          return input.substring(0, input.length - numChars);
+        } else {
+          console.error("Invalid input provided.");
+          return input; // Return original input if trimming is not possible
+        }
+      }
+
+)
+
+addFuncIfWeUseIt_isMobileDevice =
+(
+
+      function isMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent);
+      }
+
+)
+
+addFuncIfWeUseIt_SetTimer =
+(
+
       // Object to store timer intervals for different functions
       const timerIntervals = {};
 
@@ -6275,6 +6320,53 @@ upCode2 =
         }
       }
 
+)
+
+addFuncIfWeUseIt_GuiControl =
+(
+
+      function GuiControl(action, id, param1, param2, param3, param4) {
+        const element = document.getElementById(id);
+        if (element) {
+          if (action === "move") {
+            // Set position and size
+            element.style.left = param1 + "px";
+            element.style.top = param2 + "px";
+            element.style.width = param3 + "px";
+            element.style.height = param4 + "px";
+          } else if (action === "focus" && (element instanceof HTMLInputElement || element instanceof HTMLElement)) {
+            // Focus on the element
+            element.focus();
+          } else if (action === "text") {
+            // Set new text content
+            element.textContent = param1;
+          } else if (action === "hide") {
+            // Hide the element
+            element.style.display = "none";
+          } else if (action === "show") {
+            // Show the element
+            element.style.display = "";
+          } else if (action === "enable") {
+            // Enable the element
+            element.disabled = false;
+          } else if (action === "disable") {
+            // Disable the element
+            element.disabled = true;
+          } else if (action === "font") {
+            // Set font size
+            element.style.fontSize = param1 + "px";
+          } else if (action === "color") {
+            // Set color
+            element.style.color = param1;
+          }
+        }
+      }
+
+)
+
+addFuncIfWeUseIt_getDataFromEndpoint =
+(
+
       async function getDataFromEndpoint(data, endpoint) {
         // Convert data to JSON string
         const requestData = JSON.stringify(data);
@@ -6305,6 +6397,11 @@ upCode2 =
         }
       }
 
+)
+
+addFuncIfWeUseIt_FileAppend =
+(
+
       function FileAppend(data, filename) {
         // Create a blob with the provided data
         const blob = new Blob([data], { type: "text/plain" });
@@ -6327,6 +6424,263 @@ upCode2 =
         document.body.removeChild(anchor);
       }
 
+)
+
+
+addFuncIfWeUseIt_isConnectedToBackend =
+(
+
+function isConnectedToBackend() {
+  return window.location.protocol === 'http:' || window.location.protocol === 'https:';
+}
+
+)
+
+
+allFuncThatWeNeedToUse := ""
+
+
+if (Instr(jsCode, "showCustomMessageBox"))
+{
+allFuncThatWeNeedToUse .= addFuncIfWeUseIt_showCustomMessageBox . "`n"
+}
+if (Instr(jsCode, "BuildInVars"))
+{
+allFuncThatWeNeedToUse .= addFuncIfWeUseIt_BuildInVars . "`n"
+}
+if (Instr(jsCode, "MakeHotKey"))
+{
+allFuncThatWeNeedToUse .= addFuncIfWeUseIt_MakeHotKey . "`n"
+}
+if (Instr(jsCode, "Abs")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Abs . "`n"
+}
+if (Instr(jsCode, "ACos")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_ACos . "`n"
+}
+if (Instr(jsCode, "ASin")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_ASin . "`n"
+}
+if (Instr(jsCode, "ATan")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_ATan . "`n"
+}
+if (Instr(jsCode, "Ceil")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Ceil . "`n"
+}
+if (Instr(jsCode, "Cos")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Cos . "`n"
+}
+if (Instr(jsCode, "Exp")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Exp . "`n"
+}
+if (Instr(jsCode, "Floor")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Floor . "`n"
+}
+if (Instr(jsCode, "Ln")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Ln . "`n"
+}
+if (Instr(jsCode, "Log")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Log . "`n"
+}
+if (Instr(jsCode, "Round")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Round . "`n"
+}
+if (Instr(jsCode, "Sin")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Sin . "`n"
+}
+if (Instr(jsCode, "Sqrt")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Sqrt . "`n"
+}
+if (Instr(jsCode, "Tan")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Tan . "`n"
+}
+if (Instr(jsCode, "Chr")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Chr . "`n"
+}
+if (Instr(jsCode, "sleep")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_sleep . "`n"
+}
+if (Instr(jsCode, "InStr")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_InStr . "`n"
+}
+if (Instr(jsCode, "RegExMatch")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_RegExMatch . "`n"
+}
+if (Instr(jsCode, "RegExReplace")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_RegExReplace . "`n"
+}
+if (Instr(jsCode, "StrLen")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StrLen . "`n"
+}
+if (Instr(jsCode, "StrSplit")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StrSplit . "`n"
+}
+if (Instr(jsCode, "Format")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Format . "`n"
+}
+if (Instr(jsCode, "Ord")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Ord . "`n"
+}
+if (Instr(jsCode, "getRandomNumber")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_getRandomNumber . "`n"
+}
+if (Instr(jsCode, "SubStr")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_SubStr . "`n"
+}
+if (Instr(jsCode, "Trim")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Trim . "`n"
+}
+if (Instr(jsCode, "StrReplace")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StrReplace . "`n"
+}
+if (Instr(jsCode, "Mod")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Mod . "`n"
+}
+if (Instr(jsCode, "Asc")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Asc . "`n"
+}
+if (Instr(jsCode, "StringTrimLeft")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StringTrimLeft . "`n"
+}
+if (Instr(jsCode, "StringTrimRight")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StringTrimRight . "`n"
+}
+if (Instr(jsCode, "isMobileDevice")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_isMobileDevice . "`n"
+}
+if (Instr(jsCode, "SetTimer")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_SetTimer . "`n"
+}
+if (Instr(jsCode, "GuiControl")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_GuiControl . "`n"
+}
+if (Instr(jsCode, "getDataFromEndpoint")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_getDataFromEndpoint . "`n"
+}
+if (Instr(jsCode, "FileAppend")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_FileAppend . "`n"
+}
+if (Instr(jsCode, "isConnectedToBackend")) {
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_isConnectedToBackend . "`n"
+}
+
+
+
+
+upCode1 =
+(
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ahk to js</title>
+    <style>
+      body {
+        background-color: #202020;
+        font-family:
+          "Open Sans",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Oxygen-Sans,
+          Ubuntu,
+          Cantarell,
+          "Helvetica Neue",
+          Helvetica,
+          Arial,
+          sans-serif;
+      }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11" rel="stylesheet" />
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+      %TextData%
+
+      %base64ImageData%
+
+      // JavaScript equivalent code with variables
+
+
+      %allFuncThatWeNeedToUse%
+
+
+      let lastInputTime = Date.now(); // Initialize with current timestamp
+      let startTimestamp = Date.now(); // Initialize with current timestamp
+
+      // Event listener to track user activity
+      function resetIdleTimer() {
+          lastInputTime = Date.now(); // Update last input time
+      }
+
+      document.addEventListener('mousemove', resetIdleTimer);
+      document.addEventListener('keypress', resetIdleTimer);
+
+      // Function to calculate time since last input event
+      function A_TimeIdle() {
+          return Date.now() - lastInputTime; // Calculate time difference
+      }
+
+      // Function to calculate tick count in milliseconds
+      function A_TickCount() {
+          return Date.now() - startTimestamp;
+      }
+
+
+
+
+)
+
+upCode2 =
+(
+
+
+
+      let keyState = {}; // Object to track key states
+
+      // Function to handle keydown events
+      function handleKeyDown(event) {
+        keyState[event.key] = true; // Set key state to true when pressed
+      }
+
+      // Function to handle keyup events
+      function handleKeyUp(event) {
+        keyState[event.key] = false; // Set key state to false when released
+      }
+
+      // Add event listeners for keydown and keyup events
+      document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("keyup", handleKeyUp);
+
+      // Function to get the state of a key dynamically
+      function GetKeyState(key, DownOrUp) {
+        return DownOrUp === "D" ? keyState[key] : !keyState[key];
+      }
+
+      let lastKeyPressed = "";
+
+      function trackLastKeyPressed() {
+        document.addEventListener("keydown", function (event) {
+          lastKeyPressed = event.key;
+          // console.log(lastKeyPressed);
+        });
+      }
+
+      function getLastKeyPressed() {
+        return lastKeyPressed;
+      }
+
+      // Call the trackLastKeyPressed function to start tracking key presses
+      trackLastKeyPressed();
+
+      // Now you can call getLastKeyPressed() whenever you need to get the last key pressed
+
+
+
       // Single async function to structure the entire script
       async function runScript() {
         // Declare and assign a variable
@@ -6346,6 +6700,7 @@ downCode =
 </html>
 
 )
+
 
 jsCode := upCode1 . upCode2 . jsCode . DownCode
 

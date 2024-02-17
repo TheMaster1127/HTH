@@ -2,6 +2,13 @@
 
 data := "sdfjubf sdjdf xlsakd xdzsd12344 2kj2q3w"
 
+if (isConnectedToBackend())
+{
+MsgBox, We are connected to a back
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 MsgBox, % getDataFromEndpoint(data, "/var1")
 MsgBox, % getDataFromEndpoint("hejsdfbx kdjzcx kzjdx c", "/var1")
 
@@ -15,7 +22,11 @@ if (var1 = getDataFromEndpoint(data, "/sdfc"))
 {
 MsgBox, yey
 }
-
+}
+else
+{
+MsgBox, We are not connected to a backend
+}
 
 FileRead, data, data.txt
 wordNum := 0
