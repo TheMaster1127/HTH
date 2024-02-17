@@ -67,6 +67,12 @@ fileNameHTH := param
 }
 }
 
+; To fetch only its directory:
+if (fileNameHTH != "")
+{
+SplitPath, fileNameHTH,, dir
+SetWorkingDir %dir%  ; Ensures a consistent starting directory.
+}
 ;MsgBox, % fileNameHTH
 
 
@@ -3931,7 +3937,7 @@ method := StrReplace(method, """", "")
 
 ;MsgBox, % out
 
-DoWeHaveEndpoints := 1
+
 endpoints .= endpoint . "`n"
 
 
@@ -5311,13 +5317,14 @@ RegExMatch(str, pattern, matches)
 ; Extract the captured word
 word := matches1
 
-DoWeHaveEndpoints := 1
+
 endpoints .= word . "`n"
 
 
-
-
-
+if (InStr(str, "getDataFromEndpoint"))
+{
+DoWeHaveEndpoints := 1
+}
 
 
 

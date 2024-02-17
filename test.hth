@@ -28,6 +28,7 @@ else
 MsgBox, We are not connected to a backend
 }
 
+
 FileRead, data, data.txt
 wordNum := 0
 Loop, Parse, data, " "
