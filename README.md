@@ -178,6 +178,7 @@ Some features haven't been fully tested but should work include:
 
 - getDataFromEndpoint(data, endpoint) this function allows you to get and send data to or from an endpoint. It will also return data. ONLY if you are running a backend which will be generated in a python file in the same dir!
 - isMobileDevice will check if it's a mobile device no need for parameters
+- isConnectedToBackend will checks if the webpage is using a web address starting with 'http://' or 'https://', which usually means it's connected to a server. It returns 'true' if it is connected, and 'false' if it's not.
 - Abs
 - ACos
 - ASin
