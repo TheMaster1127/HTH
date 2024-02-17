@@ -1,16 +1,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Name:
-; AHK to js
+; HTH
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; Transpile AutoHotKey to javascript
+; HTH, which stands for HeavenToHell, is a dynamically typed, transpiled high-level programming language designed for simplicity, ease of use, and versatility. Inspired by the syntax of AutoHotkey, HTH offers a user-friendly environment for beginners to learn programming and build web apps.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 #singleinstance force
-
-
-
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ;;;;;;;;;;;;;;;;;;;;;
 ;OPTIMIZATIONS START
@@ -27,22 +24,40 @@ SetDefaultMouseSpeed, 0
 SetWinDelay, -1
 SetControlDelay, -1
 SendMode Input
-DllCall("ntdll\ZwSetTimerResolution","Int",5000,"Int",1,"Int*",MyCurrentTimerResolution) ;setting the Windows Timer Resolution to 0.5ms, THIS IS A GLOBAL CHANGE
 ;OPTIMIZATIONS END
-; Retrieve the working area's bounding coordinates
-SysGet, OutputVar, MonitorWorkArea, 1
-; Display the coordinates in a MsgBox
-;MsgBox, Monitor %N% Work Area:`nLeft: %OutputVarLeft%`nTop: %OutputVarTop%`nRight: %OutputVarRight%`nBottom: %OutputVarBottom%
 
-RegRead, captionHeight, HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics, CaptionHeight
-titleHeight := Round(captionHeight * A_ScreenDPI / -twipsPerInch := 1440)
-;MsgBox, 64, Title height, %titleHeight%
-SysGet, captionHeight, 31
-;MsgBox, 64, Caption height, %captionHeight%
-BorderHeight := OutputVarBottom - titleHeight
-BorderWidth := OutputVarRight
-FileRead, buildInFunc, buildInFunc.txt
-test := 1 ; test your code
+buildInFunc =
+(
+Abs(
+ACos(
+Asc(
+ASin(
+ATan(
+Ceil(
+Chr(
+Cos(
+Exp(
+StrReplace(
+InStr(
+Floor(
+GetKeyState(
+InStr(
+Ln(
+Log(
+Mod(
+RegExMatch(
+RegExReplace(
+Round(
+Sin(
+Sqrt(
+StrLen(
+SubStr(
+Tan(
+tehequakuazation
+)
+
+
+test := 1 ; test your code ignore this the transpiler is done i forgot this so no need to remove this
 
 for n, param in A_Args  ; For each parameter:
 {
@@ -73,11 +88,7 @@ nameOfHTHscript := extractedText
 
 StartTime := A_TickCount
 
-if (test != 1)
-{
-if not A_IsAdmin
-	Run *RunAs "%A_ScriptFullPath%"
-}
+
 
 FileRead, AHKcode, %fileNameHTH%
 
@@ -88,37 +99,8 @@ gosub Compile
 ExitApp
 }
 
-
-
-Gui -DPIScale
-Gui, Font, s15
-Gui, Color, 121212, 121212
-editH := BorderHeight - 100
-editW := BorderWidth - 20
-Gui, Add, Edit, cWhite x10 y10 w%editW% h%editH% gFixFormating vAHKcode,
-buttonY := editH + 20
-Gui, Font, s22
-Gui, Add, Button, x10 y%buttonY% w%editW% h70 gCompile, Compile (Ctrl+Enter)
-Gui, Font, s15
-Gui, Show, w%BorderWidth% h%BorderHeight%, Transpile AutoHotKey to javascript
-Return
-
-
-#IfWinActive Transpile AutoHotKey to javascript
-
-FixFormating:
-Gui, Submit, NoHide
-GuiControl, , AHKcode, %AHKcode%
-Send, ^a{Right}
-Return
-
-^Enter::
 Compile:
-Gui, Submit, NoHide
-if A_IsAdmin
-{
-	;MsgBox %AHKcode%
-}
+
 jsCode := ""
 variables := ""
 removeCurlyBracet := 0
