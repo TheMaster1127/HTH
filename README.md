@@ -217,7 +217,6 @@ Built-in Variables
 - A_GuiControl
 - A_TimeIdle
 - A_TickCount
-- A_NowUTC
 - A_Now
 - A_YYYY
 - A_MM
