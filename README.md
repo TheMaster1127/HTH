@@ -201,7 +201,6 @@ Some features haven't been fully tested but should work include:
 - GetKeyState
 - StrLen
 - StrSplit
-- Format
 - Ord
 - SubStr
 - Trim
