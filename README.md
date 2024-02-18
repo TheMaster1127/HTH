@@ -169,6 +169,7 @@ else
 - OutputDebug (equivalent to `console.log` in JS)
 - Loop
 - Loop, Parse
+- Variables
 - Increment (e.g., `var++`)
 - Simple dynamically function calls. Example: `func%num%()` cant do `%num%func()` also not `func%num%name()` you can only have one `%var%` at the end.
 - Assignment operators (`:=`, `.=`, `+=`, `-=`, `*=`)
