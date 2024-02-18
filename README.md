@@ -200,7 +200,6 @@ Some features haven't been fully tested but should work include:
 - RegExReplace
 - GetKeyState
 - StrLen
-- StrSplit
 - Ord
 - SubStr
 - Trim
