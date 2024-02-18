@@ -197,7 +197,6 @@ Some features haven't been fully tested but should work include:
 - Chr
 - InStr
 - RegExMatch
-- RegExReplace
 - GetKeyState
 - StrLen
 - Ord
