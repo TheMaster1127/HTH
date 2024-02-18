@@ -233,18 +233,7 @@ Built-in Variables
 - A_Sec
 - A_Space
 - A_Tab
-- A_IsTranspiled in js it will be set to 1 in HTH it's will be blank so you can do something like:
 
-```ahk
-if (A_IsTranspiled = "")
-{
-; do something if it's not transpiled
-}
-else
-{
-; do something if it's transpiled
-}
-```
 
 ## Platform Compatibility
 
