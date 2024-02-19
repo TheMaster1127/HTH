@@ -71,6 +71,7 @@ fileNameHTH := param
 if (fileNameHTH != "")
 {
 SplitPath, fileNameHTH,, dir
+MsgBox, %dir%
 SetWorkingDir %dir%  ; Ensures a consistent starting directory.
 }
 ;MsgBox, % fileNameHTH
@@ -1380,7 +1381,7 @@ Title := Trim(Title)
 s:=StrSplit(str,", ").4
 var1 := s
 numOfProcentSings := 0
-MsgBox, % var1
+;MsgBox, % var1
 Loop, Parse, var1
 {
 if (A_LoopField = "%")

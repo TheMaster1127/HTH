@@ -136,8 +136,6 @@ The `SubCommand`, `Value1`, `Value2`, and `Value3` parameters are dependent upon
 2. [Controls](#gui-controls)
 3. [Examples](#gui-examples)
 
----
-
 ### SubCommands <a id="gui-subcommands"></a>
 
 [Go Back](#gui)
@@ -176,8 +174,6 @@ Gui, Color, c121212
 Gui, Font, s22
 ```
 
----
-
 ### Controls <a id="gui-controls"></a>
 
 [Go Back](#gui)
@@ -188,8 +184,6 @@ This section provides information about the controls that can be used within the
 2. Button - Button you can click
 3. Edit - Will crete a place to enter text
 4. Pictire - Will display a Picture. Pictures can be encoded as base64 in the HTML file, eliminating the need for the original picture file.
-
----
 
 ### Examples <a id="gui-examples"></a>
 
@@ -289,11 +283,164 @@ Return
 
 [Go back](#features)
 
+The `GuiControl` function in HeavenToHell (HTH) serves as a versatile tool for manipulating graphical user interface (GUI) elements with ease and precision. This function empowers HTH developers to dynamically adjust the properties and behaviors of GUI elements based on specific actions.
+
+#### Syntax:
+
+```ahk
+GuiControl, Action, ControlID, Param1, Param2, Param3, Param4
+```
+
+#### Parameters:
+
+- `Action`: Specifies the action to be performed on the GUI control. Supported actions include:
+
+  - `Move`: Move and resize the control.
+  - `Focus`: Set focus on the control.
+  - `Text`: Set the text content of the control.
+  - `Hide`: Hide the control.
+  - `Show`: Show the control.
+  - `Enable`: Enable the control.
+  - `Disable`: Disable the control.
+  - `Font`: Set the font size of the control.
+  - `Color`: Set the color of the control.
+
+- `ControlID`: The unique identifier of the GUI control to be manipulated.
+
+- `Param1`, `Param2`, `Param3`, `Param4`: Additional parameters required for specific actions, as follows:
+  - For `Move`: `Param1` is the new X-coordinate, `Param2` is the new Y-coordinate, `Param3` is the new width, and `Param4` is the new height of the control.
+  - For `Text`: `Param1` is the new text content of the control.
+  - For `Font`: `Param1` is the new font size in pixels.
+  - For `Color`: `Param1` is the new color in hexadecimal format (cRRGGBB).
+
+#### Actions:
+
+- `Move`: Moves and resizes the specified control to the provided coordinates and dimensions.
+
+- `Focus`: Sets focus on the specified control, if applicable.
+
+- `Text`: Sets the text content of the specified control to the provided value.
+
+- `Hide`: Hides the specified control from view.
+
+- `Show`: Shows the specified control, making it visible.
+
+- `Enable`: Enables the specified control, allowing user interaction.
+
+- `Disable`: Disables the specified control, preventing user interaction.
+
+- `Font`: Sets the font size of the specified control to the provided value.
+
+- `Color`: Sets the color of the specified control to the provided value.
+
+#### Example Usage:
+
+```ahk
+; Move and resize a control with ID "myButton"
+GuiControl, Move, myButton, 100, 100, 150, 50
+
+; Set focus on an input field with ID "usernameInput"
+GuiControl, Focus, usernameInput
+
+; Changes the text content of a control or text with ID "infoLabel"
+GuiControl, Text, infoLabel, Hello, World!
+
+; Hide a control or text with ID "Button3"
+GuiControl, Hide, Button3
+
+; Show a control or text bar with ID "Button3"
+GuiControl, Show, Button3
+
+; Disable a button with ID "Button3"
+GuiControl, Disable, Button3
+
+; Enable a button with ID "Button3"
+GuiControl, Enable, Button3
+
+; Set the font size of a control or text with ID "Element2"
+; s = to size
+GuiControl, Font, Element2, s16
+
+; c = to color
+; Set the color of a control or text with ID "Text1"
+GuiControl, Color, highlightedText, cFF0000
+```
+
+#### Note:
+
+- Ensure that the specified `ControlID` exists within the GUI environment before invoking `GuiControl`.
+- The availability of certain actions may depend on the type of control specified by `ControlID`. Ensure compatibility with the intended control type.
+- Parameters such as coordinates, dimensions, font size, and color are specified in pixels or hexadecimal format, as appropriate.
+- Take advantage of `GuiControl` to dynamically update and manipulate GUI elements based on user interaction or application logic, enhancing the interactivity and usability of your HTH applications.
+
 ---
 
 ### Hotkeys <a id="hotkeys"></a>
 
 [Go back](#features)
+
+The `Hotkeys` feature in HeavenToHell (HTH) allows users to define custom keyboard shortcuts that trigger specific subroutines within their applications. With `Hotkeys`, developers can enhance user experience by providing convenient shortcuts for commonly used functions or commands.
+
+#### Syntax:
+
+```ahk
+Key::
+; Subroutine code
+Return
+```
+
+#### Parameters:
+
+- `Key`: Specifies the key or key combination that triggers the action. It can include modifiers such as `!` for Alt, `^` for Ctrl, and `+` for Shift. Additionally, it can include any combination of arrow keys (Up, Down, Left, Right).
+
+#### Example Usage:
+
+```ahk
+!^+H::
+MsgBox, You pressed Alt+Ctrl+Shift+H
+Return
+```
+
+#### Note:
+
+- Users can define multiple hotkeys by repeating the `Key::` syntax with different key combinations and subroutine codes.
+- Hotkeys can be used to perform various actions, such as executing functions, displaying messages, or triggering specific events within the application.
+
+#### Additional Hotkeys:
+
+```ahk
+; Up arrow key
+Up::
+; Subroutine code
+Return
+
+; Down arrow key
+Down::
+; Subroutine code
+Return
+
+; Left arrow key
+Left::
+; Subroutine code
+Return
+
+; Right arrow key
+Right::
+; Subroutine code
+Return
+
+; Space key
+Space::
+; Subroutine code
+Return
+
+; Backspace key
+Backspace::
+; Subroutine code
+Return
+```
+
+The `Hotkeys` feature in HTH provides users with a simple and efficient way to define custom keyboard shortcuts that execute specific subroutines, enabling developers to create more interactive and user-friendly applications. By leveraging hotkeys, developers can enhance productivity and streamline user interactions, contributing to an improved overall user experience.
 
 ---
 
@@ -301,11 +448,157 @@ Return
 
 [Go back](#features)
 
+In HeavenToHell (HTH), functions are indispensable for organizing and structuring code efficiently. By encapsulating reusable blocks of code, functions enhance modularity, readability, and maintainability. Adhering to the Allman Style coding convention is crucial for defining functions in HTH, ensuring clarity and consistency in code formatting.
+
+#### Syntax:
+
+```ahk
+nameOfFunc(param1, param2)
+{
+    ; Function body
+    return result
+}
+```
+
+#### Warning:
+
+Ensure that the opening curly brace `{` is placed on a new line when defining functions in HeavenToHell (HTH). Failure to adhere to this convention will result in errors, and the function will not be recognized.
+
+#### Parameters:
+
+- `nameOfFunc`: The name of the function, following the Allman Style convention.
+- `param1`, `param2`, ...: Parameters that the function accepts for processing.
+
+#### Example:
+
+```ahk
+sum(a, b)
+{
+    return a + b
+}
+```
+
+#### Note:
+
+- Consistent indentation and spacing within the function body enhance code readability.
+- All functions in HTH are global, similar to JavaScript's scope, allowing them to be accessed from anywhere within the script.
+
+#### Usage:
+
+Functions serve various purposes, such as mathematical calculations, data processing, and executing specific actions based on input parameters. Consider the following example illustrating the usage of a function to calculate the sum of two numbers:
+
+```ahk
+; Define the sum function
+sum(a, b)
+{
+    return a + b
+}
+
+; Call the sum function with arguments
+result := sum(5, 10)
+
+; Display the result
+MsgBox, The sum is: %result%
+```
+
+In this example, the `sum` function takes two parameters `a` and `b`, adds them together, and returns the result. The function is called with arguments `5` and `10`, and the returned result is displayed using a message box.
+
+Functions in HTH empower developers to structure code effectively and promote code reuse. By following the Allman Style convention and leveraging global function scope, developers can create well-organized and maintainable scripts in HeavenToHell.
+
 ---
 
 ### If, else, else if <a id="if-else-else-if"></a>
 
 [Go back](#features)
+
+The `If`, `else`, and `else if` statements in HeavenToHell (HTH) are fundamental control structures used for making decisions and executing different blocks of code based on specified conditions. These statements provide the ability to create branching logic within scripts, enabling developers to implement conditional behavior.
+
+#### Syntax:
+
+```ahk
+if (condition)
+{
+    ; Code to execute if the condition is true
+}
+else if (anotherCondition)
+{
+    ; Code to execute if the first condition is false and this condition is true
+}
+else
+{
+    ; Code to execute if all preceding conditions are false
+}
+```
+
+#### Parameters:
+
+- `condition`: A Boolean expression that evaluates to either true or false.
+- `anotherCondition`: An additional Boolean expression used in `else if` statements.
+
+#### Example:
+
+```ahk
+; Example demonstrating the usage of if, else if, and else statements
+
+x := 10
+
+if (x > 10)
+{
+    MsgBox, x is greater than 10
+}
+else if (x < 10)
+{
+    MsgBox, x is less than 10
+}
+else
+{
+    MsgBox, x is equal to 10
+}
+```
+
+#### Advanced Usage:
+
+In addition to simple comparisons, HTH supports various logical operators such as `&&` (logical AND), `||` (logical OR), `and`, `or`, and negation `!` (logical NOT). These operators can be combined to form complex conditional expressions.
+
+```ahk
+; Example demonstrating the usage of logical operators in conditional expressions
+
+var1 := 3
+var2 := 5
+
+if (var1 = 3) && (var2 = 5) or (var2 != 6)
+{
+    MsgBox, Condition is true
+}
+else
+{
+    MsgBox, Condition is false
+}
+```
+
+Additionally, functions can be used within conditional statements to evaluate conditions dynamically. The `!` operator can be used to negate the result of a function call.
+
+```ahk
+; Example demonstrating the usage of function calls and negation in conditional statements
+
+if !(collision())
+{
+    MsgBox, No collision detected
+}
+else
+{
+    MsgBox, Collision detected
+}
+```
+
+In this example, the `collision` function is called within the `if` statement, and its return value is negated using the `!` operator. If the result of the `collision` function is false (indicating no collision), the message "No collision detected" is displayed. Otherwise, if a collision is detected, the message "Collision detected" is displayed.
+
+#### Note:
+
+- It's important to properly use parentheses to ensure the desired evaluation order when combining logical operators.
+- Functions can be called within conditional statements to evaluate conditions dynamically, providing flexibility in script behavior.
+
+The `If`, `else if`, and `else` statements, along with logical operators, provide powerful tools for implementing conditional logic in HeavenToHell (HTH) scripts. By combining these features, developers can create dynamic and responsive applications capable of handling various scenarios and user inputs effectively.
 
 ---
 
@@ -313,11 +606,91 @@ Return
 
 [Go back](#features)
 
+The `Random` feature in HeavenToHell (HTH) enables developers to generate random numbers within specified ranges. This functionality is particularly useful for scenarios where randomness is required, such as in game development, simulations, or randomized algorithms.
+
+#### Syntax:
+
+```ahk
+Random, OutputVar, Min, Max
+```
+
+#### Parameters:
+
+- `OutputVar`: The variable to store the generated random number.
+- `Min`: The minimum value of the range (inclusive).
+-
+- `Max`: The maximum value of the range (inclusive).
+
+#### Example:
+
+```ahk
+; Generate a random number between 1 and 100
+Random, randomNumber, 1, 100
+
+; Display the generated random number
+MsgBox, Random number: %randomNumber%
+```
+
+or
+
+```ahk
+var1 := 1
+var2 := 100
+
+Random, OutputVar, %var1%, %var2%
+; Display the generated random number
+MsgBox, Random number: %OutputVar%
+```
+
+#### Usage:
+
+The `Random` feature provides a simple yet effective way to introduce randomness into HTH scripts. Whether it's for generating random numbers for game mechanics, simulating probabilistic events, or implementing randomized algorithms, the `Random` function offers flexibility and versatility in handling randomization requirements.
+
+With the `Random` feature in HeavenToHell (HTH), developers can easily incorporate randomness into their scripts, adding an element of unpredictability and dynamism to their applications. Whether it's for game development, simulations, or other scenarios requiring randomness, the `Random` function offers a straightforward solution for generating random numbers within specified ranges.
+
 ---
 
 ### Sleep <a id="sleep"></a>
 
 [Go back](#features)
+
+The `Sleep` feature in HeavenToHell (HTH) allows developers to introduce delays or pauses in their scripts, which can be useful for various purposes such as controlling the timing of actions, implementing animations, or simulating real-time behavior.
+
+#### Syntax:
+
+```ahk
+Sleep, Delay
+```
+
+#### Parameters:
+
+- `Delay`: The duration of the pause in milliseconds. This can be an integer or a variable containing the desired delay duration.
+
+#### Example:
+
+```ahk
+; Pause script execution for 2 seconds (2000 milliseconds)
+Sleep, 2000
+```
+
+#### Usage:
+
+The `Sleep` function is commonly used when precise timing is required between consecutive actions in a script. By specifying the desired delay duration, developers can control the pace of script execution, ensuring that actions occur at the intended times.
+
+```ahk
+; Example of using Sleep in a script
+; This script waits for 3 seconds, then displays a message box
+Sleep, 3000
+MsgBox, Three seconds have passed!
+```
+
+In this example, the `Sleep` function is used to pause the script execution for 3000 milliseconds (3 seconds) before displaying a message box.
+
+#### Note:
+
+- Be mindful of using excessive `Sleep` statements, as they can introduce unnecessary delays and impact script performance.
+
+The `Sleep` function in HeavenToHell (HTH) provides a simple yet effective way to introduce pauses or delays in scripts, allowing developers to control the timing of actions and create more dynamic and interactive applications. Whether it's for controlling animations, simulating real-time behavior, or implementing precise timing in script execution, the `Sleep` function offers versatility and flexibility in managing script flow and timing.
 
 ---
 
@@ -1654,6 +2027,4 @@ Get helpful recommendations for optimizing your experience with the HTH programm
 
 View a showcase of programs created using the HTH programming language, demonstrating its capabilities.
 
-```
-
-```
+---
