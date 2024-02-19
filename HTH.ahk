@@ -71,19 +71,17 @@ fileNameHTH := param
 if (fileNameHTH != "")
 {
 
-
-
   ; Example path
 path := fileNameHTH
-MsgBox, % path
+;MsgBox, % path
 
 ; Use regex to extract the directory path
 regex := "(.*[/\\]).*" ; Match everything before the last slash in the string
 if (RegExMatch(path, regex, match)) {
     dirpath := match1
-    MsgBox, The directory path is: %dirpath%
+    ;MsgBox, The directory path is: %dirpath%
 } else {
-    MsgBox, No directory path found in the path.
+    ;MsgBox, No directory path found in the path.
 }
 
 
@@ -100,9 +98,9 @@ regex := "[\\/]?([^\/\\]+)\.[^\.]+$"
 
 if (RegExMatch(path, regex, match)) {
     filenameOfHTH := match1
-    MsgBox, The file name without extension is: %filenameOfHTH%
+    ;MsgBox, The file name without extension is: %filenameOfHTH%
 } else {
-    MsgBox, No file name found in the path.
+    ;MsgBox, No file name found in the path.
 }
 
 }
@@ -117,7 +115,7 @@ FileRead, AHKcode, %fileNameHTH%
 
 if (test = 1)
 {
-Clipboard := AHKcode
+;Clipboard := AHKcode
 gosub Compile
 ExitApp
 }
