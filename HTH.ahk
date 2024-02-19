@@ -112,7 +112,6 @@ variables := ""
 removeCurlyBracet := 0
 variables .= "  " . "A_Index" . ": null," . "`n"
 variables .= "  " . "A_LoopField" . ": null," . "`n"
-variables .= "  " . "A_IsTranspiled" . ": 1," . "`n"
 variables .= "  " . "characters" . ": null," . "`n"
 
 jsCodeGui := ""
@@ -2109,7 +2108,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText52%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + "%guiOutOfText52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2215,7 +2214,7 @@ jsCode0 =
 
 
 Gui%GuiNumber%%guiOutOfText5% = document.createElement("div");
-Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + %guiOutOfText52%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfText5%.id = "Gui%GuiNumber%" + "%guiOutOfText52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfText5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfText5%.style.color = "#%guiOutOfText0%"
 Gui%GuiNumber%%guiOutOfText5%.style.fontSize = "%guiFontShow%px"; // Set font size
@@ -2444,7 +2443,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton52%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + "%guiOutOfButton52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -2546,7 +2545,7 @@ jsCode0 =
 
 
 Gui%GuiNumber%%guiOutOfButton5% = document.createElement("button");
-Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + %guiOutOfButton52%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfButton5%.id = "Gui%GuiNumber%" + "%guiOutOfButton52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfButton5%.textContent = "%out5%";
 Gui%GuiNumber%%guiOutOfButton5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfButton5%.style.position = "absolute"; // Set position to absolute
@@ -3137,7 +3136,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfPicture5% = document.createElement("img");
-Gui%GuiNumber%%guiOutOfPicture5%.id = "Gui%GuiNumber%" + %guiOutOfPicture52%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfPicture5%.id = "Gui%GuiNumber%" + "%guiOutOfPicture52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfPicture5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfPicture5%.style.position = "absolute"; // Set position to absolute
 Gui%GuiNumber%%guiOutOfPicture5%.style.left = "%guiOutOfPicture1%px"; // Set initial x position
@@ -3284,7 +3283,7 @@ jsCode0 =
 (
 
 Gui%GuiNumber%%guiOutOfPicture5% = document.createElement("img");
-Gui%GuiNumber%%guiOutOfPicture5%.id = "Gui%GuiNumber%" + %guiOutOfPicture52%; // Set ID for referencing
+Gui%GuiNumber%%guiOutOfPicture5%.id = "Gui%GuiNumber%" + "%guiOutOfPicture52%"; // Set ID for referencing
 Gui%GuiNumber%%guiOutOfPicture5%.style.fontSize = "%guiFontShow%px"; // Set font size
 Gui%GuiNumber%%guiOutOfPicture5%.style.position = "absolute"; // Set position to absolute
 Gui%GuiNumber%%guiOutOfPicture5%.style.left = "%guiOutOfPicture1%px"; // Set initial x position
@@ -5236,7 +5235,6 @@ str := StrReplace(str, "variables.A_GuiControl", "A_GuiControl")
 str := StrReplace(str, "variables.A_TimeIdle", "BuildInVars(""A_TimeIdle"")")
 str := StrReplace(str, "variables.A_TickCount", "BuildInVars(""A_TickCount"")")
 str := StrReplace(str, "variables.A_LastKey", "BuildInVars(""A_LastKey"")")
-str := StrReplace(str, "variables.A_NowUTC", "BuildInVars(""A_NowUTC"")")
 str := StrReplace(str, "variables.A_Now", "BuildInVars(""A_Now"")")
 str := StrReplace(str, "variables.A_YYYY", "BuildInVars(""A_YYYY"")")
 str := StrReplace(str, "variables.A_MM", "BuildInVars(""A_MM"")")
@@ -5727,9 +5725,6 @@ addFuncIfWeUseIt_BuildInVars =
           case "A_TickCount":
             // Return tick count in milliseconds
             return A_TickCount();
-          case "A_NowUTC":
-            // Return current UTC timestamp
-            return new Date().toISOString();
           case "A_Now":
             // Return current local timestamp
             return new Date().toLocaleString();
@@ -6076,64 +6071,12 @@ addFuncIfWeUseIt_RegExMatch =
 
 )
 
-addFuncIfWeUseIt_RegExReplace =
-(
-
-      // RegExReplace
-      function RegExReplace(Haystack, NeedleRegEx, Replacement, OutputVarCount, Limit, StartingPos) {
-        if (Haystack === null || NeedleRegEx === null || Replacement === null) return null;
-
-        const regex = new RegExp(NeedleRegEx, "g");
-        let count = 0;
-        const result = Haystack.replace(regex, (match) => {
-          if (count < Limit || Limit === 0) {
-            count++;
-            return Replacement;
-          } else {
-            return match;
-          }
-        });
-
-        if (OutputVarCount) {
-          OutputVarCount.push(count);
-        }
-
-        return result;
-      }
-
-)
-
 addFuncIfWeUseIt_StrLen =
 (
 
       // StrLen
       function StrLen(str) {
         return str === null ? null : str.length;
-      }
-
-)
-
-addFuncIfWeUseIt_StrSplit =
-(
-
-      // StrSplit function
-      async function StrSplit(String, Delimiters, OmitChars, MaxParts) {
-        if (String === null || Delimiters === null) return null;
-
-        const regex = new RegExp(`[${Delimiters}${OmitChars}]`, "g");
-        const parts = String.split(regex, MaxParts).map((part) => part.trim());
-
-        return parts;
-      }
-
-)
-
-addFuncIfWeUseIt_Format =
-(
-
-      // Format (simplified version)
-      function Format(formatString, ...values) {
-        return formatString.replace(/{(\d+)}/g, (match, index) => (values[index] !== undefined ? values[index] : match));
       }
 
 )
@@ -6161,28 +6104,24 @@ addFuncIfWeUseIt_getRandomNumber =
 addFuncIfWeUseIt_SubStr =
 (
 
-      function SubStr(inputString, startingPos, length) {
-        if (inputString === null) {
+      function SubStr(str, startPos, length) {
+        // If str is null or undefined, return an empty string
+        if (str === null || str === undefined) {
           return "";
         }
 
-        if (startingPos < 1) {
-          // Calculate starting position from the end of the string
-          startingPos = inputString.length + startingPos;
+        // If length is not provided or is blank, default to "all characters"
+        if (length === undefined || length === "") {
+          length = str.length - startPos + 1;
         }
 
-        // Adjust starting position if it's beyond the string's length
-        if (startingPos > inputString.length) {
-          return "";
+        // If startPos is less than 1, adjust it to start from the end of the string
+        if (startPos < 1) {
+          startPos = str.length + startPos;
         }
 
-        // Handle negative length to omit characters from the end
-        if (length < 0) {
-          length = inputString.length + length - startingPos;
-        }
-
-        // Return the requested substring
-        return inputString.substring(startingPos - 1, startingPos - 1 + length);
+        // Extract the substring based on startPos and length
+        return str.substr(startPos - 1, length);
       }
 
 )
@@ -7189,4 +7128,8 @@ out2 := StrReplace(out2, "variables.SubStr(", "SubStr(")
 out2 := StrReplace(out2, "variables.SubStr (", "SubStr(")
 out2 := StrReplace(out2, "variables.Chr(", "String.fromCharCode(")
 out2 := StrReplace(out2, "variables.Chr (", "String.fromCharCode(")
+
+out2 := StrReplace(out2, "variables.String.fromCharCode", "String.fromCharCode")
+
+
 }

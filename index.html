@@ -225,9 +225,6 @@
           case "A_TickCount":
             // Return tick count in milliseconds
             return A_TickCount();
-          case "A_NowUTC":
-            // Return current UTC timestamp
-            return new Date().toISOString();
           case "A_Now":
             // Return current local timestamp
             return new Date().toLocaleString();
@@ -351,11 +348,6 @@
         return Math.sin(num);
       }
 
-      // Format (simplified version)
-      function Format(formatString, ...values) {
-        return formatString.replace(/{(\d+)}/g, (match, index) => (values[index] !== undefined ? values[index] : match));
-      }
-
       // Ord
       function Ord(str) {
         return str === null ? null : str.charCodeAt(0);
@@ -366,28 +358,24 @@
         return Math.floor(Math.random() * (max - min + 1) + min);
       }
 
-      function SubStr(inputString, startingPos, length) {
-        if (inputString === null) {
+      function SubStr(str, startPos, length) {
+        // If str is null or undefined, return an empty string
+        if (str === null || str === undefined) {
           return "";
         }
 
-        if (startingPos < 1) {
-          // Calculate starting position from the end of the string
-          startingPos = inputString.length + startingPos;
+        // If length is not provided or is blank, default to "all characters"
+        if (length === undefined || length === "") {
+          length = str.length - startPos + 1;
         }
 
-        // Adjust starting position if it's beyond the string's length
-        if (startingPos > inputString.length) {
-          return "";
+        // If startPos is less than 1, adjust it to start from the end of the string
+        if (startPos < 1) {
+          startPos = str.length + startPos;
         }
 
-        // Handle negative length to omit characters from the end
-        if (length < 0) {
-          length = inputString.length + length - startingPos;
-        }
-
-        // Return the requested substring
-        return inputString.substring(startingPos - 1, startingPos - 1 + length);
+        // Extract the substring based on startPos and length
+        return str.substr(startPos - 1, length);
       }
 
       function Trim(inputString) {
@@ -553,7 +541,6 @@
         // Declare and assign a variable
         let variables = {
           A_Index: null,
-          A_IsTranspiled: 1,
           A_LoopField: null,
           AThisHotkey: null,
           borderX: null,
