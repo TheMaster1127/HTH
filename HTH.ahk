@@ -75,6 +75,7 @@ if (fileNameHTH != "")
 
   ; Example path
 path := fileNameHTH
+MsgBox, % path
 
 ; Use regex to extract the directory path
 regex := "(.*[/\\]).*" ; Match everything before the last slash in the string
