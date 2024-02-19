@@ -70,40 +70,43 @@ fileNameHTH := param
 ; To fetch only its directory:
 if (fileNameHTH != "")
 {
-SplitPath, fileNameHTH,, dir
-;MsgBox, %dir%
-SetWorkingDir %dir%  ; Ensures a consistent starting directory.
 
+
+
+  ; Example path
 path := fileNameHTH
 
+; Use regex to extract the directory path
+regex := "(.*[/\\]).*" ; Match everything before the last slash in the string
+if (RegExMatch(path, regex, match)) {
+    dirpath := match1
+    MsgBox, The directory path is: %dirpath%
+} else {
+    MsgBox, No directory path found in the path.
+}
+
+
+
+
+
+
+;MsgBox, %dir%
+SetWorkingDir, %dirpath%  ; Ensures a consistent starting directory.
+
+
 ; Use regex to extract the file name without extension
-regex := "([^\\]+)\.[^\.]+$" ; Match the characters before the last dot in the string
+regex := "[\\/]?([^\/\\]+)\.[^\.]+$"
+
 if (RegExMatch(path, regex, match)) {
     filenameOfHTH := match1
-    ;MsgBox, The file name without extension is: %filenameOfHTH%
+    MsgBox, The file name without extension is: %filenameOfHTH%
 } else {
-    ;MsgBox, No file name found in the path.
+    MsgBox, No file name found in the path.
 }
 
 }
 ;MsgBox, % fileNameHTH
 
-
-input := fileNameHTH
-
-; Extract text after the last backslash
-regex := ".*\\([^\\]+)\.[^\\.]+$"
-if (RegExMatch(input, regex, match))
-{
-    extractedText := match1
-    ;MsgBox % "File name without extension: " extractedText
-}
-else
-{
-    ;MsgBox % "No match found!"
-}
-
-nameOfHTHscript := extractedText
 
 StartTime := A_TickCount
 
