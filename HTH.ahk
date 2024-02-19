@@ -80,9 +80,9 @@ path := fileNameHTH
 regex := "([^\\]+)\.[^\.]+$" ; Match the characters before the last dot in the string
 if (RegExMatch(path, regex, match)) {
     filenameOfHTH := match1
-    MsgBox, The file name without extension is: %filenameOfHTH%
+    ;MsgBox, The file name without extension is: %filenameOfHTH%
 } else {
-    MsgBox, No file name found in the path.
+    ;MsgBox, No file name found in the path.
 }
 
 }
