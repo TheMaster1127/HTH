@@ -71,8 +71,20 @@ fileNameHTH := param
 if (fileNameHTH != "")
 {
 SplitPath, fileNameHTH,, dir
-MsgBox, %dir%
+;MsgBox, %dir%
 SetWorkingDir %dir%  ; Ensures a consistent starting directory.
+
+path := fileNameHTH
+
+; Use regex to extract the file name without extension
+regex := "([^\\]+)\.[^\.]+$" ; Match the characters before the last dot in the string
+if (RegExMatch(path, regex, match)) {
+    filenameOfHTH := match1
+    MsgBox, The file name without extension is: %filenameOfHTH%
+} else {
+    MsgBox, No file name found in the path.
+}
+
 }
 ;MsgBox, % fileNameHTH
 
@@ -5504,14 +5516,14 @@ if __name__ == '__main__':
 
 if (DoWeHaveEndpoints = 1) {
     ; Check if the main Python file doesn't exist
-    if !FileExist("server_" . nameOfHTHscript . ".py") {
+    if !FileExist("server_" . filenameOfHTH . ".py") {
         ; If it doesn't exist, create it and append pythonCode to it
-        FileAppend, % pythonCode, server_%nameOfHTHscript%.py
+        FileAppend, % pythonCode, server_%filenameOfHTH%.py
     } else {
         ; If it exists, try appending to a numbered file
         Loop {
             ; Construct the filename with a numeric suffix using A_Index
-            filename := "server_" . nameOfHTHscript . " (" . A_Index . ").py"
+            filename := "server_" . filenameOfHTH . " (" . A_Index . ").py"
             ; Check if this numbered file doesn't exist
             if !FileExist(filename) {
                 ; If it doesn't exist, create it and append pythonCode to it
