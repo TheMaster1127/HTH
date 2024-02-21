@@ -2570,12 +2570,11 @@ A collection of Build-in Function available in HTH.
 3. [RegExMatch](#regexmatch)
 4. [GetKeyState](#getkeystate)
 5. [StrLen](#strlen)
-6. [Ord](#ord)
-7. [SubStr](#substr)
-8. [Trim](#trim)
-9. [StrReplace](#strreplace)
-10. [Mod](#mod)
-11. [Asc](#asc)
+6. [SubStr](#substr)
+7. [Trim](#trim)
+8. [StrReplace](#strreplace)
+9. [Mod](#mod)
+10. [Asc](#asc)
 
 ---
 
@@ -2736,35 +2735,6 @@ result := StrLen(string)
 ```ahk
 length := StrLen("Hello World")
 MsgBox, The length of the string is %length%
-```
-
----
-
-### Ord <a id="ord"></a>
-
-[Go back](#build-in-functions)
-
-**Ord**: Returns the ASCII code of the first character in a string.
-
-#### Syntax:
-
-```ahk
-result := Ord(string)
-```
-
-#### Parameters:
-
-- _string_: The string from which you want to retrieve the ASCII code of the first character.
-
-#### Return Value:
-
-- Returns the ASCII code of the first character in the input string.
-
-#### Example:
-
-```ahk
-asciiCode := Ord("A")
-MsgBox, The ASCII code of `"A`" is %asciiCode%
 ```
 
 ---
