@@ -6187,16 +6187,6 @@ addFuncIfWeUseIt_StrLen =
 
 )
 
-addFuncIfWeUseIt_Ord =
-(
-
-      // Ord
-      function Ord(str) {
-        return str === null ? null : str.charCodeAt(0);
-      }
-
-)
-
 addFuncIfWeUseIt_getRandomNumber =
 (
 
@@ -6561,10 +6551,6 @@ if (Instr(jsCode, "RegExMatch(")) or (Instr(jsCode, "RegExMatch ("))
 if (Instr(jsCode, "StrLen(")) or (Instr(jsCode, "StrLen ("))
 {
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StrLen . "`n"
-}
-if (Instr(jsCode, "Ord(")) or (Instr(jsCode, "Ord ("))
-{
-    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Ord . "`n"
 }
 if (Instr(jsCode, "getRandomNumber(")) or (Instr(jsCode, "getRandomNumber ("))
 {
