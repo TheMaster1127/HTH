@@ -32,7 +32,7 @@ HTH simplifies GUI development by eliminating the need for complex initializatio
 
 **Cons:**
 
-1. **Platform Dependency:** HTH requires Windows for compilation or transpilation, limiting it's usability for developers using other operating systems. While it's possible to use HTH on Linux with the help of Wine, it's important to note that this setup might not provide full compatibility or optimal performance. Additionally, I forbid any Mac users from using HTH. Mac users STAY AWAY!!!
+1. **Platform Dependency:** HTH requires Windows for compilation or transpilation, limiting it's usability for developers using other operating systems. it's possible to use HTH on Linux with the help of Wine. Additionally, I forbid any Mac users from using HTH. Mac users STAY AWAY!!!
 
 2. **Limited Advanced Features:** HTH may lack some advanced features and functionalities found in other programming languages, potentially limiting it's suitability for complex or specialized applications.
 
@@ -62,7 +62,7 @@ To use HTH HeavenToHell:
 
 ## Platform Compatibility
 
-- HTH is compatible with Windows and can also run on Linux with the assistance of Wine. However, it's important to note that running HTH on Linux via Wine
+- HTH is compatible with Windows and can also run on Linux with the assistance of wine a program that can run most exe files on linux using wine.
 - HTH only transpiles using Windows or Linux with wine since the transpiler is written in AutoHotKey and we need to run it as an exe in windows and linux with wine or .ahk in windows. Mac users STAY AWAY from HTH!!!
 
 ---
