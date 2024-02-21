@@ -32,7 +32,7 @@ HTH simplifies GUI development by eliminating the need for complex initializatio
 
 **Cons:**
 
-1. **Platform Dependency:** HTH requires Windows for compilation or transpilation, limiting it's usability for developers using other operating systems.
+1. **Platform Dependency:** HTH requires Windows for compilation or transpilation, limiting its usability for developers using other operating systems. While it's possible to use HTH on Linux with the help of Wine, it's important to note that this setup might not provide full compatibility or optimal performance. Additionally, I forbid any Mac users from using HTH. Mac users STAY AWAY!!!
 
 2. **Limited Advanced Features:** HTH may lack some advanced features and functionalities found in other programming languages, potentially limiting it's suitability for complex or specialized applications.
 
@@ -43,8 +43,8 @@ Overall, HTH offers a user-friendly and versatile platform for beginners to lear
 **Note:**
 
 - This project is specifically inspired from AutoHotKey V1 and it's syntax.
-- HTH HeavenToHell is still in development.
-- Documentation coming soon.
+- HTH HeavenToHell is still in development. But almost done
+- Documentation here https://github.com/TheMaster1127/HTH/blob/main/DOCUMENTATION.md
 
 ## Usage
 
@@ -59,6 +59,15 @@ To use HTH HeavenToHell:
 7. (Optional) Open `PrettierFormatter.html`
 8. (Optional) Format the code and then put it it back in `index.html`
 9. (Optional) Open the `index.html`
+
+## Platform Compatibility
+
+- HTH is compatible with Windows and can also run on Linux with the assistance of Wine. However, it's important to note that running HTH on Linux via Wine
+- HTH only transpiles using Windows or Linux whit wine since the transpiler is written in AutoHotKey and we need to run it as an exe in windows and linux whit wine or .ahk in windows. Mac users STAY AWAY form HTH!!!
+
+---
+
+A simplified documentation here, but you can check the documentation here: [HTH Documentation](https://github.com/TheMaster1127/HTH/blob/main/DOCUMENTATION.md)
 
 For coding style, you should use Allman Style since functions won't be recognized here is an example:
 
@@ -231,10 +240,6 @@ Built-in Variables
 - A_Space
 - A_Tab
 
-
-## Platform Compatibility
-
-- AutoHotKey only runs on Windows.
-- HTH only transpiles using Windows since the transpiler is written in AutoHotKey.
+You can check the documentation here: [HTH Documentation](https://github.com/TheMaster1127/HTH/blob/main/DOCUMENTATION.md)
 
 ---
