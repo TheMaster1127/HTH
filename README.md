@@ -205,7 +205,6 @@ Some features haven't been fully tested but should work include:
 - RegExMatch
 - GetKeyState
 - StrLen
-- Ord
 - SubStr
 - Trim
 - StrReplace
