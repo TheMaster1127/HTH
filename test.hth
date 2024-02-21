@@ -4,7 +4,7 @@ data := "sdfjubf sdjdf xlsakd xdzsd12344 2kj2q3w"
 
 if (isConnectedToBackend())
 {
-MsgBox, We are connected to a back
+MsgBox, We are connected to a backend
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -5,9 +5,8 @@
 1. [Usage and Syntax](#usage-and-syntax)
 2. [Features](#features)
 3. [Backend and Python](#backend-and-python)
-4. [Editor for Code](#editor-for-code)
-5. [Recommendations](#recommendations)
-6. [Script Showcase](#script-showcase)
+4. [Editors for Code](#editors-for-code)
+5. [Script Showcase](#script-showcase)
 
 ---
 
@@ -16,6 +15,119 @@
 [Go back](#hth)
 
 This section provides an overview of the usage and syntax of the HTH programming language.
+
+### Coding Style: Allman Style
+
+In HeavenToHell (HTH) programming, it is crucial to adhere to the Allman coding style to ensure code readability and avoid errors. The Allman style dictates placing curly braces on their own lines, and failure to follow this style may result in errors during execution.
+
+#### Example of Allman Style:
+
+```ahk
+nameOfFunc(a, b)
+{
+    return a + b
+}
+```
+
+### Note:
+
+- **MUST**: Use the Allman style consistently throughout your HTH code.
+- **WILL**: Failure to use the Allman style may lead to errors during execution.
+
+Adhering to the Allman coding style not only helps maintain clean and organized code but also ensures compatibility and error-free execution in HTH programming.
+
+### Syntax Overview
+
+In HeavenToHell (HTH), the coding style follows the Allman style, where curly braces are placed on their own lines. Additionally, comments are denoted by a semicolon `;` for single-line comments and by using semicolon `;` for each line in multi-line comments. There are no block comments.
+
+#### Variables and Data Types
+
+In HTH, variables are declared and assigned using the Allman style, and variable names follow the same conventions as in AutoHotkey. Here's how you declare and assign variables:
+
+```ahk
+myNumber := 42
+myString := "Hello, World!"
+isFlagSet := true
+```
+
+HTH supports various data types, including numeric, string, and boolean types.
+
+#### Control Structures
+
+Control structures in HTH, including conditional statements and loops, follow the Allman style as well.
+
+##### If-Else Statements
+
+```ahk
+if (condition)
+{
+    ; Code block executed if condition is true
+}
+else
+{
+    ; Code block executed if condition is false
+}
+```
+
+##### Loops
+
+```ahk
+Loop
+{
+    ; Code block to be repeated
+}
+```
+
+#### Functions
+
+Functions in HTH are declared using the Allman style, and return statements are in lowercase. Here's how you declare and define functions:
+
+```ahk
+nameOfFunc(a, b)
+{
+    return a + b
+}
+```
+
+#### Comments
+
+Comments in HTH are denoted by a semicolon `;` for single-line comments and are placed on their own lines for multi-line comments.
+
+```ahk
+; This is a single-line comment
+
+; This is
+; a multi-line comment
+```
+
+### Usage Overview
+
+HTH is designed for simplicity and ease of use, following the Allman coding style throughout the language. It is suitable for various applications, including web development, scripting, and learning programming concepts.
+
+### Example Usage
+
+Here's an example demonstrating the usage of variables, control structures, and functions in HTH:
+
+```ahk
+myNumber := 42
+myString := "Hello, World!"
+
+if (myNumber > 0)
+{
+    MsgBox, % "Number is positive: " . myNumber
+}
+else
+{
+    MsgBox, % "Number is non-positive: " . myNumber
+}
+
+nameOfFunc := nameOfFunc(3, 4)
+MsgBox, % "Result of nameOfFunc: " . nameOfFunc
+```
+
+### Conclusion
+
+HTH follows the Allman coding style for consistency and readability. Its simplicity and versatility make it suitable for various programming tasks.
 
 ---
 
@@ -48,8 +160,8 @@ Explore the various features offered by the HTH programming language in this sec
 19. [Loop](#loop)
 20. [Loop, Parse](#loop-parse)
 21. [Variables](#variables)
-22. [Simple dynamically function calls](#simple-dynamically-function-calls)
-23. [Assignment operators](#assignment-operators)
+22. [Run](#run)
+23. [#Include](#include)
 24. [Comments](#comments)
 25. [getDataFromEndpoint](#getdatafromendpoint)
 26. [isMobileDevice](#ismobiledevice)
@@ -483,6 +595,48 @@ sum(a, b)
 - Consistent indentation and spacing within the function body enhance code readability.
 - All functions in HTH are global, similar to JavaScript's scope, allowing them to be accessed from anywhere within the script.
 
+### Simple Dynamically Function Calls
+
+In HeavenToHell (HTH), simple dynamically function calls provide a convenient way to execute functions based on dynamically generated names or values. This feature enhances flexibility and reduces redundancy in code, allowing for efficient function invocation.
+
+#### Syntax:
+
+To perform a simple dynamically function call in HTH, use the following syntax:
+
+```ahk
+func%num%()
+```
+
+Where `%num%` represents a dynamically generated value or variable. It's important to note that only one `%var%` can be used at the end of the function name, and it must be placed at the end of the function name.
+
+#### Example:
+
+```ahk
+; Define dynamic functions
+func1()
+{
+    print("This is function 1")
+}
+
+func2()
+{
+    print("This is function 2")
+}
+
+; Dynamically call functions based on a variable value
+num := 1
+; Calls func1()
+func%num%()
+
+num := 2
+; Calls func2()
+func%num%()
+```
+
+In this example, the functions `func1` and `func2` are defined. By using a variable `num`, different functions can be dynamically called based on its value. The `%num%` placeholder in the function name is replaced by the value of `num` during execution, allowing for dynamic function invocation.
+
+Simple dynamically function calls in HTH enable developers to streamline code execution, especially in scenarios where function names or values are generated dynamically.
+
 #### Usage:
 
 Functions serve various purposes, such as mathematical calculations, data processing, and executing specific actions based on input parameters. Consider the following example illustrating the usage of a function to calculate the sum of two numbers:
@@ -698,11 +852,140 @@ The `Sleep` function in HeavenToHell (HTH) provides a simple yet effective way t
 
 [Go back](#features)
 
+The `MsgBox` function in HeavenToHell (HTH) displays a small window containing text and one or more buttons, allowing developers to interact with users and present information effectively.
+
+#### Syntax:
+
+```ahk
+MsgBox, Text
+MsgBox, Options, Title, Text, Timeout
+```
+
+#### Parameters:
+
+- `Text`: The text displayed inside the message box to instruct the user or present information.
+
+- `Options`: Indicates the type of message box and the possible button combinations. If blank or omitted, it defaults to 0. See the tables below for allowed values.
+
+- `Title`: The title of the message box window.
+
+- `Timeout` (optional): Timeout in seconds. If specified, the message box will be automatically closed after the specified duration.
+
+#### Options for the Options parameter:
+
+The `Options` parameter can be a combination (sum) of values from the following groups:
+
+- **Button Types:**
+
+  - 0: OK (default)
+  - 1: OK/Cancel
+  - 2: (removed)
+  - 3: OK/No/Cancel
+  - 4: OK/No
+  - 5: OK/Cancel
+
+- **Icon Types:**
+
+  - 16: Stop (Error icon)
+  - 32: Question (Question mark icon)
+  - 48: Warning (Warning point icon)
+  - 64: Information (Information icon)
+
+- **Default Button:**
+  - 0: First button is default (default)
+  - 256: Second button is default
+  - 512: Third button is default
+
+#### Note:
+
+- The `MsgBox` function allows developers to create informative and interactive message boxes, providing users with necessary instructions or information.
+- The timeout parameter, if specified, automatically closes the message box after the specified duration, improving user experience and script flow.
+
+#### Examples:
+
+```ahk
+; Display a simple message box with text "Hello, World!"
+MsgBox, Hello, World!
+
+; Display a message box with custom options, title, and text
+MsgBox, 4, Important Message, This is an important message!
+
+; Display a message box with timeout (5 seconds) and custom text
+MsgBox, , Warning, This message will self-destruct in 5 seconds., 5
+
+; display varables
+var1 := "hello man"
+MsgBox, % var1
+
+; display varables + text
+var1 := "hello man"
+MsgBox, % var1 . " how are you"
+
+;another example
+; Title: Question Text: Do you wnat to leave? Buttons: OK/No Icon: Question Default Button: 2nd Timeout: 5 sec
+; to get 292 we have OK/No = 4 + Icon Question = 32 + Default Button: 2nd = 256 so 4+32+256 = 292
+MsgBox, 292, Question, Do you wnat to leave?, 5
+IfMsgBox, OK
+{
+MsgBox, You clicked OK
+}
+else
+{
+MsgBox, You clicked No
+} ; end of ifmsgbox
+
+;another example
+var4 := 7
+var5 := 10
+if (var5 > var4)
+{
+; Title: Error Text: % "var5 is " . var5 . " which is more than var4. var4 is " . var4 Buttons: OK Icon: Error Default Button: 1st Timeout: 10 sec
+; to get 16 we have OK = 0 + Icon Error = 16 + Default Button: 1st = 0 so 0+16+0 = 16
+MsgBox, 16, Error, % "var5 is " . var5 . " which is more than var4. var4 is " . var4, 10
+}
+```
+
+By combining values from these groups, developers can customize the appearance and behavior of message boxes to suit their specific requirements.
+
+The `MsgBox` function in HeavenToHell (HTH) provides developers with a versatile tool for creating informative and interactive message boxes, enhancing user experience and facilitating communication between the script and the user. Whether it's for displaying important messages, requesting user input, or providing notifications, the `MsgBox` function offers flexibility and convenience in implementing various messaging scenarios within HTH scripts.
+
 ---
 
 ### FileRead <a id="fileread"></a>
 
 [Go back](#features)
+
+---
+
+The `FileRead` feature in HeavenToHell (HTH) allows you to read the contents of a file into a variable within your script. It's important to note that when using `FileRead`, you must provide the filename as a literal string without using variables directly in the filename argument.
+
+#### Syntax:
+
+```ahk
+FileRead, OutputVar, FileName
+```
+
+#### Parameters:
+
+- `OutputVar`: The variable to store the contents of the file.
+- `FileName`: The name of the file to read. This must be specified as a literal string without using variables directly in the filename argument.
+
+#### Example:
+
+```ahk
+; Read text content from the specified file
+FileRead, FileContent, FileName.txt
+
+; Display the content of the file
+MsgBox, %FileContent%
+```
+
+#### Note:
+
+- Ensure that the filename is provided as a literal string without using variables directly in the filename argument.
+- The contents of the file are read into the specified variable (`OutputVar`), allowing you to manipulate or display the file contents as needed within your script.
+
+By following these guidelines, you can effectively use the `FileRead` feature in HeavenToHell (HTH) to read text content from external files and incorporate it into your script.
 
 ---
 
@@ -712,9 +995,125 @@ The `Sleep` function in HeavenToHell (HTH) provides a simple yet effective way t
 
 ---
 
+The `FileAppend` feature in HeavenToHell (HTH) enables you to append text content to a file. Since HTH runs within a browser environment and cannot directly save files to the device, using `FileAppend` will trigger a file download in the browser instead of directly modifying files on the device.
+
+#### Syntax:
+
+```ahk
+FileAppend, %TextToAppend%, FileName
+```
+
+#### Parameters:
+
+- `TextToAppend`: The text content to append to the file.
+- `FileName`: The name of the file to which the text will be appended. This must be specified as a literal string without using variables directly in the filename argument.
+
+#### Example:
+
+```ahk
+; Append text content to the specified file
+text := "hello man"
+FileAppend, %text%, FileName.txt
+```
+
+#### Note:
+
+- Since HTH runs within a browser environment and cannot directly save files to the device, using `FileAppend` will trigger a file download in the browser instead of directly modifying files on the device.
+- Ensure that the filename is provided as a literal string without using variables directly in the filename argument.
+- The specified `TextToAppend` will be appended to the end of the file specified by `FileName`.
+
+With the `FileAppend` feature in HeavenToHell (HTH), you can easily trigger file downloads in the browser by appending text content to files, facilitating tasks such as logging, data collection, and file management within your scripts.
+
+---
+
 ### SetTimer <a id="settimer"></a>
 
 [Go back](#features)
+
+In HeavenToHell (HTH), the `SetTimer` command is used to create and control timers within the script. Timers allow developers to execute specific actions or functions at regular intervals, providing a mechanism for scheduling tasks and automating processes.
+
+#### Syntax:
+
+```ahk
+SetTimer, LabelName, Option
+```
+
+#### Parameters:
+
+- `LabelName`: The name of the label or subroutine to be executed when the timer elapses.
+- `Option`: Specifies the interval and state of the timer. It can take one of the following values:
+  - `Interval`: Specifies the interval in milliseconds at which the timer should elapse and trigger the execution of the specified label or subroutine.
+  - `On`: Starts or enables the timer.
+  - `Off`: Stops or disables the timer.
+
+#### Example 1: Starting a Timer
+
+```ahk
+; Define a label to be executed by the timer
+TimerLabel:
+    ; Perform actions or execute code here
+    MsgBox, Timer elapsed! This is a recurring message.
+Return
+
+; Start the timer with an interval of 2000 milliseconds (2 seconds)
+SetTimer, TimerLabel, 2000
+
+; After some time or based on certain conditions, turn off the timer
+
+; Wait for 10 seconds
+Sleep, 10000
+
+; Stop the timer
+SetTimer, TimerLabel, Off
+```
+
+#### Example 2: Stopping a Timer
+
+```ahk
+; Define a label to be executed by the timer
+TimerLabel:
+    ; Perform actions or execute code here
+    MsgBox, Timer elapsed! This is a recurring message.
+Return
+
+; Start the timer with an interval of 2000 milliseconds (2 seconds)
+SetTimer, TimerLabel, 2000
+
+; After some time or based on certain conditions, turn off the timer
+
+; Wait for 5 seconds
+Sleep, 5000
+
+; Stop the timer
+SetTimer, TimerLabel, Off
+
+; Later, based on other conditions or user interaction, turn the timer back on
+
+; Wait for 5 seconds
+Sleep, 5000
+
+; Restart the timer
+SetTimer, TimerLabel, On
+```
+
+#### Note:
+
+- Timers in HTH typically involve setting up a label or subroutine to be executed at specified intervals using the `SetTimer` command.
+- The `Option` parameter determines the behavior of the timer:
+  - When `Interval` is specified, the timer will elapse at the specified interval and trigger the execution of the specified label or subroutine.
+  - When `On` is specified, the timer is started or enabled, allowing it to trigger at the specified interval.
+  - When `Off` is specified, the timer is stopped or disabled, preventing it from triggering until it is re-enabled using the `On` option.
+
+#### Usage:
+
+Timers are commonly used in scripts to perform periodic tasks, such as checking for updates, refreshing data, or triggering specific actions at regular intervals. By utilizing timers, developers can automate repetitive tasks and improve the efficiency and responsiveness of their scripts and applications.
+
+#### Important Note:
+
+- When using timers, ensure that the specified label or subroutine is defined and contains the necessary code to be executed when the timer elapses.
+- Use caution when enabling or disabling timers dynamically during script execution to avoid unintended behavior or conflicts with other script logic.
+
+The `SetTimer` command in HTH provides a flexible and powerful way to incorporate timed events and automation into scripts, enabling developers to create more dynamic and responsive applications. By leveraging timers, developers can enhance the functionality and usability of their scripts by scheduling tasks and executing actions at specified intervals.
 
 ---
 
@@ -722,11 +1121,118 @@ The `Sleep` function in HeavenToHell (HTH) provides a simple yet effective way t
 
 [Go back](#features)
 
+Labels in HeavenToHell (HTH) serve as markers within the script to designate specific sections of code for execution. They are commonly used in conjunction with `Gosub` commands to redirect the script flow to the labeled sections.
+
+#### Syntax:
+
+Labels are defined using a colon `:` followed by the label name.
+
+Example:
+
+```ahk
+LabelName:
+    ; Code to be executed within the label
+```
+
+#### Usage:
+
+Labels are typically used in conjunction with `Gosub` commands to direct the script flow to the labeled section. The `Gosub` command is used to call a subroutine defined by a label.
+
+#### Example:
+
+```ahk
+; We will go to the label
+gosub, Label1
+
+; Use lowercase return to stop code execution after the label
+return
+
+Label1:
+    MsgBox, We are in Label1
+    ; Use uppercase Return to end the label
+    Return
+```
+
+In this example, the script invokes the `Gosub` command to execute the code within the `Label1` section. Once the execution of the labeled code is complete, the script continues execution after the `Gosub` command.
+
+#### Note:
+
+- Labels provide a means to organize and structure the script flow, making it easier to manage and maintain complex scripts.
+- Always use an uppercase `Return` at the end of a label to signify its termination, ensuring proper script execution.
+- Labels are often utilized in combination with conditional statements and loops to control the flow of the script based on certain conditions or criteria.
+
+For more information on `Return`, refer to [Return/return](#return).
+
 ---
 
 ### Gosub <a id="gosub"></a>
 
 [Go back](#features)
+
+In HeavenToHell (HTH), the `Gosub` command is used to call a subroutine defined by a label within the script. Subroutines are sections of code marked by labels, and the `Gosub` command redirects the script flow to execute the code within the specified subroutine.
+
+#### Syntax:
+
+```ahk
+Gosub, Target
+```
+
+#### Parameters:
+
+- `Target`: The name of the label marking the subroutine to be executed.
+
+#### Usage:
+
+The `Gosub` command is commonly used to organize code into manageable sections and facilitate code reuse by invoking specific subroutines as needed.
+
+#### Example:
+
+Consider the following example demonstrating the usage of the `Gosub` command:
+
+```ahk
+; Define a label marking the start of the subroutine
+Subroutine1:
+    MsgBox, This is Subroutine 1
+    Return
+
+; Define another label marking the start of another subroutine
+Subroutine2:
+    MsgBox, This is Subroutine 2
+    Return
+
+; Main script execution begins here
+MsgBox, Main script execution started
+
+; Call Subroutine1 using Gosub
+Gosub, Subroutine1
+
+; Continue main script execution after Subroutine1
+MsgBox, Back to main script execution
+
+; Call Subroutine2 using Gosub
+Gosub, Subroutine2
+
+; Continue main script execution after Subroutine2
+MsgBox, Script execution completed
+```
+
+#### Output:
+
+```
+Main script execution started
+This is Subroutine 1
+Back to main script execution
+This is Subroutine 2
+Script execution completed
+```
+
+In this example, the `Gosub` command is used to call two different subroutines (`Subroutine1` and `Subroutine2`) defined by labels within the script. The script flow is redirected to execute the code within each subroutine, and after the execution of each subroutine, the script continues execution from where the `Gosub` command was called.
+
+#### Note:
+
+- Subroutines defined by labels provide a way to organize code into logical sections and improve code readability and maintainability.
+- Always use an uppercase `Return` at the end of a subroutine to signify its termination, ensuring proper script execution.
+- The `Gosub` command is typically used within conditional statements, loops, or other control structures to direct the script flow based on certain conditions or criteria.
 
 ---
 
@@ -734,11 +1240,75 @@ The `Sleep` function in HeavenToHell (HTH) provides a simple yet effective way t
 
 [Go back](#features)
 
+The `InputBox` feature in HeavenToHell (HTH) allows developers to prompt users for input through a dialog box. This functionality is particularly useful for gathering user information or accepting user-defined values during script execution.
+
+#### Syntax:
+
+```ahk
+InputBox, OutputVar, Title
+```
+
+#### Parameters:
+
+- `OutputVar`: The variable where the input provided by the user will be stored.
+- `Title`: The title or caption of the input dialog box displayed to the user.
+
+#### Example:
+
+```ahk
+; Prompt the user to enter their name
+InputBox, UserName, Please enter your name
+
+; Display a message box with the entered name
+MsgBox, Hello, %UserName%! Welcome to HeavenToHell.
+```
+
+#### Note:
+
+- The `InputBox` command accepts only two parameters: `OutputVar` and `Title`.
+- Avoid using additional parameters or commas in the command.
+- Variables cannot be used as titles for the input dialog box.
+
+The `InputBox` feature in HeavenToHell (HTH) provides a simple yet effective way to gather user input during script execution, enabling developers to create interactive applications and scripts with ease.
+
 ---
 
 ### OnKeyPress <a id="onkeypress"></a>
 
 [Go back](#features)
+
+In HeavenToHell (HTH), the `OnKeyPress` event is triggered when the user presses a normal key on the keyboard. This event provides a way to capture and respond to keypress events within the script.
+
+#### Syntax:
+
+```ahk
+OnKeyPress:
+    ; Code to be executed when a key is pressed
+    MsgBox, You Pressed %A_ThisHotkey%
+Return
+```
+
+#### Usage:
+
+The `OnKeyPress` event allows developers to define specific actions or behaviors to be performed in response to user keystrokes. This can include displaying messages, performing calculations, updating variables, or triggering other events within the script.
+
+#### Example:
+
+```ahk
+OnKeyPress:
+    ; Display a message indicating the key pressed by the user
+    MsgBox, You Pressed %A_ThisHotkey%
+Return
+```
+
+In this example, the `OnKeyPress` event is used to capture keypress events. When a key is pressed, a message box is displayed indicating the key that was pressed using the `%A_ThisHotkey%` variable, which contains the name of the hotkey or key combination pressed by the user.
+
+#### Note:
+
+- Ensure to include a `Return` statement with a capital letter "R" at the end of the `OnKeyPress` event block to signify its completion and prevent further execution of the script.
+- The `OnKeyPress` event can be used to create custom keyboard shortcuts, implement keyboard-based navigation, or handle user input in various interactive applications developed using HeavenToHell.
+
+The `OnKeyPress` event in HTH provides a versatile mechanism for responding to user keystrokes and enhancing the interactivity of scripts and applications. By capturing and processing keypress events, developers can create dynamic and responsive user experiences within their scripts.
 
 ---
 
@@ -746,11 +1316,123 @@ The `Sleep` function in HeavenToHell (HTH) provides a simple yet effective way t
 
 [Go back](#features)
 
+The `Return` command in HeavenToHell (HTH) serves distinct purposes based on its context within the script. It's crucial to differentiate between the uppercase `Return` and lowercase `return` to ensure proper script functionality and execution control.
+
+#### 1. Uppercase `Return` at the End of Labels, Subroutines, and Hotkeys:
+
+When concluding a label, subroutine, or hotkey block, use the uppercase `Return` at the end to signify its termination. This ensures clarity in script structure and prevents unexpected behavior.
+
+Example:
+
+```ahk
+Label1:
+    ; Code for Label1
+    if (var1 = 5)
+    {
+        ; Use lowercase return to stop label execution any further
+        return
+    }
+    ; Use uppercase Return to end the label
+    Return
+```
+
+#### 2. Lowercase `return` to Stop Code Execution:
+
+Place lowercase `return` anywhere in the script to halt code execution after its occurrence. This is particularly useful when you want to prevent the script from proceeding further under certain conditions.
+
+Example:
+
+```ahk
+If (condition)
+{
+    ; Code to be executed if the condition is met
+
+    ; Use lowercase return to stop code execution
+    return
+}
+
+; Code that should only run if the condition is not met
+```
+
+#### 3. Lowercase `return` in Functions:
+
+Inside functions, utilize lowercase `return` to exit the function and return a value if necessary. This maintains consistency in coding style within the context of functions.
+
+Example:
+
+```ahk
+sum(a, b)
+{
+    ; Function body
+    return a + b
+}
+```
+
+By understanding and applying these conventions, developers can manage script flow effectively, ensure proper termination of blocks, and enhance code readability in HeavenToHell scripts.
+
 ---
 
 ### IfMsgBox <a id="ifmsgbox"></a>
 
 [Go back](#features)
+
+The `IfMsgBox` command in HeavenToHell (HTH) enables conditional execution of code based on the user's response to a previous `MsgBox` command. This feature is particularly useful for implementing interactive dialogs and handling user input within scripts.
+
+#### Syntax:
+
+```ahk
+IfMsgBox, ButtonName
+{
+    ; Code to be executed if the specified button was pressed
+} ; end of ifmsgbox
+```
+
+#### Parameters:
+
+- `ButtonName`: One of the following strings representing which button the user pressed in the most recent `MsgBox` command:
+  - `No`
+  - `OK`
+  - `Cancel`
+
+#### WARNING:
+
+**IMPORTANT:** Ensure to include `} ; end of ifmsgbox` at the end of each `IfMsgBox` block to properly terminate the conditional statement. Failure to do so will lead to an error in the script execution.
+
+#### Example:
+
+```ahk
+; Prompt the user with a message box
+MsgBox, 36, Title Here, OK or No
+
+; Check the user's response
+IfMsgBox, OK
+{
+    MsgBox, You clicked on OK
+} ; end of ifmsgbox
+```
+
+#### Example with `else`:
+
+```ahk
+; Prompt the user with a message box
+MsgBox, 36, Title Here, OK or No
+
+; Check the user's response
+IfMsgBox, OK
+{
+    MsgBox, You clicked on OK
+}
+else
+{
+    MsgBox, You clicked on No
+} ; end of ifmsgbox
+```
+
+#### Usage:
+
+The `IfMsgBox` command is used to determine which button the user pressed in response to a previous `MsgBox` command. Based on the user's selection, the script can execute different actions or perform specific tasks.
+
+By incorporating `IfMsgBox` into scripts, developers can create interactive dialogues, prompt users for input, and respond dynamically based on user choices, enhancing the interactivity and usability of their applications in HeavenToHell (HTH) environments.
 
 ---
 
@@ -758,11 +1440,114 @@ The `Sleep` function in HeavenToHell (HTH) provides a simple yet effective way t
 
 [Go back](#features)
 
+The `OutputDebug` feature in HeavenToHell (HTH) provides a method for sending debug messages to the console output during script execution. This functionality is invaluable for debugging and troubleshooting scripts, allowing developers to inspect variable values, track program flow, and identify potential issues.
+
+#### Syntax:
+
+```ahk
+OutputDebug, Message
+```
+
+#### Parameters:
+
+- `Message`: The message to be output to the console for debugging purposes.
+
+#### Example:
+
+```ahk
+; Output a debug message to the console
+OutputDebug, Debugging information: Variable1=%Variable1%, Variable2=%Variable2%
+```
+
+#### Usage:
+
+The `OutputDebug` command is typically used for displaying informative messages, variable values, or status updates during script execution. These messages are compiled to `console.log` statements when the script is compiled to JavaScript, making it easier to debug and diagnose issues in scripts running in various environments.
+
+#### Note:
+
+The output generated by `OutputDebug` can be viewed in the browser console. To access the browser console, typically press F12 in any browser and navigate to the console tab. This allows developers to monitor the debug messages and analyze script behavior during execution.
+
+By leveraging the `OutputDebug` feature, developers can streamline the debugging process, identify and resolve errors more efficiently, and ensure the smooth operation of their scripts in HeavenToHell (HTH) environments.
+
 ---
 
 ### Loop <a id="loop"></a>
 
 [Go back](#features)
+
+The `Loop` feature in HeavenToHell (HTH) provides a mechanism for repeating a block of code a specified number of times or until a certain condition is met. This functionality is essential for automating repetitive tasks, iterating over data structures, and implementing various control flow structures within scripts.
+
+#### Syntax:
+
+```ahk
+Loop, Count
+{
+    ; Code block to be repeated
+}
+```
+
+or
+
+```ahk
+Loop
+{
+    ; Code block to be repeated until a condition is met
+    if (condition)
+    {
+        ; Code to execute if the condition is true
+        break
+    }
+}
+```
+
+#### Parameters:
+
+- `Count`: Optional. Specifies the number of iterations to execute the loop. If omitted, the loop will continue indefinitely until a `break` statement or other termination condition is encountered.
+
+#### Example 1: Looping a Specific Number of Times
+
+```ahk
+; Loop 5 times and display a message
+Loop, 5
+{
+    MsgBox, Iteration %A_Index%
+}
+```
+
+#### Output 1:
+
+```
+Iteration 1
+Iteration 2
+Iteration 3
+Iteration 4
+Iteration 5
+```
+
+#### Example 2: Looping Until a Condition is Met
+
+```ahk
+; Loop until a condition is met
+Loop
+{
+    ; Code block to be repeated
+    if (A_Index >= 5)
+    {
+        ; Exit the loop if the condition is true
+        break
+    }
+}
+```
+
+In this example, the loop continues indefinitely until the condition `A_Index >= 5` is met. Once the condition is true, the loop terminates using the `break` statement.
+
+#### Note:
+
+- The loop variable `A_Index` contains the current iteration index within the loop.
+- The `break` statement can be used to exit the loop prematurely based on a specific condition.
+- The `Loop` feature provides flexibility in controlling the flow of execution within scripts, allowing for both fixed iteration counts and dynamic termination conditions.
+
+The `Loop` feature in HeavenToHell (HTH) offers a versatile mechanism for iterating over code blocks, enabling developers to automate repetitive tasks and implement various control flow structures within their scripts.
 
 ---
 
@@ -770,29 +1555,371 @@ The `Sleep` function in HeavenToHell (HTH) provides a simple yet effective way t
 
 [Go back](#features)
 
+The `Loop, Parse` feature in HeavenToHell (HTH) facilitates the parsing of strings into separate elements based on a specified delimiter. This functionality is particularly useful for breaking down and processing data stored in delimited formats.
+
+#### Syntax:
+
+```ahk
+Loop, Parse, InputString, Delimiters, OmitChars
+{
+    ; Action to be performed for each parsed element
+    ; A_Index contains the current loop iteration index
+    ; A_LoopField contains the current parsed element
+}
+```
+
+#### Parameters:
+
+- `InputString`: The string to be parsed.
+- `Delimiters`: A string containing one or more characters used as delimiters for parsing. By default, if no delimiters are specified, each character in the input string will be treated as a separate element.
+- `OmitChars`: Optional. A string containing one or more characters to be omitted during parsing.
+
+#### Example 1: Parse Each Character
+
+```ahk
+; Example input string
+inputString := "Hello World"
+
+; Parse the input string character by character
+Loop, Parse, inputString
+{
+    ; A_LoopField contains the current parsed character
+    MsgBox, Character %A_Index%: %A_LoopField%
+}
+```
+
+#### Output 1:
+
+```
+Character 1: H
+Character 2: e
+Character 3: l
+Character 4: l
+Character 5: o
+Character 6:
+Character 7: W
+Character 8: o
+Character 9: r
+Character 10: l
+Character 11: d
+```
+
+#### Example 2: Parse Using `n` and `r` Delimiters
+
+```ahk
+; Example input string with newline and carriage return
+inputString := "Line 1`nLine 2`rLine 3"
+
+; Parse the input string using `n` and `r` as delimiters
+Loop, Parse, inputString, `n, `r
+{
+    ; A_LoopField contains the current parsed line
+    MsgBox, Line %A_Index%: %A_LoopField%
+}
+```
+
+#### Output 2:
+
+```
+Line 1: Line 1
+Line 2: Line 2
+Line 3: Line 3
+```
+
+#### Example 3: Parse Using Commas as Delimiters
+
+```ahk
+; Example input string with commas
+var1 := "Apple,Orange,Banana"
+
+; Parse the input string using commas as delimiters
+Loop, Parse, var1, `,
+{
+    ; A_LoopField contains the current parsed element
+    MsgBox, Fruit %A_Index%: %A_LoopField%
+}
+```
+
+#### Output 3:
+
+```
+Fruit 1: Apple
+Fruit 2: Orange
+Fruit 3: Banana
+```
+
+#### Example 4: Parse Using Pipe as Delimiters
+
+```ahk
+; Example input string with pipes
+var2 := "Alpha|Beta|Gamma"
+
+; Parse the input string using pipes as delimiters
+Loop, Parse, var2, |
+{
+    ; A_LoopField contains the current parsed element
+    MsgBox, Value %A_Index%: %A_LoopField%
+}
+
+; or
+
+; Example input string with pipes
+var2 := "Alpha|Beta|Gamma"
+
+; Parse the input string using pipes as delimiters
+Loop, Parse, var2, "|"
+{
+    ; A_LoopField contains the current parsed element
+    MsgBox, Value %A_Index%: %A_LoopField%
+}
+```
+
+#### Output 4:
+
+```
+Value 1: Alpha
+Value 2: Beta
+Value 3: Gamma
+```
+
+In these examples, the `Loop, Parse` feature is utilized to parse the input strings into separate elements based on the specified delimiters. Each example demonstrates parsing the input string using different delimiters (`n`, `r`, `,`, `|`) to extract individual elements. The loop variable `A_LoopField`contains the current parsed element during each iteration, and`A_Index` contains the current loop iteration index.
+
+The `Loop, Parse` feature in HTH provides a convenient and efficient way to process delimited strings, making it easier to work with structured data in various applications. Whether dealing with configuration settings, text processing, or other delimited data formats, the `Loop, Parse` functionality offers a powerful tool for data manipulation and extraction within HeavenToHell scripts.
+
 ---
+
+Understood! Here's the revised documentation for variables with the updated scope explanation:
 
 ### Variables <a id="variables"></a>
 
 [Go back](#features)
 
+Variables in HeavenToHell (HTH) are used to store and manipulate data values within scripts. They provide a means of storing information that can be referenced and modified throughout the script.
+
+#### Declaration and Assignment:
+
+Variables in HTH are dynamically typed, meaning they can hold values of any data type without requiring explicit declaration. To assign a value to a variable, use the variable name followed by the assignment operator `:=`. For example:
+
+```ahk
+myNumber := 42
+myString := "Hello, World!"
+isFlagSet := true
+```
+
+#### Data Types:
+
+HTH supports various data types for variables, including:
+
+- **Numeric**: Integers, decimals, and floating-point numbers.
+- **String**: Textual data enclosed in double quotes.
+- **Boolean**: True or false values.
+
+#### Naming Convention:
+
+Variable names in HTH are case-insensitive and can consist of letters, digits, and underscores. However, they must begin with a letter. Descriptive names are recommended to reflect the purpose or content of the variable for better code readability.
+Don't declare variables with names like let, var, or const since this will result in an error upon execution.
+
+#### Scope:
+
+Variables in HTH have the same scope rules as JavaScript, as HTH transpiles to JavaScript. This means:
+
+- **Global Scope**: Variables declared outside of any function or block have global scope and can be accessed from anywhere within the script.
+- **Local Scope**: Variables declared inside a function or block using the `Local` keyword have local scope and are accessible only within that function or block.
+
+#### Example:
+
+```ahk
+; Declare and assign variables
+myNumber := 42
+myString := "Hello, World!"
+isFlagSet := true
+
+; Display variable values
+MsgBox, % "Number: " . myNumber . "`nString: " . myString . "`nFlag: " . isFlagSet
+```
+
+### Using Variables in Features
+
+Variables in HeavenToHell (HTH) can be utilized in various features to enhance flexibility and customization. Here's how to use variables in different contexts, ensuring to follow the specified methods:
+
+#### 1. Normal Usage:
+
+In normal usage, variables are concatenated with other strings or values using the `.` operator. Here is all the places you MUST use it.
+
+1. In MsgBox:
+   Specifically, in a MsgBox, we need to start with `%` just like down below. Make sure there is a space both before and after `%`:
+
+```ahk
+MsgBox, % "var1 is " . var1
+```
+
+2. In declaring varibales ALL varibales are declares in this way but no need like in Msgbox to have `%` before it here is an exmpale:
+
+```ahk
+; numbers
+var1 := 56
+
+; string
+var2 := "this is a string"
+
+; pass varibales
+var2 := var4
+
+; concatenated
+var3 := var%numOfVar%
+
+; concatenated this way
+var%numOfVar% := 6
+
+; more
+var4 := "the var1 is = to " . var1
+
+; or
+var4 := "the var1 is = to " . var%numOfVar%
+
+; you can also do more
+var8 := var7 . " was the number of tries and we have " . %var1% . "made it and so far we have " . var%numOfVar%
+```
+
+#### 2. Single Usage:
+
+In single usage, variables are enclosed within `%` symbols and directly inserted into the script. For example:
+
+```ahk
+Gui, Add, Text, x%x% y%y% w150 h%h%, %Text%
+```
+
+#### 3. Once with Concatenation:
+
+In this usage, variables are concatenated with other strings or values using the `.` operator, but the variable value is used only once. For example:
+
+```ahk
+Random, ran, hello%var1%, hello%var3%
+```
+
+#### 4. Text with `%vars%`:
+
+In this usage, variables are embedded within `%` symbols directly within a string to include their values. For example:
+
+```ahk
+MsgBox, text and var1 is %var1%
+```
+
+Please note: In these examples, ensure to follow the specified methods and refrain from using other types of variable usage for consistency and compatibility within HeavenToHell (HTH).
+
+#### Note:
+
+- Variable names are case-insensitive.
+- Avoid using reserved keywords as variable names to prevent conflicts.
+- Ensure descriptive variable names for clarity and maintainability.
+- Initialize variables before using them to avoid unexpected behavior.
+
+Variables play a crucial role in storing and manipulating data within HeavenToHell (HTH) scripts, providing developers with the flexibility to create dynamic and interactive applications.
+
 ---
 
-### Increment <a id="increment"></a>
+### Run <a id="run"></a>
+
+[Go back](#features)
+
+The `Run` feature in HeavenToHell (HTH) enables developers to open specific websites directly from their scripts. This functionality is particularly useful for automating tasks that involve interacting with web pages.
+
+#### Syntax:
+
+```ahk
+Run, Target
+```
+
+#### Parameters:
+
+- `Target`: Specifies the target URL or path of the website or application to be launched. This can be a direct URL, a variable containing the URL, or a concatenation of strings to form the URL.
+
+#### Examples:
+
+```ahk
+; Launch the example.com website directly
+Run, https://www.example.com
+
+; Define the URL as a variable and launch it
+var1 := "https://www.example.com"
+Run, %var1%
+
+; Concatenate strings to form the URL and launch it
+var2 := "https://www."
+var3 := "example.com"
+Run, % var2 . var3
+
+; Concatenate strings directly within the Run command
+Run, % var2 . "example.com"
+```
+
+#### Usage:
+
+The `Run` function provides a convenient way to open websites or launch external applications directly from HTH scripts. Developers can specify the target URL or path as a direct string, a variable containing the URL, or concatenate strings to form the URL dynamically.
+
+```ahk
+; Example of launching a website using the Run function
+varWebsite := "https://www.example.com"
+Run, % varWebsite
+```
+
+In this example, the `Run` function is used to launch the example.com website by passing the URL stored in the `varWebsite` variable.
+
+#### Note:
+
+- Ensure that the target URL or path provided to the `Run` function is valid and accessible.
+
+The `Run` feature in HeavenToHell (HTH) offers a straightforward way to launch websites directly from scripts, providing developers with greater flexibility and automation capabilities. The `Run` function simplifies the process of launching websites from within HTH scripts.
+
+---
+
+### #Include <a id="include"></a>
 
 [Go back](#features)
 
 ---
 
-### Simple dynamically function calls <a id="simple-dynamically-function-calls"></a>
+The `#Include` directive in HeavenToHell (HTH) allows developers to include external scripts into their main script, enabling modularization and code reuse. This feature is particularly useful for organizing large scripts into smaller, more manageable components, as well as for incorporating libraries or utility functions.
 
-[Go back](#features)
+#### Syntax:
 
----
+```ahk
+#Include FileName
+```
 
-### Assignment operators <a id="assignment-operators"></a>
+#### Parameters:
 
-[Go back](#features)
+- `FileName`: The name of the `.hth` script to be included. This can be a relative or absolute path to the file.
+
+#### Example:
+
+```ahk
+#Include myLibrary.hth
+```
+
+#### Usage:
+
+The `#Include` directive is commonly used to include external script files containing functions, libraries, or utility code that can be reused across multiple scripts. By separating reusable code into separate files and including them using `#Include`, developers can improve code organization, readability, and maintainability.
+
+```ahk
+; Example of using #Include directive to include a library file
+#Include MathLibrary.hth
+
+; Call a function from the included library
+result := Add(5, 10)
+
+; Display the result
+MsgBox, The sum is: %result%
+```
+
+In this example, the `#Include` directive is used to include a script file named `MathLibrary.hth`, which contains a function named `Add` for adding two numbers. The `Add` function is then called from the included library file, and the result is displayed using a message box.
+
+#### Note:
+
+- When using the `#Include` directive, ensure that the specified file path is correct and that the included file is accessible from the main script.
+- It's recommended to include only necessary files and avoid excessive inclusion of unnecessary scripts to maintain script performance and readability.
+
+The `#Include` directive in HeavenToHell (HTH) provides a convenient and efficient way to modularize scripts and incorporate reusable code from external libraries. By leveraging the `#Include` directive, developers can enhance code organization, promote code reuse, and streamline the development process, ultimately leading to more maintainable and scalable scripts.
 
 ---
 
@@ -800,11 +1927,118 @@ The `Sleep` function in HeavenToHell (HTH) provides a simple yet effective way t
 
 [Go back](#features)
 
+In HeavenToHell (HTH), comments play a vital role in enhancing code readability and providing additional context for developers. While HTH does not support comment blocks, single-line comments are widely used to annotate code and explain its functionality.
+
+#### Syntax:
+
+```ahk
+; This is a single-line comment in HeavenToHell (HTH)
+```
+
+#### Usage:
+
+Single-line comments are prefixed with a semicolon `;` and are typically placed on separate lines to ensure clarity and readability. They are used to add explanatory notes, document code behavior, or temporarily disable code segments without removing them entirely.
+
+```ahk
+; Define variables
+var1 := 5
+; Initialize var1 with value 5
+
+var2 := 10
+; Initialize var2 with value 10
+
+; Calculate the sum of var1 and var2
+result := var1 + var2
+; Store the result in the result variable
+
+; Display the result
+MsgBox, The sum is: %result%
+; Show the sum in a message box
+```
+
+In this example, single-line comments are placed on separate lines to document variable initialization, calculation, and message display steps, providing clarity and context to the code.
+
+#### Warning:
+
+Do not add comments on the same line as code statements in HeavenToHell (HTH). Placing comments inline with code is not supported.
+
+**DO NOT** place comments on the same line as code statements in HeavenToHell (HTH).
+
+#### Note:
+
+- Single-line comments should be concise and focused, providing relevant information to aid in code understanding.
+
+Comments in HeavenToHell (HTH) are invaluable tools for improving code comprehension and facilitating collaboration among developers. By leveraging single-line comments effectively, developers can create well-documented and maintainable scripts in HeavenToHell.
+
+---
+
+Certainly! Here's the updated documentation with the additional information about using Flask and ensuring the Python script endpoint always returns, even if it's not required:
+
 ---
 
 ### getDataFromEndpoint <a id="getdatafromendpoint"></a>
 
 [Go back](#features)
+
+The `getDataFromEndpoint` function in HeavenToHell (HTH) facilitates the retrieval and transmission of data to or from a backend server. This function is designed to interact with a backend server assumed to be running locally or accessible via a network.
+
+#### Syntax:
+
+```ahk
+getDataFromEndpoint(data, endpoint)
+```
+
+#### Parameters:
+
+- `data`: The data to be sent to the endpoint. This parameter is required, even when only retrieving data. If no data needs to be sent, an empty string or null value can be provided.
+- `endpoint`: The endpoint of the backend server to which the request will be made, formatted as a single slash ("/endpoint").
+
+#### Examples:
+
+```ahk
+; Send data to the endpoint and retrieve response data
+response := getDataFromEndpoint(myData, "/endpoint")
+
+; Process the response data
+MsgBox, %response%
+```
+
+```ahk
+data := "some data here"
+
+if (isConnectedToBackend())
+{
+MsgBox, We are connected to a backend
+
+MsgBox, % getDataFromEndpoint(data, "/endpoint1")
+MsgBox, % getDataFromEndpoint("hejsdfbx kdjzcx kzjdx c", "/endpoint1")
+
+sdf := "/endpoint3"
+
+getDataFromEndpoint(data, "/endpoint2")
+getDataFromEndpoint(data, sdf)
+
+var1 := "Hello"
+if (var1 = getDataFromEndpoint(data, "/endpoint4"))
+{
+MsgBox, yey
+}
+}
+else
+{
+MsgBox, We are not connected to a backend
+}
+```
+
+#### Note:
+
+- The `getDataFromEndpoint` function interacts with a backend server, which can be running locally or accessible via a network.
+- It supports both sending and receiving data to and from the specified endpoint.
+- The `data` parameter is required, even when only retrieving data. If no data is sent back form the backend, it will result in an error, so make sure the backend always returns something, even if it's some text otherwise, we will get an error.
+- The `endpoint` parameter specifies the endpoint of the backend server to which the request will be made, formatted as a single slash ("/endpoint").
+- Upon execution, the function returns the response data received from the endpoint.
+
+The `getDataFromEndpoint` function provides a convenient way to interact with backend servers, facilitating various data transmission and retrieval operations for local or networked backend services.
 
 ---
 
@@ -814,11 +2048,81 @@ The `Sleep` function in HeavenToHell (HTH) provides a simple yet effective way t
 
 [Go back](#features)
 
+The `isMobileDevice` function in HeavenToHell (HTH) enables developers to detect whether the script is running on a mobile device. This functionality is useful for implementing device-specific behavior or optimizations in scripts intended for both desktop and mobile environments.
+
+#### Syntax:
+
+```ahk
+isMobileDevice()
+```
+
+#### Return Value:
+
+- Returns `true` if the script is running on a mobile device.
+- Returns `false` if the script is not running on a mobile device.
+
+#### Example:
+
+```ahk
+if (isMobileDevice())
+{
+    ; Perform mobile-specific actions
+    MsgBox, Running on a mobile device!
+}
+else
+{
+    ; Perform desktop-specific actions
+    MsgBox, Running on a desktop device!
+}
+```
+
+In this example, the `isMobileDevice` function is used to determine whether the script is running on a mobile device. Depending on the result, the script executes different actions tailored to the device type.
+
+#### Note:
+
+- The `isMobileDevice` function provides a simple and reliable way to detect the device type within HeavenToHell (HTH) scripts.
+- Developers can use the return value of the `isMobileDevice` function to implement device-specific logic or optimizations in their scripts.
+
 ---
 
 ### isConnectedToBackend <a id="isconnectedtobackend"></a>
 
 [Go back](#features)
+
+The `isConnectedToBackend` function in HeavenToHell (HTH) allows developers to check whether the script is currently connected to a backend server or service. This functionality is commonly used in networked applications to determine the script's connectivity status and adjust behavior accordingly.
+
+#### Syntax:
+
+```ahk
+isConnectedToBackend()
+```
+
+#### Return Value:
+
+- Returns `true` if the script is connected to the backend.
+- Returns `false` if the script is not connected to the backend.
+
+#### Example:
+
+```ahk
+if (isConnectedToBackend())
+{
+    ; Perform actions when connected to the backend
+    MsgBox, Connected to the backend server!
+}
+else
+{
+    ; Perform actions when not connected to the backend
+    MsgBox, Not connected to the backend server!
+}
+```
+
+In this example, the `isConnectedToBackend` function is used to determine the script's connection status to the backend server. Depending on the result, different actions are executed to handle the connectivity state.
+
+#### Note:
+
+- The `isConnectedToBackend` function provides a convenient way to check the script's connectivity status within HeavenToHell (HTH) scripts.
+- Developers can use the return value of the `isConnectedToBackend` function to implement appropriate actions based on the script's connection status.
 
 ---
 
@@ -2003,21 +3307,42 @@ OutPutdebug, |%A_Tab%Hello man|
 
 Learn about the backend architecture and Python integration in the HTH programming language here.
 
+### Backend Connectivity
+
+HTH streamlines backend connectivity with its built-in function called `getDataFromEndpoint()`, enabling developers to easily send and retrieve data from a specified endpoint with just one function call.
+
+### Python Integration
+
+When you run your HTH code, you'll get `index.html` as output. Additionally, if you use the function `getDataFromEndpoint()` anywhere in the code, HTH will generate a `server.py` file for better backend connectivity.
+
+### Requirements
+
+To run the generated Python backend, you'll need to:
+
+1. Install Python on your system.
+2. Install the Flask library for Python.
+
+### Getting Started
+
+Here's a step-by-step guide to getting started with backend development in HTH using Python:
+
+1. Write your HTH code, making use of the `getDataFromEndpoint()` function to interact with the backend.
+2. Run your HTH code.
+3. Once executed, you'll find an `index.html` file as output.
+4. Locate the `server.py` file generated by HTH if you've used the `getDataFromEndpoint()` function.
+5. Ensure Python and Flask are installed on your system.
+6. Run the `server.py` file using Python.
+7. Your Python backend is now running and ready to handle requests from your HTH frontend.
+
+By integrating Python with HTH, developers can leverage the power of Python's extensive libraries and frameworks for building robust backend systems while enjoying the simplicity and ease of use of the HTH programming language.
+
 ---
 
-## Editor for Code <a id="editor-for-code"></a>
+## Editors for Code <a id="editors-for-code"></a>
 
 [Go back](#hth)
 
 Discover the recommended code editor for working with the HTH programming language.
-
----
-
-## Recommendations <a id="recommendations"></a>
-
-[Go back](#hth)
-
-Get helpful recommendations for optimizing your experience with the HTH programming language.
 
 ---
 

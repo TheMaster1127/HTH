@@ -137,6 +137,67 @@ textAfterSemicolonNum := 0
 
 out123456ggFixTrim := ""
 
+libNum := 0
+
+Loop
+{
+
+
+if (InStr(StrLower(AHKcode), StrLower("#include")))
+{
+
+}
+else
+{
+break
+}
+
+libNum := 0
+endCodeLibFix := ""
+Loop, Parse, AHKcode, `n, `r
+{
+
+if (InStr(StrLower(A_LoopField), StrLower("#include")))
+{
+
+str := A_LoopField
+
+if RegExMatch(str, "i)(?:\s)(.*)", match)  ; Match the first space and capture the rest
+{
+libNum++
+extractedLib%libNum% := match1
+;MsgBox, The text after the first space is: %extractedLib1%
+}
+else
+{
+;MsgBox, No space found in the string.
+}
+
+}
+else
+{
+endCodeLibFix .= A_LoopField . "`n"
+}
+
+
+}
+
+AHKcode := endCodeLibFix
+
+Loop, % libNum
+{
+filepath := dirpath . extractedLib%A_Index%
+FileRead, Lib, %filepath%
+;MsgBox, % Lib
+AHKcode := Lib . "`n`n" . AHKcode
+
+}
+
+
+
+}
+
+
 Loop, Parse, AHKcode, `n, `r
 {
 
@@ -3885,6 +3946,31 @@ jsCode .= out0 . "`n"
 
 lineDone := 1
 }
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 5) = StrLower("Run, "))
+{
+
+
+str := A_LoopField
+
+
+s:=StrSplit(str,", ").2
+out1 := s
+
+if (InStr(out1, "%"))
+{
+out1 := """ + " .  varTraspiler(out1, 0) . " + """
+}
+
+
+out2 := "window.open(""" . out1 . """);"
+
+
+
+jsCode .= out2 . "`n"
+
+lineDone := 1
+
+}
 else if (SubStr(Trim(StrLower(A_LoopField)), 1, 20) = StrLower("getDataFromEndpoint("))
 {
 
@@ -5286,6 +5372,11 @@ str := StrReplace(str, "+ \""""", "+ """"")
 str := StrReplace(str, "(/^Gui\d*/=  """")", "(/^Gui\d*/, """")")
 str := StrReplace(str, ", , )", ")")
 
+str := StrReplace(str, " + \"")", " + """")")
+str := StrReplace(str, "window.open(\""", "window.open(""""")
+
+str := StrReplace(str, "("""" + variables. ", "("""" + ")
+
 if (Trim(str) == "Return")
 {
 str := "}"
@@ -6383,127 +6474,152 @@ function isConnectedToBackend() {
 allFuncThatWeNeedToUse := ""
 
 
-if (Instr(jsCode, "showCustomMessageBox"))
+if (Instr(jsCode, "showCustomMessageBox(")) or (Instr(jsCode, "showCustomMessageBox ("))
 {
 allFuncThatWeNeedToUse .= addFuncIfWeUseIt_showCustomMessageBox . "`n"
 }
-if (Instr(jsCode, "BuildInVars"))
+if (Instr(jsCode, "BuildInVars(")) or (Instr(jsCode, "BuildInVars ("))
 {
 allFuncThatWeNeedToUse .= addFuncIfWeUseIt_BuildInVars . "`n"
 }
-if (Instr(jsCode, "MakeHotKey"))
+if (Instr(jsCode, "MakeHotKey(")) or (Instr(jsCode, "MakeHotKey ("))
 {
 allFuncThatWeNeedToUse .= addFuncIfWeUseIt_MakeHotKey . "`n"
 }
-if (Instr(jsCode, "Abs")) {
+if (Instr(jsCode, "Abs(")) or (Instr(jsCode, "Abs ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Abs . "`n"
 }
-if (Instr(jsCode, "ACos")) {
+if (Instr(jsCode, "ACos(")) or (Instr(jsCode, "ACos ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_ACos . "`n"
 }
-if (Instr(jsCode, "ASin")) {
+if (Instr(jsCode, "ASin(")) or (Instr(jsCode, "ASin ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_ASin . "`n"
 }
-if (Instr(jsCode, "ATan")) {
+if (Instr(jsCode, "ATan(")) or (Instr(jsCode, "ATan ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_ATan . "`n"
 }
-if (Instr(jsCode, "Ceil")) {
+if (Instr(jsCode, "Ceil(")) or (Instr(jsCode, "Ceil ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Ceil . "`n"
 }
-if (Instr(jsCode, "Cos")) {
+if (Instr(jsCode, "Cos(")) or (Instr(jsCode, "Cos ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Cos . "`n"
 }
-if (Instr(jsCode, "Exp")) {
+if (Instr(jsCode, "Exp(")) or (Instr(jsCode, "Exp ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Exp . "`n"
 }
-if (Instr(jsCode, "Floor")) {
+if (Instr(jsCode, "Floor(")) or (Instr(jsCode, "Floor ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Floor . "`n"
 }
-if (Instr(jsCode, "Ln")) {
+if (Instr(jsCode, "Ln(")) or (Instr(jsCode, "Ln ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Ln . "`n"
 }
-if (Instr(jsCode, "Log")) {
+if (Instr(jsCode, "Log(")) or (Instr(jsCode, "Log ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Log . "`n"
 }
-if (Instr(jsCode, "Round")) {
+if (Instr(jsCode, "Round(")) or (Instr(jsCode, "Round ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Round . "`n"
 }
-if (Instr(jsCode, "Sin")) {
+if (Instr(jsCode, "Sin(")) or (Instr(jsCode, "Sin ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Sin . "`n"
 }
-if (Instr(jsCode, "Sqrt")) {
+if (Instr(jsCode, "Sqrt(")) or (Instr(jsCode, "Sqrt ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Sqrt . "`n"
 }
-if (Instr(jsCode, "Tan")) {
+if (Instr(jsCode, "Tan(")) or (Instr(jsCode, "Tan ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Tan . "`n"
 }
-if (Instr(jsCode, "Chr")) {
+if (Instr(jsCode, "Chr(")) or (Instr(jsCode, "Chr ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Chr . "`n"
 }
-if (Instr(jsCode, "sleep")) {
+if (Instr(jsCode, "sleep(")) or (Instr(jsCode, "sleep ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_sleep . "`n"
 }
-if (Instr(jsCode, "InStr")) {
+if (Instr(jsCode, "InStr(")) or (Instr(jsCode, "InStr ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_InStr . "`n"
 }
-if (Instr(jsCode, "RegExMatch")) {
+if (Instr(jsCode, "RegExMatch(")) or (Instr(jsCode, "RegExMatch ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_RegExMatch . "`n"
 }
-if (Instr(jsCode, "RegExReplace")) {
-    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_RegExReplace . "`n"
-}
-if (Instr(jsCode, "StrLen")) {
+if (Instr(jsCode, "StrLen(")) or (Instr(jsCode, "StrLen ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StrLen . "`n"
 }
-if (Instr(jsCode, "StrSplit")) {
-    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StrSplit . "`n"
-}
-if (Instr(jsCode, "Format")) {
-    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Format . "`n"
-}
-if (Instr(jsCode, "Ord")) {
+if (Instr(jsCode, "Ord(")) or (Instr(jsCode, "Ord ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Ord . "`n"
 }
-if (Instr(jsCode, "getRandomNumber")) {
+if (Instr(jsCode, "getRandomNumber(")) or (Instr(jsCode, "getRandomNumber ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_getRandomNumber . "`n"
 }
-if (Instr(jsCode, "SubStr")) {
+if (Instr(jsCode, "SubStr(")) or (Instr(jsCode, "SubStr ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_SubStr . "`n"
 }
-if (Instr(jsCode, "Trim")) {
+if (Instr(jsCode, "Trim(")) or (Instr(jsCode, "Trim ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Trim . "`n"
 }
-if (Instr(jsCode, "StrReplace")) {
+if (Instr(jsCode, "StrReplace(")) or (Instr(jsCode, "StrReplace ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StrReplace . "`n"
 }
-if (Instr(jsCode, "Mod")) {
+if (Instr(jsCode, "Mod(")) or (Instr(jsCode, "Mod ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Mod . "`n"
 }
-if (Instr(jsCode, "Asc")) {
+if (Instr(jsCode, "Asc(")) or (Instr(jsCode, "Asc ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Asc . "`n"
 }
-if (Instr(jsCode, "StringTrimLeft")) {
+if (Instr(jsCode, "StringTrimLeft(")) or (Instr(jsCode, "StringTrimLeft ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StringTrimLeft . "`n"
 }
-if (Instr(jsCode, "StringTrimRight")) {
+if (Instr(jsCode, "StringTrimRight(")) or (Instr(jsCode, "StringTrimRight ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StringTrimRight . "`n"
 }
-if (Instr(jsCode, "isMobileDevice")) {
+if (Instr(jsCode, "isMobileDevice(")) or (Instr(jsCode, "isMobileDevice ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_isMobileDevice . "`n"
 }
-if (Instr(jsCode, "SetTimer")) {
+if (Instr(jsCode, "SetTimer(")) or (Instr(jsCode, "SetTimer ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_SetTimer . "`n"
 }
-if (Instr(jsCode, "GuiControl")) {
+if (Instr(jsCode, "GuiControl(")) or (Instr(jsCode, "GuiControl ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_GuiControl . "`n"
 }
-if (Instr(jsCode, "getDataFromEndpoint")) {
+if (Instr(jsCode, "getDataFromEndpoint(")) or (Instr(jsCode, "getDataFromEndpoint ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_getDataFromEndpoint . "`n"
 }
-if (Instr(jsCode, "FileAppend")) {
+if (Instr(jsCode, "FileAppend(")) or (Instr(jsCode, "FileAppend ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_FileAppend . "`n"
 }
-if (Instr(jsCode, "isConnectedToBackend")) {
+if (Instr(jsCode, "isConnectedToBackend(")) or (Instr(jsCode, "isConnectedToBackend ("))
+{
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_isConnectedToBackend . "`n"
 }
 
