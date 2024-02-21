@@ -32,7 +32,7 @@ HTH simplifies GUI development by eliminating the need for complex initializatio
 
 **Cons:**
 
-1. **Platform Dependency:** HTH requires Windows for compilation or transpilation, limiting its usability for developers using other operating systems. While it's possible to use HTH on Linux with the help of Wine, it's important to note that this setup might not provide full compatibility or optimal performance. Additionally, I forbid any Mac users from using HTH. Mac users STAY AWAY!!!
+1. **Platform Dependency:** HTH requires Windows for compilation or transpilation, limiting it's usability for developers using other operating systems. While it's possible to use HTH on Linux with the help of Wine, it's important to note that this setup might not provide full compatibility or optimal performance. Additionally, I forbid any Mac users from using HTH. Mac users STAY AWAY!!!
 
 2. **Limited Advanced Features:** HTH may lack some advanced features and functionalities found in other programming languages, potentially limiting it's suitability for complex or specialized applications.
 
@@ -63,7 +63,7 @@ To use HTH HeavenToHell:
 ## Platform Compatibility
 
 - HTH is compatible with Windows and can also run on Linux with the assistance of Wine. However, it's important to note that running HTH on Linux via Wine
-- HTH only transpiles using Windows or Linux whit wine since the transpiler is written in AutoHotKey and we need to run it as an exe in windows and linux whit wine or .ahk in windows. Mac users STAY AWAY form HTH!!!
+- HTH only transpiles using Windows or Linux with wine since the transpiler is written in AutoHotKey and we need to run it as an exe in windows and linux with wine or .ahk in windows. Mac users STAY AWAY from HTH!!!
 
 ---
 
@@ -100,7 +100,7 @@ So far, HTH supports:
 !+^g::
 Msgbox, You Clicked Ctrl+Alt+Shift+G
 
-; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the end of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
+; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the end of any label or hotkey.
 Return
 ```
 
@@ -109,9 +109,9 @@ Return
 - Random
 - Sleep
 - Msgbox
-- FileRead it will hardcode the text form the path in the HTH script
+- FileRead it will hardcode the text from the path in the HTH script
 - FileAppend it will download the file one time next time it will be a new file also you can only do for example: `FileAppend, %yourVar%, FileName.txt` you cant put vars in the filename argument
-- SetTimer Note: if you put a msgbox in the timer it will not stop the execution which is not the same as in real AutoHotKey
+- SetTimer Note: if you put a msgbox in the timer it will not stop the execution.
 - gosub
 - labels here is a label:
 
@@ -124,28 +124,25 @@ return
 Label1:
 MsgBox, we are in Label1
 
-; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the end of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
+; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the end of any label or hotkey.
 Return
 ```
 
-- InputBox can only pass 2 or 3 parameters here is an example:
+- InputBox can only pass 2 parameters here is an example:
 
 ```ahk
-InputBox, OutputVar, We will only see this title in AutoHotKey, And this will be seen as the only thing in js and this will be the text in ahk
+InputBox, OutputVar, Title
 
-; also you can do it like this
-InputBox, OutputVar, And this will be seen as the only thing in js and in ahk this will be the title and the text of the InputBox
 ; please don't add more parameters or commas ","
 ```
 
 - OnKeyPress: here is an example:
 
 ```ahk
-This is not in AutoHotKey this is custom feature
 OnKeyPress:
 Msgbox, You Pressed %A_ThisHotkey%
 
-; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the end of any label or hotkey. This is not the same case in real AutoHotkey, but here we need to do that.
+; We MUST put a Return with a capital letter R at the beginning of the word 'Return' otherwise it will not work. This is ONLY for the end of any label or hotkey.
 Return
 ```
 
