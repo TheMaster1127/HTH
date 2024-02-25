@@ -1999,7 +1999,15 @@ s:=StrSplit(str,", ").2
 out2 := StrLower(Trim(s))
 
 s:=StrSplit(str,", ").3
+s := Trim(s)
+if (out2 != "show")
+{
 out3 := StrLower(Trim(s))
+}
+else
+{
+out3 := Trim(s)
+}
 
 s:=StrSplit(str,", ").4
 out4 := Trim(s)
@@ -6235,6 +6243,22 @@ addFuncIfWeUseIt_Trim =
 
 )
 
+addFuncIfWeUseIt_ParseInt =
+(
+
+      async function ParseInt(num) {
+        if (num === null) {
+          return null;
+        }
+
+        num = num.trim();
+        num++;
+        num--;
+
+        return num;
+      }
+)
+
 addFuncIfWeUseIt_StrReplace =
 (
 
@@ -6563,6 +6587,10 @@ if (Instr(jsCode, "SubStr(")) or (Instr(jsCode, "SubStr ("))
 if (Instr(jsCode, "Trim(")) or (Instr(jsCode, "Trim ("))
 {
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_Trim . "`n"
+}
+if (Instr(jsCode, "ParseInt(")) or (Instr(jsCode, "ParseInt ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_ParseInt . "`n"
 }
 if (Instr(jsCode, "StrReplace(")) or (Instr(jsCode, "StrReplace ("))
 {

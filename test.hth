@@ -9,10 +9,14 @@ MsgBox, We are connected to a backend
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+
 MsgBox, % getDataFromEndpoint(data, "/var1")
 MsgBox, % getDataFromEndpoint("hejsdfbx kdjzcx kzjdx c", "/var1")
 
 sdf := "/sdffd"
+
+
+
 
 getDataFromEndpoint(data, "/sdfc")
 getDataFromEndpoint(data, sdf)

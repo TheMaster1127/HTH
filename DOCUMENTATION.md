@@ -2575,6 +2575,7 @@ A collection of Build-in Function available in HTH.
 8. [StrReplace](#strreplace)
 9. [Mod](#mod)
 10. [Asc](#asc)
+11. [ParseInt](#parseint)
 
 ---
 
@@ -2885,6 +2886,53 @@ result := Asc(character)
 ```ahk
 asciiCode := Asc("A")
 MsgBox, The ASCII code of `"A`" is %asciiCode%
+```
+
+---
+
+### ParseInt <a id="parseint"></a>
+
+[Go back](#build-in-functions)
+
+**ParseInt**: Returns the parsed integer value of a string.
+
+#### Syntax:
+
+```ahk
+result := ParseInt(num)
+```
+
+#### Parameters:
+
+- _num_: The string to parse for an integer value.
+
+#### Return Value:
+
+- Returns the parsed integer value of the input string. If the input is `null`, it returns `null`.
+
+#### Example:
+
+```ahk
+; num with spaces and it's a string, but there are no letters so it's an int
+num := " 123 "
+MsgBox, Before:`n|%num%|
+
+intValue := ParseInt(num)
+MsgBox, After:`nThe parsed integer value is |%intValue%|
+```
+
+Another example:
+
+```ahk
+numbers := "45, 75, 60, 6, 10"
+
+out := 0
+Loop, Parse, numbers, `,
+{
+num2 := ParseInt(A_LoopField)
+out := out + num2
+}
+MsgBox, % out
 ```
 
 ---
