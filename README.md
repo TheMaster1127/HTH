@@ -207,6 +207,7 @@ Some features haven't been fully tested but should work include:
 - StrLen
 - SubStr
 - Trim
+- ParseInt
 - StrReplace
 - Mod
 - Asc
