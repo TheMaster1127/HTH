@@ -44,7 +44,7 @@ Overall, HTH offers a user-friendly and versatile platform for beginners to lear
 
 - This project is specifically inspired from AutoHotKey V1 and it's syntax.
 - HTH HeavenToHell is still in development. But almost done
-- Documentation here: [HTH Documentation](https://github.com/TheMaster1127/HTH/blob/main/DOCUMENTATION.md)
+- Documentation here: [HTH Documentation](https://github.com/TheMaster1127/HTH/wiki)
 
 ## Usage
 
@@ -67,7 +67,7 @@ To use HTH HeavenToHell:
 
 ---
 
-A simplified documentation here, but you can check the documentation here: [HTH Documentation](https://github.com/TheMaster1127/HTH/blob/main/DOCUMENTATION.md)
+A simplified documentation here, but you can check the documentation here: [HTH Documentation](https://github.com/TheMaster1127/HTH/wiki)
 
 For coding style, you should use Allman Style since functions won't be recognized here is an example:
 
@@ -237,6 +237,6 @@ Built-in Variables
 - A_Space
 - A_Tab
 
-You can check the documentation here: [HTH Documentation](https://github.com/TheMaster1127/HTH/blob/main/DOCUMENTATION.md)
+You can check the documentation here: [HTH Documentation](https://github.com/TheMaster1127/HTH/wiki)
 
 ---
