@@ -44,7 +44,7 @@ Overall, HTH offers a user-friendly and versatile platform for beginners to lear
 
 - This project is specifically inspired from AutoHotKey V1 and it's syntax.
 - HTH HeavenToHell is still in development. But almost done
-- Documentation here https://github.com/TheMaster1127/HTH/blob/main/DOCUMENTATION.md
+- Documentation here: [HTH Documentation](https://github.com/TheMaster1127/HTH/blob/main/DOCUMENTATION.md)
 
 ## Usage
 
