@@ -87,8 +87,6 @@ if (RegExMatch(path, regex, match)) {
 
 
 
-
-
 ;MsgBox, %dir%
 SetWorkingDir, %dirpath%  ; Ensures a consistent starting directory.
 
@@ -3666,6 +3664,7 @@ FileRead, extractedText, %out2%
 
 
 extractedText := StrReplace(extractedText, "``", "\``")
+extractedText := StrReplace(extractedText, "$", "\$")
 
 ;MsgBox, % extractedText
 tempTextData =
@@ -6479,7 +6478,7 @@ addFuncIfWeUseIt_isConnectedToBackend =
 (
 
 function isConnectedToBackend() {
-  return window.location.protocol === 'http:' || window.location.protocol === 'https:';
+    return window.location.protocol !== "file:";
 }
 
 )

@@ -448,7 +448,7 @@
       }
 
       function isConnectedToBackend() {
-        return window.location.protocol === "http:" || window.location.protocol === "https:";
+        return window.location.protocol !== "file:";
       }
 
       let lastInputTime = Date.now(); // Initialize with current timestamp
