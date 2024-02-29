@@ -593,7 +593,8 @@ sum(a, b)
 #### Note:
 
 - Consistent indentation and spacing within the function body enhance code readability.
-- All functions in HTH are global, similar to JavaScript's scope, allowing them to be accessed from anywhere within the script.
+- All functions in HTH are similar to JavaScript's scope, allowing them to be accessed from anywhere within the script.
+- You can't declare function inside a function
 
 ### Simple Dynamically Function Calls
 
