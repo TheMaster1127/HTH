@@ -1884,6 +1884,7 @@ OutputDebug, %all%
 7
 jello
 mello
+*/
 ```
 
 This example demonstrates how to define and iterate over an array in HTH, handling both integer and string elements appropriately.
