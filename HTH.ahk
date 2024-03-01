@@ -4693,6 +4693,37 @@ else
 out999 := A_LoopField
 
 
+if (InStr(out999, "(")) && (InStr(out999, ")")) && !(InStr(out999, "async function "))
+{
+text := out999
+
+
+str := text
+
+s:=StrSplit(str,"(").1
+out1p := s
+
+
+
+
+; Extract text between first and last parentheses using RegEx
+if (RegExMatch(text, "\((.*)\)", extractedText))
+{
+ ;   MsgBox % "Text between first and last parentheses: " extractedText1
+}
+else
+{
+  ;  MsgBox % "No text found between parentheses."
+}
+
+
+extractedText1 := varTraspiler(extractedText1, 0)
+
+
+
+out999 := out1p . "(" . extractedText1 . ")"
+}
+
 out999 := StrReplace(out999, "Else", "else")
 
 if !(InStr(out999, "dugsvigqwfeoaiofceuoabivauoibvoucgaveivcusvuidvauvcusvduaeuvuabuveuowhfiovueabciabuiavcvvbusackavkcbcdavCYTdsfdgfdretyhhhhherreIdontWantToRemoveItsoItOKOK"))

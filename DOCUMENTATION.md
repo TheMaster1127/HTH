@@ -159,7 +159,7 @@ Explore the various features offered by the HTH programming language in this sec
 18. [OutputDebug](#outputdebug)
 19. [Loop](#loop)
 20. [Loop, Parse](#loop-parse)
-21. [Variables](#variables)
+21. [Variables and Arrays](#variablesandarrays)
 22. [Run](#run)
 23. [#Include](#include)
 24. [Comments](#comments)
@@ -1691,9 +1691,16 @@ The `Loop, Parse` feature in HTH provides a convenient and efficient way to proc
 
 Understood! Here's the revised documentation for variables with the updated scope explanation:
 
-### Variables <a id="variables"></a>
+### Variables and Arrays <a id="variablesandarrays"></a>
 
 [Go back](#features)
+
+1. [Variables](#variables)
+2. [Arrays](#arrays)
+
+### Variables <a id="variables"></a>
+
+[Go back](#variablesandarrays)
 
 Variables in HeavenToHell (HTH) are used to store and manipulate data values within scripts. They provide a means of storing information that can be referenced and modified throughout the script.
 
@@ -1816,6 +1823,70 @@ Please note: In these examples, ensure to follow the specified methods and refra
 - Initialize variables before using them to avoid unexpected behavior.
 
 Variables play a crucial role in storing and manipulating data within HeavenToHell (HTH) scripts, providing developers with the flexibility to create dynamic and interactive applications.
+
+### Arrays <a id="arrays"></a>
+
+[Go back](#variablesandarrays)
+
+Arrays in HTH allow for the storage of multiple values in a single variable. Arrays can contain a mixture of integers, strings, and variable references.
+
+#### Example:
+
+```ahk
+; Define a variable 'ji' containing the string "mello"
+ji := "mello"
+; Define an array 'array' containing integers, a string, and a variable reference
+array := [1, 3, 4, 5, 7, "jello", ji]
+
+; To use the array with Loop, Parse, we need to convert it to a string, as HTH doesn't support direct array iteration
+
+; Concatenate 'array' with a string on both sides to convert it to a string
+array := "a" . array . "a"
+
+; Trim the left and right characters from the string to remove the added characters
+StringTrimRight, array, array, 1
+StringTrimLeft, array, array, 1
+
+; Now 'array' contains the string representation of the original array
+
+all := ""
+; Iterate over the elements of 'array' using commas as delimiters
+Loop, Parse, array, `,
+{
+	; Trim whitespace from the current element
+    element := Trim(A_LoopField)
+
+    if (RegExMatch(element, "^\\d+$"))
+    {
+        MsgBox, The element: %element% contains an integer.
+
+		; Convert the string element to an integer using ParseInt
+        element := ParseInt(A_LoopField)
+    }
+    else
+    {
+        MsgBox, The element: %element% contains a string.
+    }
+
+	all .= element . "`n"
+}
+
+StringTrimRight, all, all, 1
+; Display the value of all elements
+OutputDebug, %all%
+
+; We should see:
+/*
+1
+3
+4
+5
+7
+jello
+mello
+```
+
+This example demonstrates how to define and iterate over an array in HTH, handling both integer and string elements appropriately.
 
 ---
 
