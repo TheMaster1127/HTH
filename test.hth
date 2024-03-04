@@ -298,7 +298,7 @@ words := howManyWords
 ; Convert milliseconds to minutes
 timeTookInMin := timeTookInMS / 60000
 
-; Calculate words per minute (WPM)
+; Calculate words per minute
 WPM := (words / timeTookInMin)
 
 WPM := Floor(WPM)

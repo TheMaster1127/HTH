@@ -5377,11 +5377,11 @@ str := StrReplace(str, "variables.A_LastKey", "BuildInVars(""A_LastKey"")")
 str := StrReplace(str, "variables.A_Now", "BuildInVars(""A_Now"")")
 str := StrReplace(str, "variables.A_YYYY", "BuildInVars(""A_YYYY"")")
 str := StrReplace(str, "variables.A_MM", "BuildInVars(""A_MM"")")
-str := StrReplace(str, "variables.A_DD", "BuildInVars(""A_DD"")")
 str := StrReplace(str, "variables.A_MMMM", "BuildInVars(""A_MMMM"")")
 str := StrReplace(str, "variables.A_MMM", "BuildInVars(""A_MMM"")")
 str := StrReplace(str, "variables.A_DDDD", "BuildInVars(""A_DDDD"")")
 str := StrReplace(str, "variables.A_DDD", "BuildInVars(""A_DDD"")")
+str := StrReplace(str, "variables.A_DD", "BuildInVars(""A_DD"")")
 str := StrReplace(str, "variables.A_Hour", "BuildInVars(""A_Hour"")")
 str := StrReplace(str, "variables.A_Min", "BuildInVars(""A_Min"")")
 str := StrReplace(str, "variables.A_Sec", "BuildInVars(""A_Sec"")")
@@ -5531,7 +5531,7 @@ outChckBugColomNumbers := s
 outChckBugColomNumbers := Trim(outChckBugColomNumbers)
 
 
-if (InStr(A_LoopField, " : null")) or (InStr(A_LoopField, "if: null")) or RegExMatch(outChckBugColomNumbers, "^\d+$")
+if (InStr(A_LoopField, " : null")) or (InStr(A_LoopField, "if: null")) or (InStr(A_LoopField, "~: null,")) or RegExMatch(outChckBugColomNumbers, "^\d+$")
 {
 
 }
