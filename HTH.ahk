@@ -58,13 +58,20 @@ tehequakuazation
 
 
 test := 1 ; test your code ignore this the transpiler is done i forgot this so no need to remove this
-
+fileNameHTH2Num := 0
 for n, param in A_Args  ; For each parameter:
 {
 if (n = 1)
 {
 fileNameHTH := param
 }
+
+if (n = 2)
+{
+fileNameHTH2 := param
+fileNameHTH2Num := 1
+}
+
 }
 
 ; To fetch only its directory:
@@ -101,6 +108,10 @@ if (RegExMatch(path, regex, match)) {
     ;MsgBox, No file name found in the path.
 }
 
+}
+else
+{
+ExitApp
 }
 ;MsgBox, % fileNameHTH
 
@@ -209,6 +220,33 @@ out123456ggFixTrim .= out . "`n"
 StringTrimRight, out123456ggFixTrim, out123456ggFixTrim, 1
 
 AHKcode := out123456ggFixTrim
+
+
+
+
+
+jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU := ""
+Loop, Parse, AHKcode, `n, `r
+{
+if (SubStr(Trim(A_LoopField), 1, 1) = "`;")
+{
+;MsgBox, % A_LoopField
+var1 := "// " . A_LoopField
+
+jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU .= var1 . "`n"
+
+}
+else
+{
+jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU .= A_LoopField . "`n"
+
+}
+}
+
+StringTrimRight, jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU, jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU, 1
+
+AHKcode := jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU
+
 
 
 ; Initialize a counter for tracking the current line
@@ -434,6 +472,9 @@ AHKcode := AHKcodeUot123
 
 base64ImageNum := 0
 base64ImageData := ""
+
+
+
 
 
 
@@ -5479,7 +5520,6 @@ StringTrimRight, out4758686d86d86d86578991abc, out4758686d86d86d86578991abc, 1
 jsCode := out4758686d86d86d86578991abc
 
 
-
 sort, endpoints, U
 
 
@@ -5664,6 +5704,36 @@ if (DoWeHaveEndpoints = 1) {
         }
     }
 }
+
+
+
+
+
+
+jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU := ""
+Loop, Parse, jsCode, `n, `r
+{
+if (SubStr(Trim(A_LoopField), 1, 6) = "//  //")
+{
+;MsgBox, % A_LoopField
+
+var1 := StrReplace(A_LoopField, "//  //", "//")
+
+jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU .= var1 . "`n"
+
+}
+else
+{
+jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU .= A_LoopField . "`n"
+
+}
+}
+
+StringTrimRight, jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU, jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU, 1
+
+jsCode := jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU
+
+
 
 
 jsCode := variables . "`n`n" . funcs . "`n`n" . onKeyPress . "`n`n" . jsCodeGui . "`n`n" . HotKeyCalledHotKyes . "`n`n" . jsCode
@@ -6844,7 +6914,18 @@ milliseconds := Mod(ms, 1000)
 ElapsedTime123 := ""
 ElapsedTime123 .= hours "h " minutes "m " seconds "s " milliseconds "ms"
 
+if (fileNameHTH2Num != 1)
+{
 MsgBox, Done is %ElapsedTime123%
+}
+else
+{
+FileAppend,
+(
+1
+), %fileNameHTH2%
+}
+
 ExitApp
 Return
 

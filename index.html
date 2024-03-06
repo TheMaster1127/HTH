@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,19 +7,7 @@
     <style>
       body {
         background-color: #202020;
-        font-family:
-          "Open Sans",
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          Roboto,
-          Oxygen-Sans,
-          Ubuntu,
-          Cantarell,
-          "Helvetica Neue",
-          Helvetica,
-          Arial,
-          sans-serif;
+        font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11" rel="stylesheet" />
@@ -603,8 +591,8 @@
 
         if (await isConnectedToBackend()) {
           await showCustomMessageBox({}, " ", "We are connected to a backend ", 0, 0);
-          //
-          //
+          //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+          //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
           await showCustomMessageBox({}, " ", await getDataFromEndpoint(variables.data, "/var1"), 0, 0);
           await showCustomMessageBox({}, " ", await getDataFromEndpoint("hejsdfbx kdjzcx kzjdx c", "/var1"), 0, 0);
@@ -645,7 +633,7 @@
 
         variables.startWord = variables["wordNum" + variables.ran];
 
-        // await showCustomMessageBox({}," ", startWord, 0, 0.)
+        //MsgBox, % startWord
         variables.endText += variables.startWord + " ";
 
         for (/* Normal Loop */ variables.A_Index2 = 1; variables.A_Index2 <= 19; variables.A_Index2++) {
@@ -674,7 +662,7 @@
           variables.startWord = variables["nextWord" + variables.ran];
         }
         variables.endText = StringTrimRight(variables.endText, 1);
-        // await showCustomMessageBox({}," ", "|" + variables.endText + "| ", 0, 0)
+        //MsgBox, |%endText%|
 
         variables.indexWord = 0;
 
@@ -704,17 +692,16 @@
             variables.checkLenWords = variables["howLongWord" + variables.A_Index6];
           }
         }
-        // await showCustomMessageBox({}," ", checkLenWords, 0, 0.)
+        //MsgBox, % checkLenWords
         variables.checkLenWords = variables.checkLenWords + 1;
 
-        // variables.text =  "hello man is some text lets see if you can type fast then you can see how fast can you typed and ist done\;
-
+        //text := posStartQuotes1"
         variables.text = variables.endText;
 
         if (await isMobileDevice()) {
-          // variables.text =  "Ahk is the best\;
+          //text := posStartQuotes1"
         } else {
-          // variables.text =  "AHK is the Best\;
+          //text := posStartQuotes1"
         }
 
         variables.howMany = 0;
@@ -746,12 +733,12 @@
 
         variables.w2 = variables.borderX;
 
-        // await showCustomMessageBox({}," ", borderX, 0, 0.)
+        //MsgBox, % borderX
         variables.w = variables.borderX + 20;
 
         variables.byWhatSizeBorderX = (14 + 3) * variables.checkLenWords;
 
-        // await showCustomMessageBox({}," ", byWhatSizeBorderX, 0, 0.)
+        //MsgBox, % byWhatSizeBorderX
 
         variables.characters9 = variables.text.split("");
         variables.charLength9 = variables.characters9.length;
@@ -873,7 +860,7 @@
         async function Edit(A_GuiControl) {
           variables.comeFromEdit = 1;
 
-          // await showCustomMessageBox({}," ", A_GuiControl, 0, 0.)
+          //MsgBox, % A_GuiControl
           variables.EditText = A_GuiControl;
 
           variables.characters10 = variables.EditText.split("");
@@ -938,7 +925,7 @@
             // Get the character at the specified position
             variables.char = SubStr(variables.text, variables.pos, 1);
 
-            // await showCustomMessageBox({}," ",  "" + variables.char + " " + variables.A_ThisHotkey + \ ", 0, 0)
+            //MsgBox, %char% %A_ThisHotkey%
 
             variables.v = "l" + variables.pos;
 
@@ -983,11 +970,11 @@
 
               variables.words = variables.howManyWords;
 
-              // await showCustomMessageBox({}," ", timeTookInMS, 0, 0.)
+              //MsgBox, % timeTookInMS
               // Convert milliseconds to minutes
               variables.timeTookInMin = variables.timeTookInMS / 60000;
 
-              // Calculate words per minute
+              // Calculate words per minute (WPM)
               variables.WPM = variables.words / variables.timeTookInMin;
 
               variables.WPM = Math.floor(variables.WPM);
