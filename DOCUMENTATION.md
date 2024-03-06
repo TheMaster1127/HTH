@@ -2702,13 +2702,17 @@ result := InStr(haystack, needle)
 
 #### Return Value:
 
-- Returns the position (index) of the first occurrence of the substring within the string. Returns 0 if the substring is not found.
+- Returns true or false
 
 #### Example:
 
 ```ahk
-position := InStr("Hello World", "World")
+var1 := "Hello World"
+
+if (InStr(var1, "World"))
+{
 MsgBox, The position of `"World`" in `"Hello World`" is %position%
+}
 ```
 
 ---
