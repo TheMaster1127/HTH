@@ -2682,17 +2682,16 @@ MsgBox, The character corresponding to ASCII code 65 is %character%
 ```
 
 ---
-
 ### InStr <a id="instr"></a>
 
 [Go back](#build-in-functions)
 
-**InStr**: Returns the position of the first occurrence of a substring within a string.
+**InStr**: Returns true if a substring is found within a string; otherwise, returns false.
 
 #### Syntax:
 
 ```ahk
-result := InStr(haystack, needle)
+InStr(haystack, needle)
 ```
 
 #### Parameters:
@@ -2702,7 +2701,7 @@ result := InStr(haystack, needle)
 
 #### Return Value:
 
-- Returns true or false
+- Returns true if the substring is found within the string; otherwise, returns false.
 
 #### Example:
 
@@ -2711,11 +2710,11 @@ var1 := "Hello World"
 
 if (InStr(var1, "World"))
 {
-MsgBox, The position of `"World`" in `"Hello World`" is %position%
+    MsgBox, We found `"World`" in %var1%
 }
 ```
 
----
+--- 
 
 ### RegExMatch <a id="regexmatch"></a>
 
