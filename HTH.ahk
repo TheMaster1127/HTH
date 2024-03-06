@@ -6231,7 +6231,7 @@ addFuncIfWeUseIt_InStr =
 
       // InStr
       function InStr(Haystack, Needle, CaseSensitive = true, StartingPos = 1, Occurrence = 1) {
-        if (Haystack === null || Needle === null) return null;
+        if (Haystack === null || Needle === null) return false;
 
         // Adjust starting position if less than 1
         StartingPos = Math.max(StartingPos, 1);
@@ -6254,7 +6254,7 @@ addFuncIfWeUseIt_InStr =
           }
         }
 
-        return pos;
+        return pos > 0; // Return true if the substring is found, false otherwise
       }
 
 )
