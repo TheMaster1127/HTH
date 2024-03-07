@@ -3435,6 +3435,8 @@ By integrating Python with HTH, developers can leverage the power of Python's ex
 
 Discover the recommended code editor for working with the HTH programming language.
 
+Check out the best editor for HTH at https://github.com/TheMaster1127/SciTE4HTH
+
 ---
 
 ## Script Showcase <a id="script-showcase"></a>
@@ -3442,5 +3444,7 @@ Discover the recommended code editor for working with the HTH programming langua
 [Go back](#hth)
 
 View a showcase of programs created using the HTH programming language, demonstrating its capabilities.
+
+Check out this type racer written in HTH at https://github.com/TheMaster1127/HTH/blob/main/test.hth
 
 ---
