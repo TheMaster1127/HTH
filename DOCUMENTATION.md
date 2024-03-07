@@ -391,7 +391,7 @@ Return
 
 ---
 
-### GuiControl <a id="gui-control"></a>
+### GuiControl <a id="guicontrol"></a>
 
 [Go back](#features)
 
