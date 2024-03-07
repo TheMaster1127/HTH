@@ -2463,9 +2463,7 @@ MsgBox, The largest integer less than or equal to 4.9 is %floored%
 
 #### Syntax:
 
-```
-
-hth
+```ahk
 result := Ln(number)
 ```
 
