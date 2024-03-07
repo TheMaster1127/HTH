@@ -142,7 +142,7 @@ Explore the various features offered by the HTH programming language in this sec
 1. [GUI](#gui)
 2. [GuiControl](#guicontrol)
 3. [Hotkeys](#hotkeys)
-4. [Functions](#functions)
+4. [Functions](#hth-functions)
 5. [If, else, else if](#if-else-else-if)
 6. [Random](#random)
 7. [Sleep](#sleep)
@@ -556,7 +556,7 @@ The `Hotkeys` feature in HTH provides users with a simple and efficient way to d
 
 ---
 
-### Functions <a id="functions"></a>
+### Functions <a id="hth-functions"></a>
 
 [Go back](#features)
 
