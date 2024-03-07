@@ -65,6 +65,10 @@ To use HTH HeavenToHell:
 - HTH is compatible with Windows and can also run on Linux with the assistance of wine a program that can run most exe files on linux using wine.
 - HTH only transpiles using Windows or Linux with wine since the transpiler is written in AutoHotKey and we need to run it as an exe in windows and linux with wine or .ahk in windows. Mac users STAY AWAY from HTH!!!
 
+## Editors
+
+This is the best editor for HTH https://github.com/TheMaster1127/SciTE4HTH
+
 ---
 
 A simplified documentation here, but you can check the documentation here: [HTH Documentation](https://github.com/TheMaster1127/HTH/wiki)
