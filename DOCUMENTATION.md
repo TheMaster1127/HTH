@@ -162,7 +162,7 @@ Explore the various features offered by the HTH programming language in this sec
 21. [Variables and Arrays](#variablesandarrays)
 22. [Run](#run)
 23. [#Include](#include)
-24. [Comments](#comments)
+24. [Comments](#hth-comments)
 25. [getDataFromEndpoint](#getdatafromendpoint)
 26. [isMobileDevice](#ismobiledevice)
 27. [isConnectedToBackend](#isconnectedtobackend)
@@ -1994,7 +1994,7 @@ The `#Include` directive in HeavenToHell (HTH) provides a convenient and efficie
 
 ---
 
-### Comments <a id="comments"></a>
+### Comments <a id="hth-comments"></a>
 
 [Go back](#features)
 
@@ -2115,8 +2115,6 @@ MsgBox, We are not connected to a backend
 The `getDataFromEndpoint` function provides a convenient way to interact with backend servers, facilitating various data transmission and retrieval operations for local or networked backend services.
 
 ---
-
-[Go back](#features)
 
 ### isMobileDevice <a id="ismobiledevice"></a>
 
