@@ -565,7 +565,7 @@ In HeavenToHell (HTH), functions are indispensable for organizing and structurin
 #### Syntax:
 
 ```ahk
-nameOfFunc(param1, param2)
+nameOfFunc(param1, param2, ...)
 {
     ; Function body
     return result
