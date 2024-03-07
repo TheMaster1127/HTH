@@ -1998,12 +1998,19 @@ The `#Include` directive in HeavenToHell (HTH) provides a convenient and efficie
 
 [Go back](#features)
 
-In HeavenToHell (HTH), comments play a vital role in enhancing code readability and providing additional context for developers. While HTH does not support comment blocks, single-line comments are widely used to annotate code and explain its functionality.
-
+In HeavenToHell (HTH), comments play a vital role in enhancing code readability and providing additional context for developers.
 #### Syntax:
 
 ```ahk
 ; This is a single-line comment in HeavenToHell (HTH)
+```
+
+```ahk
+/*
+this is a block comment
+this is a block comment
+this is a block comment
+*/
 ```
 
 #### Usage:
@@ -2040,10 +2047,6 @@ Do not add comments on the same line as code statements in HeavenToHell (HTH). P
 - Single-line comments should be concise and focused, providing relevant information to aid in code understanding.
 
 Comments in HeavenToHell (HTH) are invaluable tools for improving code comprehension and facilitating collaboration among developers. By leveraging single-line comments effectively, developers can create well-documented and maintainable scripts in HeavenToHell.
-
----
-
-Certainly! Here's the updated documentation with the additional information about using Flask and ensuring the Python script endpoint always returns, even if it's not required:
 
 ---
 
