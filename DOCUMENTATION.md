@@ -1689,8 +1689,6 @@ The `Loop, Parse` feature in HTH provides a convenient and efficient way to proc
 
 ---
 
-Understood! Here's the revised documentation for variables with the updated scope explanation:
-
 ### Variables and Arrays <a id="variablesandarrays"></a>
 
 [Go back](#features)
