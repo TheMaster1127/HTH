@@ -1730,7 +1730,7 @@ Don't declare variables with names like let, var, or const since this will resul
 Variables in HTH have the same scope rules as JavaScript, as HTH transpiles to JavaScript. This means:
 
 - **Global Scope**: Variables declared outside of any function or block have global scope and can be accessed from anywhere within the script.
-- **Local Scope**: Variables declared inside a function or block using the `Local` keyword have local scope and are accessible only within that function or block.
+- **Local Scope**: Variables declared inside a function or block have local scope and are accessible only within that function or block.
 
 #### Example:
 
