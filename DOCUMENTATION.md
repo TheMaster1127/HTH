@@ -1050,12 +1050,6 @@ SetTimer, LabelName, Option
 #### Example 1: Starting a Timer
 
 ```ahk
-; Define a label to be executed by the timer
-TimerLabel:
-    ; Perform actions or execute code here
-    MsgBox, Timer elapsed! This is a recurring message.
-Return
-
 ; Start the timer with an interval of 2000 milliseconds (2 seconds)
 SetTimer, TimerLabel, 2000
 
@@ -1066,17 +1060,17 @@ Sleep, 10000
 
 ; Stop the timer
 SetTimer, TimerLabel, Off
-```
 
-#### Example 2: Stopping a Timer
-
-```ahk
 ; Define a label to be executed by the timer
 TimerLabel:
     ; Perform actions or execute code here
     MsgBox, Timer elapsed! This is a recurring message.
 Return
+```
 
+#### Example 2: Stopping a Timer
+
+```ahk
 ; Start the timer with an interval of 2000 milliseconds (2 seconds)
 SetTimer, TimerLabel, 2000
 
@@ -1095,6 +1089,12 @@ Sleep, 5000
 
 ; Restart the timer
 SetTimer, TimerLabel, On
+
+; Define a label to be executed by the timer
+TimerLabel:
+    ; Perform actions or execute code here
+    MsgBox, Timer elapsed! This is a recurring message.
+Return
 ```
 
 #### Note:
