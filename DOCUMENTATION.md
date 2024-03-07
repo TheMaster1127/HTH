@@ -475,7 +475,7 @@ GuiControl, Font, Element2, s16
 
 ; c = to color
 ; Set the color of a control or text with ID "Text1"
-GuiControl, Color, highlightedText, cFF0000
+GuiControl, Color, Text1, cFF0000
 ```
 
 #### Note:
