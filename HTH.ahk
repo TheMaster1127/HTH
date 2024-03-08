@@ -64,6 +64,11 @@ for n, param in A_Args  ; For each parameter:
 if (n = 1)
 {
 fileNameHTH := param
+
+
+;MsgBox, % A_InitialWorkingDir
+
+
 }
 
 if (n = 2)
@@ -95,7 +100,7 @@ if (RegExMatch(path, regex, match)) {
 
 
 ;MsgBox, %dir%
-SetWorkingDir, %dirpath%  ; Ensures a consistent starting directory.
+SetWorkingDir, %A_InitialWorkingDir%  ; Ensures a consistent starting directory.
 
 
 ; Use regex to extract the file name without extension
