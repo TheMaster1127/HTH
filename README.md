@@ -122,7 +122,7 @@ Return
 ; We will go the label
 gosub, Label1
 
-; We put return in lowercase to stop the code executing after otherwise; otherwise, it will go to the label twice.
+; We put return in lowercase to stop the code executing after the gosub otherwise it will go to the label twice.
 return
 Label1:
 MsgBox, we are in Label1
