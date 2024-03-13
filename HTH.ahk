@@ -5625,6 +5625,33 @@ if !(InStr(A_LoopField, "variables."))
 StringTrimRight, varsOUT123456, varsOUT123456, 1
 variables := varsOUT123456
 
+
+varsOUT1234567 := ""
+Loop, Parse, variables, `n, `r
+{
+
+
+str := Trim(A_LoopField)
+
+s:=StrSplit(str,":").1
+out1 := s
+
+if (A_Index <= 3)
+{
+varsOUT1234567 .= A_LoopField . "`n"
+}
+
+if !(InStr(out1, " ")) && (A_Index >= 4)
+{
+ varsOUT1234567 .= A_LoopField . "`n"
+}
+
+}
+
+StringTrimRight, varsOUT1234567, varsOUT1234567, 1
+variables := varsOUT1234567
+
+
 jsCodeGuiOutNum := ""
 
 Loop, Parse, jsCodeGui, `n ,`r
@@ -6886,9 +6913,22 @@ jsCode := upCode1 . upCode2 . jsCode . DownCode
 ;MsgBox % jsCode
 
 ; Save clipboard content to a temporary file
+if (fileNameHTH2Num = 1)
+{
+; this is for my personal HTH runner so dont need this this is only my thing dont change
+FileDelete, C:\Users\The_M\OneDrive\Desktop\HTH test\index.html
+
+; this is for my personal HTH runner so dont need this this is only my thing dont change
+FileAppend, %jsCode%, C:\Users\The_M\OneDrive\Desktop\HTH test\index.html
+
+}
+else
+{
 FileDelete, index.html
 
 FileAppend, %jsCode%, index.html
+
+}
 
 if (test != 1)
 {
