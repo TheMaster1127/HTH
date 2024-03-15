@@ -414,16 +414,15 @@ GuiControl, Action, ControlID, Param1, Param2, Param3, Param4
   - `Show`: Show the control.
   - `Enable`: Enable the control.
   - `Disable`: Disable the control.
-  - `Font`: Set the font size of the control.
-  - `Color`: Set the color of the control.
+  - `Font`: Set the font size or color of the control.
+
 
 - `ControlID`: The unique identifier of the GUI control to be manipulated.
 
 - `Param1`, `Param2`, `Param3`, `Param4`: Additional parameters required for specific actions, as follows:
   - For `Move`: `Param1` is the new X-coordinate, `Param2` is the new Y-coordinate, `Param3` is the new width, and `Param4` is the new height of the control.
   - For `Text`: `Param1` is the new text content of the control.
-  - For `Font`: `Param1` is the new font size in pixels.
-  - For `Color`: `Param1` is the new color in hexadecimal format (cRRGGBB).
+  - For `Font`: `Param1` is the new font size in pixels and the new color in hexadecimal format (cRRGGBB).
 
 #### Actions:
 
@@ -441,9 +440,7 @@ GuiControl, Action, ControlID, Param1, Param2, Param3, Param4
 
 - `Disable`: Disables the specified control, preventing user interaction.
 
-- `Font`: Sets the font size of the specified control to the provided value.
-
-- `Color`: Sets the color of the specified control to the provided value.
+- `Font`: Sets the font size or the color of the specified control to the provided value.
 
 #### Example Usage:
 
@@ -475,7 +472,7 @@ GuiControl, Font, Element2, s16
 
 ; c = to color
 ; Set the color of a control or text with ID "Text1"
-GuiControl, Color, Text1, cFF0000
+GuiControl, Font, Text1, cFF0000
 ```
 
 #### Note:
