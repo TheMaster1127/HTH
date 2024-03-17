@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,7 +7,19 @@
     <style>
       body {
         background-color: #202020;
-        font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-family:
+          "Open Sans",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Oxygen-Sans,
+          Ubuntu,
+          Cantarell,
+          "Helvetica Neue",
+          Helvetica,
+          Arial,
+          sans-serif;
       }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11" rel="stylesheet" />
@@ -590,12 +602,12 @@
         variables.data = "sdfjubf sdjdf xlsakd xdzsd12344 2kj2q3w";
 
         if (await isConnectedToBackend()) {
-          await showCustomMessageBox({}, " ", "We are connected to a backend ", 0, 0);
+          await showCustomMessageBox([], " ", "We are connected to a backend ", 0, 0);
           //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
           //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-          await showCustomMessageBox({}, " ", await getDataFromEndpoint(variables.data, "/var1"), 0, 0);
-          await showCustomMessageBox({}, " ", await getDataFromEndpoint("hejsdfbx kdjzcx kzjdx c", "/var1"), 0, 0);
+          await showCustomMessageBox([], " ", await getDataFromEndpoint(variables.data, "/var1"), 0, 0);
+          await showCustomMessageBox([], " ", await getDataFromEndpoint("hejsdfbx kdjzcx kzjdx c", "/var1"), 0, 0);
 
           variables.sdf = "/sdffd";
 
@@ -605,10 +617,10 @@
           variables.var1 = "Hello";
 
           if (variables.var1 == (await getDataFromEndpoint(variables.data, "/sdfc"))) {
-            await showCustomMessageBox({}, " ", "yey ", 0, 0);
+            await showCustomMessageBox([], " ", "yey ", 0, 0);
           }
         } else {
-          await showCustomMessageBox({}, " ", "We are not connected to a backend ", 0, 0);
+          await showCustomMessageBox([], " ", "We are not connected to a backend ", 0, 0);
         }
 
         variables.data = textData1;
@@ -670,7 +682,7 @@
         variables.charLength4 = variables.characters4.length;
 
         for (/* Loop parse */ variables.A_Index4 = 1; variables.A_Index4 <= variables.charLength4; variables.A_Index4++) {
-          variables.A_LoopField4 = variables.characters4[variables.A_Index4 - 1]; // Using array notation to access characters
+          variables.A_LoopField4 = variables.characters4[variables.A_Index2 - 1]; // Using array notation to access characters
 
           variables.indexWord++;
           variables["howLongWord" + variables.indexWord] = 0;
@@ -679,7 +691,7 @@
           variables.charLength5 = variables.characters5.length;
 
           for (/* Loop parse */ variables.A_Index5 = 1; variables.A_Index5 <= variables.charLength5; variables.A_Index5++) {
-            variables.A_LoopField5 = variables.characters5[variables.A_Index5 - 1]; // Using array notation to access characters
+            variables.A_LoopField5 = variables.characters5[variables.A_Index2 - 1]; // Using array notation to access characters
 
             variables["howLongWord" + variables.indexWord]++;
           }
@@ -688,8 +700,8 @@
         variables.checkLenWords = 0;
 
         for (/* Normal Loop */ variables.A_Index6 = 1; variables.A_Index6 <= variables.indexWord; variables.A_Index6++) {
-          if (variables["howLongWord" + variables.A_Index6] >= variables.checkLenWords) {
-            variables.checkLenWords = variables["howLongWord" + variables.A_Index6];
+          if (variables["howLongWord" + variables.A_Index2] >= variables.checkLenWords) {
+            variables.checkLenWords = variables["howLongWord" + variables.A_Index2];
           }
         }
         //MsgBox, % checkLenWords
@@ -710,7 +722,7 @@
         variables.charLength7 = variables.characters7.length;
 
         for (/* Loop parse */ variables.A_Index7 = 1; variables.A_Index7 <= variables.charLength7; variables.A_Index7++) {
-          variables.A_LoopField7 = variables.characters7[variables.A_Index7 - 1]; // Using array notation to access characters
+          variables.A_LoopField4 = variables.characters7[variables.A_Index2 - 1]; // Using array notation to access characters
 
           variables.howMany++;
         }
@@ -720,7 +732,7 @@
         variables.charLength8 = variables.characters8.length;
 
         for (/* Loop parse */ variables.A_Index8 = 1; variables.A_Index8 <= variables.charLength8; variables.A_Index8++) {
-          variables.A_LoopField8 = variables.characters8[variables.A_Index8 - 1]; // Using array notation to access characters
+          variables.A_LoopField4 = variables.characters8[variables.A_Index2 - 1]; // Using array notation to access characters
 
           variables.howManyWords++;
         }
@@ -744,13 +756,13 @@
         variables.charLength9 = variables.characters9.length;
 
         for (/* Loop parse */ variables.A_Index9 = 1; variables.A_Index9 <= variables.charLength9; variables.A_Index9++) {
-          variables.A_LoopField9 = variables.characters9[variables.A_Index9 - 1]; // Using array notation to access characters
+          variables.A_LoopField4 = variables.characters9[variables.A_Index2 - 1]; // Using array notation to access characters
 
-          variables.v = "l" + variables.A_Index9;
+          variables.v = "l" + variables.A_Index2;
 
           Gui1[variables.v] = document.createElement("div");
           Gui1[variables.v].id = "Gui1" + "" + [variables.v] + ""; // Set ID for referencing
-          Gui1[variables.v].textContent = "" + variables.A_LoopField9 + "";
+          Gui1[variables.v].textContent = "" + variables.A_LoopField4 + "";
           Gui1[variables.v].style.color = "#black";
           Gui1[variables.v].style.fontSize = "18px"; // Set font size
           Gui1[variables.v].style.position = "absolute"; // Set position to absolute
@@ -762,7 +774,7 @@
 
           variables.x = variables.x + 14 + 3;
 
-          if (variables.x >= variables.borderX - variables.byWhatSizeBorderX && variables.A_LoopField9 == " ") {
+          if (variables.x >= variables.borderX - variables.byWhatSizeBorderX && variables.A_LoopField4 == " ") {
             variables.y = variables.y + 50;
 
             variables.x = 10;
@@ -867,9 +879,9 @@
           variables.charLength10 = variables.characters10.length;
 
           for (/* Loop parse */ variables.A_Index10 = 1; variables.A_Index10 <= variables.charLength10; variables.A_Index10++) {
-            variables.A_LoopField10 = variables.characters10[variables.A_Index10 - 1]; // Using array notation to access characters
+            variables.A_LoopField4 = variables.characters10[variables.A_Index2 - 1]; // Using array notation to access characters
 
-            variables.EditText = variables.A_LoopField10;
+            variables.EditText = variables.A_LoopField4;
           }
           await OnKeyPress();
         }
@@ -979,7 +991,7 @@
 
               variables.WPM = Math.floor(variables.WPM);
 
-              await showCustomMessageBox({}, " ", "done in " + variables.ElapsedTime123 + " and " + variables.msgCorrct + "\nWords per minute: " + variables.WPM + " ", 0, 0);
+              await showCustomMessageBox([], " ", "done in " + variables.ElapsedTime123 + " and " + variables.msgCorrct + "\nWords per minute: " + variables.WPM + " ", 0, 0);
               variables.done = 1;
             }
           }

@@ -1466,7 +1466,7 @@ timeoutMsgbox := 0
 
 if (toggleAwait = 1) or (toggleAwait = "")
 {
-var1 := "await showCustomMessageBox({},""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
+var1 := "await showCustomMessageBox([],""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
 }
 else
 {
@@ -1567,7 +1567,7 @@ timeoutMsgbox := 0
 
 if (toggleAwait = 1) or (toggleAwait = "")
 {
-var1 := "await showCustomMessageBox({},""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
+var1 := "await showCustomMessageBox([],""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
 }
 else
 {
@@ -1637,7 +1637,7 @@ Options := 0
 timeoutMsgbox := 0
 
 
-var1 := "await showCustomMessageBox({},""" . Title . """, """ . var1 . " "", " . Options . ", " . timeoutMsgbox . ")"
+var1 := "await showCustomMessageBox([],""" . Title . """, """ . var1 . " "", " . Options . ", " . timeoutMsgbox . ")"
 jsCode .= var1 . "`n"
 
 
@@ -1658,7 +1658,7 @@ out2 := Trim(out2)
 ;MsgBox, % out2
 line := varTraspiler(out2, 0)
 ;MsgBox, % line
-var1 := "await showCustomMessageBox({}," . """ """ .  ", " . line . ", " . 0 . ", " . 0. ")"
+var1 := "await showCustomMessageBox([]," . """ """ .  ", " . line . ", " . 0 . ", " . 0. ")"
 ;MsgBox, % var1
 jsCode .= var1 . "`n"
 
@@ -5185,7 +5185,7 @@ readyToEnd1 := 1
 }
 
 
-if (InStr(A_LoopField, "}")) && (readyToEnd1 = 1) && (netsedCurly = 0) && (insideBracket = 1)
+if (InStr(A_LoopField, "}")) && (readyToEnd1 = 1) && (netsedCurly1 = 0) && (insideBracket = 1)
 {
 ;MsgBox, % A_LoopField
 eldLoopNestedBADlol := 1
@@ -5202,8 +5202,23 @@ if (inTarget = 1) && (dontSaveStr != 1) && (fixLoopLokingForNum != 1) && (insdeA
 
 ALoopField := A_LoopField
 
+str := ALoopField
+
+sz:=StrSplit(str,"variables.A_Index").2
+out1zzzzzzzzz := sz
+myString := out1zzzzzzzzz
+firstChar := SubStr(myString, 1, 1)
+;MsgBox % "The first character is: " . firstChar
+
+
+if (RegExMatch(firstChar, "^\d$")) {
+;    MsgBox % "The first character is a number: " . firstChar
+} else {
+
+
 ALoopField := StrReplace(ALoopField, "A_Index", "A_Index" . A_IndexLoopCurlyFix)
 ;ALoopField := StrReplace(ALoopField, "A_LoopField", "A_LoopField" . A_IndexLoopCurlyFix)
+}
 
 out4758686d86d86d86578991a%A_IndexLoopCurlyFix% .= ALoopField . "`n"
 
@@ -5333,7 +5348,7 @@ readyToEnd1 := 1
 }
 
 
-if (InStr(A_LoopField, "}")) && (readyToEnd1 = 1) && (netsedCurly = 0) && (insideBracket = 1)
+if (InStr(A_LoopField, "}")) && (readyToEnd1 = 1) && (netsedCurly1 = 0) && (insideBracket = 1)
 {
 ;MsgBox, % A_LoopField
 eldLoopNestedBADlol := 1
@@ -5351,8 +5366,47 @@ if (inTarget = 1) && (dontSaveStr != 1) && (fixLoopLokingForNum != 1) && (insdeA
 
 ALoopField := A_LoopField
 
+
+
+str := ALoopField
+
+sz:=StrSplit(str,"variables.A_Index").2
+out1zzzzzzzzz := sz
+myString := out1zzzzzzzzz
+firstChar := SubStr(myString, 1, 1)
+;MsgBox % "The first character is: " . firstChar
+
+
+if (RegExMatch(firstChar, "^\d$")) {
+;    MsgBox % "The first character is a number: " . firstChar
+} else {
+
+
 ALoopField := StrReplace(ALoopField, "A_Index", "A_Index" . A_IndexLoopCurlyFix)
+
+}
+
+
+str := ALoopField
+
+sz:=StrSplit(str,"variables.A_LoopField").2
+out1zzzzzzzzz := sz
+myString := out1zzzzzzzzz
+firstChar := SubStr(myString, 1, 1)
+;MsgBox % "The first character is: " . firstChar
+
+
+if (RegExMatch(firstChar, "^\d$")) {
+;    MsgBox % "The first character is a number: " . firstChar
+} else {
+
+
+
 ALoopField := StrReplace(ALoopField, "A_LoopField", "A_LoopField" . A_IndexLoopCurlyFix)
+
+}
+
+
 
 out4758686d86d86d86578991a%A_IndexLoopCurlyFix% .= ALoopField . "`n"
 
