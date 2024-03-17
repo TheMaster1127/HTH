@@ -176,7 +176,7 @@ Explore the various features offered by the HTH programming language in this sec
 
 [Go back](#features)
 
-The GUI feature in HTH allows for the creation of graphical user interfaces with elements such as buttons, text, edit fields, and pictures. Pictures can be encoded as base64 in the HTML file, eliminating the need for the original picture file.
+The GUI feature in HTH allows for the creation of graphical user interfaces with elements such as buttons, text, edit fields, and pictures. Pictures will be encoded as base64 in the HTML file, eliminating the need for the original picture file.
 
 ### Gui Command
 
@@ -955,7 +955,7 @@ The `MsgBox` function in HeavenToHell (HTH) provides developers with a versatile
 
 ---
 
-The `FileRead` feature in HeavenToHell (HTH) allows you to read the contents of a file into a variable within your script. It's important to note that when using `FileRead`, you must provide the filename as a literal string without using variables directly in the filename argument.
+The `FileRead` feature in HeavenToHell (HTH) allows you to read the contents of a file into a variable within your script ONLY UPON TRANSPILATION. It's important to note that when using `FileRead`, you must provide the filename as a literal string without using variables directly in the filename argument.
 
 #### Syntax:
 
@@ -1058,6 +1058,7 @@ Sleep, 10000
 ; Stop the timer
 SetTimer, TimerLabel, Off
 
+return
 ; Define a label to be executed by the timer
 TimerLabel:
     ; Perform actions or execute code here
@@ -1087,6 +1088,7 @@ Sleep, 5000
 ; Restart the timer
 SetTimer, TimerLabel, On
 
+return
 ; Define a label to be executed by the timer
 TimerLabel:
     ; Perform actions or execute code here
