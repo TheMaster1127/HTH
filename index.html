@@ -602,12 +602,12 @@
         variables.data = "sdfjubf sdjdf xlsakd xdzsd12344 2kj2q3w";
 
         if (await isConnectedToBackend()) {
-          await showCustomMessageBox([], " ", "We are connected to a backend ", 0, 0);
+          await showCustomMessageBox({}, " ", "We are connected to a backend ", 0, 0);
           //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
           //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-          await showCustomMessageBox([], " ", await getDataFromEndpoint(variables.data, "/var1"), 0, 0);
-          await showCustomMessageBox([], " ", await getDataFromEndpoint("hejsdfbx kdjzcx kzjdx c", "/var1"), 0, 0);
+          await showCustomMessageBox({}, " ", await getDataFromEndpoint(variables.data, "/var1"), 0, 0);
+          await showCustomMessageBox({}, " ", await getDataFromEndpoint("hejsdfbx kdjzcx kzjdx c", "/var1"), 0, 0);
 
           variables.sdf = "/sdffd";
 
@@ -617,10 +617,10 @@
           variables.var1 = "Hello";
 
           if (variables.var1 == (await getDataFromEndpoint(variables.data, "/sdfc"))) {
-            await showCustomMessageBox([], " ", "yey ", 0, 0);
+            await showCustomMessageBox({}, " ", "yey ", 0, 0);
           }
         } else {
-          await showCustomMessageBox([], " ", "We are not connected to a backend ", 0, 0);
+          await showCustomMessageBox({}, " ", "We are not connected to a backend ", 0, 0);
         }
 
         variables.data = textData1;
@@ -991,7 +991,7 @@
 
               variables.WPM = Math.floor(variables.WPM);
 
-              await showCustomMessageBox([], " ", "done in " + variables.ElapsedTime123 + " and " + variables.msgCorrct + "\nWords per minute: " + variables.WPM + " ", 0, 0);
+              await showCustomMessageBox({}, " ", "done in " + variables.ElapsedTime123 + " and " + variables.msgCorrct + "\nWords per minute: " + variables.WPM + " ", 0, 0);
               variables.done = 1;
             }
           }

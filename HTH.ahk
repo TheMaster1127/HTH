@@ -1466,7 +1466,7 @@ timeoutMsgbox := 0
 
 if (toggleAwait = 1) or (toggleAwait = "")
 {
-var1 := "await showCustomMessageBox([],""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
+var1 := "await showCustomMessageBox({},""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
 }
 else
 {
@@ -1567,7 +1567,7 @@ timeoutMsgbox := 0
 
 if (toggleAwait = 1) or (toggleAwait = "")
 {
-var1 := "await showCustomMessageBox([],""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
+var1 := "await showCustomMessageBox({},""" . Title . """, " . line . ", " . Options . ", " . timeoutMsgbox . ")"
 }
 else
 {
@@ -1637,7 +1637,7 @@ Options := 0
 timeoutMsgbox := 0
 
 
-var1 := "await showCustomMessageBox([],""" . Title . """, """ . var1 . " "", " . Options . ", " . timeoutMsgbox . ")"
+var1 := "await showCustomMessageBox({},""" . Title . """, """ . var1 . " "", " . Options . ", " . timeoutMsgbox . ")"
 jsCode .= var1 . "`n"
 
 
@@ -1658,7 +1658,7 @@ out2 := Trim(out2)
 ;MsgBox, % out2
 line := varTraspiler(out2, 0)
 ;MsgBox, % line
-var1 := "await showCustomMessageBox([]," . """ """ .  ", " . line . ", " . 0 . ", " . 0. ")"
+var1 := "await showCustomMessageBox({}," . """ """ .  ", " . line . ", " . 0 . ", " . 0. ")"
 ;MsgBox, % var1
 jsCode .= var1 . "`n"
 
