@@ -429,40 +429,6 @@
         }
       }
 
-      async function getDataFromEndpoint(data, endpoint) {
-        // Convert data to JSON string
-        const requestData = JSON.stringify(data);
-
-        // Set up fetch request options
-        const requestOptions = {
-          method: "POST", // or 'GET' depending on your server's requirements
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: requestData,
-        };
-
-        // Fetch data from the specified endpoint
-        const response = await fetch(endpoint, requestOptions);
-
-        // Check if response is successful
-        if (!response.ok) {
-          throw new Error(`Failed to fetch data from ${endpoint}. Status: ${response.status}`);
-        }
-
-        // Parse response data based on Content-Type header
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-          return response.json(); // Parse JSON response
-        } else {
-          return response.text(); // Parse plain text response
-        }
-      }
-
-      function isConnectedToBackend() {
-        return window.location.protocol !== "file:";
-      }
-
       let lastInputTime = Date.now(); // Initialize with current timestamp
       let startTimestamp = Date.now(); // Initialize with current timestamp
 
@@ -559,7 +525,6 @@
           onceTimerStart: null,
           percentage: null,
           pos: null,
-          sdf: null,
           seconds: null,
           StartTime: null,
           startWord: null,
@@ -567,7 +532,6 @@
           timeTookInMin: null,
           timeTookInMS: null,
           v: null,
-          var1: null,
           varRight: null,
           varWrong: null,
           w2: null,
@@ -599,29 +563,7 @@
           HotKeyCalledAltL();
         });
 
-        variables.data = "sdfjubf sdjdf xlsakd xdzsd12344 2kj2q3w";
-
-        if (await isConnectedToBackend()) {
-          await showCustomMessageBox({}, " ", "We are connected to a backend ", 0, 0);
-          //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-          //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-          await showCustomMessageBox({}, " ", await getDataFromEndpoint(variables.data, "/var1"), 0, 0);
-          await showCustomMessageBox({}, " ", await getDataFromEndpoint("hejsdfbx kdjzcx kzjdx c", "/var1"), 0, 0);
-
-          variables.sdf = "/sdffd";
-
-          await getDataFromEndpoint(variables.data, "/sdfc");
-          await getDataFromEndpoint(variables.data, variables.sdf);
-
-          variables.var1 = "Hello";
-
-          if (variables.var1 == (await getDataFromEndpoint(variables.data, "/sdfc"))) {
-            await showCustomMessageBox({}, " ", "yey ", 0, 0);
-          }
-        } else {
-          await showCustomMessageBox({}, " ", "We are not connected to a backend ", 0, 0);
-        }
+        await showCustomMessageBox({}, " ", "This is my test webite for HTH. This is typespeed game where it will tell you you typing speed. ", 0, 0);
 
         variables.data = textData1;
         variables.wordNum = 0;

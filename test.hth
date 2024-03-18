@@ -1,36 +1,7 @@
 
 
-data := "sdfjubf sdjdf xlsakd xdzsd12344 2kj2q3w"
 
-if (isConnectedToBackend())
-{
-MsgBox, We are connected to a backend
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
-MsgBox, % getDataFromEndpoint(data, "/var1")
-MsgBox, % getDataFromEndpoint("hejsdfbx kdjzcx kzjdx c", "/var1")
-
-sdf := "/sdffd"
-
-
-
-
-getDataFromEndpoint(data, "/sdfc")
-getDataFromEndpoint(data, sdf)
-
-var1 := "Hello"
-if (var1 = getDataFromEndpoint(data, "/sdfc"))
-{
-MsgBox, yey
-}
-}
-else
-{
-MsgBox, We are not connected to a backend
-}
+MsgBox, This is my test webite for HTH. This is typespeed game where it will tell you you typing speed.
 
 
 FileRead, data, data.txt
