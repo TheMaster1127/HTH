@@ -1,7 +1,7 @@
 
 
 
-MsgBox, This is my test webite for HTH. This is typespeed game where it will tell you you typing speed.
+MsgBox, This is my test webite for HTH. This is typespeed game where it will tell you your typing speed.
 
 
 FileRead, data, data.txt
