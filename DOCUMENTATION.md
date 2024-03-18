@@ -296,13 +296,6 @@ This section provides information about the controls that can be used within the
 2. Button - Button you can click
 3. Edit - Will crete a place to enter text
 4. Pictire - Will display a Picture. Pictures can be encoded as base64 in the HTML file, eliminating the need for the original picture file.
-You must add the v option this for Pictures to work like this:
-
-```ahk
-Gui, Show, w500 h500
-Gui, Add, Picture, x10 y10 w300 h300 vImage1, C:\path to your image\image.jpg
-```
-
 
 ### Examples <a id="gui-examples"></a>
 
