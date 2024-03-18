@@ -5123,6 +5123,15 @@ fixLoopLokingForNum := 1
 
 if (InStr(A_LoopField, "for (/*")) && (weAreDoneHereCurly != 1) && (insdeAnestedLoopBAD != 1) && (fixLoopLokingForNum = 1)
 {
+
+s:=StrSplit(A_LoopField,"variables.A_Index").2
+out1z := s
+
+s:=StrSplit(out1z," ").1
+out1z := Trim(s)
+
+;MsgBox, % out1z
+
 ;MsgBox, do we came here 2
 fixLoopLokingForNum := 0
 foundTheTopLoop++
@@ -5202,23 +5211,16 @@ if (inTarget = 1) && (dontSaveStr != 1) && (fixLoopLokingForNum != 1) && (insdeA
 
 ALoopField := A_LoopField
 
-str := ALoopField
-
-sz:=StrSplit(str,"variables.A_Index").2
-out1zzzzzzzzz := sz
-myString := out1zzzzzzzzz
-firstChar := SubStr(myString, 1, 1)
-;MsgBox % "The first character is: " . firstChar
 
 
-if (RegExMatch(firstChar, "^\d$")) {
-;    MsgBox % "The first character is a number: " . firstChar
-} else {
+
+; Replace "A_Index" with or without a following digit with "A_Index" + out1z
+ALoopField := RegExReplace(ALoopField, "A_Index(?:\d+)?", "A_Index" . out1z)
 
 
-ALoopField := StrReplace(ALoopField, "A_Index", "A_Index" . A_IndexLoopCurlyFix)
+
 ;ALoopField := StrReplace(ALoopField, "A_LoopField", "A_LoopField" . A_IndexLoopCurlyFix)
-}
+
 
 out4758686d86d86d86578991a%A_IndexLoopCurlyFix% .= ALoopField . "`n"
 
@@ -5286,6 +5288,16 @@ fixLoopLokingForNum := 1
 
 if (InStr(A_LoopField, "for (/*")) && (weAreDoneHereCurly != 1) && (insdeAnestedLoopBAD != 1) && (fixLoopLokingForNum = 1)
 {
+
+
+s:=StrSplit(A_LoopField,"variables.A_Index").2
+out1z := s
+
+s:=StrSplit(out1z," ").1
+out1z := Trim(s)
+
+;MsgBox, % out1z
+
 fixLoopLokingForNum := 0
 ;MsgBox, do we came here 4
 foundTheTopLoop++
@@ -5367,44 +5379,12 @@ if (inTarget = 1) && (dontSaveStr != 1) && (fixLoopLokingForNum != 1) && (insdeA
 ALoopField := A_LoopField
 
 
-
-str := ALoopField
-
-sz:=StrSplit(str,"variables.A_Index").2
-out1zzzzzzzzz := sz
-myString := out1zzzzzzzzz
-firstChar := SubStr(myString, 1, 1)
-;MsgBox % "The first character is: " . firstChar
+; Replace "A_Index" with or without a following digit with "A_Index" + out1z
+ALoopField := RegExReplace(ALoopField, "A_Index(?:\d+)?", "A_Index" . out1z)
+; Replace "A_Index" with or without a following digit with "A_Index" + out1z
+ALoopField := RegExReplace(ALoopField, "A_LoopField(?:\d+)?", "A_LoopField" . out1z)
 
 
-if (RegExMatch(firstChar, "^\d$")) {
-;    MsgBox % "The first character is a number: " . firstChar
-} else {
-
-
-ALoopField := StrReplace(ALoopField, "A_Index", "A_Index" . A_IndexLoopCurlyFix)
-
-}
-
-
-str := ALoopField
-
-sz:=StrSplit(str,"variables.A_LoopField").2
-out1zzzzzzzzz := sz
-myString := out1zzzzzzzzz
-firstChar := SubStr(myString, 1, 1)
-;MsgBox % "The first character is: " . firstChar
-
-
-if (RegExMatch(firstChar, "^\d$")) {
-;    MsgBox % "The first character is a number: " . firstChar
-} else {
-
-
-
-ALoopField := StrReplace(ALoopField, "A_LoopField", "A_LoopField" . A_IndexLoopCurlyFix)
-
-}
 
 
 
@@ -5453,6 +5433,33 @@ A_IndexLoopCurlyFix++
 wasAtanyIfsElseAddA_IndexLoopCurlyFix := 0
 }
 }
+
+
+out4758686d86dgt8r754444444 := ""
+hold := 0
+Loop, Parse, jsCode, `n, `r
+{
+    ignore := 0
+    if (InStr(A_LoopField, "for (/*"))
+    {
+        if (hold = 1 && holdText = A_LoopField) {
+            ignore := 1
+        }
+        else {
+            holdText := A_LoopField
+            hold := 1
+        }
+    }
+
+    if (!ignore) {
+        out4758686d86dgt8r754444444 .= A_LoopField . "`n"
+    }
+}
+
+StringTrimRight, out4758686d86dgt8r754444444, out4758686d86dgt8r754444444, 1
+jsCode := out4758686d86dgt8r754444444
+
+
 
 out4758686d86d86d86578991abc := ""
 
