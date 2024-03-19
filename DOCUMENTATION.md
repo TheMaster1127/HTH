@@ -160,7 +160,7 @@ Explore the various features offered by the HTH programming language in this sec
 19. [Loop](#loop)
 20. [Loop, Parse](#loop-parse)
 21. [Variables and Arrays](#variablesandarrays)
-22. [Run](#run)
+22. [Run and Reload](#run-and-reload)
 23. [#Include](#include)
 24. [Comments](#hth-comments)
 25. [getDataFromEndpoint](#getdatafromendpoint)
@@ -415,7 +415,6 @@ GuiControl, Action, ControlID, Param1, Param2, Param3, Param4
   - `Enable`: Enable the control.
   - `Disable`: Disable the control.
   - `Font`: Set the font size or color of the control.
-
 
 - `ControlID`: The unique identifier of the GUI control to be manipulated.
 
@@ -1888,9 +1887,16 @@ This example demonstrates how to define and iterate over an array in HTH, handli
 
 ---
 
-### Run <a id="run"></a>
+### Run and Reload <a id="run-and-reload"></a>
 
 [Go back](#features)
+
+1. [Run](#run)
+2. [Reload](#reload)
+
+### Run <a id="run"></a>
+
+[Go back](#run-and-reload)
 
 The `Run` feature in HeavenToHell (HTH) enables developers to open specific websites directly from their scripts. This functionality is particularly useful for automating tasks that involve interacting with web pages.
 
@@ -1940,6 +1946,40 @@ In this example, the `Run` function is used to launch the example.com website by
 - Ensure that the target URL or path provided to the `Run` function is valid and accessible.
 
 The `Run` feature in HeavenToHell (HTH) offers a straightforward way to launch websites directly from scripts, providing developers with greater flexibility and automation capabilities. The `Run` function simplifies the process of launching websites from within HTH scripts.
+
+### Reload <a id="reload"></a>
+
+[Go back](#run-and-reload)
+
+The `Reload` feature in HeavenToHell (HTH) allows developers to reload the currently active webpage directly from their scripts. This functionality is particularly useful for refreshing content dynamically without manually refreshing the page.
+
+#### Syntax:
+
+```ahk
+Reload
+```
+
+#### Examples:
+
+```ahk
+; Reload the currently active webpage
+Reload
+```
+
+#### Usage:
+
+To reload a currently active webpage, simply use the `Reload` command without specifying a target.
+
+```ahk
+; Reload the currently active webpage
+Reload
+```
+
+This command will refresh the content of the webpage, allowing developers to update information dynamically.
+
+#### Note:
+
+- The `Reload` command is used to refresh the content of the currently active webpage, providing developers with the capability to update information dynamically without manual intervention.
 
 ---
 
@@ -1998,6 +2038,7 @@ The `#Include` directive in HeavenToHell (HTH) provides a convenient and efficie
 [Go back](#features)
 
 In HeavenToHell (HTH), comments play a vital role in enhancing code readability and providing additional context for developers.
+
 #### Syntax:
 
 ```ahk
@@ -2678,6 +2719,7 @@ MsgBox, The character corresponding to ASCII code 65 is %character%
 ```
 
 ---
+
 ### InStr <a id="instr"></a>
 
 [Go back](#build-in-functions)
@@ -2710,7 +2752,7 @@ if (InStr(var1, "World"))
 }
 ```
 
---- 
+---
 
 ### RegExMatch <a id="regexmatch"></a>
 
