@@ -389,6 +389,88 @@ MsgBox, You clicked on %A_GuiControl%
 Return
 ```
 
+Example 4
+
+```ahk
+; Show the GUI window with specified width and height
+Gui, Show, w250 h300
+
+; Create an empty string for initializing edit controls
+nothing := ""
+
+; Create GUI window
+Gui, Add, Text, x20 y20 w210 h30, Enter two numbers:
+Gui, Add, Edit, x20 y50 w210 h30 gNum1 vNum1, %nothing%
+Gui, Add, Edit, x20 y90 w210 h30 gNum2 vNum2, %nothing%
+Gui, Add, Button, x20 y130 w100 h30 gAdd, Add
+Gui, Add, Button, x130 y130 w100 h30 gSubtract, Subtract
+Gui, Add, Button, x20 y170 w100 h30 gMultiply, Multiply
+Gui, Add, Button, x130 y170 w100 h30 gDivide, Divide
+Gui, Add, Text, x20 y220 w210 h30 vResultText, %nothing%
+return
+
+; Label to handle text input in Num1 edit control
+Num1:
+Num1 := A_GuiControl
+Return
+
+; Label to handle text input in Num2 edit control
+Num2:
+Num2 := A_GuiControl
+Return
+
+; Define functions to handle button click events
+
+; Addition function
+Add:
+    ; Perform addition operation
+    Result := ParseInt(Num1) + ParseInt(Num2)
+    ; Format the result message
+    Result := "Result: " . Result
+    ; Update the text of ResultText control with the result
+    GuiControl, Text, ResultText, %Result%
+Return
+
+; Subtraction function
+Subtract:
+    ; Perform subtraction operation
+    Result := ParseInt(Num1) - ParseInt(Num2)
+    ; Format the result message
+    Result := "Result: " . Result
+    ; Update the text of ResultText control with the result
+    GuiControl, Text, ResultText, %Result%
+Return
+
+; Multiplication function
+Multiply:
+    ; Perform multiplication operation
+    Result := ParseInt(Num1) * ParseInt(Num2)
+    ; Format the result message
+    Result := "Result: " . Result
+    ; Update the text of ResultText control with the result
+    GuiControl, Text, ResultText, %Result%
+Return
+
+; Division function
+Divide:
+    ; Check if Num2 is not zero to avoid division by zero error
+    if (Num2 != 0)
+    {
+        ; Perform division operation
+        Result := ParseInt(Num1) / ParseInt(Num2)
+        ; Format the result message
+        Result := "Result: " . Result
+        ; Update the text of ResultText control with the result
+        GuiControl, Text, ResultText, %Result%
+    }
+    else
+    {
+        ; Display error message if Num2 is zero
+        GuiControl, Text, ResultText, Cannot divide by zero
+    }
+Return
+```
+
 ---
 
 ### GuiControl <a id="guicontrol"></a>
