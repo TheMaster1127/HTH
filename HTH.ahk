@@ -61,6 +61,7 @@ test := 1 ; test your code ignore this the transpiler is done i forgot this so n
 fileNameHTH2Num := 0
 for n, param in A_Args  ; For each parameter:
 {
+
 if (n = 1)
 {
 fileNameHTH := param
@@ -74,7 +75,19 @@ fileNameHTH := param
 if (n = 2)
 {
 fileNameHTH2 := param
+if (fileNameHTH2 = "webHTH")
+{
+webHTH := 1
+}
+else
+{
 fileNameHTH2Num := 1
+}
+}
+
+if (n = 3)
+{
+param3NameOfwebHTHfile := param
 }
 
 }
@@ -116,6 +129,7 @@ if (RegExMatch(path, regex, match)) {
 }
 else
 {
+
 ExitApp
 }
 ;MsgBox, % fileNameHTH
@@ -145,12 +159,24 @@ variables .= "  " . "characters" . ": null," . "`n"
 
 jsCodeGui := ""
 
+base64soundList := ""
+base64soundNum := 0
+base64iconNum := 0
+base64iconList := ""
 out123456 := ""
 
 textAfterSemicolonNum := 0
 
-out123456ggFixTrim := ""
 
+out123456ggFixTrim := ""
+ifWeUseCanvasThenAddUpdateFunc1 := ""
+ifWeUseCanvasThenAddUpdateFunc2 := ""
+varOutJsCanvasFixTranspernat := ""
+rectangleId := 0
+switchId := 0
+videoId := 0
+ifWeUseCanvas := 0
+weUseCnanvasAtALL := 0
 libNum := 0
 
 Loop
@@ -212,6 +238,18 @@ AHKcode := Lib . "`n`n" . AHKcode
 }
 
 
+if (InStr(AHKcode, "OnMouseClick:"))
+{
+AHKcodeOnMouseClickAdd =
+(
+
+        // Attaching event listener to document
+        document.addEventListener("click", OnMouseClick);
+
+)
+AHKcode := AHKcodeOnMouseClickAdd . "`n" . AHKcode . "`n"
+}
+
 Loop, Parse, AHKcode, `n, `r
 {
 
@@ -227,6 +265,18 @@ StringTrimRight, out123456ggFixTrim, out123456ggFixTrim, 1
 AHKcode := out123456ggFixTrim
 
 
+
+Loop, Parse, AHKcode, `n, `r
+{
+
+out := A_LoopField
+
+if (SubStr(StrLower(out), 1, 19) = StrLower("Gui, Add, Rectangle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Circle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Toggle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Player"))
+{
+weUseCnanvasAtALL := 1
+}
+
+}
 
 
 
@@ -339,7 +389,7 @@ out2 := varTraspiler(extractedText, 1)
 
 out3 := lastLine22
 
-lastLine22 := "async function " . out3 . "`n{`n" . out2 . "`n|nextbarcccketIwnatatataitgoneokdudeorelsleplsk|"
+lastLine22 := "async function " . out3 . "`r{`n" . out2 . "`n|nextbarcccketIwnatatataitgoneokdudeorelsleplsk|"
 ;MsgBox, % lastLine22
 ;MsgBox % "Last Line 1: " lastLine2 "`nLast Line 2: " lastLine1
 AHKcodeUot .= lastLine22 . "`n"
@@ -386,16 +436,19 @@ Loop, Parse, funcNamesLen, `n, `r
 
 funcs := ""
 funcs .= "let funcs = {`n"
-
+doWeEvenDecAnyFuncHUH := 0
 Loop, Parse, funcNames, `n, `r
 {
   funcNames%A_Index% := A_LoopField
   maxNumLenStrNum := A_Index + 1
 funcs .= "  " . "" . A_LoopField . "" . ": " . A_LoopField . "," . "`n"
-
+doWeEvenDecAnyFuncHUH++
 }
+
 funcs .= "}"
 ;MsgBox, % funcs
+
+
 
 
 AHKcodeUot123 := ""
@@ -477,6 +530,7 @@ AHKcode := AHKcodeUot123
 
 base64ImageNum := 0
 base64ImageData := ""
+base64VideoData := ""
 
 
 
@@ -488,6 +542,8 @@ Loop, Parse, AHKcode, `n, `r
 lineDone := 0
 str := A_LoopField
 
+if !(SubStr(StrLower(str), 1, 19) = StrLower("Gui, Add, rectangle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Circle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Toggle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Player"))
+{
 
 if (InStr(str, """"))
 {
@@ -612,6 +668,14 @@ var := StrReplace(var, """\"";", "\"""" ")
 }
 
 out123456 .= var . "`n"
+}
+else
+{
+  ;MsgBox, % str
+  out123456 .= str . "`n"
+}
+
+
 
 }
 
@@ -698,6 +762,280 @@ line := varTraspiler(out2, 0)
 var1 := "await sleep(" . line . ")"
 lineDone := 1
 jsCode .= var1 . "`n"
+
+
+}
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 13) = StrLower("MouseGetPos, "))
+{
+
+str := A_LoopField
+
+
+s := RegExMatch(str, "i)MouseGetPos, (.*)", match) ? match1 : ""
+out2 := s
+
+
+
+
+
+;MsgBox, % out2
+out2 := Trim(out2)
+
+;MsgBox, |%out2%|
+
+if (InStr(out2, ","))
+{
+
+str := out2
+
+s:=StrSplit(str,", ").1
+out21 := s
+
+s:=StrSplit(str,", ").2
+out22 := s
+
+
+
+line1 := varTraspiler(out21, 0)
+line2 := varTraspiler(out22, 0)
+;MsgBox, % line
+
+var1 := line1 . " = MouseGetPos(""x"")"
+var2 := line2 . " = MouseGetPos(""y"")"
+
+if (Trim(out21) = "")
+{
+jsCode .= var2 . "`n"
+}
+else
+{
+jsCode .= var1 . "`n" . var2 . "`n"
+}
+}
+else
+{
+line := varTraspiler(out2, 0)
+;MsgBox, % line
+var1 := line . " = MouseGetPos(""x"")"
+jsCode .= var1 . "`n"
+}
+
+
+lineDone := 1
+
+
+
+}
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 11) = StrLower("SoundPlay, "))
+{
+
+str := A_LoopField
+
+
+s := RegExMatch(str, "i)SoundPlay, (.*)", match) ? match1 : ""
+out2 := s
+
+
+
+
+
+;MsgBox, % out2
+out2 := Trim(out2)
+
+;MsgBox, |%out2%|
+
+
+str := out2
+
+if (InStr(str, ","))
+{
+
+s:=StrSplit(str,", ").1
+out21 := Trim(s)
+
+s:=StrSplit(str,", ").2
+out22 := Trim(s)
+
+if (InStr(out21, "volume"))
+{
+; volume
+var1 := "SoundPlay(""volume"", " . out22 . ")"
+}
+else
+{
+; play
+; in out22 we have a file path that has to converted to base64
+base64soundNum++
+
+
+
+if !(InStr(out22, "https://") or InStr(out22, "http://") or InStr(out22, "www.") or InStr(out22, "ftp://"))
+{
+
+
+File := Trim(out22)
+FileGetSize, nBytes, %File%
+FileRead, Bin, *c %File%
+ImageData := Base64Enc(Bin, nBytes, 100, 2 )
+
+
+; Encode the image data to base64
+Bbase64ImageData := StrReplace(ImageData, "`n", "") ; Remove line breaks
+Bbase64ImageData := StrReplace(Bbase64ImageData, "`r", "") ; Remove carriage returns
+Bbase64ImageData := StrReplace(Bbase64ImageData, "`t", "") ; Remove tabs
+Bbase64ImageData := StrReplace(Bbase64ImageData, " ", "") ; Remove spaces
+base64out := imageTag1 . Bbase64ImageData . imageTag2
+
+}
+else
+{
+base64out := Trim(out22)
+}
+
+
+base64sound := base64out
+
+base64soundListDummy =
+(
+
+let base64sound%base64soundNum% = "%base64sound%"
+
+)
+
+base64soundList .= base64soundListDummy
+
+var1 := "SoundPlay(""play"", base64sound" . base64soundNum . ")"
+
+}
+
+}
+else
+{
+str := Trim(str)
+var1 := "SoundPlay(""" . str .  """)"
+}
+
+jsCode .= var1 . "`n"
+
+
+lineDone := 1
+
+
+
+}
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 6) = StrLower("Icon, "))
+{
+
+str := A_LoopField
+
+
+s := RegExMatch(str, "i)Icon, (.*)", match) ? match1 : ""
+out2 := s
+
+
+
+
+
+;MsgBox, % out2
+out2 := Trim(out2)
+
+;MsgBox, |%out2%|
+
+
+
+if !(InStr(out2, "https://") or InStr(out2, "http://") or InStr(out2, "www.") or InStr(out2, "ftp://"))
+{
+base64iconNum++
+
+
+
+File := Trim(out2)
+FileGetSize, nBytes, %File%
+FileRead, Bin, *c %File%
+ImageData := Base64Enc(Bin, nBytes, 100, 2 )
+
+
+; Encode the image data to base64
+Bbase64ImageData := StrReplace(ImageData, "`n", "") ; Remove line breaks
+Bbase64ImageData := StrReplace(Bbase64ImageData, "`r", "") ; Remove carriage returns
+Bbase64ImageData := StrReplace(Bbase64ImageData, "`t", "") ; Remove tabs
+Bbase64ImageData := StrReplace(Bbase64ImageData, " ", "") ; Remove spaces
+base64out := imageTag1 . Bbase64ImageData . imageTag2
+
+
+
+
+
+base64icon := base64out
+
+base64iconListDummy =
+(
+
+let base64icon%base64iconNum% = "%base64icon%"
+
+)
+
+base64iconList .= base64iconListDummy
+
+var1 := "changeFavicon(base64icon" . base64iconNum . ")"
+
+
+
+}
+else
+{
+var1 := "changeFavicon(""" . out2 . """)"
+}
+
+
+
+jsCode .= var1 . "`n"
+
+
+lineDone := 1
+
+
+
+}
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = StrLower("Title, "))
+{
+
+str := A_LoopField
+
+
+s := RegExMatch(str, "i)Title, (.*)", match) ? match1 : ""
+out2 := s
+
+
+
+
+;MsgBox, % out2
+out2 := Trim(out2)
+
+;MsgBox, |%out2%|
+
+
+if (InStr(out2, "%"))
+{
+str := out2
+s:=StrSplit(str,"%").2
+out3 := s
+
+var1 =
+(
+document.title = variables.%out3%
+)
+}
+else
+{
+var1 := "document.title = """ . out2 . """"
+}
+
+jsCode .= var1 . "`n"
+
+
+lineDone := 1
+
 
 
 }
@@ -3113,32 +3451,6 @@ base64ImageNum++
 
 
 
-File := Trim(out5)
-FileGetSize, nBytes, %File%
-FileRead, Bin, *c %File%
-ImageData := Base64Enc(Bin, nBytes, 100, 2 )
-
-
-; Encode the image data to base64
-Bbase64ImageData := StrReplace(ImageData, "`n", "") ; Remove line breaks
-Bbase64ImageData := StrReplace(Bbase64ImageData, "`r", "") ; Remove carriage returns
-Bbase64ImageData := StrReplace(Bbase64ImageData, "`t", "") ; Remove tabs
-Bbase64ImageData := StrReplace(Bbase64ImageData, " ", "") ; Remove spaces
-base64out := imageTag1 . Bbase64ImageData . imageTag2
-
-
-
-
-
-base64 =
-(
-let base64Image%base64ImageNum% = "%base64out%"
-)
-
-base64ImageData .= base64 . "`n"
-
-
-
 guiOutOfPictureNum := 0
 guiOutOfPictureX := 0
 guiOutOfPictureY := 0
@@ -3230,6 +3542,12 @@ guiOutOfPicture52 :=  " "" + [variables." . var1 . "]" . " + " . """"
 }
 StringTrimLeft, guiOutOfPicture5, guiOutOfPicture5, 1
 StringTrimLeft, guiOutOfPicture52, guiOutOfPicture52, 1
+weDontHaveAvImage := 0
+}
+else
+{
+weDontHaveAvImage := 1
+
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
 {
@@ -3242,6 +3560,26 @@ StringTrimLeft, guiOutOfPicture6, guiOutOfPicture6, 1
 NumOfPictures++
 
 
+if (weDontHaveAvImage = 1)
+{
+
+guiOutOfPictureV := 1
+guiOutOfPicture5 := "v" . "Picture" . NumOfPictures
+guiOutOfPicture52 := "v" . "Picture" . NumOfPictures
+dynamicGuiSet := 1
+if (InStr(guiOutOfPicture5, "%"))
+{
+str := guiOutOfPicture5
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfPicture5 :=  " [variables." . var1 . "]"
+guiOutOfPicture52 :=  " "" + [variables." . var1 . "]" . " + " . """"
+}
+StringTrimLeft, guiOutOfPicture5, guiOutOfPicture5, 1
+StringTrimLeft, guiOutOfPicture52, guiOutOfPicture52, 1
+}
+
 if (InStr(out5, "%"))
 {
 str := out5
@@ -3252,6 +3590,72 @@ out5 :=  """"" + variables." . var1 . " + """""
 
 
 }
+
+
+
+
+if (InStr(out5, "https://") or InStr(out5, "http://") or InStr(out5, "www.") or InStr(out5, "ftp://"))
+{
+    ; One or more of the specified substrings are found in out5
+    ;MsgBox, URL or FTP link detected in out5: %out5%
+
+isBase64orURL2 =
+(
+
+Gui%GuiNumber%%guiOutOfPicture5%.src = base64Image%base64ImageNum%;
+
+)
+
+base64out := out5
+
+isBase64orURL := isBase64orURL2 ; url
+
+
+
+
+}
+else
+{
+    ; None of the specified substrings are found in out5
+    ;MsgBox, No URL or FTP link detected in out5: %out5%
+
+
+
+File := Trim(out5)
+FileGetSize, nBytes, %File%
+FileRead, Bin, *c %File%
+ImageData := Base64Enc(Bin, nBytes, 100, 2 )
+
+
+; Encode the image data to base64
+Bbase64ImageData := StrReplace(ImageData, "`n", "") ; Remove line breaks
+Bbase64ImageData := StrReplace(Bbase64ImageData, "`r", "") ; Remove carriage returns
+Bbase64ImageData := StrReplace(Bbase64ImageData, "`t", "") ; Remove tabs
+Bbase64ImageData := StrReplace(Bbase64ImageData, " ", "") ; Remove spaces
+base64out := imageTag1 . Bbase64ImageData . imageTag2
+
+
+isBase64orURL1 =
+(
+
+Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%;
+
+)
+isBase64orURL := isBase64orURL1 ; base64
+}
+
+
+
+
+base64 =
+(
+let base64Image%base64ImageNum% = "%base64out%"
+)
+
+base64ImageData .= base64 . "`n"
+
+
+
 
 if (dynamicGuiSet = 0)
 {
@@ -3280,7 +3684,7 @@ Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
 
 
 // Set the src attribute to the Base64-encoded image string for the second block
-Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+%isBase64orURL%
 
 // Set CSS styles to resize the image to fit inside the div
 Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
@@ -3292,6 +3696,9 @@ Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
 )
 
 jsCode .= "`n" . jsCode0 . "`n"
+
+
+
 
 }
 else
@@ -3313,7 +3720,8 @@ Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
 
 
 // Set the src attribute to the Base64-encoded image string for the second block
-Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+%isBase64orURL%
+
 
 // Set CSS styles to resize the image to fit inside the div
 Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
@@ -3350,10 +3758,8 @@ variables.A_GuiControl = event.target.textContent
 Gui%GuiNumber%.appendChild(Gui%GuiNumber%Picture%NumOfPictures%);
 
 
+%isBase64orURL%
 
-
-// Set the src attribute to the Base64-encoded image string for the second block
-Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
 
 // Set CSS styles to resize the image to fit inside the div
 Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
@@ -3385,7 +3791,7 @@ Gui%GuiNumber%.appendChild(Gui%GuiNumber%Picture%NumOfPictures%);
 
 
 // Set the src attribute to the Base64-encoded image string for the second block
-Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+%isBase64orURL%
 
 // Set CSS styles to resize the image to fit inside the div
 Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
@@ -3428,7 +3834,7 @@ Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
 
 
 // Set the src attribute to the Base64-encoded image string for the second block
-Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+%isBase64orURL%
 
 // Set CSS styles to resize the image to fit inside the div
 Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
@@ -3459,7 +3865,7 @@ Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfPicture5%);
 
 
 // Set the src attribute to the Base64-encoded image string for the second block
-Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+%isBase64orURL%
 
 // Set CSS styles to resize the image to fit inside the div
 Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
@@ -3529,7 +3935,7 @@ Gui%GuiNumber%.appendChild(Gui%GuiNumber%Picture%NumOfPictures%);
 
 
 // Set the src attribute to the Base64-encoded image string for the second block
-Gui%GuiNumber%%guiOutOfPicture5%.src = "data:image/*;base64," + base64Image%base64ImageNum%; // Assuming the image is in PNG format
+%isBase64orURL%
 
 // Set CSS styles to resize the image to fit inside the div
 Gui%GuiNumber%%guiOutOfPicture5%.style.maxWidth = "100`%"; // Resize the image to fit the width of the div
@@ -3558,11 +3964,598 @@ jsCode .= "`n" . jsCode0 . "`n"
 }
 
 
-
-
-
-if (out2 = "show")
+if (out3 = "toggle")
 {
+
+
+
+
+
+
+
+guiOutOfSwitchNum := 0
+guiOutOfSwitchX := 0
+guiOutOfSwitchY := 0
+guiOutOfSwitchW := 0
+guiOutOfSwitchH := 0
+guiOutOfSwitchV := 0
+guiOutOfSwitchG := 0
+Loop, 7
+{
+guiOutOfSwitch%A_Index% := ""
+}
+
+guiOutOfSwitch3 := "60"
+guiOutOfSwitch4 := "30"
+
+dynamicGuiSet := 0
+Loop, Parse, out4, " "
+{
+;MsgBox, |%A_LoopField%|
+
+guiOutOfSwitchNum++
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfSwitchX := 1
+guiOutOfSwitch1 := A_LoopField
+if (InStr(guiOutOfSwitch1, "%"))
+{
+str := guiOutOfSwitch1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfSwitch1 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfSwitch1, guiOutOfSwitch1, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfSwitchY := 1
+guiOutOfSwitch2 := A_LoopField
+if (InStr(guiOutOfSwitch2, "%"))
+{
+str := guiOutOfSwitch2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfSwitch2 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfSwitch2, guiOutOfSwitch2, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfSwitchW := 1
+guiOutOfSwitch3 := A_LoopField
+if (InStr(guiOutOfSwitch3, "%"))
+{
+str := guiOutOfSwitch3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfSwitch3 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfSwitch3, guiOutOfSwitch3, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfSwitchH := 1
+guiOutOfSwitch4 := A_LoopField
+if (InStr(guiOutOfSwitch4, "%"))
+{
+str := guiOutOfSwitch4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfSwitch4 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfSwitch4, guiOutOfSwitch4, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
+{
+guiOutOfSwitchV := 1
+guiOutOfSwitch5 := """" . "Gui1" . A_LoopField . """"
+guiOutOfSwitch52 := A_LoopField
+dynamicGuiSet := 1
+if (InStr(guiOutOfSwitch5, "%"))
+{
+str := guiOutOfSwitch5
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfSwitch5 :=  " [variables." . var1 . "]"
+guiOutOfSwitch52 :=  " "" + [variables." . var1 . "]" . " + " . """"""
+}
+else
+{
+StringTrimLeft, A_LoopFieldOutFixCnavas, A_LoopField, 1
+guiOutOfSwitch5 :=  " " . """" . "Gui1" . A_LoopFieldOutFixCnavas . """"
+}
+StringTrimLeft, guiOutOfSwitch5, guiOutOfSwitch5, 1
+StringTrimLeft, guiOutOfSwitch52, guiOutOfSwitch52, 1
+isThereArecId := 0
+}
+else
+{
+isThereArecId := 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
+{
+guiOutOfSwitchG := 1
+guiOutOfSwitch6 := A_LoopField
+StringTrimLeft, guiOutOfSwitch6, guiOutOfSwitch6, 1
+}
+}
+
+switchId++
+
+
+if (isThereArecId = 1)
+{
+guiOutOfSwitch5 := """" . "Gui" . GuiNumber . "Switch" . switchId .  """"
+}
+
+
+
+switchOut =
+(
+createToggleSwitch(Gui%GuiNumber%, %guiOutOfSwitch5%, "%out5%", "#2196F3", %guiOutOfSwitch1%, %guiOutOfSwitch2%, %guiOutOfSwitch3%, %guiOutOfSwitch4%, %guiOutOfSwitch6% );
+)
+
+
+;MsgBox, % rectangleOut
+
+jsCode .= "`n" . switchOut . "`n"
+
+}
+
+
+
+
+if (out3 = "player")
+{
+
+
+
+
+
+
+
+guiOutOfVideoNum := 0
+guiOutOfVideoX := 0
+guiOutOfVideoY := 0
+guiOutOfVideoW := 0
+guiOutOfVideoH := 0
+guiOutOfVideoV := 0
+guiOutOfVideoG := 0
+Loop, 7
+{
+guiOutOfVideo%A_Index% := ""
+}
+
+guiOutOfVideo3 := "480"
+guiOutOfVideo4 := "300"
+
+dynamicGuiSet := 0
+Loop, Parse, out4, " "
+{
+;MsgBox, |%A_LoopField%|
+
+guiOutOfVideoNum++
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfVideoX := 1
+guiOutOfVideo1 := A_LoopField
+if (InStr(guiOutOfVideo1, "%"))
+{
+str := guiOutOfVideo1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfVideo1 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfVideo1, guiOutOfVideo1, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfVideoY := 1
+guiOutOfVideo2 := A_LoopField
+if (InStr(guiOutOfVideo2, "%"))
+{
+str := guiOutOfVideo2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfVideo2 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfVideo2, guiOutOfVideo2, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfVideoW := 1
+guiOutOfVideo3 := A_LoopField
+if (InStr(guiOutOfVideo3, "%"))
+{
+str := guiOutOfVideo3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfVideo3 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfVideo3, guiOutOfVideo3, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfVideoH := 1
+guiOutOfVideo4 := A_LoopField
+if (InStr(guiOutOfVideo4, "%"))
+{
+str := guiOutOfVideo4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfVideo4 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfVideo4, guiOutOfVideo4, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
+{
+guiOutOfVideoV := 1
+guiOutOfVideo5 := """" . "Gui1" . A_LoopField . """"
+guiOutOfVideo52 := A_LoopField
+dynamicGuiSet := 1
+if (InStr(guiOutOfVideo5, "%"))
+{
+str := guiOutOfVideo5
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfVideo5 :=  " [variables." . var1 . "]"
+guiOutOfVideo52 :=  " "" + [variables." . var1 . "]" . " + " . """"""
+}
+else
+{
+StringTrimLeft, A_LoopFieldOutFixCnavas, A_LoopField, 1
+guiOutOfVideo5 :=  " " . """" . "Gui1" . A_LoopFieldOutFixCnavas . """"
+}
+StringTrimLeft, guiOutOfVideo5, guiOutOfVideo5, 1
+StringTrimLeft, guiOutOfVideo52, guiOutOfVideo52, 1
+isThereArecId := 0
+}
+else
+{
+isThereArecId := 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
+{
+guiOutOfVideoG := 1
+guiOutOfVideo6 := A_LoopField
+StringTrimLeft, guiOutOfVideo6, guiOutOfVideo6, 1
+}
+}
+
+
+
+
+; 1 url
+; 2 yt url
+; 3 base64
+typeOfAvideo := 0
+
+if (InStr(out5, "https://") or InStr(out5, "http://") or InStr(out5, "www.") or InStr(out5, "ftp://"))
+{
+    ; One or more of the specified substrings are found in out5
+    ;MsgBox, URL or FTP link detected in out5: %out5%
+
+typeOfAvideo := 1
+
+if (InStr(out5, "https://www.youtube.com/")) or (InStr(out5, "https://youtu.be/"))
+{
+
+typeOfAvideo := 2
+if (InStr(out5, "https://www.youtube.com/"))
+{
+;
+}
+else
+{
+str := Trim(out5)
+s:=StrSplit(str,"https://youtu.be/").2
+out5 := "https://www.youtube.com/watch?v=" . s
+}
+
+
+}
+
+
+
+}
+else
+{
+    ; None of the specified substrings are found in out5
+    ;MsgBox, No URL or FTP link detected in out5: %out5%
+videoId++
+typeOfAvideo := 3
+
+File := Trim(out5)
+FileGetSize, nBytes, %File%
+FileRead, Bin, *c %File%
+ImageData := Base64Enc(Bin, nBytes, 100, 2 )
+
+
+; Encode the image data to base64
+Bbase64ImageData := StrReplace(ImageData, "`n", "") ; Remove line breaks
+Bbase64ImageData := StrReplace(Bbase64ImageData, "`r", "") ; Remove carriage returns
+Bbase64ImageData := StrReplace(Bbase64ImageData, "`t", "") ; Remove tabs
+Bbase64ImageData := StrReplace(Bbase64ImageData, " ", "") ; Remove spaces
+base64out := imageTag1 . Bbase64ImageData . imageTag2
+
+
+
+base64 =
+(
+let base64VideoData%base64ImageNum% = "%base64out%"
+)
+
+
+base64VideoData .= base64 . "`n"
+
+
+}
+
+
+
+
+
+if (isThereArecId = 1)
+{
+guiOutOfVideo5 := """" . "Gui" . GuiNumber . "Video" . videoId .  """"
+}
+
+
+
+if (typeOfAvideo = 1)
+{
+videoOut =
+(
+
+PlayVideoFromUrl(Gui%GuiNumber%, "%out5%", %guiOutOfVideo5%, %guiOutOfVideo1%, %guiOutOfVideo2%, %guiOutOfVideo3%, %guiOutOfVideo4%, false)
+
+)
+
+}
+if (typeOfAvideo = 2)
+{
+videoOut =
+(
+
+PlayYoutubeVid(Gui%GuiNumber%, "%out5%", %guiOutOfVideo5%, %guiOutOfVideo1%, %guiOutOfVideo2%, %guiOutOfVideo3%, %guiOutOfVideo4%, false)
+
+)
+
+}
+if (typeOfAvideo = 3)
+{
+videoOut =
+(
+
+PlayVideoFromBase64(Gui%GuiNumber%, base64VideoData%base64ImageNum%, %guiOutOfVideo5%, %guiOutOfVideo1%, %guiOutOfVideo2%, %guiOutOfVideo3%, %guiOutOfVideo4%, false)
+
+)
+
+}
+
+
+
+;MsgBox, % rectangleOut
+
+jsCode .= "`n" . videoOut . "`n"
+
+}
+
+
+
+
+
+
+
+if (out3 = "rectangle") or (out3 = "circle")
+{
+ifWeUseCanvasThenAddUpdateFunc1 =
+(
+updateRectangle(id, param1, param2, param3, param4);
+redrawCanvas(); // Redraw the canvas with updated rectangles
+)
+ifWeUseCanvasThenAddUpdateFunc2 =
+(
+updateRectangleColor(id, param1);
+redrawCanvas(); // Redraw the canvas with updated rectangles
+)
+ifWeUseCanvas := 1
+
+rectangleOut := ""
+
+
+
+
+guiOutOfRectangleNum := 0
+guiOutOfRectangleX := 0
+guiOutOfRectangleY := 0
+guiOutOfRectangleW := 0
+guiOutOfRectangleH := 0
+guiOutOfRectangleV := 0
+guiOutOfRectangleG := 0
+Loop, 6
+{
+guiOutOfRectangle%A_Index% := ""
+}
+dynamicGuiSet := 0
+Loop, Parse, out4, " "
+{
+;MsgBox, |%A_LoopField%|
+
+guiOutOfRectangleNum++
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfRectangleX := 1
+guiOutOfRectangle1 := A_LoopField
+if (InStr(guiOutOfRectangle1, "%"))
+{
+str := guiOutOfRectangle1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfRectangle1 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfRectangle1, guiOutOfRectangle1, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfRectangleY := 1
+guiOutOfRectangle2 := A_LoopField
+if (InStr(guiOutOfRectangle2, "%"))
+{
+str := guiOutOfRectangle2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfRectangle2 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfRectangle2, guiOutOfRectangle2, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfRectangleW := 1
+guiOutOfRectangle3 := A_LoopField
+if (InStr(guiOutOfRectangle3, "%"))
+{
+str := guiOutOfRectangle3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfRectangle3 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfRectangle3, guiOutOfRectangle3, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfRectangleH := 1
+guiOutOfRectangle4 := A_LoopField
+if (InStr(guiOutOfRectangle4, "%"))
+{
+str := guiOutOfRectangle4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfRectangle4 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfRectangle4, guiOutOfRectangle4, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
+{
+guiOutOfRectangleV := 1
+guiOutOfRectangle5 := """" . "Gui1" . A_LoopField . """"
+guiOutOfRectangle52 := A_LoopField
+dynamicGuiSet := 1
+if (InStr(guiOutOfRectangle5, "%"))
+{
+str := guiOutOfRectangle5
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfRectangle5 :=  " [variables." . var1 . "]"
+guiOutOfRectangle52 :=  " "" + [variables." . var1 . "]" . " + " . """"""
+}
+else
+{
+StringTrimLeft, A_LoopFieldOutFixCnavas, A_LoopField, 1
+guiOutOfRectangle5 :=  " " . """" . "Gui1" . A_LoopFieldOutFixCnavas . """"
+}
+StringTrimLeft, guiOutOfRectangle5, guiOutOfRectangle5, 1
+StringTrimLeft, guiOutOfRectangle52, guiOutOfRectangle52, 1
+isThereArecId := 0
+}
+else
+{
+isThereArecId := 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
+{
+guiOutOfRectangleG := 1
+guiOutOfRectangle6 := A_LoopField
+StringTrimLeft, guiOutOfRectangle6, guiOutOfRectangle6, 1
+}
+}
+
+rectangleId++
+
+
+if (isThereArecId = 1)
+{
+guiOutOfRectangle5 := """" . "Gui1Rectangle" . rectangleId .  """"
+}
+
+
+
+if (out3 = "circle")
+{
+
+
+
+rectangleOut =
+(
+// draw a circle dont look that is says drawRoundedRectangle look at the 6th parameter in function its for rounding the rectangle and since we are rounding it to the half of the width of the rectangle it will look like a circle
+rectangles.push(drawRoundedRectangle(ctx, %guiOutOfRectangle1%, %guiOutOfRectangle2%, %guiOutOfRectangle3%, %guiOutOfRectangle4%, Round(%guiOutOfRectangle3% / 2), "#E5E5E5", %guiOutOfRectangle5%));
+)
+}
+else
+{
+rectangleOut =
+(
+rectangles.push(drawRoundedRectangle(ctx, %guiOutOfRectangle1%, %guiOutOfRectangle2%, %guiOutOfRectangle3%, %guiOutOfRectangle4%, 3, "#E5E5E5", %guiOutOfRectangle5%));
+)
+}
+
+;MsgBox, % rectangleOut
+
+jsCode .= "`n" . rectangleOut . "`n"
+
+
+}
+
+if (out2 = "hide")
+{
+
+outJSshowNoMore =
+(
+Gui%GuiNumber%.style.display = "none";
+)
+
+jsCode .= "`n" . outJSshowNoMore . "`n"
+
+}
+
+if (out2 = "show") or (out2 = "move")
+{
+
+
+
+if (Trim(out3) = "")
+{
+
+outJSshowNoMore =
+(
+Gui%GuiNumber%.style.display = "block";
+)
+
+jsCode .= "`n" . outJSshowNoMore . "`n"
+
+}
+else
+{
+
 guiOutOfShowX := 0
 guiOutOfShowY := 0
 guiOutOfShowW := 0
@@ -3662,6 +4655,59 @@ Gui%GuiNumber%.style.top = (window.innerHeight - parseInt(Gui%GuiNumber%.style.h
 }
 
 
+
+
+
+
+
+
+
+if (guiOutOfShowX = 1)
+{
+jsCode01Canvas =
+(
+canvas.style.left = "%guiOutOfShow1%px";
+)
+}
+else
+{
+jsCode01Canvas =
+(
+canvas.style.left = (window.innerWidth - canvas.width) / 2 + "px";
+)
+}
+
+if (guiOutOfShowY = 1)
+{
+jsCode02Canvas =
+(
+canvas.style.top = "%guiOutOfShow2%px";
+)
+}
+else
+{
+jsCode02Canvas =
+(
+canvas.style.top = (window.innerHeight - canvas.height) / 2 + "px";
+)
+}
+
+
+
+
+
+
+
+
+if (weUseCnanvasAtALL = 1)
+{
+varOutJsCanvasFixTranspernat =
+(
+Gui1.style.backgroundColor = "transparent";
+Gui1.style.zIndex = "999";
+)
+}
+
 jsCode0 =
 (
 
@@ -3679,15 +4725,94 @@ Gui%GuiNumber%.style.border = "2px solid white";
 %jsCode02%
 
 
-
-
-
+%varOutJsCanvasFixTranspernat%
 
 document.body.appendChild(Gui%GuiNumber%); // Append the GUI window to the body
+Gui%GuiNumber%.style.display = "block";
 
 )
 
+
+jsCode0Canvas =
+(
+
+
+// Create a canvas element dynamically
+canvas = document.createElement("canvas");
+canvas.id = "canvasId"; // Assign ID to the canvas element
+canvas.width = "%guiOutOfShow3%"; // Set the width
+canvas.height = "%guiOutOfShow4%"; // Set the height
+canvas.style.border = "2px solid white"; // Set border
+canvas.style.backgroundColor = "#121212"; // Set background color
+
+// Get the 2D rendering context
+ctx = canvas.getContext("2d");
+
+// Center the canvas
+canvas.style.position = "absolute";
+%jsCode01Canvas%
+%jsCode02Canvas%
+
+
+// Append the canvas to the body
+document.body.appendChild(canvas);
+
+// Array to store information about rectangles
+rectangles = [];
+
+)
+
+
+if (guiOutOfShow3 != "")
+{
+jsCode01CanvasW =
+(
+canvas.width = "%guiOutOfShow3%"; // Set the width
+)
+}
+
+if (guiOutOfShow4 != "")
+{
+jsCode01CanvasH =
+(
+canvas.height = "%guiOutOfShow4%"; // Set the height
+)
+}
+
+jsCode0Canvas2 =
+(
+
+%jsCode01CanvasW%
+%jsCode01CanvasH%
+
+
+%jsCode01Canvas%
+%jsCode02Canvas%
+
+// Append the canvas to the body
+document.body.appendChild(canvas);
+redrawCanvas();
+
+)
+
+
+if (weUseCnanvasAtALLEver = 1)
+{
+jsCode0 := jsCode0 . jsCode0Canvas2
+}
+
+if (weUseCnanvasAtALL = 1)
+{
+jsCode0 := jsCode0 . jsCode0Canvas
+weUseCnanvasAtALL := 0
+weUseCnanvasAtALLEver := 1
+}
+
+
+
+
 jsCode .= "`n" . jsCode0 . "`n"
+}
 }
 lineDone := 1
 }
@@ -3854,7 +4979,7 @@ StringTrimLeft, guiOutOfMove4, guiOutOfMove4, 1
 
 out0 =
 (
-GuiControl("%out2%", "Gui%GuiNumber%%out3%", %guiOutOfMove1%, %guiOutOfMove2%, %guiOutOfMove3%, %guiOutOfMove4%);
+GuiControl("%out2%", "Gui%GuiNumber%%out3%, %guiOutOfMove1%, %guiOutOfMove2%, %guiOutOfMove3%, %guiOutOfMove4%);
 )
 ;MsgBox, % out0
 }
@@ -3864,7 +4989,7 @@ if (out2 = "focus")
 {
 out0 =
 (
-GuiControl("%out2%", "Gui%GuiNumber%%out3%");
+GuiControl("%out2%", "Gui%GuiNumber%%out3%);
 )
 }
 
@@ -4242,6 +5367,8 @@ out4 := StrReplace(out4, "+", "")
 
 out3 := StrReplace(out3, "ArrowBackspace", "Backspace")
 out4 := StrReplace(out4, "ArrowBackspace", "Backspace")
+out3 := StrReplace(out3, "ArrowEnter", "Enter")
+out4 := StrReplace(out4, "ArrowEnter", "Enter")
 
 HotKeyCalledHotKyesOut =
 (
@@ -4830,7 +5957,8 @@ Loop, Parse, jsCode, `n, `r
 {
 
 str := A_LoopField
-
+if !(SubStr(StrLower(str), 1, 16) = StrLower("rectangles.push("))
+{
 
 if (InStr(str, """"))
 {
@@ -4902,6 +6030,12 @@ var := out2
 
 Loop, %posStartQuotesNum%
 {
+
+
+
+
+
+
 var := StrReplace(var, "posStartQuotes" . A_Index, posStartQuotes%A_Index%)
 
 
@@ -4973,6 +6107,13 @@ var := StrReplace(var, """thisissemicolonattheendplaceokmansurebruh49475472472""
 var := StrReplace(var, "+ ]", " ]")
 
 out1234567654 .= var . "`n"
+}
+else
+{
+out1234567654 .= str . "`n"
+}
+
+
 
 }
 
@@ -5521,6 +6662,8 @@ str := StrReplace(str, " + \"")", " + """")")
 str := StrReplace(str, "window.open(\""", "window.open(""""")
 
 str := StrReplace(str, "("""" + variables. ", "("""" + ")
+str := StrReplace(str, "document.addEventListener(""click"", variables.OnMouseClick)", "document.addEventListener(""click"", OnMouseClick)")
+str := StrReplace(str, "async function OnMouseClick(A_GuiControl)", "async function OnMouseClick()")
 
 if (Trim(str) == "Return")
 {
@@ -5687,6 +6830,21 @@ StringTrimRight, varsOUT123456, varsOUT123456, 1
 variables := varsOUT123456
 
 
+varsOUT12345677777777 := ""
+Loop, Parse, variables, `n, `r
+{
+
+if !(InStr(A_LoopField, "::"))
+{
+ varsOUT12345677777777 .= A_LoopField . "`n"
+}
+
+}
+
+StringTrimRight, varsOUT12345677777777, varsOUT12345677777777, 1
+variables := varsOUT12345677777777
+
+
 varsOUT1234567 := ""
 Loop, Parse, variables, `n, `r
 {
@@ -5828,9 +6986,14 @@ jsCode := jsCodeVIYGUOGUYIVGOYIVGOUYVUIYVUOHU
 
 
 
-
+if (doWeEvenDecAnyFuncHUH = 0)
+{
+jsCode := variables . onKeyPress . "`n`n" . jsCodeGui . "`n`n" . HotKeyCalledHotKyes . "`n`n" . jsCode
+}
+else
+{
 jsCode := variables . "`n`n" . funcs . "`n`n" . onKeyPress . "`n`n" . jsCodeGui . "`n`n" . HotKeyCalledHotKyes . "`n`n" . jsCode
-
+}
 
 addFuncIfWeUseIt_showCustomMessageBox =
 (
@@ -6015,6 +7178,27 @@ addFuncIfWeUseIt_showCustomMessageBox =
 addFuncIfWeUseIt_BuildInVars =
 (
 
+      let lastInputTime = Date.now(); // Initialize with current timestamp
+      let startTimestamp = Date.now(); // Initialize with current timestamp
+
+      // Event listener to track user activity
+      function resetIdleTimer() {
+        lastInputTime = Date.now(); // Update last input time
+      }
+
+      document.addEventListener("mousemove", resetIdleTimer);
+      document.addEventListener("keypress", resetIdleTimer);
+
+      // Function to calculate time since last input event
+      function A_TimeIdle() {
+        return Date.now() - lastInputTime; // Calculate time difference
+      }
+
+      // Function to calculate tick count in milliseconds
+      function A_TickCount() {
+        return Date.now() - startTimestamp;
+      }
+
       function BuildInVars(varName) {
         switch (varName) {
           case "A_ScreenWidth":
@@ -6111,6 +7295,10 @@ addFuncIfWeUseIt_MakeHotKey =
               } else if (arrowDirection === "left" && event.key !== "ArrowLeft") {
                 hotkeyPressed = false;
               } else if (arrowDirection === "right" && event.key !== "ArrowRight") {
+                hotkeyPressed = false;
+              }
+            } else if (key === "enter") {
+              if (event.key !== "Enter") {
                 hotkeyPressed = false;
               }
             } else if (!event.key.match(/^[0-9a-zA-Z]$/) && event.key !== key) {
@@ -6569,6 +7757,7 @@ addFuncIfWeUseIt_GuiControl =
       function GuiControl(action, id, param1, param2, param3, param4) {
         const element = document.getElementById(id);
         if (element) {
+          // Handle DOM elements
           if (action === "move") {
             // Set position and size
             element.style.left = param1 + "px";
@@ -6600,6 +7789,14 @@ addFuncIfWeUseIt_GuiControl =
             // Set color
             element.style.color = param1;
           }
+        } else {
+            if (action === "move") {
+              // Update position and size of the rectangle
+              %ifWeUseCanvasThenAddUpdateFunc1%
+            } else if (action === "color") {
+              // Update color of the rectangle
+              %ifWeUseCanvasThenAddUpdateFunc2%
+            }
         }
       }
 
@@ -6677,13 +7874,598 @@ function isConnectedToBackend() {
 
 )
 
+addFuncIfWeUseIt_MouseGetPos =
+(
+
+      var mouseX = 0;
+      var mouseY = 0;
+
+      document.addEventListener("mousemove", function (event) {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+      });
+
+      function MouseGetPos(coord) {
+        if (coord === "x") {
+          return mouseX;
+        } else if (coord === "y") {
+          return mouseY;
+        } else {
+          return null; // Invalid parameter
+        }
+      }
+
+)
+
+addFuncIfWeUseIt_SoundPlay =
+(
+
+           let audio = new Audio();
+            let currentAudioUrl = null;
+
+            function isBase64(str) {
+                try {
+                    return btoa(atob(str)) === str;
+                } catch (err) {
+                    return false;
+                }
+            }
+
+            function SoundPlay(command, parameter) {
+                switch (command) {
+                    case "play":
+                        if (typeof parameter === "string") {
+                            if (isBase64(parameter)) {
+                                // Parameter is a Base64-encoded string
+                                let binaryString = atob(parameter);
+                                let bytes = new Uint8Array(binaryString.length);
+
+                                for (let i = 0; i < binaryString.length; i++) {
+                                    bytes[i] = binaryString.charCodeAt(i);
+                                }
+
+                                let mimeType = "audio/mpeg"; // Default MIME type
+                                // Determine MIME type based on audio data
+                                // (You may need more sophisticated detection logic here)
+                                if (parameter.includes("audio/wav")) {
+                                    mimeType = "audio/wav";
+                                } else if (parameter.includes("audio/mp3")) {
+                                    mimeType = "audio/mpeg";
+                                } else if (parameter.includes("audio/ogg")) {
+                                    mimeType = "audio/ogg";
+                                } else if (parameter.includes("audio/aac")) {
+                                    mimeType = "audio/aac";
+                                } else if (parameter.includes("audio/m4a")) {
+                                    mimeType = "audio/mp4";
+                                } else if (parameter.includes("audio/flac")) {
+                                    mimeType = "audio/flac";
+                                } else if (parameter.includes("audio/x-aiff")) {
+                                    mimeType = "audio/x-aiff";
+                                }
+                                // Add more conditions for other audio formats...
+
+                                let blob = new Blob([bytes.buffer], {
+                                    type: mimeType,
+                                });
+                                let audioSrc = URL.createObjectURL(blob);
+
+                                audio.src = audioSrc;
+                                audio.play();
+                                currentAudioUrl = audioSrc;
+                            } else {
+                                // Parameter is assumed to be a URL
+                                audio.src = parameter;
+                                audio.play();
+                                currentAudioUrl = parameter;
+                            }
+                        } else {
+                            console.error("Invalid parameter for play command");
+                        }
+                        break;
+                    case "stop":
+                        audio.pause();
+                        audio.currentTime = 0;
+                        break;
+                    case "pause":
+                        audio.pause();
+                        break;
+                    case "resume":
+                        audio.play();
+                        break;
+                    case "mute":
+                        audio.volume = 0;
+                        break;
+                    case "unmute":
+                        audio.volume = 1;
+                        break;
+                    case "setVolume":
+                        if (
+                            typeof parameter === "number" &&
+                            parameter >= 0 &&
+                            parameter <= 100
+                        `) {
+                            audio.volume = parameter / 100;
+                        } else {
+                            console.error(
+                                "Invalid volume value. Volume must be a number between 0 and 100",
+                            `);
+                        }
+                        break;
+                    default:
+                        console.error("Invalid command specified");
+                        break;
+                }
+            }
+
+)
+
+addFuncIfWeUseIt_StoreLocaly =
+(
+
+      function StoreLocaly(operation, saveLocation, data) {
+        if (operation === "s") {
+          // Save data to local storage under specified saveLocation
+          localStorage.setItem(saveLocation, String(data));
+          return true; // Indicate success
+        } else if (operation === "d") {
+          // Delete data from local storage under specified saveLocation
+          localStorage.removeItem(saveLocation);
+          return true; // Indicate success
+        } else if (operation === "r") {
+          // Retrieve data from local storage under specified saveLocation
+          return localStorage.getItem(saveLocation) || null; // Return stored data or null if not found
+        } else if (operation === "dALL") {
+          // Delete all data from local storage (clear all keys)
+          localStorage.clear();
+          return true; // Indicate success
+        } else if (operation === "e") {
+          // Check if local storage is empty (no keys present)
+          return localStorage.length === 0; // Return true if empty, false if not empty
+        } else {
+          console.error("Invalid operation specified.");
+          return false; // Indicate failure
+        }
+      }
+
+)
+
+
+addFuncIfWeUseIt_createToggleSwitch =
+(
+
+      // Function to create a toggle switch with width and height
+      function createToggleSwitch(parent, id, label, color, leftPos, topPos, width, height, switchFunction) {
+        let toggleSwitch = document.createElement("div");
+        toggleSwitch.className = "toggle-switch";
+        toggleSwitch.id = id;
+        toggleSwitch.dataset.id = id;
+        toggleSwitch.dataset.isOn = "false";
+        toggleSwitch.dataset.color = color; // Save color in dataset for use when toggled
+        toggleSwitch.style.width = width + "px"; // Set width
+        toggleSwitch.style.height = height + "px"; // Set height
+        toggleSwitch.style.backgroundColor = "#ccc";
+        toggleSwitch.style.borderRadius = height / 2 + "px"; // Make border radius proportional to height
+        toggleSwitch.style.position = "absolute";
+        toggleSwitch.style.left = leftPos + "px";
+        toggleSwitch.style.top = topPos + "px";
+        toggleSwitch.style.cursor = "pointer";
+        toggleSwitch.style.transition = "background-color 0.3s ease";
+
+        // Create knob for the toggle switch
+        let knob = document.createElement("div");
+        knob.className = "knob";
+        knob.style.width = height - 4 + "px"; // Set knob width (slightly less than height)
+        knob.style.height = height - 4 + "px"; // Set knob height (slightly less than height)
+        knob.style.backgroundColor = "#fff";
+        knob.style.borderRadius = "50`%";
+        knob.style.position = "absolute";
+        knob.style.top = "2px";
+        knob.style.left = "2px";
+        knob.style.transition = "transform 0.3s ease";
+
+        toggleSwitch.appendChild(knob);
+        parent.appendChild(toggleSwitch);
+
+        // Create label for the toggle switch
+        let toggleLabel = document.createElement("div");
+        toggleLabel.textContent = label;
+        toggleLabel.style.position = "absolute";
+        toggleLabel.style.left = leftPos + width + 10 + "px"; // Position label relative to switch
+        toggleLabel.style.top = topPos + "px";
+        parent.appendChild(toggleLabel);
+
+        // Toggle switch click event
+        toggleSwitch.addEventListener("click", function () {
+          let isOn = toggleSwitch.dataset.isOn === "true";
+          toggleSwitch.dataset.isOn = String(!isOn); // Toggle the state
+
+          const knob = toggleSwitch.querySelector(".knob");
+          knob.style.transform = isOn ? "translateX(0)" : "translateX(" + (width - height + 4) + "px)"; // Move knob based on state
+
+          const backgroundColor = isOn ? "#ccc" : toggleSwitch.dataset.color;
+          toggleSwitch.style.backgroundColor = backgroundColor; // Update background color
+
+          if (isOn == true) {
+            isOn = "0";
+          } else {
+            isOn = "1";
+          }
+
+          // Call the switch function with toggle switch ID and state
+          switchFunction(isOn);
+        });
+      }
+
+)
+
+
+addFuncIfWeUseIt_getUrlParams =
+(
+
+      function getUrlParams() {
+        const queryString = window.location.search.substring(1); // Get the query string without the leading '?'
+        const paramPairs = queryString.split("&"); // Split the query string into parameter key-value pairs
+
+        // Array to store parameter values starting from the first key's value
+        const paramValues = [];
+
+        // Iterate over each parameter pair
+        paramPairs.forEach((pair, index) => {
+          const pairParts = pair.split("=");
+
+          if (index === 0 && pairParts.length === 2) {
+            // For the first parameter pair (index === 0), add the value directly
+            const firstValue = decodeURIComponent(pairParts[1]);
+            paramValues.push(firstValue);
+          } else if (pairParts.length === 1) {
+            // For subsequent parameter pairs (values without keys), add the value directly
+            const value = decodeURIComponent(pairParts[0]);
+            paramValues.push(value);
+          }
+        });
+
+        // Join the parameter values into a single string separated by '&'
+        const resultString = paramValues.join("&");
+
+        return resultString;
+      }
+
+)
+
+addFuncIfWeUseIt_reloadWithParams =
+(
+
+      function reloadWithParams(paramString) {
+        // Parse the parameter string to extract individual parameter values
+        const paramsArray = paramString.substring(1).split("&"); // Remove leading '?' and split by '&'
+
+        // Construct an array to store valid parameter pairs
+        const paramPairs = [];
+
+        // Iterate over each parameter value
+        paramsArray.forEach((value) => {
+          // Check if the value is non-empty (to filter out any empty values)
+          if (value.trim() !== "") {
+            // Push the parameter value to paramPairs
+            paramPairs.push(value); // No need to encode values here
+          }
+        });
+
+        // Join the parameter pairs into a query string format
+        const queryParams = paramPairs.join("&");
+
+        // Construct the new URL with the parameters and reload the page
+        const newUrl = `${window.location.origin}${window.location.pathname}?${queryParams}`;
+        window.location.href = newUrl;
+      }
+
+)
+
+
+addFuncIfWeUseIt_PlayVideoFromBase64 =
+(
+
+      function PlayVideoFromBase64(parentElement, base64Data, id, x, y, width, height, autoplay) {
+        // Create a container div for the video player
+        const playerContainer = document.createElement("div");
+        playerContainer.id = id; // Set the id attribute
+        playerContainer.style.position = "absolute";
+        playerContainer.style.left = ``${x}px``;
+        playerContainer.style.top = ``${y}px``;
+        playerContainer.style.width = ``${width}px``;
+        playerContainer.style.height = ``${height}px``;
+
+        // Create a <video> element for the video player
+        const videoElement = document.createElement("video");
+        videoElement.style.width = "100`%";
+        videoElement.style.height = "100`%";
+        videoElement.controls = true; // Show player controls
+
+        // Convert Base64 string to Blob
+        const blob = base64ToBlob(base64Data);
+
+        // Create a Blob URL from the Blob object
+        const blobUrl = URL.createObjectURL(blob);
+
+        // Set the video source to the Blob URL
+        videoElement.src = blobUrl;
+
+        // Set autoplay attribute based on the autoplay parameter
+        if (autoplay) {
+          videoElement.autoplay = true;
+        }
+
+        // Append the video element to the player container
+        playerContainer.appendChild(videoElement);
+
+        // Append the player container to the specified parent element
+        parentElement.appendChild(playerContainer);
+      }
+
+      // Function to convert Base64 string to Blob
+      function base64ToBlob(base64Data) {
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        return new Blob([byteArray]);
+      }
+
+)
+
+
+addFuncIfWeUseIt_PlayVideoFromUrl =
+(
+
+      // Define the PlayVideoFromUrl function
+      function PlayVideoFromUrl(parentElement, videoUrl, id, x, y, width, height, autoplay) {
+        // Create a container div for the video player
+        const playerContainer = document.createElement("div");
+        playerContainer.id = id; // Set the id attribute
+        playerContainer.style.position = "absolute";
+        playerContainer.style.left = ``${x}px``;
+        playerContainer.style.top = ``${y}px``;
+        playerContainer.style.width = ``${width}px``;
+        playerContainer.style.height = ``${height}px``;
+
+        // Create a <video> element for the video player
+        const videoElement = document.createElement("video");
+        videoElement.style.width = "100`%";
+        videoElement.style.height = "100`%";
+        videoElement.controls = true; // Show player controls
+
+        // Set the video source to the specified URL
+        videoElement.src = videoUrl;
+
+        // Set autoplay attribute based on the autoplay parameter
+        if (autoplay) {
+          videoElement.autoplay = true;
+        }
+
+        // Append the video element to the player container
+        playerContainer.appendChild(videoElement);
+
+        // Append the player container to the specified parent element
+        parentElement.appendChild(playerContainer);
+      }
+
+)
+
+
+addFuncIfWeUseIt_PlayYoutubeVid =
+(
+
+      function PlayYoutubeVid(parentElement, videoUrl, id, x, y, width, height, autoplay) {
+        // Create a container div for the YouTube player
+        const playerContainer = document.createElement("div");
+        playerContainer.id = id; // Set the id attribute
+        playerContainer.style.position = "absolute";
+        playerContainer.style.left = ``${x}px``;
+        playerContainer.style.top = ``${y}px``;
+        playerContainer.style.width = ``${width}px``;
+        playerContainer.style.height = ``${height}px``;
+
+        // Extract video ID from the YouTube URL
+        const videoId = extractVideoId(videoUrl);
+
+        // Create an iframe element for the YouTube player
+        const iframe = document.createElement("iframe");
+        iframe.width = "100`%";
+        iframe.height = "100`%";
+
+        // Construct the YouTube video URL with autoplay and mute parameters
+        let autoplayParams = autoplay ? "autoplay=1" : "autoplay=0";
+        let muteParams = autoplay ? "mute=1" : "mute=0";
+        iframe.src = ``https://www.youtube.com/embed/${videoId}?${autoplayParams}&${muteParams}``;
+        iframe.frameBorder = "0";
+        iframe.allowFullscreen = true; // Allow fullscreen mode
+
+        // Append the iframe to the player container
+        playerContainer.appendChild(iframe);
+
+        // Append the player container to the specified parent element
+        parentElement.appendChild(playerContainer);
+      }
+
+      // Function to extract video ID from YouTube URL
+      function extractVideoId(url) {
+        const videoIdRegex = /[?&]v=([^&]+)/;
+        const match = url.match(videoIdRegex);
+        return match && match[1] ? match[1] : "";
+      }
+
+)
+
+
+addFuncIfWeUseIt_changeFavicon =
+(
+
+      async function changeFavicon(iconSource) {
+        const head = document.head || document.getElementsByTagName("head")[0];
+
+        // Remove existing favicon link element if it exists
+        const existingFavicon = document.getElementById("dynamic-favicon");
+        if (existingFavicon) {
+          head.removeChild(existingFavicon);
+        }
+
+        // Create a new favicon link element
+        const favicon = document.createElement("link");
+        favicon.id = "dynamic-favicon";
+        favicon.rel = "shortcut icon";
+
+        try {
+          let mimeType;
+
+          // Determine if iconSource is a URL or a Base64 string
+          if (isUrl(iconSource)) {
+            // If iconSource is a URL, fetch the resource to get the MIME type
+            const response = await fetch(iconSource);
+            const buffer = await response.arrayBuffer();
+            mimeType = getMimeTypeFromArrayBuffer(buffer);
+            favicon.type = mimeType || "image/x-icon"; // Default to 'image/x-icon' if MIME type is not found
+            favicon.href = iconSource;
+          } else {
+            // If iconSource is a Base64 string, convert it to a Blob
+            const blob = b64toBlob(iconSource);
+            mimeType = getMimeTypeFromBlob(blob);
+            favicon.type = mimeType || "image/png"; // Default to 'image/png' if MIME type is not found
+            favicon.href = URL.createObjectURL(blob);
+          }
+
+        // Get the current favicon element (if exists)
+        const existingFavicon = document.querySelector('link[rel="icon"]');
+
+        // Replace the current favicon with the new one
+        if (existingFavicon) {
+          // If a favicon exists, replace it
+          document.head.removeChild(existingFavicon); // Remove the existing favicon
+        }
+
+          // Append the new favicon link element to the head
+          document.head.appendChild(favicon);
+        } catch (error) {
+          console.error("Error changing favicon:", error);
+        }
+      }
+
+      // Function to check if a string is a URL
+      function isUrl(str) {
+        try {
+          new URL(str);
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      // Function to get MIME type from an ArrayBuffer
+      function getMimeTypeFromArrayBuffer(buffer) {
+        const view = new DataView(buffer);
+        if (view.getUint16(0, false) == 0xffd8) {
+          return "image/jpeg"; // JPEG format
+        } else if (view.getUint32(0, false) == 0x89504e47) {
+          return "image/png"; // PNG format
+        } else if (view.getUint16(0, false) == 0x4949 || view.getUint16(0, false) == 0x4d4d) {
+          return "image/tiff"; // TIFF format
+        } else if (view.getUint16(0, false) == 0x424d) {
+          return "image/bmp"; // BMP format
+        }
+        return null; // Unknown format
+      }
+
+      // Function to get MIME type from a Blob
+      function getMimeTypeFromBlob(blob) {
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+
+        img.onload = function () {
+          URL.revokeObjectURL(url);
+          // Clean up the Blob URL
+        };
+
+        img.src = url;
+
+        // Return the MIME type detected by the browser
+        return img.type || "image/png";
+        // Default to 'image/png' if MIME type is not available
+      }
+
+      // Function to convert a Base64 string to a Blob
+      function b64toBlob(b64Data) {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteArrays.push(byteCharacters.charCodeAt(i));
+        }
+
+        return new Blob([new Uint8Array(byteArrays)]);
+      }
+
+)
+
+
+addFuncIfWeUseIt_OnKeyPress =
+(
+
+      let lastKeyPressed = "";
+
+      function trackLastKeyPressed() {
+        document.addEventListener("keydown", function (event) {
+          lastKeyPressed = event.key;
+          // console.log(lastKeyPressed);
+        });
+      }
+
+      function getLastKeyPressed() {
+        return lastKeyPressed;
+      }
+
+      // Call the trackLastKeyPressed function to start tracking key presses
+      trackLastKeyPressed();
+
+)
+
+addFuncIfWeUseIt_GetKeyState =
+(
+
+      let keyState = {}; // Object to track key states
+
+      // Function to handle keydown events
+      function handleKeyDown(event) {
+        keyState[event.key] = true; // Set key state to true when pressed
+      }
+
+      // Function to handle keyup events
+      function handleKeyUp(event) {
+        keyState[event.key] = false; // Set key state to false when released
+      }
+
+      // Add event listeners for keydown and keyup events
+      document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("keyup", handleKeyUp);
+
+      // Function to get the state of a key dynamically
+      function GetKeyState(key, DownOrUp) {
+        return DownOrUp === "D" ? keyState[key] : !keyState[key];
+      }
+
+)
+
 
 allFuncThatWeNeedToUse := ""
 
-
+ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile := ""
 if (Instr(jsCode, "showCustomMessageBox(")) or (Instr(jsCode, "showCustomMessageBox ("))
 {
 allFuncThatWeNeedToUse .= addFuncIfWeUseIt_showCustomMessageBox . "`n"
+ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile =
+(
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+)
 }
 if (Instr(jsCode, "BuildInVars(")) or (Instr(jsCode, "BuildInVars ("))
 {
@@ -6829,7 +8611,109 @@ if (Instr(jsCode, "isConnectedToBackend(")) or (Instr(jsCode, "isConnectedToBack
 {
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_isConnectedToBackend . "`n"
 }
+if (Instr(jsCode, "MouseGetPos(")) or (Instr(jsCode, "MouseGetPos ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_MouseGetPos . "`n"
+}
+if (Instr(jsCode, "SoundPlay(")) or (Instr(jsCode, "SoundPlay ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_SoundPlay . "`n"
+}
+if (Instr(jsCode, "StoreLocaly(")) or (Instr(jsCode, "StoreLocaly ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StoreLocaly . "`n"
+}
+if (Instr(jsCode, "createToggleSwitch(")) or (Instr(jsCode, "createToggleSwitch ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_createToggleSwitch . "`n"
+}
+if (Instr(jsCode, "getUrlParams(")) or (Instr(jsCode, "getUrlParams ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_getUrlParams . "`n"
+}
+if (Instr(jsCode, "reloadWithParams(")) or (Instr(jsCode, "reloadWithParams ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_reloadWithParams . "`n"
+}
+if (Instr(jsCode, "PlayVideoFromBase64(")) or (Instr(jsCode, "PlayVideoFromBase64 ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_PlayVideoFromBase64 . "`n"
+}
+if (Instr(jsCode, "PlayVideoFromUrl(")) or (Instr(jsCode, "PlayVideoFromUrl ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_PlayVideoFromUrl . "`n"
+}
+if (Instr(jsCode, "PlayYoutubeVid(")) or (Instr(jsCode, "PlayYoutubeVid ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_PlayYoutubeVid . "`n"
+}
+if (Instr(jsCode, "changeFavicon(")) or (Instr(jsCode, "changeFavicon ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_changeFavicon . "`n"
+}
+if (Instr(jsCode, "OnKeyPress(")) or (Instr(jsCode, "OnKeyPress ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_OnKeyPress . "`n"
+}
+if (Instr(jsCode, "GetKeyState(")) or (Instr(jsCode, "GetKeyState ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_GetKeyState . "`n"
+}
 
+
+addFuncIfWeUseIt_AllCanvasFunctions =
+(
+
+      // Function to draw a rectangle with rounded corners on the canvas
+      function drawRoundedRectangle(ctx, x, y, width, height, radius, fillColor, id) {
+        // Draw the rounded rectangle
+        ctx.fillStyle = fillColor;
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.arcTo(x + width, y, x + width, y + height, radius);
+        ctx.arcTo(x + width, y + height, x, y + height, radius);
+        ctx.arcTo(x, y + height, x, y, radius);
+        ctx.arcTo(x, y, x + width, y, radius);
+        ctx.closePath();
+        ctx.fill();
+
+        // Return the rectangle information
+        return { id: id, x: x, y: y, width: width, height: height, radius, fillColor: fillColor };
+      }
+
+      // Function to update the position and size of a rectangle
+      function updateRectangle(id, x, y, width, height) {
+        const index = rectangles.findIndex((rectangle) => rectangle.id === id);
+        if (index !== -1) {
+          rectangles[index].x = x;
+          rectangles[index].y = y;
+          rectangles[index].width = width;
+          rectangles[index].height = height;
+        }
+      }
+
+      // Function to update the color of a rectangle
+      function updateRectangleColor(id, color) {
+        const index = rectangles.findIndex((rectangle) => rectangle.id === id);
+        if (index !== -1) {
+          rectangles[index].fillColor = color;
+        }
+      }
+
+      // Function to redraw all rectangles on the canvas
+      function redrawCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+        rectangles.forEach((rectangle) => {
+          drawRoundedRectangle(ctx, rectangle.x, rectangle.y, rectangle.width, rectangle.height, rectangle.radius, rectangle.fillColor, rectangle.id);
+        });
+      }
+
+)
+
+if (ifWeUseCanvas = 1)
+{
+allFuncThatWeNeedToUse .= addFuncIfWeUseIt_AllCanvasFunctions . "`n"
+}
 
 
 
@@ -6840,7 +8724,7 @@ upCode1 =
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HTH HeavenToHell</title>
+    <title>%filenameOfHTH%</title>
     <style>
       body {
         background-color: #202020;
@@ -6859,93 +8743,51 @@ upCode1 =
           sans-serif;
       }
     </style>
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11" rel="stylesheet" />
+    %ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile%
   </head>
   <body>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
 
       %TextData%
 
       %base64ImageData%
 
+      %base64soundList%
+
+      %base64iconList%
+
+      %base64VideoData%
+
       // JavaScript equivalent code with variables
 
+      function changeFaviconAtTheBeginning(faviconUrl) {
+        // Create a new favicon link element
+        const newFavicon = document.createElement("link");
+        newFavicon.rel = "icon";
+        newFavicon.href = faviconUrl;
+
+        // Get the current favicon element (if exists)
+        const existingFavicon = document.querySelector('link[rel="icon"]');
+
+        // Replace the current favicon with the new one
+        if (existingFavicon) {
+          // If a favicon exists, replace it
+          document.head.removeChild(existingFavicon); // Remove the existing favicon
+        }
+
+        // Append the new favicon to the head
+        document.head.appendChild(newFavicon);
+      }
+
+      // Call the function with the desired favicon URL
+      changeFaviconAtTheBeginning("https://i.ibb.co/Jpty1B8/305182938-1a0efe63-726e-49ca-a13c-d0ed627f2ea7.png");
 
       %allFuncThatWeNeedToUse%
-
-
-      let lastInputTime = Date.now(); // Initialize with current timestamp
-      let startTimestamp = Date.now(); // Initialize with current timestamp
-
-      // Event listener to track user activity
-      function resetIdleTimer() {
-          lastInputTime = Date.now(); // Update last input time
-      }
-
-      document.addEventListener('mousemove', resetIdleTimer);
-      document.addEventListener('keypress', resetIdleTimer);
-
-      // Function to calculate time since last input event
-      function A_TimeIdle() {
-          return Date.now() - lastInputTime; // Calculate time difference
-      }
-
-      // Function to calculate tick count in milliseconds
-      function A_TickCount() {
-          return Date.now() - startTimestamp;
-      }
-
-
-
 
 )
 
 upCode2 =
 (
-
-
-
-      let keyState = {}; // Object to track key states
-
-      // Function to handle keydown events
-      function handleKeyDown(event) {
-        keyState[event.key] = true; // Set key state to true when pressed
-      }
-
-      // Function to handle keyup events
-      function handleKeyUp(event) {
-        keyState[event.key] = false; // Set key state to false when released
-      }
-
-      // Add event listeners for keydown and keyup events
-      document.addEventListener("keydown", handleKeyDown);
-      document.addEventListener("keyup", handleKeyUp);
-
-      // Function to get the state of a key dynamically
-      function GetKeyState(key, DownOrUp) {
-        return DownOrUp === "D" ? keyState[key] : !keyState[key];
-      }
-
-      let lastKeyPressed = "";
-
-      function trackLastKeyPressed() {
-        document.addEventListener("keydown", function (event) {
-          lastKeyPressed = event.key;
-          // console.log(lastKeyPressed);
-        });
-      }
-
-      function getLastKeyPressed() {
-        return lastKeyPressed;
-      }
-
-      // Call the trackLastKeyPressed function to start tracking key presses
-      trackLastKeyPressed();
-
-      // Now you can call getLastKeyPressed() whenever you need to get the last key pressed
-
-
 
       // Single async function to structure the entire script
       async function runScript() {
@@ -6970,7 +8812,35 @@ downCode =
 
 jsCode := upCode1 . upCode2 . jsCode . DownCode
 
+lastJscodeFixYAAAAAA := ""
+Loop, Parse, jsCode, `n, `r
+{
+if (A_LoopField = "      ")
+{
 
+}
+else
+{
+lastJscodeFixYAAAAAA .= A_LoopField . "`n"
+}
+}
+
+StringTrimRight, lastJscodeFixYAAAAAA, lastJscodeFixYAAAAAA, 1
+
+jsCode := lastJscodeFixYAAAAAA
+
+jsCode := RegExReplace(RegExReplace(jsCode, "^\h+$"), "\n\v+", "`n`r")
+
+jsCode := StrReplace(jsCode, "`r", "`n")
+
+
+if (webHTH = 1)
+{
+FileAppend, %jsCode%, %param3NameOfwebHTHfile%
+ExitApp
+}
+else
+{
 ;MsgBox % jsCode
 
 ; Save clipboard content to a temporary file
@@ -7033,15 +8903,12 @@ FileAppend,
 }
 
 ExitApp
+
+}
 Return
 
 #if
 
-
-GuiClose:
-!L::
-ExitApp
-Return
 
 
 
@@ -7050,6 +8917,8 @@ Return
 varTraspiler(out2, getVarsNames)
 {
 global
+
+
 
 str := out2
 
