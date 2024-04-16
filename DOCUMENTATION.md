@@ -125,6 +125,8 @@ nameOfFunc := nameOfFunc(3, 4)
 MsgBox, % "Result of nameOfFunc: " . nameOfFunc
 ```
 
+WARNING: NEVER NAME A VARIABLE THE SAME NAME AS A FUNCTION NAME
+
 ### Conclusion
 
 HTH follows the Allman coding style for consistency and readability. Its simplicity and versatility make it suitable for various programming tasks.
@@ -160,15 +162,20 @@ Explore the various features offered by the HTH programming language in this sec
 19. [Loop](#loop)
 20. [Loop, Parse](#loop-parse)
 21. [Variables and Arrays](#variablesandarrays)
-22. [Run and Reload](#run-and-reload)
+22. [Run, Reload and ExitApp](#run-reload-and-exitapp)
 23. [#Include](#include)
 24. [Comments](#hth-comments)
-25. [getDataFromEndpoint](#getdatafromendpoint)
-26. [isMobileDevice](#ismobiledevice)
-27. [isConnectedToBackend](#isconnectedtobackend)
-28. [Math Functions](#math-functions)
-29. [Build-in Functions](#build-in-functions)
-30. [Build-in Variables](#build-in-variables)
+25. [PlaySound](#play-sound)
+26. [GetMousePos and OnMouseClick](#getmousepos-and-onmouseclick)
+27. [Title and Icon](#title-and-icon)
+28. [StoreLocally](#store-locally)
+29. [getUrlParams and reloadWithParams](#geturlparams-and-reloadwithparams)
+30. [getDataFromEndpoint](#getdatafromendpoint)
+31. [isMobileDevice](#ismobiledevice)
+32. [isConnectedToBackend](#isconnectedtobackend)
+33. [Math Functions](#math-functions)
+34. [Build-in Functions](#build-in-functions)
+35. [Build-in Variables](#build-in-variables)
 
 ---
 
@@ -212,29 +219,29 @@ Gui 3: Add, Button, x10 y10 w300 h50 vtheButton gButton2, This is some text
 return
 
 Button1:
-buttonSwitch1++
-if (buttonSwitch1 = 1)
-{
-GuiControl 2: Move, theButton, x10 y300 w150 h40
-}
-else
-{
-GuiControl 2: Move, theButton, x10 y10 w300 h50
-buttonSwitch1 := 0
-}
+    buttonSwitch1++
+    if (buttonSwitch1 = 1)
+    {
+        GuiControl 2: Move, theButton, x10 y300 w150 h40
+    }
+    else
+    {
+        GuiControl 2: Move, theButton, x10 y10 w300 h50
+        buttonSwitch1 := 0
+    }
 Return
 
 Button2:
-buttonSwitch2++
-if (buttonSwitch2 = 1)
-{
-GuiControl 3: Move, theButton, x10 y300 w150 h40
-}
-else
-{
-GuiControl 3: Move, theButton, x10 y10 w300 h50
-buttonSwitch2 := 0
-}
+    buttonSwitch2++
+    if (buttonSwitch2 = 1)
+    {
+        GuiControl 3: Move, theButton, x10 y300 w150 h40
+    }
+    else
+    {
+        GuiControl 3: Move, theButton, x10 y10 w300 h50
+        buttonSwitch2 := 0
+    }
 Return
 ```
 
@@ -253,6 +260,62 @@ The `SubCommand`, `Value1`, `Value2`, and `Value3` parameters are dependent upon
 [Go Back](#gui)
 
 This section provides a detailed explanation of the available `SubCommands` for the `Gui` command.
+
+#### Hide
+
+```ahk
+Gui, Show, w500 h500
+Gui, Add, Text, x20 y20 w100 h20, This is a text control
+
+Sleep, 2000
+
+Gui, Hide
+
+Sleep, 3000
+
+Gui, Show
+
+; or
+
+Gui 2: Show, w500 h500
+Gui 2: Add, Text, x20 y20 w100 h20, This is a text control
+
+Sleep, 2000
+
+Gui 2: Hide
+
+Sleep, 3000
+
+Gui 2: Show
+```
+
+#### Move
+
+```ahk
+Gui, Show, w500 h500
+Gui, Add, Text, x20 y20 w100 h20, This is a text control
+
+Sleep, 2000
+
+Gui, Move, x50 y50
+
+Sleep, 3000
+
+Gui, Move, x500 y500
+
+; or
+
+Gui 2: Show, w500 h500
+Gui 2: Add, Text, x20 y20 w100 h20, This is a text control
+
+Sleep, 2000
+
+Gui 2: Move, x50 y50
+
+Sleep, 3000
+
+Gui 2: Move, x500 y500
+```
 
 #### Add
 
@@ -274,16 +337,182 @@ Gui, Add, Button, x20 y50 w100 h30, Click me
 ; Set the background color of the GUI window
 Gui, Color, cWhite
 
-
 ; Set the background color of the GUI window
 Gui, Color, c121212
+
+; or
+
+Color := "ff0000"
+Gui, Color, c%Color%
+
+; or
+
+randomColor := ranColor()
+Gui, Color, c%randomColor%
+; to append a new color you need to do Gui, Show, <and must put something here like w500 h500 or yours otherwize it will not work>
+Gui, Show, w500 h500
+
+ranColor()
+{
+Random, red, 0, 255
+Random, green, 0, 255
+Random, blue, 0, 255
+
+; Convert each component to hexadecimal and concatenate
+hexDigits := "0123456789ABCDEF"
+hexRed := SubStr(hexDigits, Floor(red / 16) + 1, 1) . SubStr(hexDigits, Mod(red, 16) + 1, 1)
+hexGreen := SubStr(hexDigits, Floor(green / 16) + 1, 1) . SubStr(hexDigits, Mod(green, 16) + 1, 1)
+hexBlue := SubStr(hexDigits, Floor(blue / 16) + 1, 1) . SubStr(hexDigits, Mod(blue, 16) + 1, 1)
+
+hexColor := hexRed . hexGreen . hexBlue
+
+;MsgBox, % "Random Color: " . hexColor
+
+return hexColor
+}
 ```
 
 #### Font
 
 ```ahk
-; Set the font of the text control
+; Set the font size of the text control
+; s = size
 Gui, Font, s22
+
+; or
+
+Size := "22"
+Gui, Font, s%Size%
+
+; Set the font name of the text control
+; f = font
+Gui, Font, fCourier
+
+; or
+
+Font := "Courier"
+Gui, Font, f%Font%
+```
+
+#### -Border
+
+```ahk
+; Removes the border of a Gui window
+Gui, Font, s20
+Gui, Show, x10 y10 w500 h500
+Gui, Add, Text, x10 y10 w300 h50, Gui 1
+
+Gui 2: Show, -Border x610 y10 w500 h500
+Gui 2: Add, Text, x10 y10 w300 h50, Gui 2
+Sleep, 1500
+
+; We need to add '-Border' anytime you move or show, even if you show it after a hide; otherwise, the border will be back.
+Gui 2: Move, -Border x810 y10 w500 h500
+```
+
+We also have these new parameters for the Button and Edit ONLY:
+
+- c = color
+- bg = background color
+- f = font name
+- r = radius
+- -Border = removes the border around the button or the edit
+- gr- = gradient
+  Gradients are smooth color transitions used in design. You can make them easily [here](https://cssgradient.io/). Just pick colors and settings, then copy the CSS code for your website. It's a quick way to add style! Just don't copy the last semicolon `;`.
+  Here's how it might look like:
+
+```ahk
+gr := "linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)"
+
+; or
+
+Gui, Color, gr-linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)
+
+; or
+
+Gui, Color, gr-%gr%
+
+;also
+
+Gui, Add, Button, x10 y10 w140 h40 gr-%gr%
+
+; or
+
+Gui, Add, Edit, x10 y10 w140 h40 gr-%gr%
+```
+
+here is an example for all these new parameters for the Button and Edit:
+
+```ahk
+gr := getRanGr()
+
+Gui, Color, gr-%gr%
+Gui, Show, +websiteMode w%A_ScreenWidth% h%A_ScreenHeight%
+
+color1 := "121212"
+color2 := "ffffff"
+bgColor := "303030"
+fontName := "Courier"
+bgGR := "linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)"
+rad := 20
+ff := "    type here"
+
+boxW := 200 + 200 + 15
+boxH := 30 + 30 + 20
+
+BoxMiddleX := (A_ScreenWidth - boxW) / 2
+BoxMiddleY := (A_ScreenHeight - boxH) / 2
+
+editX1 := 0 + BoxMiddleX
+editX2 := 210 + BoxMiddleX
+editY1 := 0 + BoxMiddleY
+editY2 := 0 + BoxMiddleY
+
+buttonX1 := 30 + BoxMiddleX
+buttonX2 := 250 + BoxMiddleX
+buttonY1 := 42 + BoxMiddleY
+buttonY2 := 42 + BoxMiddleY
+
+Gui, Font, s20
+Gui, Add, Edit, x%editX1% y%editY1% w200 h30 gr-%bgGR% cffffff fCourier -border bg%bgColor% r%rad% gEdit1, %ff%
+Gui, Font, s17
+Gui, Add, Button, x%buttonX1% y%buttonY1% w140 h40 -border fCourier c%color2% bg%bgColor% r%rad% gButton1, Button1
+
+Gui, Font, s20
+Gui, Add, Edit, x%editX2% y%editY2% w200 h30 cffffff -border bg303030 r20 gEdit2, %ff%
+Gui, Font, s17
+Gui, Add, Button, x%buttonX2% y%buttonY2% w140 h40 f%fontName% -border gr-%bgGR% c%color1% bg303030 r20 gButton2, Button2
+return
+
+Edit1:
+text1 := A_GuiControl
+Return
+
+Edit2:
+text2 := A_GuiControl
+Return
+
+Button1:
+MsgBox, % text1
+Return
+
+Button2:
+MsgBox, % text2
+Return
+
+getRanGr()
+{
+Loop, 9
+{
+Random, ran%A_Index%, 0, 255
+}
+Random, deg, 1, 360
+
+ranGR := "linear-gradient(" . deg . "deg, "
+ranGR .= "rgba(" . ran1 . "," . ran2 . "," . ran3 . "," . 1 . ") 0%, rgba(" . ran4 . "," . ran5 . "," . ran6 . "," . 1 . ") 50%, rgba(" . ran7
+ranGR .= "," . ran8 . "," . ran9 . "," . 1 . ") 100%)"
+return ranGR
+}
 ```
 
 ### Controls <a id="gui-controls"></a>
@@ -296,6 +525,118 @@ This section provides information about the controls that can be used within the
 2. Button - Button you can click
 3. Edit - Will crete a place to enter text
 4. Pictire - Will display a Picture. Pictures can be encoded as base64 in the HTML file, eliminating the need for the original picture file.
+5. Toggle - GUI element, allowing users to toggle settings on and off using a convenient toggle slider.
+6. Rectangle - Gui element to draw a rectangle
+7. Circle - Gui element to draw a Circle
+8. Video - Integrated a flexible video player using Gui, Add, Player, ... capable of displaying:
+9. DropDownList - Adds a DropDownList control (`Gui, Add, DropDownList`) to a GUI window and make a lable (`gMyDropDown`) to capture the selected option from a list of predefined choices (`Option1|Option2|Option3`).
+
+- YouTube videos: Simply provide the YouTube video URL to play directly within the application.
+- URL videos: Play videos from any accessible URL, supporting various video formats.
+- Local machine videos: Upload videos from your local machine by specifying a path, which will be encoded in a base64 string embedded in the html output.
+
+```ahk
+ranGR := getRanGr()
+once := 0
+Gui, Font, fCourier
+Gui, Color, gr-%ranGR%
+Gui, Show, +WebsiteMode w%A_ScreenWidth% h3700
+
+; 1. Text - Text element
+Gui, Add, Text, x10 y10 w200 h20, This is a text element
+
+; 2. Edit - Will create a place to enter text
+Gui, Add, Edit, x10 y40 w200 h25 r10 bg121212 cffffff gEdit1, Type here...
+
+; 3. Button - Button you can click
+
+; Create a GUI window and add a centered button
+Gui, Add, Button, x10 y80 w100 h30 r20 -Border cffffff bg121212 gButton1, Click Me
+
+; 4. Picture - Will display a Picture. You can provide a link or it can be encoded as base64 in the HTML file.
+; url
+Gui, Add, Picture, x10 y120 w200 h150, https://hd.wallpaperswide.com/thumbs/windows_xp_original-t2.jpg
+; a path form your computer
+Gui, Add, Picture, x10 y120 w200 h150, C:/path/to/your/your.png
+
+; 5. Toggle - GUI element, allowing users to toggle settings on and off using a convenient toggle slider.
+; toggle it on upon loading using on
+Gui, Add, Toggle, x10 y280 gToggle1 vS1 on
+
+; 6. Rectangle - GUI element to draw a rectangle
+Gui, Add, Rectangle, x10 y320 w100 h50 vRect1
+; you can change the color here
+GuiControl, Font, Rect1, cff0000
+
+; 7. Circle - GUI element to draw a Circle
+Gui, Add, Circle, x120 y320 w50 h50 vCircle1
+; you can change the color here
+GuiControl, Font, Circle1, cff0000
+
+; 8. Video - Integrated a video player using Gui, Add, Player
+; from YouTube
+Gui, Add, Player, x10 y380 w400 h300, https://www.youtube.com/watch?v=someyturl
+
+; or
+
+; form a url
+Gui, Add, Player, x10 y380 w400 h300, https://www.somewebsite.com/somevideo.mp4
+
+; or
+
+; form your computer
+Gui, Add, Player, x10 y380 w400 h300, C:/path/to/your/your.mp4
+
+; 9. DropDownList - Adds a DropDownList control (`Gui, Add, DropDownList`) to a GUI window and make a lable (`gMyDropDown`) to capture the selected option from a list of predefined choices (`Option1|Option2|Option3`).
+
+Gui, Add, DropDownList, x250 y10 gMyDropDown, Option1|Option2|Option3
+
+Gui, Color, c121212
+Gui 2: Show, -Border w500 h500
+
+Gui 2: Add, Button, x10 y10 w140 h40 gButton2, Button 2
+return
+
+Button2:
+MsgBox, You cliked Button 2
+Return
+
+Toggle1:
+    toggle1value := A_GuiControl
+    once++
+    if (once > 1)
+    {
+        MsgBox, % toggle1value
+    }
+Return
+
+Edit1:
+    textFormEditBox := A_GuiControl
+Return
+
+Button1:
+    MsgBox, % textFormEditBox
+Return
+
+MyDropDown:
+    MsgBox, You selected %A_GuiControl%
+Return
+
+getRanGr()
+{
+Loop, 9
+{
+Random, ran%A_Index%, 0, 255
+}
+
+Random, deg, 1, 360
+
+ranGR := "linear-gradient(" . deg . "deg, "
+ranGR .= "rgba(" . ran1 . "," . ran2 . "," . ran3 . "," . 1 . ") 0%, rgba(" . ran4 . "," . ran5 . "," . ran6 . "," . 1 . ") 50%, rgba(" . ran7
+ranGR .= "," . ran8 . "," . ran9 . "," . 1 . ") 100%)"
+return ranGR
+}
+```
 
 ### Examples <a id="gui-examples"></a>
 
@@ -319,17 +660,17 @@ return
 
 ; You need to get the text from the edit
 Edit1:
-FirstName := A_GuiControl
+    FirstName := A_GuiControl
 Return
 
 ; You need to get the text from the edit
 Edit2:
-LastName := A_GuiControl
+    LastName := A_GuiControl
 Return
 
 ; When you press the button
 ButtonOK:
-MsgBox, % "You entered " . FirstName . " " . LastName . "."
+    MsgBox, % "You entered " . FirstName . " " . LastName . "."
 Return
 ```
 
@@ -361,8 +702,8 @@ columns := 3
 
 ; if one button is w140 h40
 
-w := 20 + (150 * rows)
-h := 20 + (50 * columns)
+w := 10 + (150 * rows)
+h := 10 + (50 * columns)
 
 Gui 2: Show, w%w% h%h%
 
@@ -371,103 +712,78 @@ y := 10
 ButtonNum := 0
 Loop, %rows%
 {
-Loop, %columns%
-{
-ButtonNum++
-NameOfButton := "Button" . ButtonNum
-Gui 2: Add, Button, x%x% y%y% w140 h40 gButton, %NameOfButton%
-y := y + 50
-}
-x := x + 150
-y := 10
+    Loop, %columns%
+    {
+        ButtonNum++
+        NameOfButton := "Button" . ButtonNum
+        Gui 2: Add, Button, x%x% y%y% w140 h40 gButton, %NameOfButton%
+        y := y + 50
+    }
+    x := x + 150
+    y := 10
 }
 return
 
-
 Button:
-MsgBox, You clicked on %A_GuiControl%
+    MsgBox, You clicked on %A_GuiControl%
 Return
 ```
 
 Example 4
 
 ```ahk
-; Show the GUI window with specified width and height
-Gui, Show, w250 h300
-
-; Create an empty string for initializing edit controls
-nothing := ""
-
-; Create GUI window
-Gui, Add, Text, x20 y20 w210 h30, Enter two numbers:
-Gui, Add, Edit, x20 y50 w210 h30 gNum1 vNum1, %nothing%
-Gui, Add, Edit, x20 y90 w210 h30 gNum2 vNum2, %nothing%
-Gui, Add, Button, x20 y130 w100 h30 gAdd, Add
-Gui, Add, Button, x130 y130 w100 h30 gSubtract, Subtract
-Gui, Add, Button, x20 y170 w100 h30 gMultiply, Multiply
-Gui, Add, Button, x130 y170 w100 h30 gDivide, Divide
-Gui, Add, Text, x20 y220 w210 h30 vResultText, %nothing%
+Gui, Show, w500 h700
+onceTS1 := 0
+errorSelectAobject := 0
+DropList1Choise := ""
+Gui, Add, Toggle, x10 y10 gTS1 vTS1 on, Wanna turn it on?
+Gui, Add, DropDownList, x210 y10 h30 gDropList1 vds1 on, Select a object|sdefgh|aesdrgfh|awesdrfgh|szdf|sd
+Gui, Add, Button, x10 y50 w140 h40 gButton1 vButton1, Save changes
+Gui, Add, Picture, x10 y150 vImage1, https://i.ibb.co/Jpty1B8/305182938-1a0efe63-726e-49ca-a13c-d0ed627f2ea7.png
+Sleep, 1500
+GuiControl, Move, Image1, x50 y190
+Sleep, 1500
+GuiControl, Picture, Image1, https://trackmania.exchange/maps/screenshot/normal/165572
 return
 
-; Label to handle text input in Num1 edit control
-Num1:
-Num1 := A_GuiControl
+Button1:
+	if (errorSelectAobject = 1) or (DropList1Choise = "")
+	{
+		MsgBox, You havent select anything from the drop list
+		return
+	}
+	MsgBox, Oh you whent whit the %DropList1Choise%
 Return
 
-; Label to handle text input in Num2 edit control
-Num2:
-Num2 := A_GuiControl
+DropList1:
+	if (A_GuiControl = "Select a object")
+	{
+		MsgBox, 48, , You cannot select this since this is the name of the list!
+		errorSelectAobject := 1
+		return
+	}
+	else
+	{
+		errorSelectAobject := 0
+		MsgBox, You clciked %A_GuiControl%
+		DropList1Choise := A_GuiControl
+	}
 Return
 
-; Define functions to handle button click events
-
-; Addition function
-Add:
-    ; Perform addition operation
-    Result := ParseInt(Num1) + ParseInt(Num2)
-    ; Format the result message
-    Result := "Result: " . Result
-    ; Update the text of ResultText control with the result
-    GuiControl, Text, ResultText, %Result%
-Return
-
-; Subtraction function
-Subtract:
-    ; Perform subtraction operation
-    Result := ParseInt(Num1) - ParseInt(Num2)
-    ; Format the result message
-    Result := "Result: " . Result
-    ; Update the text of ResultText control with the result
-    GuiControl, Text, ResultText, %Result%
-Return
-
-; Multiplication function
-Multiply:
-    ; Perform multiplication operation
-    Result := ParseInt(Num1) * ParseInt(Num2)
-    ; Format the result message
-    Result := "Result: " . Result
-    ; Update the text of ResultText control with the result
-    GuiControl, Text, ResultText, %Result%
-Return
-
-; Division function
-Divide:
-    ; Check if Num2 is not zero to avoid division by zero error
-    if (Num2 != 0)
-    {
-        ; Perform division operation
-        Result := ParseInt(Num1) / ParseInt(Num2)
-        ; Format the result message
-        Result := "Result: " . Result
-        ; Update the text of ResultText control with the result
-        GuiControl, Text, ResultText, %Result%
-    }
-    else
-    {
-        ; Display error message if Num2 is zero
-        GuiControl, Text, ResultText, Cannot divide by zero
-    }
+TS1:
+	onceTS1++
+	if (onceTS1 > 1)
+	{
+		if (A_GuiControl = 1)
+		{
+			A_GuiControl1 := "On"
+		}
+		else
+		{
+			A_GuiControl1 := "Off"
+		}
+		MsgBox, its %A_GuiControl1%
+	}
 Return
 ```
 
@@ -492,6 +808,7 @@ GuiControl, Action, ControlID, Param1, Param2, Param3, Param4
   - `Move`: Move and resize the control.
   - `Focus`: Set focus on the control.
   - `Text`: Set the text content of the control.
+  - `Picture`: Changes the image of the specified ID to a different image, provided that ONLY a URL is valid.
   - `Hide`: Hide the control.
   - `Show`: Show the control.
   - `Enable`: Enable the control.
@@ -512,6 +829,8 @@ GuiControl, Action, ControlID, Param1, Param2, Param3, Param4
 - `Focus`: Sets focus on the specified control, if applicable.
 
 - `Text`: Sets the text content of the specified control to the provided value.
+
+- `Picture`: Changes the image of the specified ID to a different image, provided that ONLY a URL is valid.
 
 - `Hide`: Hides the specified control from view.
 
@@ -556,6 +875,15 @@ GuiControl, Font, Element2, s16
 GuiControl, Font, Text1, cFF0000
 ```
 
+```ahk
+Gui, Show, w500 h700
+Gui, Add, Picture, x10 y150 vImage1, https://i.ibb.co/Jpty1B8/305182938-1a0efe63-726e-49ca-a13c-d0ed627f2ea7.png
+Sleep, 1500
+GuiControl, Move, Image1, x50 y190
+Sleep, 1500
+GuiControl, Picture, Image1, https://trackmania.exchange/maps/screenshot/normal/165572
+```
+
 #### Note:
 
 - Ensure that the specified `ControlID` exists within the GUI environment before invoking `GuiControl`.
@@ -588,6 +916,14 @@ Return
 ```ahk
 !^+H::
 MsgBox, You pressed Alt+Ctrl+Shift+H
+Return
+```
+
+```ahk
+Enter::
+; If we have a MsgBox inside this subroutine, we need to sleep for 10 ms otherwise the Enter key will close the MsgBox immediately.
+Sleep, 10
+MsgBox, You pressed Enter
 Return
 ```
 
@@ -1805,6 +2141,8 @@ HTH supports various data types for variables, including:
 Variable names in HTH are case-insensitive and can consist of letters, digits, and underscores. However, they must begin with a letter. Descriptive names are recommended to reflect the purpose or content of the variable for better code readability.
 Don't declare variables with names like let, var, or const since this will result in an error upon execution.
 
+WARNING: NEVER NAME A VARIABLE THE SAME NAME AS A FUNCTION NAME
+
 #### Scope:
 
 Variables in HTH have the same scope rules as JavaScript, as HTH transpiles to JavaScript. This means:
@@ -1969,16 +2307,17 @@ This example demonstrates how to define and iterate over an array in HTH, handli
 
 ---
 
-### Run and Reload <a id="run-and-reload"></a>
+### Run, Reload and ExitApp <a id="run-reload-and-exitapp"></a>
 
 [Go back](#features)
 
 1. [Run](#run)
 2. [Reload](#reload)
+3. [ExitApp](#exitapp)
 
 ### Run <a id="run"></a>
 
-[Go back](#run-and-reload)
+[Go back](#run-reload-and-exitapp)
 
 The `Run` feature in HeavenToHell (HTH) enables developers to open specific websites directly from their scripts. This functionality is particularly useful for automating tasks that involve interacting with web pages.
 
@@ -2031,7 +2370,7 @@ The `Run` feature in HeavenToHell (HTH) offers a straightforward way to launch w
 
 ### Reload <a id="reload"></a>
 
-[Go back](#run-and-reload)
+[Go back](#run-reload-and-exitapp)
 
 The `Reload` feature in HeavenToHell (HTH) allows developers to reload the currently active webpage directly from their scripts. This functionality is particularly useful for refreshing content dynamically without manually refreshing the page.
 
@@ -2062,6 +2401,40 @@ This command will refresh the content of the webpage, allowing developers to upd
 #### Note:
 
 - The `Reload` command is used to refresh the content of the currently active webpage, providing developers with the capability to update information dynamically without manual intervention.
+
+### ExitApp <a id="exitapp"></a>
+
+[Go back](#run-reload-and-exitapp)
+
+The `ExitApp` feature in HeavenToHell (HTH) allows developers to close the currently active tab or browser window directly from their scripts. This functionality is particularly useful for terminating script execution or closing browser tabs programmatically.
+
+#### Syntax:
+
+```ahk
+ExitApp
+```
+
+#### Examples:
+
+```ahk
+; Close the currently active tab or browser window
+ExitApp
+```
+
+#### Usage:
+
+To close the currently active tab or browser window, use the `ExitApp` command without specifying a target.
+
+```ahk
+; Close the currently active tab or browser window
+ExitApp
+```
+
+This command will terminate the script execution and close the tab or browser window where the script is running.
+
+#### Note:
+
+- The `ExitApp` command is used to terminate script execution and close the currently active tab or browser window, providing developers with the capability to end script operation and close the associated browsing context.
 
 ---
 
@@ -2169,6 +2542,477 @@ Do not add comments on the same line as code statements in HeavenToHell (HTH). P
 - Single-line comments should be concise and focused, providing relevant information to aid in code understanding.
 
 Comments in HeavenToHell (HTH) are invaluable tools for improving code comprehension and facilitating collaboration among developers. By leveraging single-line comments effectively, developers can create well-documented and maintainable scripts in HeavenToHell.
+
+---
+
+### PlaySound <a id="play-sound"></a>
+
+[Go back](#features)
+
+The `SoundPlay` command in HeavenToHell (HTH) allows users to control audio playback and manage sound-related actions within their applications. This command is designed to be used interactively with user-triggered events, ensuring a seamless and engaging audio experience.
+
+#### Syntax:
+
+```ahk
+SoundPlay, Command, Parameter
+```
+
+#### Parameters:
+
+- `Command`: Specifies the action to perform on the audio.
+
+  - Possible commands include:
+    - `Play`: Plays audio specified by the `Parameter`.
+    - `Pause`: Pauses the currently playing audio.
+    - `Resume`: Resumes the paused audio playback.
+    - `Stop`: Stops the currently playing audio and resets its position.
+    - `Mute`: Mutes the audio playback.
+    - `Unmute`: Unmutes the audio playback.
+    - `Volume`: Sets the volume level (from 0 to 100).
+
+- `Parameter`: Specifies additional information based on the `Command`.
+  - For `Play` command:
+    - Provide the audio file path or a URL.
+  - For `Volume` command:
+    - Specify the volume level (0 to 100).
+
+#### Example Usage:
+
+##### Basic Commands:
+
+```ahk
+; Play audio from a URL
+SoundPlay, Play, https://example.com/audio.mp3
+
+; Play audio from your specified path (to be encoded into a Base64 string inside the .html output)
+SoundPlay, Play, C:/path/to/your/your.mp3
+
+; Pause audio playback
+SoundPlay, Pause
+
+; Resume paused audio
+SoundPlay, Resume
+
+; Stop audio playback
+SoundPlay, Stop
+
+; Mute audio
+SoundPlay, Mute
+
+; Unmute audio
+SoundPlay, Unmute
+
+; Set volume to 50%
+SoundPlay, Volume, 50
+```
+
+##### Usage with Website Interaction:
+
+Before using the `SoundPlay` function, ensure that the user has interacted with the website interface to initialize the necessary components. Here's an example implementation:
+
+```ahk
+Gui, Show, +WebsiteMode, w%A_ScreenWidth% h%A_ScreenHeight%
+Gui, Font, s30
+StartButtonGR := "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(81,81,81,1) 96%)"
+Gui, Add, Button, x0 y0 w%A_ScreenWidth% h%A_ScreenHeight% cffffff -Border gr-%StartButtonGR% vStartWebsiteButton gStartWebsiteButton, Press here to continue
+Gui, Font, s15
+return
+
+StartWebsiteButton:
+GuiControl, Hide, StartWebsiteButton
+
+; Add your GUI elements and interactions here
+
+; Now you can use SoundPlay function after user interaction
+SoundPlay, Play, https://example.com/audio.mp3
+
+Return
+```
+
+#### Notes:
+
+- The `SoundPlay` function in HTH is ideal for managing audio playback based on user-triggered events or interactions.
+- **Interacting with the website before using `SoundPlay` is crucial to ensure that necessary resources are loaded and user permissions are granted for audio playback, enhancing security and user experience.**
+
+This documentation provides comprehensive guidance on utilizing the `SoundPlay` command in HeavenToHell (HTH), highlighting its capabilities and best practices for integrating interactive audio playback functionalities into web applications.
+
+---
+
+### GetMousePos and OnMouseClick <a id="getmousepos-and-onmouseclick"></a>
+
+[Go back](#features)
+
+1. [GetMousePos](#getmousepos)
+2. [OnMouseClick](#onmouseclick)
+3. [Mouse Position Example with 50-Pixel Corners](#mouse-position-example-with-50-pixel-corners)
+
+---
+
+### GetMousePos <a id="getmousepos"></a>
+
+[Go back](#getmousepos-and-onmouseclick)
+
+The `GetMousePos` command in HeavenToHell (HTH) retrieves the current position of the mouse cursor on the screen. This command is useful for obtaining coordinates that can be used in various interactive applications and scripts.
+
+#### Syntax:
+
+```ahk
+GetMousePos, OutputVarX, OutputVarY
+```
+
+#### Parameters:
+
+- `OutputVarX`: The variable that will receive the X-coordinate of the mouse cursor.
+- `OutputVarY`: The variable that will receive the Y-coordinate of the mouse cursor.
+
+#### Example Usage:
+
+```ahk
+; Declare variables to store mouse coordinates
+MouseX := 0
+MouseY := 0
+
+; Retrieve mouse cursor position
+GetMousePos, MouseX, MouseY
+
+; Display the mouse coordinates
+MsgBox, Mouse X: %MouseX%, Mouse Y: %MouseY%
+```
+
+#### Notes:
+
+- The `GetMousePos` command allows for precise tracking of mouse cursor positions.
+- Mouse coordinates obtained using `GetMousePos` can be used to trigger specific actions based on mouse interactions within an application.
+
+---
+
+### OnMouseClick <a id="onmouseclick"></a>
+
+[Go back](#getmousepos-and-onmouseclick)
+
+The `OnMouseClick` subroutine in HeavenToHell (HTH) allows developers to handle mouse click events directly within a script, without requiring additional event handlers. This approach simplifies mouse click event management and enhances interactivity in applications.
+
+#### Syntax:
+
+```ahk
+OnMouseClick:
+    ; Perform actions upon mouse click
+    MouseGetPos, x, y
+    MsgBox, You clicked at x: %x% y: %y%
+Return
+```
+
+#### Parameters:
+
+- No specific parameters are required for `OnMouseClick` itself. This subroutine automatically triggers upon any mouse click event.
+
+#### Example Usage:
+
+```ahk
+; Define OnMouseClick subroutine to handle mouse click events
+OnMouseClick:
+    ; Retrieve mouse cursor position
+    MouseGetPos, x, y
+
+    ; Display a message box with mouse click coordinates
+    MsgBox, You clicked at x: %x% y: %y%
+Return
+```
+
+#### Notes:
+
+- `OnMouseClick` is a self-contained subroutine that triggers automatically upon any mouse click event.
+- Use `MouseGetPos` within `OnMouseClick` to obtain the mouse cursor position at the time of the click and perform corresponding actions based on the click location.
+
+---
+
+### Mouse Position Example with 50-Pixel Corners <a id="mouse-position-example-with-50-pixel-corners"></a>
+
+[Go back](#getmousepos-and-onmouseclick)
+
+The following example script divides each corner of the screen into 50-pixel segments to detect mouse moves within specific regions.
+
+#### Example Script:
+
+```ahk
+; Set up a timer to continuously monitor mouse position
+; Check every 100 milliseconds (0.1 seconds)
+SetTimer, CheckMousePosition, 100
+return
+
+; Subroutine to check mouse position
+CheckMousePosition:
+    MouseGetPos, x, y
+
+    ; Define 50-pixel regions around each corner
+    CornerSize := 50
+    TopLeftX := 0
+    TopLeftY := 0
+    TopRightX := A_ScreenWidth - CornerSize
+    TopRightY := 0
+    BottomLeftX := 0
+    BottomLeftY := A_ScreenHeight - CornerSize
+    BottomRightX := A_ScreenWidth - CornerSize
+    BottomRightY := A_ScreenHeight - CornerSize
+
+    ; Determine which corner the mouse is located based on mouse coordinates
+    if (x >= TopLeftX && x < (TopLeftX + CornerSize) && y >= TopLeftY && y < (TopLeftY + CornerSize))
+    {
+        MsgBox, You clicked on the top left corner of the screen.
+    }
+    else if (x >= TopRightX && y >= TopRightY && y < (TopRightY + CornerSize))
+    {
+        MsgBox, You clicked on the top right corner of the screen.
+    }
+    else if (x >= BottomLeftX && x < (BottomLeftX + CornerSize) && y >= BottomLeftY)
+    {
+        MsgBox, You clicked on the bottom left corner of the screen.
+    }
+    else if (x >= BottomRightX && y >= BottomRightY)
+    {
+        MsgBox, You clicked on the bottom right corner of the screen.
+    }
+Return
+```
+
+#### Notes:
+
+- The `SetTimer` command is used to trigger the `CheckMousePosition` subroutine every 100 milliseconds (0.1 seconds), allowing continuous monitoring of the mouse position.
+- The `MouseGetPos` command retrieves the current mouse cursor position (`x` and `y` coordinates).
+- The script defines 50-pixel regions around each corner of the screen (`TopLeft`, `TopRight`, `BottomLeft`, `BottomRight`) to detect if the mouse is within specific areas.
+- Modify the `CornerSize` variable to adjust the size of the regions around each corner based on your application's requirements.
+
+This documentation provides detailed information on `GetMousePos`, `OnMouseClick`, and an additional example using `SetTimer` to monitor mouse positions and handle click events within specific 50-pixel regions around each corner of the screen in HeavenToHell (HTH). These commandalities enhance user interactivity and enable responsive behaviors based on mouse interactions in scripts and applications.
+
+---
+
+### Title and Icon <a id="title-and-icon"></a>
+
+[Go back](#features)
+
+1. [Title](#title)
+2. [Icon](#icon)
+
+---
+
+### Title <a id="title"></a>
+
+[Go back](#title-and-icon)
+
+The `Title` command in HeavenToHell (HTH) is used to set the title of the website displayed in the browser tab. This command allows developers to customize the title dynamically based on specific conditions or predefined values.
+
+#### Syntax:
+
+```ahk
+Title, NewTitle
+```
+
+#### Parameters:
+
+- `NewTitle`: The new title to set for the website tab.
+
+#### Example Usage:
+
+```ahk
+; Set a static title
+Title, Hello World
+
+; Set a dynamic title using a variable
+title2 := "Another Title"
+Title, %title2%
+```
+
+#### Notes:
+
+- The `Title` command updates the title displayed in the browser tab.
+- If no title is specified using `Title`, the default title is the name of the `.hth` file.
+
+---
+
+### Icon <a id="icon"></a>
+
+[Go back](#title-and-icon)
+
+The `Icon` command in HeavenToHell (HTH) is used to set the icon (favicon) for the website displayed in the browser tab. This command allows developers to specify a custom icon sourced from a URL or a local file path.
+
+#### Syntax:
+
+```ahk
+Icon, IconSource
+```
+
+#### Parameters:
+
+- `IconSource`: The source of the icon, which can be a URL or a local file path.
+
+#### Example Usage:
+
+```ahk
+; Set the website icon from a URL
+Icon, https://example.com/image.png
+
+; Set the website icon from a local file path
+Icon, C:/path/to/your/your.png
+```
+
+#### Default Icon:
+
+- If no icon is specified using `Icon`, the default icon is the HeavenToHell (HTH) logo.
+
+#### Notes:
+
+- The `Icon` command sets the favicon for the website, improving its visual identity in the browser tab.
+- The specified icon can be sourced from a URL or a local file path, with support for Base64 encoding for local file paths within `.hth` output.
+
+### StoreLocally <a id="store-locally"></a>
+
+[Go back](#features)
+
+The `StoreLocally` function in HeavenToHell (HTH) provides an interface to interact with the browser's local storage, allowing developers to store, retrieve, and manipulate data persistently on the client side.
+
+#### Syntax:
+
+```ahk
+StoreLocally(action, key, value)
+```
+
+#### Parameters:
+
+- `action`: Specifies the action to perform on the local storage.
+  - `e`: Check if the local storage is empty.
+  - `r`: Retrieve data from the specified `key`.
+  - `s`: Store `value` into the specified `key`.
+  - `d`: Delete data associated with the specified `key`.
+  - `dALL`: Delete all data from the entire local storage.
+- `key`: The key used to identify the data in the local storage.
+- `value`: (Optional) The value to store in the local storage when performing the `s` action.
+
+#### Example Usage:
+
+```ahk
+; Check if the local storage is empty
+if !(StoreLocally("e"))
+{
+    ; Retrieve data from the "var1" key and increment it
+    data := ParseInt(StoreLocally("r", "var1"))
+    data++
+    ; Store the updated data back into the "var1" key
+    StoreLocally("s", "var1", data)
+}
+else
+{
+    ; Initialize data if the "var1" key does not exist
+    data := 1
+    ; Store the initial data into the "var1" key
+    StoreLocally("s", "var1", data)
+}
+
+; Display a message based on the stored data
+MsgBox, This is your %data% visit!
+```
+
+#### Notes:
+
+- The `StoreLocally` function allows for common operations on the browser's local storage.
+- Use `action` to specify the desired operation (`e` for checking emptiness, `r` for retrieving, `s` for storing, `d` for deleting by key, and `dALL` for clearing the entire local storage).
+- Retrieve stored data using `StoreLocally("r", key)` and store data using `StoreLocally("s", key, value)`.
+- Ensure proper initialization and error handling based on the expected state of local storage keys during script execution.
+
+### getUrlParams and reloadWithParams <a id="geturlparams-and-reloadwithparams"></a>
+
+[Go back](#features)
+
+1. [getUrlParams](#geturlparams)
+2. [reloadWithParams](#reloadwithparams)
+
+---
+
+### getUrlParams <a id="geturlparams"></a>
+
+[Go back](#geturlparams-and-reloadwithparams)
+
+The `getUrlParams` function in HeavenToHell (HTH) retrieves the query parameters from the current URL and returns them as a string. This function is useful for extracting and parsing parameters passed via the URL.
+
+#### Syntax:
+
+```ahk
+getUrlParams()
+```
+
+#### Returns:
+
+- A string containing the query parameters from the current URL.
+
+#### Example Usage:
+
+```ahk
+; Retrieve and display URL parameters
+params := getUrlParams()
+if (params != "")
+{
+    MsgBox, % params
+    Loop, Parse, params, "&"
+    {
+        MsgBox, % A_LoopField
+    }
+}
+```
+
+#### Notes:
+
+- The `getUrlParams` function extracts query parameters from the current URL.
+- Use `Loop, Parse` to iterate through individual parameters extracted from the URL string.
+
+---
+
+### reloadWithParams <a id="reloadwithparams"></a>
+
+[Go back](#geturlparams-and-reloadwithparams)
+
+The `reloadWithParams` function in HeavenToHell (HTH) reloads the current webpage with specified query parameters appended to the URL. This function allows developers to dynamically update the URL parameters and trigger page reloads with new parameters.
+
+#### Syntax:
+
+```ahk
+reloadWithParams(params)
+```
+
+#### Parameters:
+
+- `params`: The query parameters to append to the URL for reloading.
+
+#### Example Usage:
+
+```ahk
+par := getUrlParams()
+if (par != "")
+{
+	MsgBox, % par
+	Loop, Parse, par, "&"
+	{
+		MsgBox, % A_LoopField
+	}
+}
+
+Gui, Show, w500 h500
+Gui, Add, Button, x10 y10 w200 h50 gButton, Reload with params
+return
+
+
+Button:
+	; Define a random number to append as a parameter
+	Random, ranNum1, 1, 100
+	Random, ranNum2, 1, 100
+
+	; Reload the webpage with custom query parameters
+	reloadWithParams("?p=hello&man&15&" . ranNum1 . "&" . ranNum2)
+Return
+```
+
+#### Notes:
+
+- The `reloadWithParams` function appends specified query parameters to the URL and triggers a page reload with the updated URL.
+- Use this function to dynamically modify URL parameters and reload the webpage based on specific actions or conditions.
 
 ---
 
@@ -2768,6 +3612,7 @@ A collection of Build-in Function available in HTH.
 9. [Mod](#mod)
 10. [Asc](#asc)
 11. [ParseInt](#parseint)
+12. [StrLower](#strlower)
 
 ---
 
@@ -3130,6 +3975,38 @@ out := out + num2
 }
 MsgBox, % out
 ```
+
+---
+
+### StrLower <a id="strlower"></a>
+
+[Go back](#build-in-functions)
+
+**StrLower**: Converts a string to lowercase.
+
+#### Syntax:
+
+```ahk
+result := StrLower(string)
+```
+
+#### Parameters:
+
+- _string_: The string to convert to lowercase.
+
+#### Return Value:
+
+- Returns the lowercase version of the input string.
+
+#### Example:
+
+```ahk
+input := "Hello World"
+lowercase := StrLower(input)
+MsgBox, The lowercase version of %input% is %lowercase%
+```
+
+This modified section explains the usage and purpose of `StrLower()` in HTH, demonstrating how to use it with an example. You can use this format to provide clear documentation for the `StrLower()` function.
 
 ---
 
