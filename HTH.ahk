@@ -175,9 +175,11 @@ varOutJsCanvasFixTranspernat := ""
 rectangleId := 0
 switchId := 0
 videoId := 0
+DropDownListId := 0
 ifWeUseCanvas := 0
 weUseCnanvasAtALL := 0
 libNum := 0
+isFullScrenOnce := 0
 
 Loop
 {
@@ -243,8 +245,7 @@ if (InStr(AHKcode, "OnMouseClick:"))
 AHKcodeOnMouseClickAdd =
 (
 
-        // Attaching event listener to document
-        document.addEventListener("click", OnMouseClick);
+Attw456543w45eqsubeotibebrawaaachingeventlistenertodocumentaddEventListeneThisfunnctionaftertouchends768ds798y9z7s7xcfy8s7d9fcx
 
 )
 AHKcode := AHKcodeOnMouseClickAdd . "`n" . AHKcode . "`n"
@@ -271,7 +272,7 @@ Loop, Parse, AHKcode, `n, `r
 
 out := A_LoopField
 
-if (SubStr(StrLower(out), 1, 19) = StrLower("Gui, Add, Rectangle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Circle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Toggle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Player"))
+if (SubStr(StrLower(out), 1, 19) = StrLower("Gui, Add, Rectangle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Circle"))
 {
 weUseCnanvasAtALL := 1
 }
@@ -542,7 +543,7 @@ Loop, Parse, AHKcode, `n, `r
 lineDone := 0
 str := A_LoopField
 
-if !(SubStr(StrLower(str), 1, 19) = StrLower("Gui, Add, rectangle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Circle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Toggle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Player"))
+if !(SubStr(StrLower(str), 1, 19) = StrLower("Gui, Add, rectangle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Circle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Toggle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Player")) or (SubStr(StrLower(out), 1, 22) = StrLower("Gui, Add, DropDownList"))
 {
 
 if (InStr(str, """"))
@@ -686,7 +687,10 @@ HotKeyCalledHotKyes := ""
 AHKcode := out123456
 onKeyPress := ""
 
-guiColorShow := "121212"
+guiColorShow =
+(
+linear-gradient(90deg, " + "#121212" + " 0`%, " + "#121212" + " 100`%)
+)
 guiFontShow := "15"
 
 AindexcharLength := 1
@@ -851,7 +855,7 @@ if (InStr(str, ","))
 {
 
 s:=StrSplit(str,", ").1
-out21 := Trim(s)
+out21 := StrLower(Trim(s))
 
 s:=StrSplit(str,", ").2
 out22 := Trim(s)
@@ -859,7 +863,7 @@ out22 := Trim(s)
 if (InStr(out21, "volume"))
 {
 ; volume
-var1 := "SoundPlay(""volume"", " . out22 . ")"
+var1 := "SoundPlay(""setVolume"", " . out22 . ")"
 }
 else
 {
@@ -2350,10 +2354,9 @@ else if (SubStr(Trim(StrLower(A_LoopField)), 1, 5) = StrLower("Gui, ")) or (SubS
 {
 
 
-
-
+isFullScren := 0
 str := A_LoopField
-
+gradient := RegExMatch(str, "i)Gui, Color, gr-(.*)", match) ? match1 : ""
 str := StrReplace(str, ": ", ", ")
 
 s:=StrSplit(str,",").1
@@ -2377,6 +2380,17 @@ onceGuiAdd := 1
 }
 
 
+if (GuiNumber >= 2)
+{
+weUseCnanvasAtALLEver := 0
+weUseCnanvasAtALL := 0
+moreThen1GuiMode := 1
+}
+else
+{
+moreThen1GuiMode := 0
+}
+
 s:=StrSplit(str,", ").2
 out2 := StrLower(Trim(s))
 
@@ -2385,6 +2399,7 @@ s := Trim(s)
 if (out2 != "show")
 {
 out3 := StrLower(Trim(s))
+out3Good := (Trim(s))
 }
 else
 {
@@ -2409,11 +2424,80 @@ onceGuiAdd++
 ;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;
 
+
+
 if (out2 = "color")
 {
 
-out3 := Trim(out3)
-guiColorShow := out3
+
+guiColorShow =
+(
+linear-gradient(90deg, " + "#121212" + " 0`%, " + "#121212" + " 100`%)
+)
+
+
+Loop, Parse, out3Good, " "
+{
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("c"))
+{
+guiColorShow := Trim(A_LoopField)
+StringTrimLeft, guiColorShow, guiColorShow, 1
+
+var1 =
+(
+" + "#%guiColorShow%" + "
+)
+guiColorShow := var1
+if (InStr(guiColorShow, "%")) && !((InStr(guiColorShow, "%,")) or (InStr(guiColorShow, "%)")))
+{
+str := guiColorShow
+s:=StrSplit(str,"%").2
+out2 := s
+;MsgBox, % out2
+var1 =
+(
+linear-gradient(90deg, " + "#" + variables.%out2% + "" + " 0`%, " + "#" + variables.%out2% + "" + " 100`%)
+)
+guiColorShow := var1
+}
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 3) = StrLower("gr-"))
+{
+guiColorShow := gradient
+;MsgBox, % linearGradient
+if (InStr(guiColorShow, "thisissemicolonattheendplaceokmansurebruh49475472472"))
+{
+StringTrimRight, guiColorShow, guiColorShow, 54
+}
+
+if (InStr(guiColorShow, "%")) && !((InStr(guiColorShow, "%,")) or (InStr(guiColorShow, "%)")))
+{
+
+
+str := guiColorShow
+
+s:=StrSplit(str,"%").2
+out2 := s
+
+
+
+var1 =
+(
+" + variables.%out2% + "
+)
+guiColorShow := var1
+}
+
+
+
+}
+}
+
+
+
+
+
+
 ;MsgBox, % guiColorShow
 }
 
@@ -2422,10 +2506,49 @@ guiColorShow := out3
 if (out2 = "font")
 {
 
-out3 := Trim(out3)
-StringTrimLeft, out3, out3, 1
-guiFontShow := out3
+
+Loop, Parse, out3Good, " "
+{
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("s"))
+{
+guiFontShow := Trim(A_LoopField)
+StringTrimLeft, guiFontShow, guiFontShow, 1
+if (InStr(guiFontShow, "%"))
+{
+str := guiFontShow
+s:=StrSplit(str,"%").2
+out2 := s
+
+var1 =
+(
+" + variables.%out2% + "
+)
+guiFontShow := var1
 }
+}
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("f"))
+{
+fontName := Trim(A_LoopField)
+StringTrimLeft, fontName, fontName, 1
+if (InStr(fontName, "%"))
+{
+str := fontName
+s:=StrSplit(str,"%").2
+out2 := s
+var1 =
+(
+" + variables.%out2% + "
+)
+fontName := var1
+}
+}
+
+
+}
+
+}
+
 
 
 
@@ -2791,7 +2914,8 @@ guiOutOfButtonW := 0
 guiOutOfButtonH := 0
 guiOutOfButtonV := 0
 guiOutOfButtonG := 0
-Loop, 6
+guiOutOfButtonC := 0
+Loop, 12
 {
 guiOutOfButton%A_Index% := ""
 }
@@ -2801,6 +2925,154 @@ Loop, Parse, out4, " "
 ;MsgBox, |%A_LoopField%|
 
 guiOutOfButtonNum++
+
+
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("c"))
+{
+
+guiOutOfButton7 := A_LoopField
+StringTrimLeft, guiOutOfButton7, guiOutOfButton7, 1
+
+
+if (InStr(guiOutOfButton7, "%"))
+{
+str := guiOutOfButton7
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfButton7 =
+(
+#" + variables.%var1%//
+)
+
+}
+else
+{
+ guiOutOfButton7 := "#" . guiOutOfButton7
+}
+
+}
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 3) = StrLower("gr-"))
+{
+
+guiOutOfButton11 := A_LoopField
+StringTrimLeft, guiOutOfButton11, guiOutOfButton11, 3
+
+
+if (InStr(guiOutOfButton11, "%"))
+{
+str := guiOutOfButton11
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfButton11 =
+(
+" + variables.%var1%//
+)
+}
+
+
+}
+
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("f"))
+{
+guiOutOfButton12 := Trim(A_LoopField)
+StringTrimLeft, guiOutOfButton12, guiOutOfButton12, 1
+if (InStr(guiOutOfButton12, "%"))
+{
+str := guiOutOfButton12
+s:=StrSplit(str,"%").2
+out2 := s
+var1 =
+(
+" + variables.%out2% + "
+)
+guiOutOfButton12 := var1
+}
+}
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 2) = StrLower("bg"))
+{
+
+guiOutOfButton8 := A_LoopField
+StringTrimLeft, guiOutOfButton8, guiOutOfButton8, 2
+
+
+if (InStr(guiOutOfButton8, "%"))
+{
+str := guiOutOfButton8
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfButton8 =
+(
+#" + variables.%var1%//
+)
+
+}
+else
+{
+guiOutOfButton8 := "#" . guiOutOfButton8
+}
+
+}
+
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("r"))
+{
+
+guiOutOfButton9 := A_LoopField
+StringTrimLeft, guiOutOfButton9, guiOutOfButton9, 1
+
+
+if (InStr(guiOutOfButton9, "%"))
+{
+str := guiOutOfButton9
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfButton9 =
+(
+" + variables.%var1% + "px
+)
+
+}
+else
+{
+guiOutOfButton9 := guiOutOfButton9 . "px"
+}
+
+}
+
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = StrLower("-border"))
+{
+
+guiOutOfButton10 := A_LoopField
+StringTrimLeft, guiOutOfButton10, guiOutOfButton10, 7
+guiOutOfButton10 := "none"
+
+if (InStr(guiOutOfButton10, "%"))
+{
+str := guiOutOfButton10
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfButton10 =
+(
+" + variables.%var1% + "
+)
+
+}
+
+
+}
+
+
+
 
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
 {
@@ -2876,7 +3148,7 @@ guiOutOfButton52 :=  " "" + [variables." . var1 . "]" . " + " . """"
 StringTrimLeft, guiOutOfButton5, guiOutOfButton5, 1
 StringTrimLeft, guiOutOfButton52, guiOutOfButton52, 1
 }
-if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g")) && !((SubStr(Trim(StrLower(A_LoopField)), 1, 3) = StrLower("gr-")))
 {
 guiOutOfButtonG := 1
 guiOutOfButton6 := A_LoopField
@@ -2917,6 +3189,13 @@ Gui%GuiNumber%%guiOutOfButton5%.style.left = "%guiOutOfButton1%px"; // Set initi
 Gui%GuiNumber%%guiOutOfButton5%.style.top = "%guiOutOfButton2%px"; // Set initial y position
 Gui%GuiNumber%%guiOutOfButton5%.style.width = "%guiOutOfButton3%px"; // Set width
 Gui%GuiNumber%%guiOutOfButton5%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%%guiOutOfButton5%.style.cursor = "pointer"; // Change cursor on hover
+Gui%GuiNumber%%guiOutOfButton5%.style.border = "%guiOutOfButton10%";
+Gui%GuiNumber%%guiOutOfButton5%.style.background = "%guiOutOfButton11%";
+Gui%GuiNumber%%guiOutOfButton5%.style.backgroundColor = "%guiOutOfButton8%";
+Gui%GuiNumber%%guiOutOfButton5%.style.borderRadius = "%guiOutOfButton9%";
+Gui%GuiNumber%%guiOutOfButton5%.style.color = "%guiOutOfButton7%";
+Gui%GuiNumber%%guiOutOfButton5%.style.fontFamily = "%guiOutOfButton12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%%guiOutOfButton5%.onclick = function (event) {
 variables.A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
   %guiOutOfButton6%(variables.A_GuiControl);
@@ -2942,6 +3221,13 @@ Gui%GuiNumber%%guiOutOfButton5%.style.left = "%guiOutOfButton1%px"; // Set initi
 Gui%GuiNumber%%guiOutOfButton5%.style.top = "%guiOutOfButton2%px"; // Set initial y position
 Gui%GuiNumber%%guiOutOfButton5%.style.width = "%guiOutOfButton3%px"; // Set width
 Gui%GuiNumber%%guiOutOfButton5%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%%guiOutOfButton5%.style.cursor = "pointer"; // Change cursor on hover
+Gui%GuiNumber%%guiOutOfButton5%.style.border = "%guiOutOfButton10%";
+Gui%GuiNumber%%guiOutOfButton5%.style.background = "%guiOutOfButton11%";
+Gui%GuiNumber%%guiOutOfButton5%.style.backgroundColor = "%guiOutOfButton8%";
+Gui%GuiNumber%%guiOutOfButton5%.style.borderRadius = "%guiOutOfButton9%";
+Gui%GuiNumber%%guiOutOfButton5%.style.fontFamily = "%guiOutOfButton12%, sans-serif"; // Specify your desired font here
+Gui%GuiNumber%%guiOutOfButton5%.style.color = "%guiOutOfButton7%";
 Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfButton5%);
 
 )
@@ -2966,6 +3252,13 @@ Gui%GuiNumber%Button%NumOfButtons%.style.left = "%guiOutOfButton1%px"; // Set in
 Gui%GuiNumber%Button%NumOfButtons%.style.top = "%guiOutOfButton2%px"; // Set initial y position
 Gui%GuiNumber%Button%NumOfButtons%.style.width = "%guiOutOfButton3%px"; // Set width
 Gui%GuiNumber%Button%NumOfButtons%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%Button%NumOfButtons%.style.cursor = "pointer"; // Change cursor on hover
+Gui%GuiNumber%Button%NumOfButtons%.style.border = "%guiOutOfButton10%";
+Gui%GuiNumber%Button%NumOfButtons%.style.background = "%guiOutOfButton11%";
+Gui%GuiNumber%Button%NumOfButtons%.style.backgroundColor = "%guiOutOfButton8%";
+Gui%GuiNumber%Button%NumOfButtons%.style.borderRadius = "%guiOutOfButton9%";
+Gui%GuiNumber%Button%NumOfButtons%.style.color = "%guiOutOfButton7%";
+Gui%GuiNumber%Button%NumOfButtons%.style.fontFamily = "%guiOutOfButton12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%Button%NumOfButtons%.onclick = function (event) {
 variables.A_GuiControl = event.target.textContent
   %guiOutOfButton6%(variables.A_GuiControl);
@@ -2990,6 +3283,13 @@ Gui%GuiNumber%Button%NumOfButtons%.style.left = "%guiOutOfButton1%px"; // Set in
 Gui%GuiNumber%Button%NumOfButtons%.style.top = "%guiOutOfButton2%px"; // Set initial y position
 Gui%GuiNumber%Button%NumOfButtons%.style.width = "%guiOutOfButton3%px"; // Set width
 Gui%GuiNumber%Button%NumOfButtons%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%Button%NumOfButtons%.style.cursor = "pointer"; // Change cursor on hover
+Gui%GuiNumber%Button%NumOfButtons%.style.border = "%guiOutOfButton10%";
+Gui%GuiNumber%Button%NumOfButtons%.style.background = "%guiOutOfButton11%";
+Gui%GuiNumber%Button%NumOfButtons%.style.backgroundColor = "%guiOutOfButton8%";
+Gui%GuiNumber%Button%NumOfButtons%.style.borderRadius = "%guiOutOfButton9%";
+Gui%GuiNumber%Button%NumOfButtons%.style.color = "%guiOutOfButton7%";
+Gui%GuiNumber%Button%NumOfButtons%.style.fontFamily = "%guiOutOfButton12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%.appendChild(Gui%GuiNumber%Button%NumOfButtons%);
 
 )
@@ -3019,6 +3319,13 @@ Gui%GuiNumber%%guiOutOfButton5%.style.left = "%guiOutOfButton1%px"; // Set initi
 Gui%GuiNumber%%guiOutOfButton5%.style.top = "%guiOutOfButton2%px"; // Set initial y position
 Gui%GuiNumber%%guiOutOfButton5%.style.width = "%guiOutOfButton3%px"; // Set width
 Gui%GuiNumber%%guiOutOfButton5%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%%guiOutOfButton5%.style.cursor = "pointer"; // Change cursor on hover
+Gui%GuiNumber%%guiOutOfButton5%.style.border = "%guiOutOfButton10%";
+Gui%GuiNumber%%guiOutOfButton5%.style.background = "%guiOutOfButton11%";
+Gui%GuiNumber%%guiOutOfButton5%.style.backgroundColor = "%guiOutOfButton8%";
+Gui%GuiNumber%%guiOutOfButton5%.style.borderRadius = "%guiOutOfButton9%";
+Gui%GuiNumber%%guiOutOfButton5%.style.color = "%guiOutOfButton7%";
+Gui%GuiNumber%%guiOutOfButton5%.style.fontFamily = "%guiOutOfButton12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%%guiOutOfButton5%.onclick = function (event) {
 variables.A_GuiControl = event.target.id.replace(/^Gui\d*/, "");
   %guiOutOfButton6%(variables.A_GuiControl);
@@ -3044,6 +3351,13 @@ Gui%GuiNumber%%guiOutOfButton5%.style.left = "%guiOutOfButton1%px"; // Set initi
 Gui%GuiNumber%%guiOutOfButton5%.style.top = "%guiOutOfButton2%px"; // Set initial y position
 Gui%GuiNumber%%guiOutOfButton5%.style.width = "%guiOutOfButton3%px"; // Set width
 Gui%GuiNumber%%guiOutOfButton5%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%%guiOutOfButton5%.style.border = "%guiOutOfButton10%";
+Gui%GuiNumber%%guiOutOfButton5%.style.background = "%guiOutOfButton11%";
+Gui%GuiNumber%%guiOutOfButton5%.style.backgroundColor = "%guiOutOfButton8%";
+Gui%GuiNumber%%guiOutOfButton5%.style.borderRadius = "%guiOutOfButton9%";
+Gui%GuiNumber%%guiOutOfButton5%.style.color = "%guiOutOfButton7%";
+Gui%GuiNumber%%guiOutOfButton5%.style.fontFamily = "%guiOutOfButton12%, sans-serif"; // Specify your desired font here
+Gui%GuiNumber%%guiOutOfButton5%.style.cursor = "pointer"; // Change cursor on hover
 Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfButton5%);
 
 )
@@ -3068,6 +3382,13 @@ Gui%GuiNumber%Button%NumOfButtons%.style.left = "%guiOutOfButton1%px"; // Set in
 Gui%GuiNumber%Button%NumOfButtons%.style.top = "%guiOutOfButton2%px"; // Set initial y position
 Gui%GuiNumber%Button%NumOfButtons%.style.width = "%guiOutOfButton3%px"; // Set width
 Gui%GuiNumber%Button%NumOfButtons%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%Button%NumOfButtons%.style.cursor = "pointer"; // Change cursor on hover
+Gui%GuiNumber%Button%NumOfButtons%.style.border = "%guiOutOfButton10%";
+Gui%GuiNumber%Button%NumOfButtons%.style.background = "%guiOutOfButton11%";
+Gui%GuiNumber%Button%NumOfButtons%.style.backgroundColor = "%guiOutOfButton8%";
+Gui%GuiNumber%Button%NumOfButtons%.style.borderRadius = "%guiOutOfButton9%";
+Gui%GuiNumber%Button%NumOfButtons%.style.color = "%guiOutOfButton7%";
+Gui%GuiNumber%Button%NumOfButtons%.style.fontFamily = "%guiOutOfButton12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%Button%NumOfButtons%.onclick = function (event) {
 variables.A_GuiControl = event.target.textContent
   %guiOutOfButton6%(variables.A_GuiControl);
@@ -3093,6 +3414,13 @@ Gui%GuiNumber%Button%NumOfButtons%.style.left = "%guiOutOfButton1%px"; // Set in
 Gui%GuiNumber%Button%NumOfButtons%.style.top = "%guiOutOfButton2%px"; // Set initial y position
 Gui%GuiNumber%Button%NumOfButtons%.style.width = "%guiOutOfButton3%px"; // Set width
 Gui%GuiNumber%Button%NumOfButtons%.style.height = "%guiOutOfButton4%px"; // Set height
+Gui%GuiNumber%Button%NumOfButtons%.style.cursor = "pointer"; // Change cursor on hover
+Gui%GuiNumber%Button%NumOfButtons%.style.border = "%guiOutOfButton10%";
+Gui%GuiNumber%Button%NumOfButtons%.style.background = "%guiOutOfButton11%";
+Gui%GuiNumber%Button%NumOfButtons%.style.backgroundColor = "%guiOutOfButton8%";
+Gui%GuiNumber%Button%NumOfButtons%.style.borderRadius = "%guiOutOfButton9%";
+Gui%GuiNumber%Button%NumOfButtons%.style.color = "%guiOutOfButton7%";
+Gui%GuiNumber%Button%NumOfButtons%.style.fontFamily = "%guiOutOfButton12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%.appendChild(Gui%GuiNumber%Button%NumOfButtons%);
 
 )
@@ -3119,7 +3447,7 @@ guiOutOfEditW := 0
 guiOutOfEditH := 0
 guiOutOfEditV := 0
 guiOutOfEditG := 0
-Loop, 6
+Loop, 12
 {
 guiOutOfEdit%A_Index% := ""
 }
@@ -3129,6 +3457,157 @@ Loop, Parse, out4, " "
 ;MsgBox, |%A_LoopField%|
 
 guiOutOfEditNum++
+
+
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("c"))
+{
+
+guiOutOfEdit7 := A_LoopField
+StringTrimLeft, guiOutOfEdit7, guiOutOfEdit7, 1
+
+
+if (InStr(guiOutOfEdit7, "%"))
+{
+str := guiOutOfEdit7
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfEdit7 =
+(
+#" + variables.%var1%//
+)
+
+}
+else
+{
+ guiOutOfEdit7 := "#" . guiOutOfEdit7
+}
+
+}
+
+
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 3) = StrLower("gr-"))
+{
+
+guiOutOfEdit11 := A_LoopField
+StringTrimLeft, guiOutOfEdit11, guiOutOfEdit11, 3
+
+
+if (InStr(guiOutOfEdit11, "%"))
+{
+str := guiOutOfEdit11
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfEdit11 =
+(
+" + variables.%var1%//
+)
+
+}
+
+
+}
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 2) = StrLower("bg"))
+{
+
+guiOutOfEdit8 := A_LoopField
+StringTrimLeft, guiOutOfEdit8, guiOutOfEdit8, 2
+
+
+if (InStr(guiOutOfEdit8, "%"))
+{
+str := guiOutOfEdit8
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfEdit8 =
+(
+#" + variables.%var1%//
+)
+
+}
+else
+{
+guiOutOfEdit8 := "#" . guiOutOfEdit8
+}
+
+}
+
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("f"))
+{
+guiOutOfEdit12 := Trim(A_LoopField)
+StringTrimLeft, guiOutOfEdit12, guiOutOfEdit12, 1
+if (InStr(guiOutOfEdit12, "%"))
+{
+str := guiOutOfEdit12
+s:=StrSplit(str,"%").2
+out2 := s
+var1 =
+(
+" + variables.%out2% + "
+)
+guiOutOfEdit12 := var1
+}
+}
+
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("r"))
+{
+
+guiOutOfEdit9 := A_LoopField
+StringTrimLeft, guiOutOfEdit9, guiOutOfEdit9, 1
+
+
+if (InStr(guiOutOfEdit9, "%"))
+{
+str := guiOutOfEdit9
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfEdit9 =
+(
+" + variables.%var1% + "px
+)
+
+}
+else
+{
+guiOutOfEdit9 := guiOutOfEdit9 . "px"
+}
+
+}
+
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = StrLower("-border"))
+{
+
+guiOutOfEdit10 := A_LoopField
+StringTrimLeft, guiOutOfEdit10, guiOutOfEdit10, 7
+guiOutOfEdit10 := "none"
+
+if (InStr(guiOutOfEdit10, "%"))
+{
+str := guiOutOfEdit10
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfEdit10 =
+(
+" + variables.%var1% + "
+)
+
+}
+
+
+}
+
+
+
 
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
 {
@@ -3204,7 +3683,7 @@ guiOutOfEdit52 :=  " "" + [variables." . var1 . "]" . " + " . """"
 StringTrimLeft, guiOutOfEdit52, guiOutOfEdit52, 1
 StringTrimLeft, guiOutOfEdit5, guiOutOfEdit5, 1
 }
-if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g")) && !((SubStr(Trim(StrLower(A_LoopField)), 1, 3) = StrLower("gr-")))
 {
 guiOutOfEditG := 1
 guiOutOfEdit6 := A_LoopField
@@ -3246,6 +3725,12 @@ Gui%GuiNumber%%guiOutOfEdit5%.style.left = "%guiOutOfEdit1%px"; // Set initial x
 Gui%GuiNumber%%guiOutOfEdit5%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
 Gui%GuiNumber%%guiOutOfEdit5%.style.width = "%guiOutOfEdit3%px"; // Set width
 Gui%GuiNumber%%guiOutOfEdit5%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%%guiOutOfEdit5%.style.border = "%guiOutOfEdit10%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.color = "%guiOutOfEdit7%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.background = "%guiOutOfEdit11%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.backgroundColor = "%guiOutOfEdit8%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.borderRadius = "%guiOutOfEdit9%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.fontFamily = "%guiOutOfEdit12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%%guiOutOfEdit5%.addEventListener("input", function () {
 variables.A_GuiControl = Gui%GuiNumber%%guiOutOfEdit5%.value
   %guiOutOfEdit6%(variables.A_GuiControl);
@@ -3272,6 +3757,12 @@ Gui%GuiNumber%%guiOutOfEdit5%.style.left = "%guiOutOfEdit1%px"; // Set initial x
 Gui%GuiNumber%%guiOutOfEdit5%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
 Gui%GuiNumber%%guiOutOfEdit5%.style.width = "%guiOutOfEdit3%px"; // Set width
 Gui%GuiNumber%%guiOutOfEdit5%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%%guiOutOfEdit5%.style.border = "%guiOutOfEdit10%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.color = "%guiOutOfEdit7%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.background = "%guiOutOfEdit11%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.backgroundColor = "%guiOutOfEdit8%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.borderRadius = "%guiOutOfEdit9%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.fontFamily = "%guiOutOfEdit12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfEdit5%);
 
 )
@@ -3297,6 +3788,12 @@ Gui%GuiNumber%Edit%NumOfEdits%.style.left = "%guiOutOfEdit1%px"; // Set initial 
 Gui%GuiNumber%Edit%NumOfEdits%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
 Gui%GuiNumber%Edit%NumOfEdits%.style.width = "%guiOutOfEdit3%px"; // Set width
 Gui%GuiNumber%Edit%NumOfEdits%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%Edit%NumOfEdits%.style.border = "%guiOutOfEdit10%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.color = "%guiOutOfEdit7%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.background = "%guiOutOfEdit11%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.backgroundColor = "%guiOutOfEdit8%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.borderRadius = "%guiOutOfEdit9%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.fontFamily = "%guiOutOfEdit12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%Edit%NumOfEdits%.addEventListener("input", function () {
 variables.A_GuiControl = Gui%GuiNumber%Edit%NumOfEdits%.value
   %guiOutOfEdit6%(variables.A_GuiControl);
@@ -3322,6 +3819,12 @@ Gui%GuiNumber%Edit%NumOfEdits%.style.left = "%guiOutOfEdit1%px"; // Set initial 
 Gui%GuiNumber%Edit%NumOfEdits%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
 Gui%GuiNumber%Edit%NumOfEdits%.style.width = "%guiOutOfEdit3%px"; // Set width
 Gui%GuiNumber%Edit%NumOfEdits%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%Edit%NumOfEdits%.style.border = "%guiOutOfEdit10%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.color = "%guiOutOfEdit7%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.background = "%guiOutOfEdit11%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.backgroundColor = "%guiOutOfEdit8%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.borderRadius = "%guiOutOfEdit9%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.fontFamily = "%guiOutOfEdit12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%.appendChild(Gui%GuiNumber%Edit%NumOfEdits%);
 
 )
@@ -3352,6 +3855,12 @@ Gui%GuiNumber%%guiOutOfEdit5%.style.left = "%guiOutOfEdit1%px"; // Set initial x
 Gui%GuiNumber%%guiOutOfEdit5%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
 Gui%GuiNumber%%guiOutOfEdit5%.style.width = "%guiOutOfEdit3%px"; // Set width
 Gui%GuiNumber%%guiOutOfEdit5%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%%guiOutOfEdit5%.style.border = "%guiOutOfEdit10%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.color = "%guiOutOfEdit7%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.background = "%guiOutOfEdit11%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.backgroundColor = "%guiOutOfEdit8%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.borderRadius = "%guiOutOfEdit9%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.fontFamily = "%guiOutOfEdit12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%%guiOutOfEdit5%.addEventListener("input", function () {
 variables.A_GuiControl = Gui%GuiNumber%%guiOutOfEdit5%.value
   %guiOutOfEdit6%(variables.A_GuiControl);
@@ -3378,6 +3887,12 @@ Gui%GuiNumber%%guiOutOfEdit5%.style.left = "%guiOutOfEdit1%px"; // Set initial x
 Gui%GuiNumber%%guiOutOfEdit5%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
 Gui%GuiNumber%%guiOutOfEdit5%.style.width = "%guiOutOfEdit3%px"; // Set width
 Gui%GuiNumber%%guiOutOfEdit5%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%%guiOutOfEdit5%.style.border = "%guiOutOfEdit10%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.color = "%guiOutOfEdit7%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.background = "%guiOutOfEdit11%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.backgroundColor = "%guiOutOfEdit8%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.borderRadius = "%guiOutOfEdit9%"
+Gui%GuiNumber%%guiOutOfEdit5%.style.fontFamily = "%guiOutOfEdit12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%.appendChild(Gui%GuiNumber%%guiOutOfEdit5%);
 
 )
@@ -3403,6 +3918,12 @@ Gui%GuiNumber%Edit%NumOfEdits%.style.left = "%guiOutOfEdit1%px"; // Set initial 
 Gui%GuiNumber%Edit%NumOfEdits%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
 Gui%GuiNumber%Edit%NumOfEdits%.style.width = "%guiOutOfEdit3%px"; // Set width
 Gui%GuiNumber%Edit%NumOfEdits%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%Edit%NumOfEdits%.style.border = "%guiOutOfEdit10%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.color = "%guiOutOfEdit7%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.background = "%guiOutOfEdit11%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.backgroundColor = "%guiOutOfEdit8%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.borderRadius = "%guiOutOfEdit9%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.fontFamily = "%guiOutOfEdit12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%Edit%NumOfEdits%.addEventListener("input", function () {
 variables.A_GuiControl = Gui%GuiNumber%Edit%NumOfEdits%.value
   %guiOutOfEdit6%(variables.A_GuiControl);
@@ -3429,6 +3950,12 @@ Gui%GuiNumber%Edit%NumOfEdits%.style.left = "%guiOutOfEdit1%px"; // Set initial 
 Gui%GuiNumber%Edit%NumOfEdits%.style.top = "%guiOutOfEdit2%px"; // Set initial y position
 Gui%GuiNumber%Edit%NumOfEdits%.style.width = "%guiOutOfEdit3%px"; // Set width
 Gui%GuiNumber%Edit%NumOfEdits%.style.height = "%guiOutOfEdit4%px"; // Set height
+Gui%GuiNumber%Edit%NumOfEdits%.style.border = "%guiOutOfEdit10%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.color = "%guiOutOfEdit7%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.background = "%guiOutOfEdit11%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.backgroundColor = "%guiOutOfEdit8%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.borderRadius = "%guiOutOfEdit9%"
+Gui%GuiNumber%Edit%NumOfEdits%.style.fontFamily = "%guiOutOfEdit12%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%.appendChild(Gui%GuiNumber%Edit%NumOfEdits%);
 
 )
@@ -3980,6 +4507,7 @@ guiOutOfSwitchW := 0
 guiOutOfSwitchH := 0
 guiOutOfSwitchV := 0
 guiOutOfSwitchG := 0
+guiOutOfSwitchOn := 0
 Loop, 7
 {
 guiOutOfSwitch%A_Index% := ""
@@ -3987,6 +4515,7 @@ guiOutOfSwitch%A_Index% := ""
 
 guiOutOfSwitch3 := "60"
 guiOutOfSwitch4 := "30"
+isThereArecId := 1
 
 dynamicGuiSet := 0
 Loop, Parse, out4, " "
@@ -4054,7 +4583,10 @@ StringTrimLeft, guiOutOfSwitch4, guiOutOfSwitch4, 1
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
 {
 guiOutOfSwitchV := 1
-guiOutOfSwitch5 := """" . "Gui1" . A_LoopField . """"
+guiOutOfSwitch5 := """" . "Gui" . GuiNumber . A_LoopField . """"
+guiOutOfSwitch5Fix := """" . "" . A_LoopField . """"
+StringTrimRight, guiOutOfSwitch5Fix, guiOutOfSwitch5Fix, 1
+StringTrimLeft, guiOutOfSwitch5Fix, guiOutOfSwitch5Fix, 2
 guiOutOfSwitch52 := A_LoopField
 dynamicGuiSet := 1
 if (InStr(guiOutOfSwitch5, "%"))
@@ -4063,27 +4595,27 @@ str := guiOutOfSwitch5
 s:=StrSplit(str,"%").2
 var1 := s
 
-guiOutOfSwitch5 :=  " [variables." . var1 . "]"
-guiOutOfSwitch52 :=  " "" + [variables." . var1 . "]" . " + " . """"""
+guiOutOfSwitch5 := " ""Gui" . GuiNumber . """ + [variables." . var1 . "]"
+guiOutOfSwitch5Fix := " + [variables." . var1 . "]"
 }
 else
 {
 StringTrimLeft, A_LoopFieldOutFixCnavas, A_LoopField, 1
-guiOutOfSwitch5 :=  " " . """" . "Gui1" . A_LoopFieldOutFixCnavas . """"
+guiOutOfSwitch5 :=  " " . """" . "Gui" . GuiNumber . A_LoopFieldOutFixCnavas . """"
 }
 StringTrimLeft, guiOutOfSwitch5, guiOutOfSwitch5, 1
 StringTrimLeft, guiOutOfSwitch52, guiOutOfSwitch52, 1
 isThereArecId := 0
-}
-else
-{
-isThereArecId := 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
 {
 guiOutOfSwitchG := 1
 guiOutOfSwitch6 := A_LoopField
 StringTrimLeft, guiOutOfSwitch6, guiOutOfSwitch6, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 2) = StrLower("on"))
+{
+guiOutOfSwitchOn := 1
 }
 }
 
@@ -4093,19 +4625,174 @@ switchId++
 if (isThereArecId = 1)
 {
 guiOutOfSwitch5 := """" . "Gui" . GuiNumber . "Switch" . switchId .  """"
+guiOutOfSwitch5Fix := """" . "" . GuiNumber . "Switch" . switchId .  """"
+StringTrimRight, guiOutOfSwitch5Fix, guiOutOfSwitch5Fix, 1
+StringTrimLeft, guiOutOfSwitch5Fix, guiOutOfSwitch5Fix, 1
+}
+
+
+if (guiOutOfSwitchOn = 1)
+{
+switchOut =
+(
+createToggleSwitch(Gui%GuiNumber%, %guiOutOfSwitch5%, "%out5%", "#2196F3", %guiOutOfSwitch1%, %guiOutOfSwitch2%, %guiOutOfSwitch3%, %guiOutOfSwitch4%, %guiOutOfSwitch6% );
+document.getElementById('Gui%GuiNumber%%guiOutOfSwitch5Fix%').click()`;
+)
+}
+else
+{
+switchOut =
+(
+createToggleSwitch(Gui%GuiNumber%, %guiOutOfSwitch5%, "%out5%", "#2196F3", %guiOutOfSwitch1%, %guiOutOfSwitch2%, %guiOutOfSwitch3%, %guiOutOfSwitch4%, %guiOutOfSwitch6% );
+)
+}
+
+;MsgBox, % rectangleOut
+
+jsCode .= "`n" . switchOut . "`n"
+
+}
+
+
+if (out3 = "dropdownlist")
+{
+
+
+
+
+
+
+
+guiOutOfDropDownListNum := 0
+guiOutOfDropDownListX := 0
+guiOutOfDropDownListY := 0
+guiOutOfDropDownListW := 0
+guiOutOfDropDownListH := 0
+guiOutOfDropDownListV := 0
+guiOutOfDropDownListG := 0
+Loop, 7
+{
+guiOutOfDropDownList%A_Index% := ""
+}
+isThereArecId := 1
+
+guiOutOfDropDownList3 := "150"
+guiOutOfDropDownList4 := "30"
+
+dynamicGuiSet := 0
+Loop, Parse, out4, " "
+{
+;MsgBox, |%A_LoopField%|
+
+guiOutOfDropDownListNum++
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfDropDownListX := 1
+guiOutOfDropDownList1 := A_LoopField
+if (InStr(guiOutOfDropDownList1, "%"))
+{
+str := guiOutOfDropDownList1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfDropDownList1 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfDropDownList1, guiOutOfDropDownList1, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfDropDownListY := 1
+guiOutOfDropDownList2 := A_LoopField
+if (InStr(guiOutOfDropDownList2, "%"))
+{
+str := guiOutOfDropDownList2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfDropDownList2 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfDropDownList2, guiOutOfDropDownList2, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfDropDownListW := 1
+guiOutOfDropDownList3 := A_LoopField
+if (InStr(guiOutOfDropDownList3, "%"))
+{
+str := guiOutOfDropDownList3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfDropDownList3 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfDropDownList3, guiOutOfDropDownList3, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfDropDownListH := 1
+guiOutOfDropDownList4 := A_LoopField
+if (InStr(guiOutOfDropDownList4, "%"))
+{
+str := guiOutOfDropDownList4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfDropDownList4 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfDropDownList4, guiOutOfDropDownList4, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
+{
+guiOutOfDropDownListV := 1
+guiOutOfDropDownList5 := """" . "Gui" . GuiNumber . A_LoopField . """"
+guiOutOfDropDownList52 := A_LoopField
+dynamicGuiSet := 1
+if (InStr(guiOutOfDropDownList5, "%"))
+{
+str := guiOutOfDropDownList5
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfDropDownList5 :=  " ""Gui" . GuiNumber . """ + [variables." . var1 . "]"
+
+}
+else
+{
+StringTrimLeft, A_LoopFieldOutFixCnavas, A_LoopField, 1
+guiOutOfDropDownList5 :=  " " . """" . "Gui" . GuiNumber . A_LoopFieldOutFixCnavas . """"
+}
+StringTrimLeft, guiOutOfDropDownList5, guiOutOfDropDownList5, 1
+StringTrimLeft, guiOutOfDropDownList52, guiOutOfDropDownList52, 1
+isThereArecId := 0
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
+{
+guiOutOfDropDownListG := 1
+guiOutOfDropDownList6 := A_LoopField
+StringTrimLeft, guiOutOfDropDownList6, guiOutOfDropDownList6, 1
+}
+}
+
+DropDownListId++
+
+
+if (isThereArecId = 1)
+{
+guiOutOfDropDownList5 := """" . "Gui" . GuiNumber . "DropDownList" . DropDownListId .  """"
 }
 
 
 
-switchOut =
+DropDownListOut =
 (
-createToggleSwitch(Gui%GuiNumber%, %guiOutOfSwitch5%, "%out5%", "#2196F3", %guiOutOfSwitch1%, %guiOutOfSwitch2%, %guiOutOfSwitch3%, %guiOutOfSwitch4%, %guiOutOfSwitch6% );
+createCustomDropdown(Gui%GuiNumber%, %guiOutOfDropDownList5%, "%out5%", "#333333", %guiOutOfDropDownList1%, %guiOutOfDropDownList2%, %guiOutOfDropDownList3%, %guiOutOfDropDownList4%, %guiOutOfDropDownList6% );
 )
 
 
 ;MsgBox, % rectangleOut
 
-jsCode .= "`n" . switchOut . "`n"
+jsCode .= "`n" . DropDownListOut . "`n"
 
 }
 
@@ -4135,6 +4822,8 @@ guiOutOfVideo%A_Index% := ""
 
 guiOutOfVideo3 := "480"
 guiOutOfVideo4 := "300"
+
+isThereArecId := 1
 
 dynamicGuiSet := 0
 Loop, Parse, out4, " "
@@ -4202,7 +4891,7 @@ StringTrimLeft, guiOutOfVideo4, guiOutOfVideo4, 1
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
 {
 guiOutOfVideoV := 1
-guiOutOfVideo5 := """" . "Gui1" . A_LoopField . """"
+guiOutOfVideo5 := """" . "Gui" . GuiNumber . A_LoopField . """"
 guiOutOfVideo52 := A_LoopField
 dynamicGuiSet := 1
 if (InStr(guiOutOfVideo5, "%"))
@@ -4211,21 +4900,17 @@ str := guiOutOfVideo5
 s:=StrSplit(str,"%").2
 var1 := s
 
-guiOutOfVideo5 :=  " [variables." . var1 . "]"
-guiOutOfVideo52 :=  " "" + [variables." . var1 . "]" . " + " . """"""
+guiOutOfVideo5 :=  " ""Gui" . GuiNumber . """ + [variables." . var1 . "]"
+
 }
 else
 {
 StringTrimLeft, A_LoopFieldOutFixCnavas, A_LoopField, 1
-guiOutOfVideo5 :=  " " . """" . "Gui1" . A_LoopFieldOutFixCnavas . """"
+guiOutOfVideo5 :=  " " . """" . "Gui" . GuiNumber . A_LoopFieldOutFixCnavas . """"
 }
 StringTrimLeft, guiOutOfVideo5, guiOutOfVideo5, 1
 StringTrimLeft, guiOutOfVideo52, guiOutOfVideo52, 1
 isThereArecId := 0
-}
-else
-{
-isThereArecId := 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
 {
@@ -4275,7 +4960,7 @@ else
 {
     ; None of the specified substrings are found in out5
     ;MsgBox, No URL or FTP link detected in out5: %out5%
-videoId++
+
 typeOfAvideo := 3
 
 File := Trim(out5)
@@ -4306,7 +4991,7 @@ base64VideoData .= base64 . "`n"
 
 
 
-
+videoId++
 
 if (isThereArecId = 1)
 {
@@ -4391,6 +5076,7 @@ Loop, 6
 guiOutOfRectangle%A_Index% := ""
 }
 dynamicGuiSet := 0
+isThereArecId := 1
 Loop, Parse, out4, " "
 {
 ;MsgBox, |%A_LoopField%|
@@ -4456,7 +5142,7 @@ StringTrimLeft, guiOutOfRectangle4, guiOutOfRectangle4, 1
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
 {
 guiOutOfRectangleV := 1
-guiOutOfRectangle5 := """" . "Gui1" . A_LoopField . """"
+guiOutOfRectangle5 := """" . "Gui" . GuiNumber . A_LoopField . """"
 guiOutOfRectangle52 := A_LoopField
 dynamicGuiSet := 1
 if (InStr(guiOutOfRectangle5, "%"))
@@ -4465,21 +5151,16 @@ str := guiOutOfRectangle5
 s:=StrSplit(str,"%").2
 var1 := s
 
-guiOutOfRectangle5 :=  " [variables." . var1 . "]"
-guiOutOfRectangle52 :=  " "" + [variables." . var1 . "]" . " + " . """"""
+guiOutOfRectangle5 :=  " ""Gui" . GuiNumber . """ + [variables." . var1 . "]"
 }
 else
 {
 StringTrimLeft, A_LoopFieldOutFixCnavas, A_LoopField, 1
-guiOutOfRectangle5 :=  " " . """" . "Gui1" . A_LoopFieldOutFixCnavas . """"
+guiOutOfRectangle5 :=  " " . """" . "Gui" . GuiNumber . A_LoopFieldOutFixCnavas . """"
 }
 StringTrimLeft, guiOutOfRectangle5, guiOutOfRectangle5, 1
 StringTrimLeft, guiOutOfRectangle52, guiOutOfRectangle52, 1
 isThereArecId := 0
-}
-else
-{
-isThereArecId := 1
 }
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
 {
@@ -4560,12 +5241,36 @@ guiOutOfShowX := 0
 guiOutOfShowY := 0
 guiOutOfShowW := 0
 guiOutOfShowH := 0
+
+boderinGuiYes =
+(
+Gui%GuiNumber%.style.border = "2px solid white";
+)
+boderinGuiYesCan =
+(
+canvas.style.border = "2px solid white";
+)
 Loop, 4
 {
 guiOutOfShow%A_Index% := ""
 }
 Loop, Parse, out3, " "
 {
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 7) = StrLower("-border"))
+{
+boderinGuiYes =
+(
+Gui%GuiNumber%.style.border = "";
+)
+boderinGuiYesCan =
+(
+canvas.style.border = "";
+)
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 12) = StrLower("+WebsiteMode"))
+{
+isFullScren := 1
+}
 if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
 {
 guiOutOfShowX := 1
@@ -4692,33 +5397,76 @@ canvas.style.top = (window.innerHeight - canvas.height) / 2 + "px";
 )
 }
 
+if (isFullScren = 1)
+{
+isFullScrenOnce++
+if (isFullScrenOnce = 1)
+{
+FullScrenFixCode =
+(
+document.documentElement.setAttribute("style", "padding: 0; margin: 0;");
+document.head.setAttribute("style", "padding: 0; margin: 0;");
+document.body.setAttribute("style", "overflow-x: hidden;padding: 0; margin: 0;");
+)
+}
+else
+{
+FullScrenFixCode := "`n"
+}
+
+}
+else
+{
+FullScrenFixCode := "`n"
+}
 
 
-
-
-
-
-
+;MsgBox, % weUseCnanvasAtALL
 if (weUseCnanvasAtALL = 1)
 {
 varOutJsCanvasFixTranspernat =
 (
 Gui1.style.backgroundColor = "transparent";
-Gui1.style.zIndex = "999";
+Gui1.style.zIndex = "100";
+)
+
+
+if (isFullScren = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%.style.position = "absolute";
+Gui%GuiNumber%.style.width = window.innerWidth + "px"; // Set the width
+Gui%GuiNumber%.style.height = "%guiOutOfShow4%px"; // Set the height
+Gui%GuiNumber%.style.color = "white";
+Gui%GuiNumber%.style.fontSize = "15px";
+Gui%GuiNumber%.style.padding = "0px";
+Gui%GuiNumber%.style.fontFamily = "%fontName%, sans-serif"; // Specify your desired font here
+Gui%GuiNumber%.style.zIndex = "%GuiNumber%00";
+
+
+%varOutJsCanvasFixTranspernat%
+
+document.body.appendChild(Gui%GuiNumber%); // Append the GUI window to the body
+Gui%GuiNumber%.style.display = "block";
+
 )
 }
-
+else
+{
 jsCode0 =
 (
 
 Gui%GuiNumber%.style.position = "absolute";
 Gui%GuiNumber%.style.width = "%guiOutOfShow3%px"; // Set the width
 Gui%GuiNumber%.style.height = "%guiOutOfShow4%px"; // Set the height
-Gui%GuiNumber%.style.backgroundColor = "#%guiColorShow%";
 Gui%GuiNumber%.style.color = "white";
 Gui%GuiNumber%.style.fontSize = "15px";
 Gui%GuiNumber%.style.padding = "0px";
-Gui%GuiNumber%.style.border = "2px solid white";
+%boderinGuiYes%
+Gui%GuiNumber%.style.zIndex = "%GuiNumber%00";
+Gui%GuiNumber%.style.fontFamily = "%fontName%, sans-serif"; // Specify your desired font here
 
 // Calculate center position
 %jsCode01%
@@ -4731,8 +5479,72 @@ document.body.appendChild(Gui%GuiNumber%); // Append the GUI window to the body
 Gui%GuiNumber%.style.display = "block";
 
 )
+}
 
 
+
+}
+else
+{
+
+if (isFullScren = 1)
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%.style.position = "absolute";
+Gui%GuiNumber%.style.width = window.innerWidth + "px"; // Set the width
+Gui%GuiNumber%.style.height = "%guiOutOfShow4%px"; // Set the height
+Gui%GuiNumber%.style.background = "%guiColorShow%";
+Gui%GuiNumber%.style.backgroundColor = "%guiColorShow%";
+Gui%GuiNumber%.style.color = "white";
+Gui%GuiNumber%.style.fontSize = "15px";
+Gui%GuiNumber%.style.padding = "0px";
+Gui%GuiNumber%.style.fontFamily = "%fontName%, sans-serif"; // Specify your desired font here
+Gui%GuiNumber%.style.zIndex = "%GuiNumber%00";
+
+
+%varOutJsCanvasFixTranspernat%
+
+document.body.appendChild(Gui%GuiNumber%); // Append the GUI window to the body
+Gui%GuiNumber%.style.display = "block";
+
+)
+}
+else
+{
+jsCode0 =
+(
+
+Gui%GuiNumber%.style.position = "absolute";
+Gui%GuiNumber%.style.width = "%guiOutOfShow3%px"; // Set the width
+Gui%GuiNumber%.style.height = "%guiOutOfShow4%px"; // Set the height
+Gui%GuiNumber%.style.background = "%guiColorShow%";
+Gui%GuiNumber%.style.backgroundColor = "%guiColorShow%";
+Gui%GuiNumber%.style.color = "white";
+Gui%GuiNumber%.style.fontSize = "15px";
+Gui%GuiNumber%.style.padding = "0px";
+%boderinGuiYes%
+Gui%GuiNumber%.style.fontFamily = "%fontName%, sans-serif"; // Specify your desired font here
+Gui%GuiNumber%.style.zIndex = "%GuiNumber%00";
+
+// Calculate center position
+%jsCode01%
+%jsCode02%
+
+
+%varOutJsCanvasFixTranspernat%
+
+document.body.appendChild(Gui%GuiNumber%); // Append the GUI window to the body
+Gui%GuiNumber%.style.display = "block";
+
+)
+}
+
+}
+
+if (isFullScren = 1)
+{
 jsCode0Canvas =
 (
 
@@ -4740,10 +5552,41 @@ jsCode0Canvas =
 // Create a canvas element dynamically
 canvas = document.createElement("canvas");
 canvas.id = "canvasId"; // Assign ID to the canvas element
+canvas.style.background = "%guiColorShow%";
+canvas.width = window.innerWidth;
+canvas.height = "%guiOutOfShow4%"; // Set the height
+canvas.style.backgroundColor = "%guiColorShow%"; // Set background color
+
+// Get the 2D rendering context
+ctx = canvas.getContext("2d");
+
+// Center the canvas
+canvas.style.position = "absolute";
+
+
+
+// Append the canvas to the body
+document.body.appendChild(canvas);
+
+// Array to store information about rectangles
+rectangles = [];
+
+)
+}
+else
+{
+jsCode0Canvas =
+(
+
+
+// Create a canvas element dynamically
+canvas = document.createElement("canvas");
+canvas.id = "canvasId"; // Assign ID to the canvas element
+canvas.style.background = "%guiColorShow%";
 canvas.width = "%guiOutOfShow3%"; // Set the width
 canvas.height = "%guiOutOfShow4%"; // Set the height
-canvas.style.border = "2px solid white"; // Set border
-canvas.style.backgroundColor = "#121212"; // Set background color
+%boderinGuiYesCan%
+canvas.style.backgroundColor = "%guiColorShow%"; // Set background color
 
 // Get the 2D rendering context
 ctx = canvas.getContext("2d");
@@ -4761,7 +5604,7 @@ document.body.appendChild(canvas);
 rectangles = [];
 
 )
-
+}
 
 if (guiOutOfShow3 != "")
 {
@@ -4811,7 +5654,7 @@ weUseCnanvasAtALLEver := 1
 
 
 
-jsCode .= "`n" . jsCode0 . "`n"
+jsCode .= "`n" . jsCode0 . "`n" . FullScrenFixCode . "`n"
 }
 }
 lineDone := 1
@@ -5050,6 +5893,14 @@ if (out2 = "enable")
 out0 =
 (
 GuiControl("%out2%", "Gui%GuiNumber%%out3%);
+)
+}
+
+if (out2 = "picture")
+{
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%, "%out4%");
 )
 }
 
@@ -6583,10 +7434,12 @@ Loop, Parse, jsCode, `n, `r
     ignore := 0
     if (InStr(A_LoopField, "for (/*"))
     {
-        if (hold = 1 && holdText = A_LoopField) {
+        if (hold = 1 && holdText = A_LoopField)
+        {
             ignore := 1
         }
-        else {
+        else
+        {
             holdText := A_LoopField
             hold := 1
         }
@@ -6600,6 +7453,33 @@ Loop, Parse, jsCode, `n, `r
 StringTrimRight, out4758686d86dgt8r754444444, out4758686d86dgt8r754444444, 1
 jsCode := out4758686d86dgt8r754444444
 
+
+
+
+Attw456543w45eqsubeotibebrawaaachi =
+(
+
+        // Attaching event listener to document
+        document.addEventListener("mouseup", OnMouseRelease);
+        document.addEventListener("touchend", OnTouchEnd);
+
+        function OnMouseRelease(event) {
+          // This function will be called when the mouse button is released
+          // You can perform your desired actions here
+          console.log("Mouse released");
+          // Call your main function after mouse release
+          OnMouseClick(event);
+        }
+
+        function OnTouchEnd(event) {
+          // This function will be called when the touch is lifted
+          // You can perform your desired actions here
+          console.log("Touch ended");
+          // Call your main function after touch ends
+          OnMouseClick(event);
+        }
+
+)
 
 
 out4758686d86d86d86578991abc := ""
@@ -6662,7 +7542,7 @@ str := StrReplace(str, " + \"")", " + """")")
 str := StrReplace(str, "window.open(\""", "window.open(""""")
 
 str := StrReplace(str, "("""" + variables. ", "("""" + ")
-str := StrReplace(str, "document.addEventListener(""click"", variables.OnMouseClick)", "document.addEventListener(""click"", OnMouseClick)")
+str := StrReplace(str, "Attw456543w45eqsubeotibebrawaaachingeventlistenertodocumentaddEventListeneThisfunnctionaftertouchends768ds798y9z7s7xcfy8s7d9fcx", Attw456543w45eqsubeotibebrawaaachi)
 str := StrReplace(str, "async function OnMouseClick(A_GuiControl)", "async function OnMouseClick()")
 
 if (Trim(str) == "Return")
@@ -7756,6 +8636,7 @@ addFuncIfWeUseIt_GuiControl =
 
       function GuiControl(action, id, param1, param2, param3, param4) {
         const element = document.getElementById(id);
+
         if (element) {
           // Handle DOM elements
           if (action === "move") {
@@ -7788,15 +8669,25 @@ addFuncIfWeUseIt_GuiControl =
           } else if (action === "color") {
             // Set color
             element.style.color = param1;
+          } else if (action === "picture") {
+            // Change the image source
+            if (element instanceof HTMLImageElement) {
+              element.src = param1;
+            } else {
+              console.error("Element is not an <img> tag, cannot change picture.");
+            }
           }
         } else {
-            if (action === "move") {
-              // Update position and size of the rectangle
-              %ifWeUseCanvasThenAddUpdateFunc1%
-            } else if (action === "color") {
-              // Update color of the rectangle
-              %ifWeUseCanvasThenAddUpdateFunc2%
-            }
+          // Handle canvas or non-existing element
+          if (action === "move") {
+            // Update position and size of the rectangle
+            updateRectangle(id, param1, param2, param3, param4);
+            redrawCanvas(); // Redraw the canvas with updated rectangles
+          } else if (action === "color") {
+            // Update color of the rectangle
+            updateRectangleColor(id, param1);
+            redrawCanvas(); // Redraw the canvas with updated rectangles
+          }
         }
       }
 
@@ -8071,7 +8962,7 @@ addFuncIfWeUseIt_createToggleSwitch =
         toggleLabel.textContent = label;
         toggleLabel.style.position = "absolute";
         toggleLabel.style.left = leftPos + width + 10 + "px"; // Position label relative to switch
-        toggleLabel.style.top = topPos + "px";
+        toggleLabel.style.top = topPos + 5 + "px";
         parent.appendChild(toggleLabel);
 
         // Toggle switch click event
@@ -8155,7 +9046,7 @@ addFuncIfWeUseIt_reloadWithParams =
         const queryParams = paramPairs.join("&");
 
         // Construct the new URL with the parameters and reload the page
-        const newUrl = `${window.location.origin}${window.location.pathname}?${queryParams}`;
+        const newUrl = ``${window.location.origin}${window.location.pathname}?${queryParams}``;
         window.location.href = newUrl;
       }
 
@@ -8456,6 +9347,66 @@ addFuncIfWeUseIt_GetKeyState =
 )
 
 
+addFuncIfWeUseIt_createCustomDropdown =
+(
+
+      // Function to create and populate the dropdown dynamically within a specified parent div
+      function createCustomDropdown(parent, id, data, color, leftPos, topPos, width, height, onChangeFunction) {
+        // Split the data string into an array of options
+        const options = data.split("|").map((option) => option.trim());
+
+        // Create a select element (dropdown)
+        const selectElement = document.createElement("select");
+
+        // Set attributes and styles for the select element
+        selectElement.id = id;
+        selectElement.style.width = width + "px";
+        selectElement.style.height = height + "px";
+        selectElement.style.left = leftPos + "px";
+        selectElement.style.top = topPos + "px";
+        selectElement.style.position = "absolute";
+        selectElement.style.backgroundColor = color;
+        selectElement.style.color = "white"; // Set text color to white
+        selectElement.style.border = "none"; // Remove default border
+        selectElement.style.borderRadius = "5px"; // Add border radius
+        selectElement.style.padding = "5px"; // Add padding
+        selectElement.style.cursor = "pointer"; // Change cursor on hover
+
+        // Populate the dropdown with options
+        options.forEach((optionText) => {
+          const optionElement = document.createElement("option");
+          optionElement.textContent = optionText;
+          selectElement.appendChild(optionElement);
+        });
+
+        // Add event listener to handle option selection
+        selectElement.addEventListener("change", function () {
+          const selectedText = this.options[this.selectedIndex].textContent;
+          onChangeFunction(selectedText);
+        });
+
+        // Append the dropdown to the specified parent element (Gui1 div)
+        const parentElement = parent instanceof HTMLElement ? parent : document.getElementById(parent);
+        if (parentElement) {
+          parentElement.appendChild(selectElement);
+        } else {
+          console.error(``Parent element "${parent}" not found.``);
+        }
+      }
+
+)
+
+
+addFuncIfWeUseIt_StrLower =
+(
+
+      function StrLower(string) {
+        return string.toLowerCase();
+      }
+
+)
+
+
 allFuncThatWeNeedToUse := ""
 
 ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile := ""
@@ -8658,6 +9609,14 @@ if (Instr(jsCode, "OnKeyPress(")) or (Instr(jsCode, "OnKeyPress ("))
 if (Instr(jsCode, "GetKeyState(")) or (Instr(jsCode, "GetKeyState ("))
 {
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_GetKeyState . "`n"
+}
+if (Instr(jsCode, "createCustomDropdown(")) or (Instr(jsCode, "createCustomDropdown ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_createCustomDropdown . "`n"
+}
+if (Instr(jsCode, "StrLower(")) or (Instr(jsCode, "StrLower ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StrLower . "`n"
 }
 
 
