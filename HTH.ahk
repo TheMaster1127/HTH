@@ -8890,10 +8890,10 @@ addFuncIfWeUseIt_SoundPlay =
 
 )
 
-addFuncIfWeUseIt_StoreLocaly =
+addFuncIfWeUseIt_StoreLocally =
 (
 
-      function StoreLocaly(operation, saveLocation, data) {
+      function StoreLocally(operation, saveLocation, data) {
         if (operation === "s") {
           // Save data to local storage under specified saveLocation
           localStorage.setItem(saveLocation, String(data));
@@ -9406,6 +9406,64 @@ addFuncIfWeUseIt_StrLower =
 
 )
 
+addFuncIfWeUseIt_getDataFromAPI =
+(
+
+      async function getDataFromAPI(url) {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          return null;
+        }
+      }
+
+)
+
+addFuncIfWeUseIt_getDataFromJSON =
+(
+
+      function getDataFromJSON(jsonData, jsonPath) {
+        const pathSegments = jsonPath.split("."); // Split the path into segments
+        let currentData = jsonData; // Use jsonData directly (already an object)
+
+        try {
+          for (const segment of pathSegments) {
+            if (currentData && typeof currentData === "object") {
+              if (segment.includes("[") && segment.includes("]")) {
+                // Handle array index notation e.g., "data[21].employee_name"
+                const arrayIndex = segment.match(/\[(\d+)\]/); // Extract the array index
+                if (arrayIndex) {
+                  const arrayName = segment.substring(0, segment.indexOf("["));
+                  const index = parseInt(arrayIndex[1]);
+                  currentData = currentData[arrayName][index];
+                } else {
+                  return undefined; // Invalid array index notation
+                }
+              } else {
+                // Handle regular object property notation e.g., "employee_name"
+                currentData = currentData[segment];
+              }
+            } else {
+              console.log("Invalid path segment or data type encountered.");
+              return undefined;
+            }
+          }
+        } catch (error) {
+          console.error("Error accessing data:", error);
+          return undefined;
+        }
+
+        return currentData;
+      }
+
+)
+
 
 allFuncThatWeNeedToUse := ""
 
@@ -9570,9 +9628,9 @@ if (Instr(jsCode, "SoundPlay(")) or (Instr(jsCode, "SoundPlay ("))
 {
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_SoundPlay . "`n"
 }
-if (Instr(jsCode, "StoreLocaly(")) or (Instr(jsCode, "StoreLocaly ("))
+if (Instr(jsCode, "StoreLocally(")) or (Instr(jsCode, "StoreLocally ("))
 {
-    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StoreLocaly . "`n"
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StoreLocally . "`n"
 }
 if (Instr(jsCode, "createToggleSwitch(")) or (Instr(jsCode, "createToggleSwitch ("))
 {
@@ -9617,6 +9675,14 @@ if (Instr(jsCode, "createCustomDropdown(")) or (Instr(jsCode, "createCustomDropd
 if (Instr(jsCode, "StrLower(")) or (Instr(jsCode, "StrLower ("))
 {
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StrLower . "`n"
+}
+if (Instr(jsCode, "getDataFromAPI(")) or (Instr(jsCode, "getDataFromAPI ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_getDataFromAPI . "`n"
+}
+if (Instr(jsCode, "getDataFromJSON(")) or (Instr(jsCode, "getDataFromJSON ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_getDataFromJSON . "`n"
 }
 
 

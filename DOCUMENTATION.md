@@ -170,12 +170,13 @@ Explore the various features offered by the HTH programming language in this sec
 27. [Title and Icon](#title-and-icon)
 28. [StoreLocally](#store-locally)
 29. [getUrlParams and reloadWithParams](#geturlparams-and-reloadwithparams)
-30. [getDataFromEndpoint](#getdatafromendpoint)
-31. [isMobileDevice](#ismobiledevice)
-32. [isConnectedToBackend](#isconnectedtobackend)
-33. [Math Functions](#math-functions)
-34. [Build-in Functions](#build-in-functions)
-35. [Build-in Variables](#build-in-variables)
+30. [getDataFromAPI and getDataFromJSON](#getdatafromapi-and-getdatafromjson)
+31. [getDataFromEndpoint](#getdatafromendpoint)
+32. [isMobileDevice](#ismobiledevice)
+33. [isConnectedToBackend](#isconnectedtobackend)
+34. [Math Functions](#math-functions)
+35. [Build-in Functions](#build-in-functions)
+36. [Build-in Variables](#build-in-variables)
 
 ---
 
@@ -3013,6 +3014,90 @@ Return
 
 - The `reloadWithParams` function appends specified query parameters to the URL and triggers a page reload with the updated URL.
 - Use this function to dynamically modify URL parameters and reload the webpage based on specific actions or conditions.
+
+---
+
+### getDataFromAPI and getDataFromJSON <a id="getdatafromapi-and-getdatafromjson"></a>
+
+[Go back](#features)
+
+1. [getDataFromAPI](#getdatafromapi)
+2. [getDataFromJSON](#getdatafromjson)
+
+---
+
+### getDataFromAPI <a id="getdatafromapi"></a>
+
+[Go back](#getdatafromapi-and-getdatafromjson)
+
+The `getDataFromAPI` function in HeavenToHell (HTH) performs an HTTP GET request to retrieve data from an external API endpoint and processes the response asynchronously.
+
+#### Syntax:
+
+```ahk
+getDataFromAPI(url)
+```
+
+#### Parameters:
+
+- `url`: The URL of the API endpoint to request data from.
+
+#### Example Usage:
+
+```ahk
+jsonOutput := getDataFromAPI("https://api.example.com/data")
+```
+
+#### Notes:
+
+- The `getDataFromAPI` function initiates an HTTP GET request to the specified API endpoint.
+
+---
+
+### getDataFromJSON <a id="getdatafromjson"></a>
+
+[Go back](#getdatafromapi-and-getdatafromjson)
+
+The `getDataFromJSON` function in HeavenToHell (HTH) retrieves specific data from a JSON string using a path-like syntax to navigate nested objects and arrays.
+
+#### Syntax:
+
+```ahk
+getDataFromJSON(jsonString, path)
+```
+
+#### Parameters:
+
+- `jsonString`: The JSON string containing the data to parse.
+- `path`: The path specifying the location of the desired data within the JSON structure.
+
+#### Returns:
+
+- The value retrieved from the specified path within the JSON structure.
+
+#### JSON Path Examples and Usage:
+
+```ahk
+; get sample JSON data from the api
+jsonData := getDataFromAPI("https://dummy.restapiexample.com/api/v1/employees")
+
+; Define JSON paths to retrieve specific data
+path1 := "data[11].employee_name"
+path2 := "data[11].employee_salary"
+path3 := "data[11].employee_age"
+
+; Retrieve data using getDataFromJSON function and display results
+MsgBox, % getDataFromJSON(jsonData, path1)
+MsgBox, % getDataFromJSON(jsonData, path2)
+MsgBox, % getDataFromJSON(jsonData, path3)
+```
+
+You can open the API URL in your web browser, then copy the JSON response from the API. Next, go to [jsonpathfinder.com](https://jsonpathfinder.com/) and paste the JSON. Then find your paths. Make sure not to copy the `x.` at the beginning of the string from the JSON path.
+
+#### Notes:
+
+- The `getDataFromJSON` function enables navigation through nested JSON objects using a path-like syntax.
+- This function simplifies data extraction from complex JSON responses retrieved from APIs or other sources.
 
 ---
 
