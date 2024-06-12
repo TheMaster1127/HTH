@@ -1031,12 +1031,12 @@ Where `%num%` represents a dynamically generated value or variable. It's importa
 ; Define dynamic functions
 func1()
 {
-    print("This is function 1")
+    MsgBox, This is function 1
 }
 
 func2()
 {
-    print("This is function 2")
+    MsgBox, This is function 2
 }
 
 ; Dynamically call functions based on a variable value
@@ -1052,6 +1052,12 @@ func%num%()
 In this example, the functions `func1` and `func2` are defined. By using a variable `num`, different functions can be dynamically called based on its value. The `%num%` placeholder in the function name is replaced by the value of `num` during execution, allowing for dynamic function invocation.
 
 Simple dynamically function calls in HTH enable developers to streamline code execution, especially in scenarios where function names or values are generated dynamically.
+
+Note: YOU CAN'T RETURN TO A VALUE. IT MUST NOT RETURN A VALUE. DON'T DO THIS:
+```
+; can't assign to a variable
+outVar := func%num%(params)
+```
 
 #### Usage:
 
