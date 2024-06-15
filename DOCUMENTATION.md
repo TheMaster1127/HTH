@@ -96,8 +96,10 @@ Comments in HTH are denoted by a semicolon `;` for single-line comments and are 
 ```ahk
 ; This is a single-line comment
 
-; This is
-; a multi-line comment
+/*
+This is
+a multi-line comment
+*/
 ```
 
 ### Usage Overview
@@ -166,7 +168,7 @@ Explore the various features offered by the HTH programming language in this sec
 23. [#Include](#include)
 24. [Comments](#hth-comments)
 25. [PlaySound](#play-sound)
-26. [GetMousePos and OnMouseClick](#getmousepos-and-onmouseclick)
+26. [MouseGetPos and OnMouseClick](#getmousepos-and-onmouseclick)
 27. [Title and Icon](#title-and-icon)
 28. [StoreLocally](#store-locally)
 29. [getUrlParams and reloadWithParams](#geturlparams-and-reloadwithparams)
@@ -2079,18 +2081,6 @@ Fruit 3: Banana
 var2 := "Alpha|Beta|Gamma"
 
 ; Parse the input string using pipes as delimiters
-Loop, Parse, var2, |
-{
-    ; A_LoopField contains the current parsed element
-    MsgBox, Value %A_Index%: %A_LoopField%
-}
-
-; or
-
-; Example input string with pipes
-var2 := "Alpha|Beta|Gamma"
-
-; Parse the input string using pipes as delimiters
 Loop, Parse, var2, "|"
 {
     ; A_LoopField contains the current parsed element
@@ -2645,26 +2635,26 @@ This documentation provides comprehensive guidance on utilizing the `SoundPlay` 
 
 ---
 
-### GetMousePos and OnMouseClick <a id="getmousepos-and-onmouseclick"></a>
+### MouseGetPos and OnMouseClick <a id="getmousepos-and-onmouseclick"></a>
 
 [Go back](#features)
 
-1. [GetMousePos](#getmousepos)
+1. [MouseGetPos](#getmousepos)
 2. [OnMouseClick](#onmouseclick)
 3. [Mouse Position Example with 50-Pixel Corners](#mouse-position-example-with-50-pixel-corners)
 
 ---
 
-### GetMousePos <a id="getmousepos"></a>
+### MouseGetPos <a id="getmousepos"></a>
 
 [Go back](#getmousepos-and-onmouseclick)
 
-The `GetMousePos` command in HeavenToHell (HTH) retrieves the current position of the mouse cursor on the screen. This command is useful for obtaining coordinates that can be used in various interactive applications and scripts.
+The `MouseGetPos` command in HeavenToHell (HTH) retrieves the current position of the mouse cursor on the screen. This command is useful for obtaining coordinates that can be used in various interactive applications and scripts.
 
 #### Syntax:
 
 ```ahk
-GetMousePos, OutputVarX, OutputVarY
+MouseGetPos, OutputVarX, OutputVarY
 ```
 
 #### Parameters:
@@ -2680,7 +2670,7 @@ MouseX := 0
 MouseY := 0
 
 ; Retrieve mouse cursor position
-GetMousePos, MouseX, MouseY
+MouseGetPos, MouseX, MouseY
 
 ; Display the mouse coordinates
 MsgBox, Mouse X: %MouseX%, Mouse Y: %MouseY%
@@ -2688,8 +2678,8 @@ MsgBox, Mouse X: %MouseX%, Mouse Y: %MouseY%
 
 #### Notes:
 
-- The `GetMousePos` command allows for precise tracking of mouse cursor positions.
-- Mouse coordinates obtained using `GetMousePos` can be used to trigger specific actions based on mouse interactions within an application.
+- The `MouseGetPos` command allows for precise tracking of mouse cursor positions.
+- Mouse coordinates obtained using `MouseGetPos` can be used to trigger specific actions based on mouse interactions within an application.
 
 ---
 
@@ -2765,19 +2755,19 @@ CheckMousePosition:
     ; Determine which corner the mouse is located based on mouse coordinates
     if (x >= TopLeftX && x < (TopLeftX + CornerSize) && y >= TopLeftY && y < (TopLeftY + CornerSize))
     {
-        MsgBox, You clicked on the top left corner of the screen.
+        MsgBox, You moved to the top left corner of the screen.
     }
     else if (x >= TopRightX && y >= TopRightY && y < (TopRightY + CornerSize))
     {
-        MsgBox, You clicked on the top right corner of the screen.
+        MsgBox, You moved to the top right corner of the screen.
     }
     else if (x >= BottomLeftX && x < (BottomLeftX + CornerSize) && y >= BottomLeftY)
     {
-        MsgBox, You clicked on the bottom left corner of the screen.
+        MsgBox, You moved to the bottom left corner of the screen.
     }
     else if (x >= BottomRightX && y >= BottomRightY)
     {
-        MsgBox, You clicked on the bottom right corner of the screen.
+        MsgBox, You moved to the bottom right corner of the screen.
     }
 Return
 ```
@@ -2789,7 +2779,7 @@ Return
 - The script defines 50-pixel regions around each corner of the screen (`TopLeft`, `TopRight`, `BottomLeft`, `BottomRight`) to detect if the mouse is within specific areas.
 - Modify the `CornerSize` variable to adjust the size of the regions around each corner based on your application's requirements.
 
-This documentation provides detailed information on `GetMousePos`, `OnMouseClick`, and an additional example using `SetTimer` to monitor mouse positions and handle click events within specific 50-pixel regions around each corner of the screen in HeavenToHell (HTH). These commandalities enhance user interactivity and enable responsive behaviors based on mouse interactions in scripts and applications.
+This documentation provides detailed information on `MouseGetPos`, `OnMouseClick`, and an additional example using `SetTimer` to monitor mouse positions within specific 50-pixel regions around each corner of the screen in HeavenToHell (HTH). These commandalities enhance user interactivity and enable responsive behaviors based on mouse interactions in scripts and applications.
 
 ---
 
@@ -3899,6 +3889,9 @@ result := SubStr(string, startPos, length)
 ```ahk
 substring := SubStr("Hello World", 7)
 MsgBox, The substring is %substring%
+
+substring := SubStr("Hello World", 1, 5)
+MsgBox, The first 5 characters are %substring%
 ```
 
 ---
@@ -3957,7 +3950,9 @@ result := StrReplace(string, find, replace)
 #### Example:
 
 ```ahk
-modifiedString := StrReplace("Hello World", "World", "Universe")
+str1 := "Hello World"
+
+modifiedString := StrReplace(str1, "World", "Universe")
 MsgBox, The modified string is %modifiedString%
 ```
 
@@ -3987,8 +3982,24 @@ result := Mod(dividend, divisor)
 #### Example:
 
 ```ahk
-remainder := Mod(10, 3)
-MsgBox, The remainder of dividing 10 by 3 is %remainder%
+; Define a string with a list of numbers separated by commas
+numbers := "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 33, 34, 20, 61, 100"
+
+; Start a loop to parse each number from the string
+Loop, Parse, numbers, ", "
+{
+    ; Convert the current loop field (A_LoopField) to an integer and check if it's even
+    if (!Mod(ParseInt(A_LoopField), 2))
+    {
+        ; If the number is even, display a message box with the even number
+        MsgBox, % "The number " . A_LoopField . " is even"
+    }
+    else
+    {
+        ; If the number is odd, display a message box with the odd number
+        MsgBox, The number %A_LoopField% is odd
+    }
+}
 ```
 
 ---
@@ -4017,7 +4028,7 @@ result := Asc(character)
 
 ```ahk
 asciiCode := Asc("A")
-MsgBox, The ASCII code of `"A`" is %asciiCode%
+MsgBox, The ASCII code of 'A' is %asciiCode%
 ```
 
 ---
@@ -4047,10 +4058,10 @@ result := ParseInt(num)
 ```ahk
 ; num with spaces and it's a string, but there are no letters so it's an int
 num := " 123 "
-MsgBox, Before:`n|%num%|
+MsgBox, Before: |%num%|
 
 intValue := ParseInt(num)
-MsgBox, After:`nThe parsed integer value is |%intValue%|
+MsgBox, After: The parsed integer value is |%intValue%|
 ```
 
 Another example:
