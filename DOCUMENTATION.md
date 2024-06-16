@@ -375,6 +375,78 @@ return hexColor
 }
 ```
 
+If you need to use different colors with only one GUI div:
+
+```ahk
+; If we will only use 1 GUI div we can just do this:
+Gui, Color, c420606
+Gui, Show, x10 y10 w300 h300
+Gui, Add, Text, cWhite x10 y10 w100 h30, hi
+
+; We will use Sleep for 2 seconds so we can see the change.
+Sleep, 2000
+
+; To change the color just do this:
+Gui, Color, c060642
+; When you do the Gui Show command, make sure to specify the coordinates; otherwise, the color won't change.
+Gui, Show, x10 y10 w300 h300
+```
+
+If you need to use different colors with more than one GUI div:
+
+```ahk
+; We need to put this only once and it's now for all colors of all GUI divs.
+Gui, Color, gr-%gr%
+defColor("121212")
+
+Gui, Show, x10 y10 w300 h300
+Gui, Add, Text, cWhite x10 y10 w100 h30, hi
+
+defColor("420606")
+; We don't need to do Gui, Color, gr-%gr% or even Gui 2: Color, gr-%gr%.
+Gui 2: Show, x510 y510 w300 h300
+Gui 2: Add, Text, cWhite x10 y10 w100 h30, hi
+
+defColor("ff3030")
+; We don't need to do Gui, Color, gr-%gr% or even Gui 2: Color, gr-%gr%.
+Gui 3: Show, x10 y510 w300 h300
+Gui 3: Add, Text, cWhite x10 y10 w100 h30, hi
+
+; If you want to use a gradient as a background color, set the gr variable to the gradient of choice
+gr := "linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)"
+; We don't need to do Gui, Color, gr-%gr% or even Gui 2: Color, gr-%gr%.
+Gui 4: Show, x510 y10 w300 h300
+Gui 4: Add, Text, cWhite x10 y10 w100 h30, hi
+
+; We will use Sleep for 2 seconds so we can see the change.
+Sleep, 2000
+
+; If you want to change the color of an already made GUI, just do this:
+defColor("30ff30")
+; When you do the Gui Show command, make sure to specify the coordinates; otherwise, the color won't change.
+Gui 3: Show, x10 y510 w300 h300
+
+; We will use Sleep for 1 second so we can see the change.
+Sleep, 1000
+
+; If you want to change the gradient of an already made GUI, just do this:
+gr := "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)"
+; When you do the Gui Show command, make sure to specify the coordinates; otherwise, the color won't change.
+Gui 4: Show, x510 y10 w300 h300
+
+return
+
+defColor(color)
+{
+    ; You can add "#" or the letter "c" which stands for color when using defColor(), just in case you need or want to or if you are used to it.
+    if (SubStr(color, 1, 1) = "#") or (SubStr(color, 1, 1) = "c")
+    {
+        StringTrimLeft, color, color, 1
+    }
+    gr := "linear-gradient(180deg, #" . color . " 0%, #" . color . " 89%)"
+}
+```
+
 #### Font
 
 ```ahk
