@@ -1,4 +1,4 @@
-![favicon (4)](https://github.com/TheMaster1127/AHK-to-js/assets/134737935/1a0efe63-726e-49ca-a13c-d0ed627f2ea7)
+![icon](https://github.com/TheMaster1127/AHK-to-js/assets/134737935/1a0efe63-726e-49ca-a13c-d0ed627f2ea7)
 
 # HTH: HeavenToHell
 
@@ -12,9 +12,7 @@ HTH simplifies GUI development by eliminating the need for complex initializatio
 
 ## Overall, HTH is a powerful yet approachable programming language that empowers beginners to learn programming and build web applications with ease. it's simplicity, portability, and comprehensive documentation make it a valuable tool for developers of all skill levels.
 
-## Pros and Cons of HTH
-
-**Pros:**
+### Pros of HTH
 
 1. **Ease of Use:** HTH is extremely beginner-friendly, with a simple and intuitive syntax that makes it easy for newcomers to learn and understand.
 
@@ -30,16 +28,6 @@ HTH simplifies GUI development by eliminating the need for complex initializatio
 
 7. **Variable Concatenation:** Variables in HTH are seamlessly stored as objects in the transpiled JavaScript code, allowing for easy concatenation and manipulation without the need for explicit variable declarations, enhancing code readability and flexibility.
 
-**Cons:**
-
-1. **Platform Dependency:** HTH requires Windows for compilation or transpilation, limiting it's usability for developers using other operating systems. it's possible to use HTH on Linux with the help of Wine. Additionally, I forbid any Mac users from using HTH. Mac users STAY AWAY!!!
-
-2. **Limited Advanced Features:** HTH may lack some advanced features and functionalities found in other programming languages, potentially limiting it's suitability for complex or specialized applications.
-
-3. **Limited GUI Elements:** The range of GUI elements available in HTH may be limited compared to other GUI frameworks, restricting the design options for user interfaces.
-
-Overall, HTH offers a user-friendly and versatile platform for beginners to learn programming and develop web applications quickly and easily. While it has some limitations, it's simplicity, portability, and comprehensive documentation make it a valuable tool for developers looking to get started in web development.
-
 **Note:**
 
 - This project is specifically inspired from AutoHotKey V1 and it's syntax.
@@ -47,22 +35,34 @@ Overall, HTH offers a user-friendly and versatile platform for beginners to lear
 
 ## Usage
 
-To use HTH HeavenToHell:
+### To use HTH HeavenToHell:
+
+The best IDE for HTH: https://github.com/TheMaster1127/SciTE4HTH
+
+#### HTH v1
 
 1. Ensure you have AutoHotKey V1 installed (Unless you wanna run the HTH.exe file). You can download AutoHotKey from [here](https://www.autohotkey.com/download/ahk-install.exe).
 2. Add your HTH code in a `.hth` file.
 3. Open the cmd in the directory of the HTH.exe or HTH.ahk Transpiler
 4. You can run `HTH filename.hth` or `HTH.ahk filename.hth` or `HTH.exe filename.hth`
-5. You'll get `index.html` as output. Also if you use the function `getDataFromEndpoint` anywhere in the code HTH will generate a `server.py` file for better backend connectivity. You will need to install Python and also a Python library called Flask in order to run the generated Python backend.
-6. (Optional) Open for edit `index.html` copy the full file do `Ctrl+A` then `Ctrl+C`
-7. (Optional) Open `PrettierFormatter.html`
-8. (Optional) Format the code and then put it it back in `index.html`
-9. (Optional) Open the `index.html`
+5. You'll get `index.html` as output. You can open it, and you should see the website. Also if you use the function `getDataFromEndpoint` anywhere in the code HTH will generate a `server.py` file (ONLY in HTH v1) for better backend connectivity. You will need to install Python and also a Python library called Flask in order to run the generated Python backend.
 
-## Platform Compatibility
+#### HTH v2
 
-- HTH is compatible with Windows and can also run on Linux with the assistance of wine a program that can run most exe files on linux using wine.
+1. Ensure you have the latest Python verson installed. You can download Python from [here](https://www.python.org/).
+2. Add your HTH code in a `.hth` file.
+3. Open the cmd in the directory of the HTH.py Transpiler
+4. You can run `python filename.hth`, `python3 filename.hth`, or `python -m filename.hth`. If none of these work, please ask ChatGPT for help or consult someone else.
+5. You'll get `index.html` as output. You can open it, and you should see the website.
+
+## Platform Compatibility HTH v1
+
+- HTH v1 is compatible with Windows and can also run on Linux with the assistance of wine a program that can run most exe files on linux using wine.
 - HTH only transpiles using Windows or Linux with wine since the transpiler is written in AutoHotKey and we need to run it as an exe in windows and linux with wine or .ahk in windows. Mac users STAY AWAY from HTH!!!
+
+## Platform Compatibility HTH v2
+
+- HTH v2 is compatible with all devices, including computers, phones, Windows, Linux, and even browsers. Anything capable of running Python and a modern browser can be used to code and execute HTH. You can use this website to code and run HTH v2 [here](https://themaster1127.github.io/HTH/).
 
 ## Editors
 
@@ -95,7 +95,7 @@ Also, `return` must be in lowercase.
 
 So far, HTH supports:
 
-- Gui - Buttons, Text, Edit and Picture - which will encode as base64 in the HTML file so you won't need the original picture anymore
+- Gui - Buttons, Text, Edit, Picture, Toggle, Rectangle, Circle, Player, DropDownList, Iframe, IDE
 - GuiContol
 - Hotkeys but simple like you can still do almost all combinations like Ctrl+Alt+Shift+AlmostAnyKey or Shift+Up or just even one key
 
@@ -180,12 +180,18 @@ else
 - Loop
 - Loop, Parse
 - Variables and Arrays
+- Run, Reload and ExitApp
+- #Include (only HTH v1)
 - Simple dynamically function calls. Example: `func%num%()` cant do `%num%func()` also not `func%num%name()` you can only have one `%var%` at the end.
 - Assignment operators (`:=`, `.=`, `+=`, `-=`, `*=`)
 - Comments dont use comments in the same line as the code (Note: Comments might be translated in some cases)
-
-Some features haven't been fully tested but should work include:
-
+- runPyCode and runHTML
+- PlaySound
+- MouseGetPos and OnMouseClick
+- Title and Icon
+- StoreLocally
+- getUrlParams and reloadWithParams
+- getDataFromAPI and getDataFromJSON
 - getDataFromEndpoint(data, endpoint) this function allows you to get and send data to or from an endpoint. It will also return data. ONLY if you are running a backend which will be generated in a python file in the same dir!
 - isMobileDevice will check if it's a mobile device no need for parameters
 - isConnectedToBackend will checks if the webpage is using a web address starting with 'http://' or 'https://', which usually means it's connected to a server. It returns 'true' if it is connected, and 'false' if it's not.
@@ -210,10 +216,11 @@ Some features haven't been fully tested but should work include:
 - StrLen
 - SubStr
 - Trim
-- ParseInt
 - StrReplace
 - Mod
 - Asc
+- ParseInt
+- StrLower
 
 Built-in Variables
 
@@ -240,6 +247,6 @@ Built-in Variables
 - A_Space
 - A_Tab
 
-You can check the documentation here: [HTH Documentation](https://github.com/TheMaster1127/HTH/wiki)
+You should check the documentation for all the details here: [HTH Documentation](https://github.com/TheMaster1127/HTH/wiki)
 
 ---
