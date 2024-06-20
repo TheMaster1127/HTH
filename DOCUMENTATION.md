@@ -167,18 +167,19 @@ Explore the various features offered by the HTH programming language in this sec
 22. [Run, Reload and ExitApp](#run-reload-and-exitapp)
 23. [#Include](#include)
 24. [Comments](#hth-comments)
-25. [PlaySound](#play-sound)
-26. [MouseGetPos and OnMouseClick](#getmousepos-and-onmouseclick)
-27. [Title and Icon](#title-and-icon)
-28. [StoreLocally](#store-locally)
-29. [getUrlParams and reloadWithParams](#geturlparams-and-reloadwithparams)
-30. [getDataFromAPI and getDataFromJSON](#getdatafromapi-and-getdatafromjson)
-31. [getDataFromEndpoint](#getdatafromendpoint)
-32. [isMobileDevice](#ismobiledevice)
-33. [isConnectedToBackend](#isconnectedtobackend)
-34. [Math Functions](#math-functions)
-35. [Build-in Functions](#build-in-functions)
-36. [Build-in Variables](#build-in-variables)
+25. [runPyCode and runHTML](#runpycode-and-runhtml)
+26. [PlaySound](#play-sound)
+27. [MouseGetPos and OnMouseClick](#getmousepos-and-onmouseclick)
+28. [Title and Icon](#title-and-icon)
+29. [StoreLocally](#store-locally)
+30. [getUrlParams and reloadWithParams](#geturlparams-and-reloadwithparams)
+31. [getDataFromAPI and getDataFromJSON](#getdatafromapi-and-getdatafromjson)
+32. [getDataFromEndpoint](#getdatafromendpoint)
+33. [isMobileDevice](#ismobiledevice)
+34. [isConnectedToBackend](#isconnectedtobackend)
+35. [Math Functions](#math-functions)
+36. [Build-in Functions](#build-in-functions)
+37. [Build-in Variables](#build-in-variables)
 
 ---
 
@@ -2632,6 +2633,108 @@ Do not add comments on the same line as code statements in HeavenToHell (HTH). P
 - Single-line comments should be concise and focused, providing relevant information to aid in code understanding.
 
 Comments in HeavenToHell (HTH) are invaluable tools for improving code comprehension and facilitating collaboration among developers. By leveraging single-line comments effectively, developers can create well-documented and maintainable scripts in HeavenToHell.
+
+---
+
+### runPyCode and runHTML <a id="runpycode-and-runhtml"></a>
+
+[Go back](#features)
+
+1. [runPyCode](#runpycode)
+2. [runHTML](#runhtml)
+
+---
+
+### runPyCode <a id="runpycode"></a>
+
+[Go back](#runpycode-and-runhtml)
+
+The `runPyCode` function in HeavenToHell (HTH) executes Python code dynamically and returns computed values back to the application. Each `print` statement within the Python code executed by `runPyCode` will produce output displayed on a new line within the HTH environment, enhancing clarity and readability of script outputs.
+
+#### Syntax:
+
+```ahk
+result := runPyCode(PythonCode)
+```
+
+- `PythonCode`: A string parameter containing valid Python code to be executed.
+
+#### Example Usage:
+
+```ahk
+; Example of running Python code using runPyCode and capturing return values
+result1 := runPyCode("output = 'Hello, HeavenToHell!'; print(output)")
+result2 := runPyCode("result = 2 + 3; print(result)")
+```
+
+#### Returned Values:
+
+- **`result1` value:**
+  ```
+  Hello, HeavenToHell!
+  ```
+  
+- **`result2` value:**
+  ```
+  5
+  ```
+
+#### Practical Application:
+
+- Capture and utilize Python script outputs directly within HeavenToHell (HTH) environment, facilitating interactive data processing and computation.
+- Each `print` statement in Python code executed via `runPyCode` results in output displayed on a new line, ensuring clear separation and readability.
+
+#### Notes:
+
+- The `runPyCode` function captures and displays Python `print` statements on new lines within the HTH environment, maintaining clarity and structure.
+- Ensure Python code executed via `runPyCode` is secure and validated to prevent unintended or malicious actions.
+- Use `runPyCode` to integrate dynamic Python scripting capabilities seamlessly into HeavenToHell applications, promoting versatility and interactivity.
+
+---
+
+### runHTML <a id="runhtml"></a>
+
+[Go back](#runpycode-and-runhtml)
+
+The `runHTML` function in HeavenToHell (HTH) dynamically renders HTML content within the application environment, enhancing the presentation and interactivity of GUI-based applications. For details on `runHTML`, refer to its dedicated section.
+
+#### Syntax:
+
+```ahk
+runHTML(parent, id, scale, leftPos, topPos, width, height, HTMLcode)
+```
+
+- `parent`, `id`, `scale`, `leftPos`, `topPos`, `width`, `height`, `HTMLcode`: Parameters for creating and positioning an HTML element within the GUI.
+
+#### Example Usage:
+
+```ahk
+; Example of using runHTML to render HTML content within a GUI
+Gui, Show, w700 h700
+
+; we can't do parent := Gui1 because we must specify Gui1, Gui2, and so on as the first parameter. We cannot use a different variable since the transpiler expects the first parameter to be defined explicitly.
+id := "iframe1"
+scale := 1.0
+leftPos := 10
+topPos := 10
+width := 600
+height := 400
+HTMLcode := "<html><body style='font-size: 80px; background-color: #ffffff;'><h1>Embedded Content</h1><p style='font-size: 65px;'>This is embedded HTML content.</p></body></html>"
+
+; We must specify Gui1, Gui2, and so on as the first parameter. We cannot use a different variable since the transpiler expects the first parameter to be defined explicitly.
+runHTML(Gui1, id, scale, leftPos, topPos, width, height, HTMLcode)
+```
+
+#### Practical Application:
+
+- Integrate dynamic HTML elements such as maps, multimedia, or interactive forms directly into HeavenToHell (HTH) GUI applications.
+- Enhance user interaction and visual presentation by updating HTML content dynamically based on application logic or user inputs.
+
+#### Notes:
+
+- Ensure HTML content provided to `runHTML` is secure and properly formatted to maintain application integrity.
+- Adjust positioning (`leftPos`, `topPos`), size (`width`, `height`), and `scale` parameters to suit application layout and design requirements.
+- Utilize `runHTML` to extend functionality and enhance user experience through dynamic HTML content integration in HeavenToHell applications.
 
 ---
 
