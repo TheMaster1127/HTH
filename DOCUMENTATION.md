@@ -186,7 +186,7 @@ Explore the various features offered by the HTH programming language in this sec
 
 [Go back](#features)
 
-The GUI feature in HTH allows for the creation of graphical user interfaces with elements such as buttons, text, edit fields, and pictures. Pictures will be encoded as base64 in the HTML file, eliminating the need for the original picture file.
+The GUI feature in HTH allows for the creation of graphical user interfaces with elements such as buttons, text, edit fields, and pictures. Pictures whit a local path will be encoded as base64 in the HTML file (ONLY IN HTH v1), eliminating the need for the original picture file.
 
 ### Gui Command
 
@@ -605,6 +605,8 @@ This section provides information about the controls that can be used within the
 7. Circle - Gui element to draw a Circle
 8. Video - Integrated a flexible video player using Gui, Add, Player, ... capable of displaying:
 9. DropDownList - Adds a DropDownList control (`Gui, Add, DropDownList`) to a GUI window and make a lable (`gMyDropDown`) to capture the selected option from a list of predefined choices (`Option1|Option2|Option3`).
+10. Iframe - An Iframe displays another webpage within your GUI. This can include content such as websites, forms, or videos.
+11. IDE - An IDE displays an Integrated Development Environment (IDE) for writing and editing code. This feature allows you to write and edit code directly within your GUI.
 
 - YouTube videos: Simply provide the YouTube video URL to play directly within the application.
 - URL videos: Play videos from any accessible URL, supporting various video formats.
@@ -632,6 +634,7 @@ Gui, Add, Button, x10 y80 w100 h30 r20 -Border cffffff bg121212 gButton1, Click 
 ; url
 Gui, Add, Picture, x10 y120 w200 h150, https://hd.wallpaperswide.com/thumbs/windows_xp_original-t2.jpg
 ; a path form your computer
+; ONLY WORKS IN HTH v1
 Gui, Add, Picture, x10 y120 w200 h150, C:/path/to/your/your.png
 
 ; 5. Toggle - GUI element, allowing users to toggle settings on and off using a convenient toggle slider.
@@ -660,20 +663,38 @@ Gui, Add, Player, x10 y380 w400 h300, https://www.somewebsite.com/somevideo.mp4
 ; or
 
 ; form your computer
+; ONLY WORKS IN HTH v1
 Gui, Add, Player, x10 y380 w400 h300, C:/path/to/your/your.mp4
 
 ; 9. DropDownList - Adds a DropDownList control (`Gui, Add, DropDownList`) to a GUI window and make a lable (`gMyDropDown`) to capture the selected option from a list of predefined choices (`Option1|Option2|Option3`).
 
 Gui, Add, DropDownList, x250 y10 gMyDropDown, Option1|Option2|Option3
 
+; 10. Iframe - An Iframe displays another webpage within your GUI. This can include content such as websites, forms, or videos.
+
+; r = round the corners
+Gui, Add, Iframe, x250 y60 w300 h300 r10, https://example.com/
+
 Gui, Color, c121212
 Gui 2: Show, -Border w500 h500
 
-Gui 2: Add, Button, x10 y10 w140 h40 gButton2, Button 2
+; 11. IDE - An IDE displays an Integrated Development Environment (IDE) for writing and editing code. This feature allows you to write and edit code directly within your GUI.
+
+; l = language but by default is autohotkey
+code := "msgbox, hello"
+outCode := code
+Gui 2: Add, IDE, x10 y10 w400 h400 gIDE1 lautohotkey, %code%
+
+Gui 2: Add, Button, x10 y420 w140 h40 gButton2, Button 2
 return
 
+IDE1:
+outCode := A_GuiControl
+Return
+
+
 Button2:
-MsgBox, You cliked Button 2
+MsgBox, % outCode
 Return
 
 Toggle1:
