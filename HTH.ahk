@@ -174,7 +174,10 @@ ifWeUseCanvasThenAddUpdateFunc2 := ""
 varOutJsCanvasFixTranspernat := ""
 rectangleId := 0
 switchId := 0
+CheckboxId := 0
+IDEId := 0
 videoId := 0
+IframeId := 0
 DropDownListId := 0
 ifWeUseCanvas := 0
 weUseCnanvasAtALL := 0
@@ -543,7 +546,7 @@ Loop, Parse, AHKcode, `n, `r
 lineDone := 0
 str := A_LoopField
 
-if !(SubStr(StrLower(str), 1, 19) = StrLower("Gui, Add, rectangle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Circle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Toggle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Player")) or (SubStr(StrLower(out), 1, 22) = StrLower("Gui, Add, DropDownList"))
+if !(SubStr(StrLower(str), 1, 19) = StrLower("Gui, Add, rectangle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Circle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Toggle")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Player")) or (SubStr(StrLower(out), 1, 22) = StrLower("Gui, Add, DropDownList")) or (SubStr(StrLower(out), 1, 18) = StrLower("Gui, Add, Checkbox")) or (SubStr(StrLower(out), 1, 16) = StrLower("Gui, Add, Iframe"))
 {
 
 if (InStr(str, """"))
@@ -841,9 +844,6 @@ out2 := s
 
 
 
-
-
-;MsgBox, % out2
 out2 := Trim(out2)
 
 ;MsgBox, |%out2%|
@@ -4654,6 +4654,353 @@ jsCode .= "`n" . switchOut . "`n"
 }
 
 
+
+if (out3 = "checkbox")
+{
+
+
+
+
+guiOutOfCheckboxNum := 0
+guiOutOfCheckboxX := 0
+guiOutOfCheckboxY := 0
+guiOutOfCheckboxW := 0
+guiOutOfCheckboxH := 0
+guiOutOfCheckboxV := 0
+guiOutOfCheckboxG := 0
+guiOutOfCheckboxOn := "false"
+Loop, 7
+{
+guiOutOfCheckbox%A_Index% := ""
+}
+
+guiOutOfCheckbox3 := "60"
+guiOutOfCheckbox4 := "30"
+isThereArecId := 1
+
+dynamicGuiSet := 0
+Loop, Parse, out4, " "
+{
+;MsgBox, |%A_LoopField%|
+
+guiOutOfCheckboxNum++
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfCheckboxX := 1
+guiOutOfCheckbox1 := A_LoopField
+if (InStr(guiOutOfCheckbox1, "%"))
+{
+str := guiOutOfCheckbox1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfCheckbox1 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfCheckbox1, guiOutOfCheckbox1, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfCheckboxY := 1
+guiOutOfCheckbox2 := A_LoopField
+if (InStr(guiOutOfCheckbox2, "%"))
+{
+str := guiOutOfCheckbox2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfCheckbox2 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfCheckbox2, guiOutOfCheckbox2, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfCheckboxW := 1
+guiOutOfCheckbox3 := A_LoopField
+if (InStr(guiOutOfCheckbox3, "%"))
+{
+str := guiOutOfCheckbox3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfCheckbox3 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfCheckbox3, guiOutOfCheckbox3, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfCheckboxH := 1
+guiOutOfCheckbox4 := A_LoopField
+if (InStr(guiOutOfCheckbox4, "%"))
+{
+str := guiOutOfCheckbox4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfCheckbox4 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfCheckbox4, guiOutOfCheckbox4, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
+{
+guiOutOfCheckboxV := 1
+guiOutOfCheckbox5 := """" . "Gui" . GuiNumber . A_LoopField . """"
+guiOutOfCheckbox5Fix := """" . "" . A_LoopField . """"
+StringTrimRight, guiOutOfCheckbox5Fix, guiOutOfCheckbox5Fix, 1
+StringTrimLeft, guiOutOfCheckbox5Fix, guiOutOfCheckbox5Fix, 2
+guiOutOfCheckbox52 := A_LoopField
+dynamicGuiSet := 1
+if (InStr(guiOutOfCheckbox5, "%"))
+{
+str := guiOutOfCheckbox5
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfCheckbox5 := " ""Gui" . GuiNumber . """ + [variables." . var1 . "]"
+guiOutOfCheckbox5Fix := " + [variables." . var1 . "]"
+}
+else
+{
+StringTrimLeft, A_LoopFieldOutFixCnavas, A_LoopField, 1
+guiOutOfCheckbox5 :=  " " . """" . "Gui" . GuiNumber . A_LoopFieldOutFixCnavas . """"
+}
+StringTrimLeft, guiOutOfCheckbox5, guiOutOfCheckbox5, 1
+StringTrimLeft, guiOutOfCheckbox52, guiOutOfCheckbox52, 1
+isThereArecId := 0
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
+{
+guiOutOfCheckboxG := 1
+guiOutOfCheckbox6 := A_LoopField
+StringTrimLeft, guiOutOfCheckbox6, guiOutOfCheckbox6, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 2) = StrLower("on"))
+{
+guiOutOfCheckboxOn := "true"
+}
+}
+
+CheckboxId++
+
+
+if (isThereArecId = 1)
+{
+guiOutOfCheckbox5 := """" . "Gui" . GuiNumber . "Checkbox" . CheckboxId .  """"
+guiOutOfCheckbox5Fix := """" . "" . GuiNumber . "Checkbox" . CheckboxId .  """"
+StringTrimRight, guiOutOfCheckbox5Fix, guiOutOfCheckbox5Fix, 1
+StringTrimLeft, guiOutOfCheckbox5Fix, guiOutOfCheckbox5Fix, 1
+}
+
+
+
+CheckboxOut =
+(
+createCheckbox(Gui%GuiNumber%, %guiOutOfCheckbox5%, "%out5%", %guiOutOfCheckboxOn%, %guiOutOfCheckbox1%, %guiOutOfCheckbox2%, %guiOutOfCheckbox6% );
+)
+
+
+
+jsCode .= "`n" . CheckboxOut . "`n"
+
+}
+
+
+
+if (out3 = "ide")
+{
+
+
+
+
+guiOutOfIDENum := 0
+guiOutOfIDEX := 0
+guiOutOfIDEY := 0
+guiOutOfIDEW := 0
+guiOutOfIDEH := 0
+guiOutOfIDEV := 0
+guiOutOfIDEG := 0
+guiOutOfIDEL := 0
+guiOutOfIDES := 0
+
+Loop, 8
+{
+guiOutOfIDE%A_Index% := ""
+}
+
+guiOutOfIDE3 := "300"
+guiOutOfIDE4 := "300"
+guiOutOfIDE8 := "18"
+isThereArecId := 1
+
+dynamicGuiSet := 0
+Loop, Parse, out4, " "
+{
+;MsgBox, |%A_LoopField%|
+
+guiOutOfIDENum++
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfIDEX := 1
+guiOutOfIDE1 := A_LoopField
+if (InStr(guiOutOfIDE1, "%"))
+{
+str := guiOutOfIDE1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfIDE1 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfIDE1, guiOutOfIDE1, 1
+}
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("s"))
+{
+guiOutOfIDES := 1
+guiOutOfIDE8 := A_LoopField
+if (InStr(guiOutOfIDE8, "%"))
+{
+str := guiOutOfIDE8
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfIDE8 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfIDE8, guiOutOfIDE8, 1
+}
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("l"))
+{
+guiOutOfIDEL := 1
+guiOutOfIDE7 := A_LoopField
+if (InStr(guiOutOfIDE7, "%"))
+{
+str := guiOutOfIDE7
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfIDE7 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfIDE7, guiOutOfIDE7, 1
+}
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfIDEY := 1
+guiOutOfIDE2 := A_LoopField
+if (InStr(guiOutOfIDE2, "%"))
+{
+str := guiOutOfIDE2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfIDE2 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfIDE2, guiOutOfIDE2, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfIDEW := 1
+guiOutOfIDE3 := A_LoopField
+if (InStr(guiOutOfIDE3, "%"))
+{
+str := guiOutOfIDE3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfIDE3 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfIDE3, guiOutOfIDE3, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfIDEH := 1
+guiOutOfIDE4 := A_LoopField
+if (InStr(guiOutOfIDE4, "%"))
+{
+str := guiOutOfIDE4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfIDE4 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfIDE4, guiOutOfIDE4, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
+{
+guiOutOfIDEV := 1
+guiOutOfIDE5 := """" . "Gui" . GuiNumber . A_LoopField . """"
+guiOutOfIDE5Fix := """" . "" . A_LoopField . """"
+StringTrimRight, guiOutOfIDE5Fix, guiOutOfIDE5Fix, 1
+StringTrimLeft, guiOutOfIDE5Fix, guiOutOfIDE5Fix, 2
+guiOutOfIDE52 := A_LoopField
+dynamicGuiSet := 1
+if (InStr(guiOutOfIDE5, "%"))
+{
+str := guiOutOfIDE5
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfIDE5 := " ""Gui" . GuiNumber . """ + [variables." . var1 . "]"
+guiOutOfIDE5Fix := " + [variables." . var1 . "]"
+}
+else
+{
+StringTrimLeft, A_LoopFieldOutFixCnavas, A_LoopField, 1
+guiOutOfIDE5 :=  " " . """" . "Gui" . GuiNumber . A_LoopFieldOutFixCnavas . """"
+}
+StringTrimLeft, guiOutOfIDE5, guiOutOfIDE5, 1
+StringTrimLeft, guiOutOfIDE52, guiOutOfIDE52, 1
+isThereArecId := 0
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("g"))
+{
+guiOutOfIDEG := 1
+guiOutOfIDE6 := A_LoopField
+StringTrimLeft, guiOutOfIDE6, guiOutOfIDE6, 1
+}
+}
+
+IDEId++
+
+
+if (isThereArecId = 1)
+{
+guiOutOfIDE5 := """" . "Gui" . GuiNumber . "IDE" . IDEId .  """"
+guiOutOfIDE5Fix := """" . "" . GuiNumber . "IDE" . IDEId .  """"
+StringTrimRight, guiOutOfIDE5Fix, guiOutOfIDE5Fix, 1
+StringTrimLeft, guiOutOfIDE5Fix, guiOutOfIDE5Fix, 1
+}
+
+if (InStr(out5, "%"))
+{
+StringTrimRight, out5, out5, 1
+StringTrimLeft, out5, out5, 1
+out5 := "variables." . out5
+}
+else
+{
+out5 := "null"
+}
+if (guiOutOfIDE7 = "")
+{
+guiOutOfIDE7 := "autohotkey"
+}
+
+
+;AddIDE(parent, xPos, yPos, w, h, id, font, langName = "autohotkey", onChangeFunc, initialText = "")
+IDEOut =
+(
+AddIDE(Gui%GuiNumber%, %guiOutOfIDE1%, %guiOutOfIDE2%, %guiOutOfIDE3%, %guiOutOfIDE4%, %guiOutOfIDE5%, %guiOutOfIDE8%, "%guiOutOfIDE7%", %guiOutOfIDE6%,    %out5%    );
+)
+
+
+
+jsCode .= "`n" . IDEOut . "`n"
+
+}
+
+
 if (out3 = "dropdownlist")
 {
 
@@ -4793,6 +5140,148 @@ createCustomDropdown(Gui%GuiNumber%, %guiOutOfDropDownList5%, "%out5%", "#333333
 ;MsgBox, % rectangleOut
 
 jsCode .= "`n" . DropDownListOut . "`n"
+
+}
+
+
+if (out3 = "iframe")
+{
+
+
+
+
+
+
+
+guiOutOfIframeNum := 0
+guiOutOfIframeX := 0
+guiOutOfIframeY := 0
+guiOutOfIframeW := 0
+guiOutOfIframeH := 0
+guiOutOfIframeV := 0
+guiOutOfIframeG := 0
+Loop, 7
+{
+guiOutOfIframe%A_Index% := ""
+}
+isThereArecId := 1
+
+guiOutOfIframe3 := "150"
+guiOutOfIframe4 := "30"
+
+dynamicGuiSet := 0
+Loop, Parse, out4, " "
+{
+;MsgBox, |%A_LoopField%|
+
+guiOutOfIframeNum++
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("x"))
+{
+guiOutOfIframeX := 1
+guiOutOfIframe1 := A_LoopField
+if (InStr(guiOutOfIframe1, "%"))
+{
+str := guiOutOfIframe1
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfIframe1 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfIframe1, guiOutOfIframe1, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("y"))
+{
+guiOutOfIframeY := 1
+guiOutOfIframe2 := A_LoopField
+if (InStr(guiOutOfIframe2, "%"))
+{
+str := guiOutOfIframe2
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfIframe2 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfIframe2, guiOutOfIframe2, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("w"))
+{
+guiOutOfIframeW := 1
+guiOutOfIframe3 := A_LoopField
+if (InStr(guiOutOfIframe3, "%"))
+{
+str := guiOutOfIframe3
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfIframe3 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfIframe3, guiOutOfIframe3, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("h"))
+{
+guiOutOfIframeH := 1
+guiOutOfIframe4 := A_LoopField
+if (InStr(guiOutOfIframe4, "%"))
+{
+str := guiOutOfIframe4
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfIframe4 :=  " variables." . var1
+}
+StringTrimLeft, guiOutOfIframe4, guiOutOfIframe4, 1
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("v"))
+{
+guiOutOfIframeV := 1
+guiOutOfIframe5 := """" . "Gui" . GuiNumber . A_LoopField . """"
+guiOutOfIframe52 := A_LoopField
+dynamicGuiSet := 1
+if (InStr(guiOutOfIframe5, "%"))
+{
+str := guiOutOfIframe5
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfIframe5 :=  " ""Gui" . GuiNumber . """ + [variables." . var1 . "]"
+
+}
+else
+{
+StringTrimLeft, A_LoopFieldOutFixCnavas, A_LoopField, 1
+guiOutOfIframe5 :=  " " . """" . "Gui" . GuiNumber . A_LoopFieldOutFixCnavas . """"
+}
+StringTrimLeft, guiOutOfIframe5, guiOutOfIframe5, 1
+StringTrimLeft, guiOutOfIframe52, guiOutOfIframe52, 1
+isThereArecId := 0
+}
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("r"))
+{
+guiOutOfIframeG := 1
+guiOutOfIframe6 := A_LoopField
+StringTrimLeft, guiOutOfIframe6, guiOutOfIframe6, 1
+}
+}
+
+IframeId++
+
+
+if (isThereArecId = 1)
+{
+guiOutOfIframe5 := """" . "Gui" . GuiNumber . "Iframe" . IframeId .  """"
+}
+
+
+
+IframeOut =
+(
+createCustomIframe(Gui%GuiNumber%, %guiOutOfIframe5%, "%out5%", "#333333", %guiOutOfIframe1%, %guiOutOfIframe2%, %guiOutOfIframe3%, %guiOutOfIframe4%, %guiOutOfIframe6%);
+)
+
+
+
+jsCode .= "`n" . IframeOut . "`n"
 
 }
 
@@ -5241,6 +5730,7 @@ guiOutOfShowX := 0
 guiOutOfShowY := 0
 guiOutOfShowW := 0
 guiOutOfShowH := 0
+guiOutOfShowRound := 0
 
 boderinGuiYes =
 (
@@ -5327,6 +5817,34 @@ guiOutOfShow4 :=  " """" + variables." . var1 . " + """
 }
 StringTrimLeft, guiOutOfShow4, guiOutOfShow4, 1
 }
+
+
+if (SubStr(Trim(StrLower(A_LoopField)), 1, 1) = StrLower("r"))
+{
+
+guiOutOfShowRound := A_LoopField
+StringTrimLeft, guiOutOfShowRound, guiOutOfShowRound, 1
+
+
+if (InStr(guiOutOfShowRound, "%"))
+{
+str := guiOutOfShowRound
+s:=StrSplit(str,"%").2
+var1 := s
+
+guiOutOfShowRound =
+(
+" + variables.%var1% + "px
+)
+
+}
+else
+{
+guiOutOfButton9 := guiOutOfButton9 . "px"
+}
+
+}
+
 }
 
 if (guiOutOfShowX = 1)
@@ -5442,6 +5960,7 @@ Gui%GuiNumber%.style.height = "%guiOutOfShow4%px"; // Set the height
 Gui%GuiNumber%.style.color = "white";
 Gui%GuiNumber%.style.fontSize = "15px";
 Gui%GuiNumber%.style.padding = "0px";
+Gui%GuiNumber%.style.borderRadius = "%guiOutOfShowRound%px";
 Gui%GuiNumber%.style.fontFamily = "%fontName%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%.style.zIndex = "%GuiNumber%00";
 
@@ -5463,6 +5982,7 @@ Gui%GuiNumber%.style.width = "%guiOutOfShow3%px"; // Set the width
 Gui%GuiNumber%.style.height = "%guiOutOfShow4%px"; // Set the height
 Gui%GuiNumber%.style.color = "white";
 Gui%GuiNumber%.style.fontSize = "15px";
+Gui%GuiNumber%.style.borderRadius = "%guiOutOfShowRound%px";
 Gui%GuiNumber%.style.padding = "0px";
 %boderinGuiYes%
 Gui%GuiNumber%.style.zIndex = "%GuiNumber%00";
@@ -5500,6 +6020,7 @@ Gui%GuiNumber%.style.backgroundColor = "%guiColorShow%";
 Gui%GuiNumber%.style.color = "white";
 Gui%GuiNumber%.style.fontSize = "15px";
 Gui%GuiNumber%.style.padding = "0px";
+Gui%GuiNumber%.style.borderRadius = "%guiOutOfShowRound%px";
 Gui%GuiNumber%.style.fontFamily = "%fontName%, sans-serif"; // Specify your desired font here
 Gui%GuiNumber%.style.zIndex = "%GuiNumber%00";
 
@@ -5523,6 +6044,7 @@ Gui%GuiNumber%.style.background = "%guiColorShow%";
 Gui%GuiNumber%.style.backgroundColor = "%guiColorShow%";
 Gui%GuiNumber%.style.color = "white";
 Gui%GuiNumber%.style.fontSize = "15px";
+Gui%GuiNumber%.style.borderRadius = "%guiOutOfShowRound%px";
 Gui%GuiNumber%.style.padding = "0px";
 %boderinGuiYes%
 Gui%GuiNumber%.style.fontFamily = "%fontName%, sans-serif"; // Specify your desired font here
@@ -5555,6 +6077,7 @@ canvas.id = "canvasId"; // Assign ID to the canvas element
 canvas.style.background = "%guiColorShow%";
 canvas.width = window.innerWidth;
 canvas.height = "%guiOutOfShow4%"; // Set the height
+canvas.style.borderRadius = "%guiOutOfShowRound%px";
 canvas.style.backgroundColor = "%guiColorShow%"; // Set background color
 
 // Get the 2D rendering context
@@ -5585,6 +6108,7 @@ canvas.id = "canvasId"; // Assign ID to the canvas element
 canvas.style.background = "%guiColorShow%";
 canvas.width = "%guiOutOfShow3%"; // Set the width
 canvas.height = "%guiOutOfShow4%"; // Set the height
+canvas.style.borderRadius = "%guiOutOfShowRound%px";
 %boderinGuiYesCan%
 canvas.style.backgroundColor = "%guiColorShow%"; // Set background color
 
@@ -5679,7 +6203,7 @@ FileRead, extractedText, %out2%
 
 extractedText := StrReplace(extractedText, "``", "\``")
 extractedText := StrReplace(extractedText, "$", "\$")
-
+extractedText := StrReplace(extractedText, Chr(92), Chr(92) . Chr(92))
 ;MsgBox, % extractedText
 tempTextData =
 (
@@ -5838,6 +6362,33 @@ GuiControl("%out2%", "Gui%GuiNumber%%out3%);
 
 
 if (out2 = "text")
+{
+
+var1 := out4
+
+if (InStr(var1, "%"))
+{
+str := var1
+s:=StrSplit(str,"%").2
+var1 := s
+
+var1 := "variables." . var1
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%, %var1%);
+)
+}
+else
+{
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%, "%var1%");
+)
+}
+
+}
+
+if (out2 = "textide")
 {
 
 var1 := out4
@@ -6135,6 +6686,18 @@ forJsCode =
  async function OnKeyPress(A_ThisHotkey)
          {
           variables.A_ThisHotkey = A_ThisHotkey
+
+)
+jsCode .= forJsCode . "`n"
+}
+else if (out1 == "OnMouseHold")
+{
+forJsCode =
+(
+
+ async function OnMouseHold(A_OnMouseHold)
+         {
+          variables.A_OnMouseHold = A_OnMouseHold
 
 )
 jsCode .= forJsCode . "`n"
@@ -7466,7 +8029,7 @@ Attw456543w45eqsubeotibebrawaaachi =
         function OnMouseRelease(event) {
           // This function will be called when the mouse button is released
           // You can perform your desired actions here
-          console.log("Mouse released");
+          //console.log("Mouse released");
           // Call your main function after mouse release
           OnMouseClick(event);
         }
@@ -7474,7 +8037,7 @@ Attw456543w45eqsubeotibebrawaaachi =
         function OnTouchEnd(event) {
           // This function will be called when the touch is lifted
           // You can perform your desired actions here
-          console.log("Touch ended");
+          //console.log("Touch ended");
           // Call your main function after touch ends
           OnMouseClick(event);
         }
@@ -7504,9 +8067,9 @@ str := StrReplace(str, "variables.A_TickCount", "BuildInVars(""A_TickCount"")")
 str := StrReplace(str, "variables.A_LastKey", "BuildInVars(""A_LastKey"")")
 str := StrReplace(str, "variables.A_Now", "BuildInVars(""A_Now"")")
 str := StrReplace(str, "variables.A_YYYY", "BuildInVars(""A_YYYY"")")
-str := StrReplace(str, "variables.A_MM", "BuildInVars(""A_MM"")")
 str := StrReplace(str, "variables.A_MMMM", "BuildInVars(""A_MMMM"")")
 str := StrReplace(str, "variables.A_MMM", "BuildInVars(""A_MMM"")")
+str := StrReplace(str, "variables.A_MM", "BuildInVars(""A_MM"")")
 str := StrReplace(str, "variables.A_DDDD", "BuildInVars(""A_DDDD"")")
 str := StrReplace(str, "variables.A_DDD", "BuildInVars(""A_DDD"")")
 str := StrReplace(str, "variables.A_DD", "BuildInVars(""A_DD"")")
@@ -7622,13 +8185,10 @@ if (A_LoopField != "")
 flaskFunction =
 (
 
-
-@app.route('/%endpoint%', methods=['POST'])
-def %endpoint%():
-    request_data = request.get_json()
-    print(f"Data from Hell: {request_data}")
-    return "hello from Python"
-
+endpoint, request_data, %endpoint%
+{
+return request_data
+}
 
 )
 
@@ -7789,43 +8349,21 @@ jsCodeGui := jsCodeGuiOut
 
 pythonCode =
 (
-from flask import Flask, send_file, request, jsonify
-import os
-
-app = Flask(__name__)
-
-
-
-@app.route('/')
-def app_route():
-    return send_file(os.path.join(os.path.dirname(__file__), 'index.html')), 200
-
-
-
 
 %allEndponitsInPython%
-
-
-
-@app.errorhandler(404)
-def not_found(e):
-    return "Page not found", 404
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, debug=True)
 
 )
 
 if (DoWeHaveEndpoints = 1) {
     ; Check if the main Python file doesn't exist
-    if !FileExist("server_" . filenameOfHTH . ".py") {
+    if !FileExist("server_" . filenameOfHTH . ".htpy") {
         ; If it doesn't exist, create it and append pythonCode to it
-        FileAppend, % pythonCode, server_%filenameOfHTH%.py
+        FileAppend, % pythonCode, server_%filenameOfHTH%.htpy
     } else {
         ; If it exists, try appending to a numbered file
         Loop {
             ; Construct the filename with a numeric suffix using A_Index
-            filename := "server_" . filenameOfHTH . " (" . A_Index . ").py"
+            filename := "server_" . filenameOfHTH . " (" . A_Index . ").htpy"
             ; Check if this numbered file doesn't exist
             if !FileExist(filename) {
                 ; If it doesn't exist, create it and append pythonCode to it
@@ -8057,6 +8595,22 @@ addFuncIfWeUseIt_showCustomMessageBox =
 
 addFuncIfWeUseIt_BuildInVars =
 (
+
+      var lastKeyPressed = "";
+
+      function trackLastKeyPressed() {
+        document.addEventListener("keydown", function (event) {
+          lastKeyPressed = event.key;
+          // console.log(lastKeyPressed);
+        });
+      }
+
+      function getLastKeyPressed() {
+        return lastKeyPressed;
+      }
+
+      // Call the trackLastKeyPressed function to start tracking key presses
+      trackLastKeyPressed();
 
       let lastInputTime = Date.now(); // Initialize with current timestamp
       let startTimestamp = Date.now(); // Initialize with current timestamp
@@ -8528,8 +9082,12 @@ addFuncIfWeUseIt_StrReplace =
         if (typeof originalString !== "string") {
           return originalString; // Return originalString as is
         }
-        // Use replace method to replace find with replaceWith
-        return originalString.replace(new RegExp(find, "g"), replaceWith);
+
+        // Escape special characters in the 'find' string to be used literally
+        const escapedFind = find.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+        // Use replace method to replace all occurrences of 'find' with 'replaceWith'
+        return originalString.replace(new RegExp(escapedFind, "g"), replaceWith);
       }
 
 )
@@ -8556,30 +9114,30 @@ addFuncIfWeUseIt_Asc =
 addFuncIfWeUseIt_StringTrimLeft =
 (
 
-      // Function to trim specified number of characters from the left side of a string
-      function StringTrimLeft(input, numChars) {
-        if (input && input.length >= numChars) {
-          return input.substring(numChars);
-        } else {
-          console.error("Invalid input provided.");
-          return input; // Return original input if trimming is not possible
-        }
-      }
+// Function to trim specified number of characters from the left side of a string
+function StringTrimLeft(input, numChars) {
+  if (typeof input === 'string' && typeof numChars === 'number' && numChars >= 0) {
+    return input.length > numChars ? input.substring(numChars) : '';
+  } else {
+    console.error("Invalid input provided.");
+    return input; // Return original input if trimming is not possible
+  }
+}
 
 )
 
 addFuncIfWeUseIt_StringTrimRight =
 (
 
-      // Function to trim specified number of characters from the right side of a string
-      function StringTrimRight(input, numChars) {
-        if (input && input.length >= numChars) {
-          return input.substring(0, input.length - numChars);
-        } else {
-          console.error("Invalid input provided.");
-          return input; // Return original input if trimming is not possible
-        }
-      }
+// Function to trim specified number of characters from the right side of a string
+function StringTrimRight(input, numChars) {
+  if (typeof input === 'string' && typeof numChars === 'number' && numChars >= 0) {
+    return input.length > numChars ? input.substring(0, input.length - numChars) : '';
+  } else {
+    console.error("Invalid input provided.");
+    return input; // Return original input if trimming is not possible
+  }
+}
 
 )
 
@@ -8636,7 +9194,6 @@ addFuncIfWeUseIt_GuiControl =
 
       function GuiControl(action, id, param1, param2, param3, param4) {
         const element = document.getElementById(id);
-
         if (element) {
           // Handle DOM elements
           if (action === "move") {
@@ -8675,6 +9232,14 @@ addFuncIfWeUseIt_GuiControl =
               element.src = param1;
             } else {
               console.error("Element is not an <img> tag, cannot change picture.");
+            }
+          } else if (action === "textide") {
+            // Set value for Ace editor
+            var editor = ace.edit(id); // Access the Ace editor instance using its ID
+            if (editor && param1) {
+              editor.session.setValue(param1);
+            } else {
+              console.error("Element is not an Ace editor or parameter is missing.");
             }
           }
         } else {
@@ -9302,7 +9867,7 @@ addFuncIfWeUseIt_changeFavicon =
 addFuncIfWeUseIt_OnKeyPress =
 (
 
-      let lastKeyPressed = "";
+      var lastKeyPressed = "";
 
       function trackLastKeyPressed() {
         document.addEventListener("keydown", function (event) {
@@ -9464,9 +10029,435 @@ addFuncIfWeUseIt_getDataFromJSON =
 
 )
 
+addFuncIfWeUseIt_createCheckbox =
+(
+
+      function createCheckbox(parent, id, label, isChecked, leftPos, topPos, checkboxFunction) {
+        // Create checkbox container
+        let checkboxContainer = document.createElement("div");
+        checkboxContainer.style.position = "absolute";
+        checkboxContainer.id = id;
+        checkboxContainer.style.left = leftPos + "px";
+        checkboxContainer.style.top = topPos + "px";
+        parent.appendChild(checkboxContainer);
+
+        // Create checkbox input element
+        let checkboxInput = document.createElement("input");
+        checkboxInput.type = "checkbox";
+
+        checkboxInput.checked = isChecked;
+        checkboxInput.style.marginRight = "8px"; // Spacing between checkbox and label
+        checkboxInput.style.verticalAlign = "-2px"; // Align label vertically with checkbox
+        checkboxContainer.appendChild(checkboxInput);
+
+        // Create label for the checkbox
+        let checkboxLabel = document.createElement("label");
+        checkboxLabel.textContent = label;
+        checkboxLabel.setAttribute("for", id); // Associate label with checkbox input
+        checkboxContainer.appendChild(checkboxLabel);
+
+        // Checkbox change event
+        checkboxInput.addEventListener("change", function () {
+          // Call the checkbox function with checkbox state
+          checkboxFunction(checkboxInput.checked ? "1" : "0"); // Return "1" or "0" based on checkbox state
+        });
+      }
+
+)
+
+addFuncIfWeUseIt_createCustomIframe =
+(
+
+      function createCustomIframe(parentDiv, id, url, color, leftPos, topPos, width, height, round, onChangeFunction) {
+        // Create a new iframe element
+        const iframe = document.createElement("iframe");
+
+        // Set iframe attributes
+        iframe.id = id;
+        iframe.src = url; // Set iframe source URL
+        iframe.width = width;
+        iframe.height = height;
+        iframe.style.backgroundColor = color;
+        iframe.style.border = "none";
+        iframe.style.position = "absolute";
+        iframe.style.left = leftPos + "px";
+        iframe.style.top = topPos + "px";
+
+        // Set border radius
+        iframe.style.borderRadius = round + "px";
+
+        // Set onChange event listener if provided
+        if (typeof onChangeFunction === "function") {
+          iframe.onload = function () {
+            // Attach an event listener to the iframe's contentWindow for change events
+            iframe.contentWindow.addEventListener("change", onChangeFunction);
+          };
+        }
+
+        // Append the iframe to the specified parent div element
+        parentDiv.appendChild(iframe);
+      }
+
+)
+
+addFuncIfWeUseIt_OnMouseHold =
+(
+
+        function logMouseHoldStatus() {
+          let isMouseDown = false;
+
+          function handleMouseDown(event) {
+            if (!isMouseDown) {
+              isMouseDown = true;
+              const holdCoords = ``${event.clientX}|${event.clientY}``;
+              OnMouseHold(``hold|${holdCoords}``);
+            }
+          }
+
+          function handleMouseUp(event) {
+            if (isMouseDown) {
+              isMouseDown = false;
+              const releaseCoords = ``${event.clientX}|${event.clientY}``;
+              OnMouseHold(``release|${releaseCoords}``);
+            }
+          }
+
+          document.addEventListener("mousedown", handleMouseDown);
+          document.addEventListener("mouseup", handleMouseUp);
+
+          // Optional: Log mouse position continuously while mouse is held down
+          document.addEventListener("mousemove", function (event) {
+            if (isMouseDown) {
+              const { clientX, clientY } = event;
+              OnMouseHold(clientX + "|" + clientY);
+            }
+          });
+        }
+
+        // Call the function to start logging mouse hold status and sending notifications
+        logMouseHoldStatus();
+
+)
+
+addFuncIfWeUseIt_AddIDE1 =
+(
+
+      function AddIDE(parent, xPos, yPos, w, h, id, font = 18, langName = "autohotkey", onChangeFunc, initialText = "") {
+        var langTools = ace.require("ace/ext/language_tools");
+
+        let Completer = {
+          getCompletions: function (editor, session, pos, prefix, callback) {
+
+            if (prefix.startsWith("p")) {
+                // Continue executing if the prefix starts with "p"
+            } else {
+                // Return early if the prefix does not start with "p" and its length is not greater than 1
+                if (prefix.length <= 1) {
+                    callback(null, []); // Return an empty array of completions
+                    return;
+                }
+            }
+
+            let prefixLower = prefix.toLowerCase();
+            let filteredTables = hth.filter(function (table) {
+              return table.name.toLowerCase().startsWith(prefixLower);
+            });
+            // filteredTables.sort(function(a, b) {
+            //     return a.name.length - b.name.length;
+            // });
+            let limitedTables = filteredTables; //.slice(-10);
+
+            callback(
+              null,
+              limitedTables.map(function (table) {
+                return {
+                  caption: table.name,
+                  value: table.name,
+                };
+              }`),
+            `);
+          },
+        };
+        let hth = [{ name: "#AllowSameLineComments" }, { name: "#ClipboardTimeout" }, { name: "#CommentFlag" }, { name: "#Delimiter" }, { name: "#DerefChar" }, { name: "#ErrorStdOut" }, { name: "#EscapeChar" }, { name: "#HotkeyInterval" }, { name: "#HotkeyModifierTimeout" }, { name: "#Hotstring" }, { name: "#If" }, { name: "#IfTimeout" }, { name: "#IfWinActive" }, { name: "#IfWinExist" }, { name: "#IfWinNotActive" }, { name: "#IfWinNotExist" }, { name: "#Include" }, { name: "#IncludeAgain" }, { name: "#InputLevel" }, { name: "#InstallKeybdHook" }, { name: "#InstallMouseHook" }, { name: "#KeyHistory" }, { name: "#LTrim" }, { name: "#MaxHotkeysPerInterval" }, { name: "#MaxMem" }, { name: "#MaxThreads" }, { name: "#MaxThreadsBuffer" }, { name: "#MaxThreadsPerHotkey" }, { name: "#MenuMaskKey" }, { name: "#NoEnv" }, { name: "#NoTrayIcon" }, { name: "#Persistent" }, { name: "#Requires" }, { name: "#SingleInstance" }, { name: "#UseHook" }, { name: "#Warn" }, { name: "#WinActivateForce" }, { name: "break" }, { name: "case" }, { name: "catch" }, { name: "continue" }, { name: "else" }, { name: "finally" }, { name: "for" }, { name: "gosub" }, { name: "goto" }, { name: "if" }, { name: "IfEqual" }, { name: "IfExist" }, { name: "IfGreater" }, { name: "IfGreaterOrEqual" }, { name: "IfInString" }, { name: "IfLess" }, { name: "IfLessOrEqual" }, { name: "IfMsgBox" }, { name: "IfNotEqual" }, { name: "IfNotExist" }, { name: "IfNotInString" }, { name: "IfWinActive" }, { name: "IfWinExist" }, { name: "IfWinNotActive" }, { name: "IfWinNotExist" }, { name: "Loop" }, { name: "return" }, { name: "switch" }, { name: "throw" }, { name: "try" }, { name: "until" }, { name: "while" }, { name: "__Call" }, { name: "__Delete" }, { name: "__Get" }, { name: "__New" }, { name: "__Set" }, { name: "ahk_class" }, { name: "ahk_exe" }, { name: "ahk_group" }, { name: "ahk_id" }, { name: "ahk_pid" }, { name: "and" }, { name: "base" }, { name: "ByRef" }, { name: "class" }, { name: "extends" }, { name: "false" }, { name: "Files" }, { name: "global" }, { name: "local" }, { name: "new" }, { name: "not" }, { name: "or" }, { name: "Parse" }, { name: "ParseInt" }, { name: "Read" }, { name: "Reg" }, { name: "static" }, { name: "true" }, { name: "A_AhkPath" }, { name: "A_AhkVersion" }, { name: "A_AppData" }, { name: "A_AppDataCommon" }, { name: "A_Args" }, { name: "A_AutoTrim" }, { name: "A_BatchLines" }, { name: "A_CaretX" }, { name: "A_CaretY" }, { name: "A_ComputerName" }, { name: "A_ComSpec" }, { name: "A_ControlDelay" }, { name: "A_CoordModeCaret" }, { name: "A_CoordModeMenu" }, { name: "A_CoordModeMouse" }, { name: "A_CoordModePixel" }, { name: "A_CoordModeToolTip" }, { name: "A_Cursor" }, { name: "A_DD" }, { name: "A_DDD" }, { name: "A_DDDD" }, { name: "A_DefaultGui" }, { name: "A_DefaultListView" }, { name: "A_DefaultMouseSpeed" }, { name: "A_DefaultTreeView" }, { name: "A_Desktop" }, { name: "A_DesktopCommon" }, { name: "A_DetectHiddenText" }, { name: "A_DetectHiddenWindows" }, { name: "A_EndChar" }, { name: "A_EventInfo" }, { name: "A_ExitReason" }, { name: "A_FileEncoding" }, { name: "A_FormatFloat" }, { name: "A_FormatInteger" }, { name: "A_Gui" }, { name: "A_GuiControl" }, { name: "A_GuiControlEvent" }, { name: "A_GuiEvent" }, { name: "A_GuiHeight" }, { name: "A_GuiWidth" }, { name: "A_GuiX" }, { name: "A_GuiY" }, { name: "A_Hour" }, { name: "A_IconFile" }, { name: "A_IconHidden" }, { name: "A_IconNumber" }, { name: "A_IconTip" }, { name: "A_Index" }, { name: "A_IPAddress1" }, { name: "A_IPAddress2" }, { name: "A_IPAddress3" }, { name: "A_IPAddress4" }, { name: "A_Is64bitOS" }, { name: "A_IsAdmin" }, { name: "A_IsCompiled" }, { name: "A_IsCritical" }, { name: "A_IsPaused" }, { name: "A_IsSuspended" }, { name: "A_IsUnicode" }, { name: "A_KeyDelay" }, { name: "A_KeyDelayPlay" }, { name: "A_KeyDuration" }, { name: "A_KeyDurationPlay" }, { name: "A_Language" }, { name: "A_LastKey" }, { name: "A_LastError" }, { name: "A_LineFile" }, { name: "A_LineNumber" }, { name: "A_ListLines" }, { name: "A_LoopField" }, { name: "A_LoopFileAttrib" }, { name: "A_LoopFileDir" }, { name: "A_LoopFileExt" }, { name: "A_LoopFileFullPath" }, { name: "A_LoopFileLongPath" }, { name: "A_LoopFileName" }, { name: "A_LoopFilePath" }, { name: "A_LoopFileShortName" }, { name: "A_LoopFileShortPath" }, { name: "A_LoopFileSize" }, { name: "A_LoopFileSizeKB" }, { name: "A_LoopFileSizeMB" }, { name: "A_LoopFileTimeAccessed" }, { name: "A_LoopFileTimeCreated" }, { name: "A_LoopFileTimeModified" }, { name: "A_LoopReadLine" }, { name: "A_LoopRegKey" }, { name: "A_LoopRegName" }, { name: "A_LoopRegSubKey" }, { name: "A_LoopRegTimeModified" }, { name: "A_LoopRegType" }, { name: "A_MDay" }, { name: "A_Min" }, { name: "A_MM" }, { name: "A_MMM" }, { name: "A_MMMM" }, { name: "A_Mon" }, { name: "A_MouseDelay" }, { name: "A_MouseDelayPlay" }, { name: "A_MSec" }, { name: "A_MyDocuments" }, { name: "A_Now" }, { name: "A_NowUTC" }, { name: "A_NumBatchLines" }, { name: "A_OSType" }, { name: "A_OSVersion" }, { name: "A_PriorHotkey" }, { name: "A_PriorKey" }, { name: "A_ProgramFiles" }, { name: "A_Programs" }, { name: "A_ProgramsCommon" }, { name: "A_PtrSize" }, { name: "A_RegView" }, { name: "A_ScreenDPI" }, { name: "A_ScreenHeight" }, { name: "A_ScreenWidth" }, { name: "A_ScriptDir" }, { name: "A_ScriptFullPath" }, { name: "A_ScriptHwnd" }, { name: "A_ScriptName" }, { name: "A_Sec" }, { name: "A_SendLevel" }, { name: "A_SendMode" }, { name: "A_Space" }, { name: "A_StartMenu" }, { name: "A_StartMenuCommon" }, { name: "A_Startup" }, { name: "A_StartupCommon" }, { name: "A_StoreCapsLockMode" }, { name: "A_StringCaseSense" }, { name: "A_Tab" }, { name: "A_Temp" }, { name: "A_ThisFunc" }, { name: "A_ThisHotkey" }, { name: "A_ThisLabel" }, { name: "A_ThisMenu" }, { name: "A_ThisMenuItem" }, { name: "A_ThisMenuItemPos" }, { name: "A_TickCount" }, { name: "A_TimeIdle" }, { name: "A_TimeIdleKeyboard" }, { name: "A_TimeIdleMouse" }, { name: "A_TimeIdlePhysical" }, { name: "A_TimeSincePriorHotkey" }, { name: "A_TimeSinceThisHotkey" }, { name: "A_TitleMatchMode" }, { name: "A_TitleMatchModeSpeed" }, { name: "A_UserName" }, { name: "A_WDay" }, { name: "A_WinDelay" }, { name: "A_WinDir" }, { name: "A_WorkingDir" }, { name: "A_YDay" }, { name: "A_Year" }, { name: "A_YWeek" }, { name: "A_YYYY" }, { name: "Clipboard" }, { name: "ClipboardAll" }, { name: "ComSpec" }, { name: "ErrorLevel" }, { name: "ProgramFiles" }, { name: "this" }, { name: "Abs" }, { name: "ACos" }, { name: "Array" }, { name: "Asc" }, { name: "ASin" }, { name: "ATan" }, { name: "Ceil" }, { name: "Chr" }, { name: "ComObjActive" }, { name: "ComObjArray" }, { name: "ComObjConnect" }, { name: "ComObjCreate" }, { name: "ComObject" }, { name: "ComObjError" }, { name: "ComObjFlags" }, { name: "ComObjGet" }, { name: "ComObjQuery" }, { name: "ComObjType" }, { name: "ComObjValue" }, { name: "Cos" }, { name: "DllCall" }, { name: "Exception" }, { name: "Exp" }, { name: "FileExist" }, { name: "FileOpen" }, { name: "Floor" }, { name: "Format" }, { name: "Func" }, { name: "getDataFromEndpoint" }, { name: "GetKeyName" }, { name: "GetKeySC" }, { name: "GetKeyState" }, { name: "GetKeyVK" }, { name: "Hotstring" }, { name: "Icon" }, { name: "IL_Add" }, { name: "IL_Create" }, { name: "IL_Destroy" }, { name: "InputHook" }, { name: "InStr" }, { name: "IsByRef" }, { name: "isConnectedToBackend" }, { name: "IsFunc" }, { name: "IsLabel" }, { name: "isMobileDevice" }, { name: "IsObject" }, { name: "Ln" }, { name: "LoadPicture" }, { name: "Log" }, { name: "LTrim" }, { name: "LV_Add" }, { name: "LV_Delete" }, { name: "LV_DeleteCol" }, { name: "LV_GetCount" }, { name: "LV_GetNext" }, { name: "LV_GetText" }, { name: "LV_Insert" }, { name: "LV_InsertCol" }, { name: "LV_Modify" }, { name: "LV_ModifyCol" }, { name: "LV_SetImageList" }, { name: "Max" }, { name: "MenuGetHandle" }, { name: "MenuGetName" }, { name: "Min" }, { name: "Mod" }, { name: "NumGet" }, { name: "NumPut" }, { name: "ObjAddRef" }, { name: "ObjBindMethod" }, { name: "ObjClone" }, { name: "ObjCount" }, { name: "ObjDelete" }, { name: "Object" }, { name: "ObjGetAddress" }, { name: "ObjGetBase" }, { name: "ObjGetCapacity" }, { name: "ObjHasKey" }, { name: "ObjInsert" }, { name: "ObjInsertAt" }, { name: "ObjLength" }, { name: "ObjMaxIndex" }, { name: "ObjMinIndex" }, { name: "ObjNewEnum" }, { name: "ObjPop" }, { name: "ObjPush" }, { name: "ObjRawGet" }, { name: "ObjRawSet" }, { name: "ObjRelease" }, { name: "ObjRemove" }, { name: "ObjRemoveAt" }, { name: "ObjSetBase" }, { name: "ObjSetCapacity" }, { name: "OnClipboardChange" }, { name: "OnError" }, { name: "OnExit" }, { name: "OnMessage" }, { name: "Ord" }, { name: "RegExMatch" }, { name: "RegExReplace" }, { name: "RegisterCallback" }, { name: "Round" }, { name: "RTrim" }, { name: "StoreLocally" }, { name: "SB_SetIcon" }, { name: "SB_SetParts" }, { name: "SB_SetText" }, { name: "Sin" }, { name: "Sqrt" }, { name: "StrGet" }, { name: "StrLen" }, { name: "StrLower" }, { name: "StrPut" }, { name: "StrReplace" }, { name: "StrSplit" }, { name: "SubStr" }, { name: "Tan" }, { name: "Title" }, { name: "Trim" }, { name: "TV_Add" }, { name: "TV_Delete" }, { name: "TV_Get" }, { name: "TV_GetChild" }, { name: "TV_GetCount" }, { name: "TV_GetNext" }, { name: "TV_GetParent" }, { name: "TV_GetPrev" }, { name: "TV_GetSelection" }, { name: "TV_GetText" }, { name: "TV_Modify" }, { name: "TV_SetImageList" }, { name: "VarSetCapacity" }, { name: "WinActive" }, { name: "WinExist" }, { name: "AutoTrim" }, { name: "BlockInput" }, { name: "Click" }, { name: "ClipWait" }, { name: "Control" }, { name: "ControlClick" }, { name: "ControlFocus" }, { name: "ControlGet" }, { name: "ControlGetFocus" }, { name: "ControlGetPos" }, { name: "ControlGetText" }, { name: "ControlMove" }, { name: "ControlSend" }, { name: "ControlSendRaw" }, { name: "ControlSetText" }, { name: "CoordMode" }, { name: "Critical" }, { name: "DetectHiddenText" }, { name: "DetectHiddenWindows" }, { name: "Drive" }, { name: "DriveGet" }, { name: "DriveSpaceFree" }, { name: "Edit" }, { name: "Endpoint" }, { name: "EnvAdd" }, { name: "EnvDiv" }, { name: "EnvGet" }, { name: "EnvMult" }, { name: "EnvSet" }, { name: "EnvSub" }, { name: "EnvUpdate" }, { name: "Exit" }, { name: "ExitApp" }, { name: "FileAppend" }, { name: "FileCopy" }, { name: "FileCopyDir" }, { name: "FileCreateDir" }, { name: "FileCreateShortcut" }, { name: "FileDelete" }, { name: "FileEncoding" }, { name: "FileGetAttrib" }, { name: "FileGetShortcut" }, { name: "FileGetSize" }, { name: "FileGetTime" }, { name: "FileGetVersion" }, { name: "FileInstall" }, { name: "FileMove" }, { name: "FileMoveDir" }, { name: "FileRead" }, { name: "FileReadLine" }, { name: "FileRecycle" }, { name: "FileRecycleEmpty" }, { name: "FileRemoveDir" }, { name: "FileSelectFile" }, { name: "FileSelectFolder" }, { name: "FileSetAttrib" }, { name: "FileSetTime" }, { name: "FormatTime" }, { name: "getDataFromAPI" }, { name: "getDataFromJSON" }, { name: "GetKeyState" }, { name: "getUrlParams" }, { name: "GroupActivate" }, { name: "GroupAdd" }, { name: "GroupClose" }, { name: "GroupDeactivate" }, { name: "Gui" }, { name: "GuiControl" }, { name: "GuiControlGet" }, { name: "Hotkey" }, { name: "ImageSearch" }, { name: "IniDelete" }, { name: "IniRead" }, { name: "IniWrite" }, { name: "Input" }, { name: "InputBox" }, { name: "KeyHistory" }, { name: "KeyWait" }, { name: "ListHotkeys" }, { name: "ListLines" }, { name: "ListVars" }, { name: "Menu" }, { name: "MouseClick" }, { name: "MouseClickDrag" }, { name: "MouseGetPos" }, { name: "MouseMove" }, { name: "MsgBox" }, { name: "OnExit" }, { name: "OutputDebug" }, { name: "Pause" }, { name: "PixelGetColor" }, { name: "PixelSearch" }, { name: "PostMessage" }, { name: "Process" }, { name: "Progress" }, { name: "Random" }, { name: "RegDelete" }, { name: "RegRead" }, { name: "RegWrite" }, { name: "Reload" }, { name: "reloadWithParams" }, { name: "Run" }, { name: "RunAs" }, { name: "RunWait" }, { name: "Send" }, { name: "SendEvent" }, { name: "SendInput" }, { name: "SendLevel" }, { name: "SendMessage" }, { name: "SendMode" }, { name: "SendPlay" }, { name: "SendRaw" }, { name: "SetBatchLines" }, { name: "SetCapsLockState" }, { name: "SetControlDelay" }, { name: "SetDefaultMouseSpeed" }, { name: "SetEnv" }, { name: "SetFormat" }, { name: "SetKeyDelay" }, { name: "SetMouseDelay" }, { name: "SetNumLockState" }, { name: "SetRegView" }, { name: "SetScrollLockState" }, { name: "SetStoreCapsLockMode" }, { name: "SetTimer" }, { name: "SetTitleMatchMode" }, { name: "SetWinDelay" }, { name: "SetWorkingDir" }, { name: "Shutdown" }, { name: "Sleep" }, { name: "Sort" }, { name: "SoundBeep" }, { name: "SoundGet" }, { name: "SoundGetWaveVolume" }, { name: "SoundPlay" }, { name: "SoundSet" }, { name: "SoundSetWaveVolume" }, { name: "SplashImage" }, { name: "SplashTextOff" }, { name: "SplashTextOn" }, { name: "SplitPath" }, { name: "StatusBarGetText" }, { name: "StatusBarWait" }, { name: "StringCaseSense" }, { name: "StringGetPos" }, { name: "StringLeft" }, { name: "StringLen" }, { name: "StringLower" }, { name: "StringMid" }, { name: "StringReplace" }, { name: "StringRight" }, { name: "StringSplit" }, { name: "StringTrimLeft" }, { name: "StringTrimRight" }, { name: "StringUpper" }, { name: "Suspend" }, { name: "SysGet" }, { name: "Thread" }, { name: "ToolTip" }, { name: "Transform" }, { name: "TrayTip" }, { name: "URLDownloadToFile" }, { name: "WinActivate" }, { name: "WinActivateBottom" }, { name: "WinClose" }, { name: "WinGet" }, { name: "WinGetActiveStats" }, { name: "WinGetActiveTitle" }, { name: "WinGetClass" }, { name: "WinGetPos" }, { name: "WinGetText" }, { name: "WinGetTitle" }, { name: "WinHide" }, { name: "WinKill" }, { name: "WinMaximize" }, { name: "WinMenuSelectItem" }, { name: "WinMinimize" }, { name: "WinMinimizeAll" }, { name: "WinMinimizeAllUndo" }, { name: "WinMove" }, { name: "WinRestore" }, { name: "WinSet" }, { name: "WinSetTitle" }, { name: "WinShow" }, { name: "WinWait" }, { name: "WinWaitActive" }, { name: "WinWaitClose" }, { name: "WinWaitNotActive" }];
+
+
+)
+
+addFuncIfWeUseIt_AddIDE2 =
+(
+
+        // Create a new div element for the editor
+        var editorDiv = document.createElement("div");
+        editorDiv.id = id;
+        editorDiv.style.position = "absolute";
+        editorDiv.style.left = xPos + "px";
+        editorDiv.style.top = yPos + "px";
+        editorDiv.style.width = w + "px";
+        editorDiv.style.height = h + "px";
+        editorDiv.style.fontSize = font + "px";
+
+        // Append the editor div to the parent
+        parent.appendChild(editorDiv);
+
+        // Create a new editor instance inside the div
+        var editor = ace.edit(id);
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/" + langName);
+        // editor.setOptions({
+        //   enableBasicAutocompletion: true,
+        //   enableLiveAutocompletion: true,
+        //   behavioursEnabled: false, // Disable auto-pairing of characters
+        // });
+
+        editor.setOptions({
+          enableBasicAutocompletion: false,
+          enableSnippets: false,
+          enableLiveAutocompletion: true,
+          behavioursEnabled: false,
+          showPrintMargin: false,
+        });
+
+        langTools.setCompleters([]);
+        langTools.addCompleter(Completer);
+
+        // Set initial text if provided
+        if (initialText) {
+          editor.setValue(initialText, -1); // -1 to move cursor to the beginning
+        }
+
+        // Apply CSS styles for the editor
+        var css = ``
+          body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1818;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+          }
+
+          .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem;
+            padding: 1rem;
+          }
+
+          button {
+            padding: 0.7rem;
+            font-size: 1.2em;
+            cursor: pointer;
+            background-color: #bababa;
+            color: #000000;
+            border: none;
+            border-radius: 0.2rem;
+            transition: background-color 0.3s;
+          }
+
+          button:hover {
+            background-color: #27ae60;
+          }
+
+          #${id} {
+            width: ${w}px;
+            height: ${h}px;
+            font-size: 1em;
+            border-radius: 0.3rem;
+          }
+
+          #result {
+            margin-top: 1rem;
+            font-size: 1.2em;
+            color: #999c9a;
+            font-weight: bold;
+            text-align: center;
+          }
+
+          .ace-monokai .ace_marker-layer .ace_active-line {
+            background-color: #103010 !important;
+          }
+
+          .ace-monokai {
+            background-color: #121212 !important;
+            color: #f8f8f2;
+          }
+
+          .ace-monokai .ace_gutter {
+            background: #204020 !important;
+            color: #cbcdc3 !important;
+          }
+
+          .ace-monokai .ace_gutter-active-line {
+            background-color: transparent !important;
+          }
+
+          .ace-monokai .ace_entity.ace_name.ace_tag,
+          .ace-monokai .ace_keyword,
+          .ace-monokai .ace_meta.ace_tag,
+          .ace-monokai .ace_storage {
+            color: #40a0e0 !important;
+          }
+
+          .ace-monokai .ace_entity.ace_name.ace_function,
+          .ace-monokai .ace_entity.ace_other,
+          .ace-monokai .ace_entity.ace_other.ace_attribute-name,
+          .ace-monokai .ace_variable {
+            color: #ff80df !important;
+          }
+
+          .ace-monokai .ace_comment {
+            color: #40d080 !important;
+          }
+
+          .ace-monokai .ace_string {
+            color: #ffa0a0 !important;
+          }
+
+          .ace-monokai .ace_punctuation,
+          .ace-monokai .ace_punctuation.ace _tag {
+            color: #ffa0a0 !important;
+          }
+
+          *::-webkit-scrollbar {
+            width: 1em;
+          }
+
+          *::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          }
+
+          *::-webkit-scrollbar-thumb {
+            background-color: darkgrey;
+            outline: 1px solid slategrey;
+          }
+        ``;
+
+        var style = document.createElement("style");
+        style.type = "text/css";
+        if (style.styleSheet) {
+          style.styleSheet.cssText = css;
+        } else {
+          style.appendChild(document.createTextNode(css));
+        }
+        document.head.appendChild(style);
+
+        // Bind change event listener to the editor
+        editor.getSession().on("change", function () {
+          var code = editor.getValue();
+          if (typeof onChangeFunc === "function") {
+            onChangeFunc(code);
+          }
+        });
+      }
+
+)
+
+
+addFuncIfWeUseIt_StrSplit =
+(
+
+function StrSplit(inputStr, delimiter, num) {
+    // Check if inputStr is a valid string
+    if (typeof inputStr !== 'string') {
+        return ''; // Return empty string for invalid input
+    }
+
+    // Split the input string based on the delimiter
+    const parts = inputStr.split(delimiter);
+
+    // Return the part specified by the num parameter (1-based index)
+    if (num > 0 && num <= parts.length) {
+        return parts[num - 1]; // Return the specified part (0-based index)
+    } else {
+        return ''; // Return an empty string if num is out of range
+    }
+}
+
+)
+
+addFuncIfWeUseIt_RegExReplace =
+(
+
+      // Function to simulate AutoHotkey's RegExReplace in JavaScript
+      function RegExReplace(inputStr, regexPattern, replacement) {
+          // Create a regular expression object using the provided pattern
+          const regex = new RegExp(regexPattern, 'g'); // 'g' flag for global match
+
+          // Use the replace() method to perform the regex replacement
+          const resultStr = inputStr.replace(regex, replacement);
+
+          // Return the modified string
+          return resultStr;
+      }
+
+)
+
+
+addFuncIfWeUseIt_runPyCode =
+(
+
+        async function runPyCode(code) {
+            return new Promise((resolve, reject) => {
+                const checkReady = () => {
+                    if (window.runPythonCode) {
+                        resolve(window.runPythonCode(code));
+                    } else {
+                        setTimeout(checkReady, 100);
+                    }
+                };
+                checkReady();
+            });
+        }
+
+)
+
+addFuncIfWeUseIt_runHTML =
+(
+
+
+      function runHTML(parent, id, scale, leftPos, topPos, width, height, HTMLcode) {
+        // Calculate the scale based on the actual width and height of the iframe
+        const scaleX = width / window.innerWidth;
+        const scaleY = height / window.innerHeight;
+        const scaleFactor = Math.min(scaleX, scaleY);
+
+        // Calculate the scaled width and height to maintain aspect ratio
+        const scaledWidth = Math.floor(window.innerWidth * scaleFactor);
+        const scaledHeight = Math.floor(window.innerHeight * scaleFactor);
+
+        // Calculate offsets to center the content
+        const offsetX = Math.floor((width - scaledWidth) / 2);
+        const offsetY = Math.floor((height - scaledHeight) / 2);
+
+        // Create iframe element
+        let iframeElement = document.createElement("iframe");
+
+        // Set attributes
+        iframeElement.id = id;
+        iframeElement.style.position = "absolute";
+        iframeElement.style.left = leftPos + offsetX + "px";
+        iframeElement.style.top = topPos + offsetY + "px";
+        iframeElement.style.width = window.innerWidth + "px"; // Set the iframe's viewport width
+        iframeElement.style.height = window.innerHeight + "px"; // Set the iframe's viewport height
+        iframeElement.style.transformOrigin = "top left";
+        iframeElement.style.transform = ``scale(${scaleFactor})``;
+
+        // Set srcdoc attribute to load content
+        iframeElement.srcdoc = HTMLcode;
+
+        // Append iframe to parent element
+        parent.appendChild(iframeElement);
+      }
+
+
+)
+
 
 allFuncThatWeNeedToUse := ""
-
+ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile := ""
 ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile := ""
 if (Instr(jsCode, "showCustomMessageBox(")) or (Instr(jsCode, "showCustomMessageBox ("))
 {
@@ -9684,6 +10675,85 @@ if (Instr(jsCode, "getDataFromJSON(")) or (Instr(jsCode, "getDataFromJSON ("))
 {
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_getDataFromJSON . "`n"
 }
+if (Instr(jsCode, "createCheckbox(")) or (Instr(jsCode, "createCheckbox ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_createCheckbox . "`n"
+}
+if (Instr(jsCode, "createCustomIframe(")) or (Instr(jsCode, "createCustomIframe ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_createCustomIframe . "`n"
+}
+if (Instr(jsCode, "StrSplit(")) or (Instr(jsCode, "StrSplit ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_StrSplit . "`n"
+}
+if (Instr(jsCode, "RegExReplace(")) or (Instr(jsCode, "RegExReplace ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_RegExReplace . "`n"
+}
+if (Instr(jsCode, "runHTML(")) or (Instr(jsCode, "runHTML ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_runHTML . "`n"
+}
+if (Instr(jsCode, "AddIDE(")) or (Instr(jsCode, "AddIDE ("))
+{
+ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile =
+(
+
+<!-- Include Ace Editor CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ace.js" integrity="sha512-JLIRlxWh96sND3uUgI2RVHZJpgkWHg3+xoUY8XkgTPKpqRaqdk7zD/ck/XHXFSMW84o6GrP67dlqN3b98NB/yA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+)
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_AddIDE1 . "`n" . addFuncIfWeUseIt_AddIDE2 . "`n"
+}
+regularOrBrythonBodyINNIT := "<body>"
+if (Instr(jsCode, "runPyCode(")) or (Instr(jsCode, "runPyCode ("))
+{
+ifWeUseBrythonWeWillAddTheLinkInTheHTMLfile =
+(
+
+        <script src="https://cdn.jsdelivr.net/npm/brython@3.10.5/brython.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/brython@3.10.5/brython_stdlib.js"></script>
+
+)
+
+regularOrBrythonBodyINNIT =
+(
+    <body onload="brython()">
+        <script type="text/python">
+            import io
+            import sys
+            from browser import document, window
+
+            def runPythonCode(code):
+                try:
+                    # Redirect stdout to capture output
+                    sys.stdout = io.StringIO()
+                    exec(code)
+                    # Get the captured output
+                    output = sys.stdout.getvalue()
+                    # Reset stdout
+                    sys.stdout = sys.__stdout__
+                    return output
+                except Exception as e:
+                    return f"Error: {str(e)}"
+
+            # Expose the runPythonCode function to the browser's window object
+            window.runPythonCode = runPythonCode
+        </script>
+
+
+
+)
+
+allFuncThatWeNeedToUse .= addFuncIfWeUseIt_runPyCode . "`n"
+}
+    allFuncThatWeNeedToUseOnMouseHold := ""
+if (Instr(jsCode, "OnMouseHold(")) or (Instr(jsCode, "OnMouseHold ("))
+{
+    allFuncThatWeNeedToUseOnMouseHold := addFuncIfWeUseIt_OnMouseHold . "`n"
+}
 
 
 addFuncIfWeUseIt_AllCanvasFunctions =
@@ -9769,8 +10839,13 @@ upCode1 =
       }
     </style>
     %ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile%
+
+    %ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile%
+
+    %ifWeUseBrythonWeWillAddTheLinkInTheHTMLfile%
+
   </head>
-  <body>
+  %regularOrBrythonBodyINNIT%
     <script>
 
       %TextData%
@@ -9817,6 +10892,8 @@ upCode2 =
       // Single async function to structure the entire script
       async function runScript() {
         // Declare and assign a variable
+
+        %allFuncThatWeNeedToUseOnMouseHold%
 
 )
 
