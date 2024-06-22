@@ -3086,7 +3086,7 @@ StoreLocally(action, key, value)
 #### Example Usage:
 
 ```ahk
-; Check if the local storage is empty
+; Check if the local storage is not empty
 if !(StoreLocally("e"))
 {
     ; Retrieve data from the "var1" key and increment it
