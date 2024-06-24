@@ -9493,30 +9493,81 @@ addFuncIfWeUseIt_SoundPlay =
 addFuncIfWeUseIt_StoreLocally =
 (
 
-      function StoreLocally(operation, saveLocation, data) {
-        if (operation === "s") {
-          // Save data to local storage under specified saveLocation
-          localStorage.setItem(saveLocation, String(data));
-          return true; // Indicate success
-        } else if (operation === "d") {
-          // Delete data from local storage under specified saveLocation
-          localStorage.removeItem(saveLocation);
-          return true; // Indicate success
-        } else if (operation === "r") {
-          // Retrieve data from local storage under specified saveLocation
-          return localStorage.getItem(saveLocation) || null; // Return stored data or null if not found
-        } else if (operation === "dALL") {
-          // Delete all data from local storage (clear all keys)
-          localStorage.clear();
-          return true; // Indicate success
-        } else if (operation === "e") {
-          // Check if local storage is empty (no keys present)
-          return localStorage.length === 0; // Return true if empty, false if not empty
-        } else {
-          console.error("Invalid operation specified.");
-          return false; // Indicate failure
+// Define the StoreLocally function with embedded getLocalStorageUsagePercentage logic
+function StoreLocally(operation, saveLocation, data) {
+    if (operation === "s") {
+        // Save data to local storage under specified saveLocation
+        localStorage.setItem(saveLocation, String(data));
+        return true; // Indicate success
+    } else if (operation === "d") {
+        // Delete data from local storage under specified saveLocation
+        localStorage.removeItem(saveLocation);
+        return true; // Indicate success
+    } else if (operation === "r") {
+        // Retrieve data from local storage under specified saveLocation
+        return localStorage.getItem(saveLocation) || null; // Return stored data or null if not found
+    } else if (operation === "dALL") {
+        // Delete all data from local storage (clear all keys)
+        localStorage.clear();
+        return true; // Indicate success
+    } else if (operation === "e") {
+        // Check if local storage is empty (no keys present)
+        return localStorage.length === 0; // Return true if empty, false if not empty
+    } else if (operation === "u") {
+        // Embed the logic of getLocalStorageUsagePercentage function
+
+        var store = localStorage;
+        var testKey = "$_test";
+
+        // Function to test storage capacity
+        function testCapacity(size) {
+            try {
+                store.setItem(testKey, new Array(size + 1).join('0'));
+                store.removeItem(testKey);
+                return true;
+            } catch (ex) {
+                return false;
+            }
         }
-      }
+
+        // Binary search to find maximum size
+        var low = 0,
+            high = 1,
+            upperLimit = (1024 * 1024 * 1024) / 2; // Default upper limit (1 GB)
+
+        while (testCapacity(high) && high < upperLimit) {
+            low = high;
+            high *= 2;
+        }
+
+        // Refine the estimate using binary search
+        var precision = 8; // Number of iterations for precision
+        while (precision--) {
+            var mid = (low + high) / 2;
+            if (testCapacity(mid)) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+
+        var totalBytes = Math.ceil(high) * 2; // Total storage limit in bytes
+
+        // Calculate used storage size directly
+        var usedBytes = Object.keys(store).reduce(function(total, key) {
+            return total + key.length + store[key].length * 2;
+        }, 0);
+
+        // Calculate percentage used
+        var usedPercentage = (usedBytes / totalBytes) * 100;
+        usedPercentage = usedPercentage.toFixed(2); // Round to 2 decimal places
+
+        return usedPercentage;
+    } else {
+        console.error("Invalid operation specified.");
+        return false; // Indicate failure
+    }
+}
 
 )
 
