@@ -672,7 +672,7 @@ weUseCnanvasAtALLEver := 0
 libNum := 0
 isFullScrenOnce := 0
 
-filenameOfHTH := "HTH2"
+filenameOfHTH := "HTH"
 TextData := ""
 out := ""
 base64ImageData := ""
@@ -817,7 +817,7 @@ varOutJsCanvasFixTranspernat := ""
 
 
 
-functionNames := "eval|str|showCustomMessageBox|BuildInVars|MakeHotKey|Abs|ACos|ASin|ATan|Ceil|Cos|Exp|Floor|Ln|Log|Round|Sin|Sqrt|Tan|Chr|sleep|InStr|RegExMatch|StrLen|getRandomNumber|SubStr|Trim|ParseInt|StrReplace|Mod|Asc|StringTrimLeft|StringTrimRight|isMobileDevice|SetTimer|GuiControl|getDataFromEndpoint|FileAppend|isConnectedToBackend|MouseGetPos|SoundPlay|StoreLocally|createToggleSwitch|getUrlParams|reloadWithParams|PlayVideoFromBase64|PlayVideoFromUrl|PlayYoutubeVid|changeFavicon|OnKeyPress|GetKeyState|createCustomDropdown|StrLower|getDataFromAPI|getDataFromJSON|createCheckbox|createCustomIframe|StrSplit|RegExReplace|AddIDE|runPyCode"
+functionNames := "eval|str|showCustomMessageBox|BuildInVars|MakeHotKey|Abs|ACos|ASin|ATan|Ceil|Cos|Exp|Floor|Ln|Log|Round|Sin|Sqrt|Tan|Chr|sleep|InStr|RegExMatch|StrLen|getRandomNumber|SubStr|Trim|ParseInt|StrReplace|Mod|Asc|StringTrimLeft|StringTrimRight|isMobileDevice|SetTimer|GuiControl|getDataFromEndpoint|FileAppend|isConnectedToBackend|MouseGetPos|SoundPlay|StoreLocally|createToggleSwitch|getUrlParams|reloadWithParams|PlayVideoFromBase64|PlayVideoFromUrl|PlayYoutubeVid|changeFavicon|OnKeyPress|GetKeyState|createCustomDropdown|StrLower|getDataFromAPI|getDataFromJSON|createCheckbox|createCustomIframe|StrSplit|RegExReplace|AddIDE|runPyCode|SortLikeAHK"
 
 
 
@@ -945,6 +945,42 @@ out := "console.log(" . OUTvarMsgLow . ")"
 
 lineDone := 1
 jsCode .= out . "`n"
+}
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 6) = "sort, ")
+{
+StringTrimLeft, str1, A_LoopField, 6
+
+str1 := Trim(str1)
+weHaveAcommaFixSortCommand := 0
+if (SubStr(str1, 0) = Chr(44))
+{
+;MsgBox, comma YES
+StringTrimRight, str1, str1, 1
+weHaveAcommaFixSortCommand := 1
+}
+else
+{
+;MsgBox, comma NO
+gg := 0
+}
+
+s := StrSplit(str1, ",", 1)
+out1 := Trim(s)
+
+s := StrSplit(str1, ",", 2)
+out2 := Trim(s)
+
+if (weHaveAcommaFixSortCommand = 1)
+{
+out2 := out2 . Chr(44)
+}
+
+
+var1 := "variables." . out1 . " = SortLikeAHK(variables." . out1 . ", " . Chr(34) . out2 . Chr(34) . ")"
+lineDone := 1
+jsCode .= var1 . "`n"
+
+
 }
 else if (SubStr(Trim(StrLower(A_LoopField)), 1, 5) = StrLower("Gui, ")) or (SubStr(Trim(StrLower(A_LoopField)), 1, 4) = StrLower("Gui "))
 {
@@ -5884,6 +5920,10 @@ addFuncIfWeUseIt_LoopParseFunc := "`nfunction LoopParseFunc(varString, delimiter
 
 addFuncIfWeUseIt_runHTML := "`n`n      function runHTML(parent, id, scale, leftPos, topPos, width, height, HTMLcode) {`n        // Calculate the scale based on the actual width and height of the iframe`n        const scaleX = width / window.innerWidth;`n        const scaleY = height / window.innerHeight;`n        const scaleFactor = Math.min(scaleX, scaleY);`n`n        // Calculate the scaled width and height to maintain aspect ratio`n        const scaledWidth = Math.floor(window.innerWidth * scaleFactor);`n        const scaledHeight = Math.floor(window.innerHeight * scaleFactor);`n`n        // Calculate offsets to center the content`n        const offsetX = Math.floor((width - scaledWidth) / 2);`n        const offsetY = Math.floor((height - scaledHeight) / 2);`n`n        // Create iframe element`n        let iframeElement = document.createElement(" . Chr(34) . "iframe" . Chr(34) . ");`n`n        // Set attributes`n        iframeElement.id = id;`n        iframeElement.style.position = " . Chr(34) . "absolute" . Chr(34) . ";`n        iframeElement.style.left = leftPos + offsetX + " . Chr(34) . "px" . Chr(34) . ";`n        iframeElement.style.top = topPos + offsetY + " . Chr(34) . "px" . Chr(34) . ";`n        iframeElement.style.width = window.innerWidth + " . Chr(34) . "px" . Chr(34) . "; // Set the iframe's viewport width`n        iframeElement.style.height = window.innerHeight + " . Chr(34) . "px" . Chr(34) . "; // Set the iframe's viewport height`n        iframeElement.style.transformOrigin = " . Chr(34) . "top left" . Chr(34) . ";`n        iframeElement.style.transform = " . Chr(96) . "scale(${scaleFactor})" . Chr(96) . ";`n`n        // Set srcdoc attribute to load content`n        iframeElement.srcdoc = HTMLcode;`n`n        // Append iframe to parent element`n        parent.appendChild(iframeElement);`n      }`n`n"
 
+
+addFuncIfWeUseIt_SortLikeAHK := "`nfunction SortLikeAHK(varName, options = " . Chr(34) . "" . Chr(34) . ") {`n    let delimiter = '" . Chr(92) . "n'; // Default delimiter`n    let delimiterIndex = options.indexOf('D');`n`n    if (delimiterIndex !== -1) {`n        let delimiterChar = options[delimiterIndex + 1];`n        delimiter = delimiterChar === '' ? ',' : delimiterChar;`n    }`n`n    let items = varName.split(new RegExp(delimiter === ',' ? ',' : '" . Chr(92) . "" . Chr(92) . "' + delimiter));`n`n    // Remove empty items and trim whitespace`n    items = items.filter(item => item.trim() !== '');`n`n    // Apply sorting based on options`n    if (options.includes('N')) {`n        // Numeric sort`n        items.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));`n    } else if (options.includes('Random')) {`n        // Random sort`n        for (let i = items.length - 1; i > 0; i--) {`n            const j = Math.floor(Math.random() * (i + 1));`n            [items[i], items[j]] = [items[j], items[i]];`n        }`n    } else {`n        // Default alphabetical sort`n        items.sort((a, b) => {`n            const keyA = options.includes('C') ? a : a.toLowerCase();`n            const keyB = options.includes('C') ? b : b.toLowerCase();`n            if (keyA < keyB) return -1;`n            if (keyA > keyB) return 1;`n            return 0;`n        });`n    }`n`n    // Reverse if 'R' option is present`n    if (options.includes('R')) {`n        items.reverse();`n    }`n`n    // Remove duplicates if 'U' option is present`n    if (options.includes('U')) {`n        const seen = new Map();`n        items = items.filter(item => {`n            const key = options.includes('C') ? item : item.toLowerCase();`n            if (!seen.has(key)) {`n                seen.set(key, item);`n                return true;`n            }`n            return false;`n        });`n    }`n`n    // Join the sorted items back into a string`n    const sortedVar = items.join(delimiter === ',' ? ',' : '" . Chr(92) . "n');`n`n    return sortedVar;`n}`n"
+
+
 allFuncThatWeNeedToUse := ""
 ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile := ""
 ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile := ""
@@ -6124,7 +6164,10 @@ if (InStr(jsCode, "runHTML(")) or (InStr(jsCode, "runHTML ("))
 {
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_runHTML . "`n"
 }
-
+if (InStr(jsCode, "SortLikeAHK(")) or (InStr(jsCode, "SortLikeAHK ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_SortLikeAHK . "`n"
+}
 
 
 if (InStr(jsCode, "AddIDE(")) or (InStr(jsCode, "AddIDE ("))

@@ -772,6 +772,41 @@ jsCode .= var1 . "`n"
 
 
 }
+else if (SubStr(Trim(StrLower(A_LoopField)), 1, 6) = StrLower("Sort, "))
+{
+StringTrimLeft, str1, A_LoopField, 6
+
+str1 := Trim(str1)
+weHaveAcommaFixSortCommand := 0
+if (SubStr(str1, 0) = Chr(44))
+{
+;MsgBox, comma YES
+StringTrimRight, str1, str1, 1
+weHaveAcommaFixSortCommand := 1
+}
+else
+{
+;MsgBox, comma NO
+}
+
+s := StrSplit(str1, ",").1
+out1 := Trim(s)
+
+s := StrSplit(str1, ",").2
+out2 := Trim(s)
+
+if (weHaveAcommaFixSortCommand = 1)
+{
+out2 := out2 . Chr(44)
+}
+
+
+var1 := "variables." . out1 . " = SortLikeAHK(variables." . out1 . ", " . Chr(34) . out2 . Chr(34) . ")"
+lineDone := 1
+jsCode .= var1 . "`n"
+
+
+}
 else if (SubStr(Trim(StrLower(A_LoopField)), 1, 13) = StrLower("MouseGetPos, "))
 {
 
@@ -10456,6 +10491,71 @@ addFuncIfWeUseIt_runHTML =
 )
 
 
+addFuncIfWeUseIt_SortLikeAHK =
+(
+
+function sortVar(varName, options = "") {
+    let delimiter = '\n'; // Default delimiter
+    let delimiterIndex = options.indexOf('D');
+
+    if (delimiterIndex !== -1) {
+        let delimiterChar = options[delimiterIndex + 1];
+        delimiter = delimiterChar === '' ? ',' : delimiterChar;
+    }
+
+    let items = varName.split(new RegExp(delimiter === ',' ? ',' : '\\' + delimiter));
+
+    // Remove empty items and trim whitespace
+    items = items.filter(item => item.trim() !== '');
+
+    // Apply sorting based on options
+    if (options.includes('N')) {
+        // Numeric sort
+        items.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+    } else if (options.includes('Random')) {
+        // Random sort
+        for (let i = items.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [items[i], items[j]] = [items[j], items[i]];
+        }
+    } else {
+        // Default alphabetical sort
+        items.sort((a, b) => {
+            const keyA = options.includes('C') ? a : a.toLowerCase();
+            const keyB = options.includes('C') ? b : b.toLowerCase();
+            if (keyA < keyB) return -1;
+            if (keyA > keyB) return 1;
+            return 0;
+        });
+    }
+
+    // Reverse if 'R' option is present
+    if (options.includes('R')) {
+        items.reverse();
+    }
+
+    // Remove duplicates if 'U' option is present
+    if (options.includes('U')) {
+        const seen = new Map();
+        items = items.filter(item => {
+            const key = options.includes('C') ? item : item.toLowerCase();
+            if (!seen.has(key)) {
+                seen.set(key, item);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    // Join the sorted items back into a string
+    const sortedVar = items.join(delimiter === ',' ? ',' : '\n');
+
+    return sortedVar;
+}
+
+)
+
+
 allFuncThatWeNeedToUse := ""
 ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile := ""
 ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile := ""
@@ -10694,6 +10794,10 @@ if (Instr(jsCode, "RegExReplace(")) or (Instr(jsCode, "RegExReplace ("))
 if (Instr(jsCode, "runHTML(")) or (Instr(jsCode, "runHTML ("))
 {
     allFuncThatWeNeedToUse .= addFuncIfWeUseIt_runHTML . "`n"
+}
+if (Instr(jsCode, "SortLikeAHK(")) or (Instr(jsCode, "SortLikeAHK ("))
+{
+    allFuncThatWeNeedToUse .= addFuncIfWeUseIt_SortLikeAHK . "`n"
 }
 if (Instr(jsCode, "AddIDE(")) or (Instr(jsCode, "AddIDE ("))
 {

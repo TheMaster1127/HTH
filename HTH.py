@@ -103,18 +103,16 @@ import os
 def FileRead(path):
     # Remove any extra double quotes around the path
     path = path.strip('"')
-    
     # Ensure the path is absolute
     if not os.path.isabs(path):
         path = os.path.join(os.getcwd(), path)
-    
     try:
-        with open(path, 'r') as file:
+        with open(path, 'r', encoding='utf-8', errors='ignore') as file:
             content = file.read()
         return content
     except FileNotFoundError:
         return ''
-    except Exception:
+    except Exception as e:
         return None
 import os
 def FileAppend(content, path):
@@ -124,12 +122,10 @@ def FileAppend(content, path):
     if not os.path.isabs(path):
         path = os.path.join(os.getcwd(), path)
     try:
-        with open(path, 'a') as file:  # 'a' mode for append
+        with open(path, 'a', encoding='utf-8') as file:  # 'a' mode for append
             file.write(content)
         return True
     except Exception as e:
-        print(f"Exception: An error occurred while appending to the file at: {path}")
-        print(f"Exception details: {e}")
         return False
 import os
 def FileDelete(path):
@@ -406,6 +402,23 @@ def transpileLowVariables(sstr):
         return variables['sstr']
     variables['outOftranspileVariablesOut'] = variables['outOftranspileVariablesOut']  +  Chr(34)
     return variables['outOftranspileVariablesOut']
+def ExtractFileNameWithoutExtension(path):
+    variables['path'] = path
+    if (InStr(variables['path'] , Chr(47))):
+        items = LoopParseFunc(variables['path'], "/")
+        for A_Index19, A_LoopField19 in enumerate(items, start=1):
+            variables['A_Index19'] = A_Index19
+            variables['A_LoopField19'] = A_LoopField19
+            variables['lastFileName'] = variables['A_LoopField19']
+        variables['lastFileName'] = StringTrimRight(variables['lastFileName'], 4)
+    if (InStr(variables['path'] , Chr(92))):
+        items = LoopParseFunc(variables['path'], Chr(92))
+        for A_Index20, A_LoopField20 in enumerate(items, start=1):
+            variables['A_Index20'] = A_Index20
+            variables['A_LoopField20'] = A_LoopField20
+            variables['lastFileName'] = variables['A_LoopField20']
+        variables['lastFileName'] = StringTrimRight(variables['lastFileName'], 4)
+    return variables['lastFileName']
 def Ascc(string):
     variables['string'] = string
     variables['plusOffsetLowercase'] = 96
@@ -413,35 +426,35 @@ def Ascc(string):
     variables['lowerCaseLetters'] = "abcdefghijklmnopqrstuvwxyz"
     variables['uperCaseLetters'] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     items = LoopParseFunc(variables['lowerCaseLetters'])
-    for A_Index19, A_LoopField19 in enumerate(items, start=1):
-        variables['A_Index19'] = A_Index19
-        variables['A_LoopField19'] = A_LoopField19
-        if (variables['A_LoopField19'] == variables['string']):
-            return variables['A_Index19'] + variables['plusOffsetLowercase']
+    for A_Index21, A_LoopField21 in enumerate(items, start=1):
+        variables['A_Index21'] = A_Index21
+        variables['A_LoopField21'] = A_LoopField21
+        if (variables['A_LoopField21'] == variables['string']):
+            return variables['A_Index21'] + variables['plusOffsetLowercase']
     items = LoopParseFunc(variables['uperCaseLetters'])
-    for A_Index20, A_LoopField20 in enumerate(items, start=1):
-        variables['A_Index20'] = A_Index20
-        variables['A_LoopField20'] = A_LoopField20
-        if (variables['A_LoopField20'] == variables['string']):
-            return variables['A_Index20'] + variables['plusOffsetUpercase']
+    for A_Index22, A_LoopField22 in enumerate(items, start=1):
+        variables['A_Index22'] = A_Index22
+        variables['A_LoopField22'] = A_LoopField22
+        if (variables['A_LoopField22'] == variables['string']):
+            return variables['A_Index22'] + variables['plusOffsetUpercase']
     return 32
 def TitleCaseString(string):
     variables['string'] = string
     variables['text'] = StrLower(variables['string'])
     variables['out'] = ""
     items = LoopParseFunc(variables['text'], "\n", "\r")
-    for A_Index21, A_LoopField21 in enumerate(items, start=1):
-        variables['A_Index21'] = A_Index21
-        variables['A_LoopField21'] = A_LoopField21
+    for A_Index23, A_LoopField23 in enumerate(items, start=1):
+        variables['A_Index23'] = A_Index23
+        variables['A_LoopField23'] = A_LoopField23
         variables['out1'] = ""
-        items = LoopParseFunc(variables['A_LoopField21'])
-        for A_Index22, A_LoopField22 in enumerate(items, start=1):
-            variables['A_Index22'] = A_Index22
-            variables['A_LoopField22'] = A_LoopField22
-            if (variables['A_Index22'] == 1):
-                variables['out1'] += Chr(Ascc(variables['A_LoopField22'])- 32)
+        items = LoopParseFunc(variables['A_LoopField23'])
+        for A_Index24, A_LoopField24 in enumerate(items, start=1):
+            variables['A_Index24'] = A_Index24
+            variables['A_LoopField24'] = A_LoopField24
+            if (variables['A_Index24'] == 1):
+                variables['out1'] += Chr(Ascc(variables['A_LoopField24'])- 32)
             else:
-                variables['out1'] += variables['A_LoopField22']
+                variables['out1'] += variables['A_LoopField24']
         variables['out'] += variables['out1']  +  " "
     variables['out'] = StringTrimRight(variables['out'], 1)
     return variables['out']
@@ -451,16 +464,16 @@ def CountCommasWithoutBacktick(s):
     variables['howManyCommasWhitBacktickAtTheBegining'] = 0
     variables['AIndex'] = 0
     items = LoopParseFunc(variables['s'], " ")
-    for A_Index23, A_LoopField23 in enumerate(items, start=1):
-        variables['A_Index23'] = A_Index23
-        variables['A_LoopField23'] = A_LoopField23
-        if (InStr(variables['A_LoopField23'] , ",")) and( not (InStr(variables['A_LoopField23'] , variables['bbbackitck']  +  ","))):
+    for A_Index25, A_LoopField25 in enumerate(items, start=1):
+        variables['A_Index25'] = A_Index25
+        variables['A_LoopField25'] = A_LoopField25
+        if (InStr(variables['A_LoopField25'] , ",")) and( not (InStr(variables['A_LoopField25'] , variables['bbbackitck']  +  ","))):
             variables['AIndex'] += 1
-            #~ MsgBox, %A_LoopField23%
+            #~ MsgBox, %A_LoopField25%
             #~ MsgBox, AIndex %AIndex%
         #~ MsgBox, % bbbackitck . ","
-        #~ MsgBox, % A_LoopField23
-        if (InStr(variables['A_LoopField23'] , variables['bbbackitck']  +  ",")):
+        #~ MsgBox, % A_LoopField25
+        if (InStr(variables['A_LoopField25'] , variables['bbbackitck']  +  ",")):
             variables['howManyCommasWhitBacktickAtTheBegining'] += 1
             #MsgBox, % howManyCommasWhitBacktickAtTheBegining
     if (variables['AIndex'] >= 3):
@@ -470,15 +483,15 @@ def CountCommasWithoutBacktick(s):
 def compiler():
     variables['params'] = GetParams()
     items = LoopParseFunc(variables['params'], "\n", "\r")
-    for A_Index24, A_LoopField24 in enumerate(items, start=1):
-        variables['A_Index24'] = A_Index24
-        variables['A_LoopField24'] = A_LoopField24
-        if (variables['A_Index24'] == 1):
-            #MsgBox, % A_LoopField24
-            variables['filePathOfCode'] = variables['A_LoopField24']
+    for A_Index26, A_LoopField26 in enumerate(items, start=1):
+        variables['A_Index26'] = A_Index26
+        variables['A_LoopField26'] = A_LoopField26
+        if (variables['A_Index26'] == 1):
+            #MsgBox, % A_LoopField26
+            variables['filePathOfCode'] = variables['A_LoopField26']
             variables['AHKcode'] = FileRead(variables['filePathOfCode'])
-        if (variables['A_Index24'] == 2):
-            print(variables['A_LoopField24'])
+        if (variables['A_Index26'] == 2):
+            print(variables['A_LoopField26'])
     variables['jsCodeGui'] = ""
     variables['base64soundList'] = ""
     variables['base64soundNum'] = 0
@@ -502,7 +515,7 @@ def compiler():
     variables['weUseCnanvasAtALLEver'] = 0
     variables['libNum'] = 0
     variables['isFullScrenOnce'] = 0
-    variables['filenameOfHTH'] = "HTH2"
+    variables['filenameOfHTH'] = ExtractFileNameWithoutExtension(variables['filePathOfCode'])
     variables['TextData'] = ""
     variables['out'] = ""
     variables['base64ImageData'] = ""
@@ -531,42 +544,42 @@ def compiler():
         variables['AHKcode'] = "OutputDebug, no code"
     variables['AHKcode'] = StrReplace(variables['AHKcode'] , Chr(13), "")
     items = LoopParseFunc(variables['AHKcode'], "\n", "\r")
-    for A_Index25, A_LoopField25 in enumerate(items, start=1):
-        variables['A_Index25'] = A_Index25
-        variables['A_LoopField25'] = A_LoopField25
-        variables['outAHKCodeTrimed'] += Trim(variables['A_LoopField25']) +  "\n"
+    for A_Index27, A_LoopField27 in enumerate(items, start=1):
+        variables['A_Index27'] = A_Index27
+        variables['A_LoopField27'] = A_LoopField27
+        variables['outAHKCodeTrimed'] += Trim(variables['A_LoopField27']) +  "\n"
     variables['AHKcode'] = StringTrimRight(variables['outAHKCodeTrimed'], 1)
     variables['AHKcodeOUT754754'] = ""
     variables['areWEinSome34sNum'] = 0
     variables['theIdNumOfThe34'] = 0
     items = LoopParseFunc(variables['AHKcode'])
-    for A_Index26, A_LoopField26 in enumerate(items, start=1):
-        variables['A_Index26'] = A_Index26
-        variables['A_LoopField26'] = A_LoopField26
-        variables[f'theIdNumOfThe34theVar{variables["A_Index26"]}'] = Chr(34)
+    for A_Index28, A_LoopField28 in enumerate(items, start=1):
+        variables['A_Index28'] = A_Index28
+        variables['A_LoopField28'] = A_LoopField28
+        variables[f'theIdNumOfThe34theVar{variables["A_Index28"]}'] = Chr(34)
     items = LoopParseFunc(variables['AHKcode'])
-    for A_Index27, A_LoopField27 in enumerate(items, start=1):
-        variables['A_Index27'] = A_Index27
-        variables['A_LoopField27'] = A_LoopField27
-        if (variables['A_LoopField27'] == Chr(34)):
+    for A_Index29, A_LoopField29 in enumerate(items, start=1):
+        variables['A_Index29'] = A_Index29
+        variables['A_LoopField29'] = A_LoopField29
+        if (variables['A_LoopField29'] == Chr(34)):
             variables['areWEinSome34sNum'] += 1
         if (variables['areWEinSome34sNum'] == 1):
-            if (variables['A_LoopField27']  != Chr(34)):
-                if (variables['A_LoopField27'] == Chr(96)):
+            if (variables['A_LoopField29']  != Chr(34)):
+                if (variables['A_LoopField29'] == Chr(96)):
                     variables[f'theIdNumOfThe34theVar{variables["theIdNumOfThe34"]}'] += Chr(92)
                 else:
-                    variables[f'theIdNumOfThe34theVar{variables["theIdNumOfThe34"]}'] += variables['A_LoopField27']
+                    variables[f'theIdNumOfThe34theVar{variables["theIdNumOfThe34"]}'] += variables['A_LoopField29']
             else:
                 variables['theIdNumOfThe34'] += 1
                 variables['AHKcodeOUT754754'] += "ihuiuuhuuhtheidFor--asas-theuhturtyphoutr-"  +  Chr(65) +  Chr(65) +  str(variables['theIdNumOfThe34']) +  Chr(65) +  Chr(65)
         if (variables['areWEinSome34sNum'] == 2)or(variables['areWEinSome34sNum'] == 0):
-            if (variables['A_LoopField27']  != Chr(34)):
-                variables['AHKcodeOUT754754'] += variables['A_LoopField27']
+            if (variables['A_LoopField29']  != Chr(34)):
+                variables['AHKcodeOUT754754'] += variables['A_LoopField29']
             variables['areWEinSome34sNum'] = 0
     variables['AHKcode'] = variables['AHKcodeOUT754754']
-    for A_Index28 in range(1, variables['theIdNumOfThe34'] + 1):
-        variables['A_Index28'] = A_Index28
-        variables[f'theIdNumOfThe34theVar{variables["A_Index28"]}'] += Chr(34)
+    for A_Index30 in range(1, variables['theIdNumOfThe34'] + 1):
+        variables['A_Index30'] = A_Index30
+        variables[f'theIdNumOfThe34theVar{variables["A_Index30"]}'] += Chr(34)
     variables['sstr23IfFuncInNAMEnum'] = 0
     variables['CheckIFandElsesss1'] = "if ("
     variables['CheckIFandElsesss2'] = "if("
@@ -602,36 +615,36 @@ def compiler():
     variables['theMainFuncDec'] = 0
     variables['upCode'] = ""
     variables['varOutJsCanvasFixTranspernat'] = ""
-    variables['functionNames'] = "eval|str|showCustomMessageBox|BuildInVars|MakeHotKey|Abs|ACos|ASin|ATan|Ceil|Cos|Exp|Floor|Ln|Log|Round|Sin|Sqrt|Tan|Chr|sleep|InStr|RegExMatch|StrLen|getRandomNumber|SubStr|Trim|ParseInt|StrReplace|Mod|Asc|StringTrimLeft|StringTrimRight|isMobileDevice|SetTimer|GuiControl|getDataFromEndpoint|FileAppend|isConnectedToBackend|MouseGetPos|SoundPlay|StoreLocally|createToggleSwitch|getUrlParams|reloadWithParams|PlayVideoFromBase64|PlayVideoFromUrl|PlayYoutubeVid|changeFavicon|OnKeyPress|GetKeyState|createCustomDropdown|StrLower|getDataFromAPI|getDataFromJSON|createCheckbox|createCustomIframe|StrSplit|RegExReplace|AddIDE|runPyCode"
+    variables['functionNames'] = "eval|str|showCustomMessageBox|BuildInVars|MakeHotKey|Abs|ACos|ASin|ATan|Ceil|Cos|Exp|Floor|Ln|Log|Round|Sin|Sqrt|Tan|Chr|sleep|InStr|RegExMatch|StrLen|getRandomNumber|SubStr|Trim|ParseInt|StrReplace|Mod|Asc|StringTrimLeft|StringTrimRight|isMobileDevice|SetTimer|GuiControl|getDataFromEndpoint|FileAppend|isConnectedToBackend|MouseGetPos|SoundPlay|StoreLocally|createToggleSwitch|getUrlParams|reloadWithParams|PlayVideoFromBase64|PlayVideoFromUrl|PlayYoutubeVid|changeFavicon|OnKeyPress|GetKeyState|createCustomDropdown|StrLower|getDataFromAPI|getDataFromJSON|createCheckbox|createCustomIframe|StrSplit|RegExReplace|AddIDE|runPyCode|SortLikeAHK"
     variables['awesdrtf'] = "|A"  +  Chr(95) +  "LoopField|A"  +  Chr(95) +  "Index"
     variables['willNextLineBeCurlyBracee'] = 0
     variables['theFuncWeFound'] = ""
     variables['theFuncWeFoundAllNames'] = ""
     variables['haveWeEverUsedAloop'] = 0
     items = LoopParseFunc(variables['AHKcode'], "\n", "\r")
-    for A_Index29, A_LoopField29 in enumerate(items, start=1):
-        variables['A_Index29'] = A_Index29
-        variables['A_LoopField29'] = A_LoopField29
+    for A_Index31, A_LoopField31 in enumerate(items, start=1):
+        variables['A_Index31'] = A_Index31
+        variables['A_LoopField31'] = A_LoopField31
         if (variables['willNextLineBeCurlyBracee'] == 1):
             # 123 is {
-            if (variables['A_LoopField29'] == Chr(123)):
+            if (variables['A_LoopField31'] == Chr(123)):
                 variables['willNextLineBeCurlyBracee'] = 0
                 variables['functionNames'] += "|"  +  variables['lastFuncName']
                 #lastFuncFullName
                 variables['theFuncWeFound'] += variables['lastFuncFullName']  +  "\n"
                 variables['theFuncWeFoundAllNames'] += variables['lastFuncName']  +  Chr(40) +  "\n"
-        if (SubStr(StrLower(variables['A_LoopField29']), 1 , 4)== variables['CheckIFandElsesss1'])or(SubStr(StrLower(variables['A_LoopField29']), 1 , 3)== variables['CheckIFandElsesss2'])or(SubStr(StrLower(variables['A_LoopField29']), 1 , 5)== variables['CheckIFandElsesss3'])or(SubStr(StrLower(variables['A_LoopField29']), 1 , 4)== variables['CheckIFandElsesss4'])or(SubStr(StrLower(variables['A_LoopField29']), 1 , 9)== variables['CheckIFandElsesss5'])or(SubStr(StrLower(variables['A_LoopField29']), 1 , 8)== variables['CheckIFandElsesss6'])or(SubStr(StrLower(variables['A_LoopField29']), 1 , 10)== variables['CheckIFandElsesss7'])or(SubStr(StrLower(variables['A_LoopField29']), 1 , 9)== variables['CheckIFandElsesss8'])or(SubStr(StrLower(variables['A_LoopField29']), 1 , 5)== "loop,"):
+        if (SubStr(StrLower(variables['A_LoopField31']), 1 , 4)== variables['CheckIFandElsesss1'])or(SubStr(StrLower(variables['A_LoopField31']), 1 , 3)== variables['CheckIFandElsesss2'])or(SubStr(StrLower(variables['A_LoopField31']), 1 , 5)== variables['CheckIFandElsesss3'])or(SubStr(StrLower(variables['A_LoopField31']), 1 , 4)== variables['CheckIFandElsesss4'])or(SubStr(StrLower(variables['A_LoopField31']), 1 , 9)== variables['CheckIFandElsesss5'])or(SubStr(StrLower(variables['A_LoopField31']), 1 , 8)== variables['CheckIFandElsesss6'])or(SubStr(StrLower(variables['A_LoopField31']), 1 , 10)== variables['CheckIFandElsesss7'])or(SubStr(StrLower(variables['A_LoopField31']), 1 , 9)== variables['CheckIFandElsesss8'])or(SubStr(StrLower(variables['A_LoopField31']), 1 , 5)== "loop,"):
             # not a func
             variables['willNextLineBeCurlyBracee'] = 0
-            #OutputDebug, %A_LoopField29%
+            #OutputDebug, %A_LoopField31%
         else:
-            #OutputDebug, ||%A_LoopField29%||
-            variables['sstrForCheckIfFunc'] = StrSplit(variables['A_LoopField29'] , Chr(40), 1)
+            #OutputDebug, ||%A_LoopField31%||
+            variables['sstrForCheckIfFunc'] = StrSplit(variables['A_LoopField31'] , Chr(40), 1)
             #OutputDebug, |%sstrForCheckIfFunc%|
-            if (funcToChecIfVaidNameForFunc(Trim(variables['sstrForCheckIfFunc'])))and(variables['sstrForCheckIfFunc']  != "")and(InStr(variables['A_LoopField29'] , Chr(40))):
+            if (funcToChecIfVaidNameForFunc(Trim(variables['sstrForCheckIfFunc'])))and(variables['sstrForCheckIfFunc']  != "")and(InStr(variables['A_LoopField31'] , Chr(40))):
                 variables['willNextLineBeCurlyBracee'] = 1
                 variables['lastFuncName'] = variables['sstrForCheckIfFunc']
-                variables['lastFuncFullName'] = variables['A_LoopField29']
+                variables['lastFuncFullName'] = variables['A_LoopField31']
                 #OutputDebug, %lastFuncFullName%
             else:
                 variables['willNextLineBeCurlyBracee'] = 0
@@ -646,43 +659,63 @@ def compiler():
     variables['jsCodeLoopfixa'] = ""
     variables['numAIndexfixFuncSyntaxBugFixNum'] = 0
     items = LoopParseFunc(variables['AHKcode'], "\n", "\r")
-    for A_Index30, A_LoopField30 in enumerate(items, start=1):
-        variables['A_Index30'] = A_Index30
-        variables['A_LoopField30'] = A_LoopField30
-        variables[f'fixFuncSyntaxBugFixNum{variables["A_Index30"]}'] = variables['A_LoopField30']
-        variables['numAIndexfixFuncSyntaxBugFixNum'] = variables['A_Index30']
+    for A_Index32, A_LoopField32 in enumerate(items, start=1):
+        variables['A_Index32'] = A_Index32
+        variables['A_LoopField32'] = A_LoopField32
+        variables[f'fixFuncSyntaxBugFixNum{variables["A_Index32"]}'] = variables['A_LoopField32']
+        variables['numAIndexfixFuncSyntaxBugFixNum'] = variables['A_Index32']
     variables['numAIndexfixFuncSyntaxBugFixNum'] += 1
     variables[f'fixFuncSyntaxBugFixNum{variables["numAIndexfixFuncSyntaxBugFixNum"]}'] = ""
     if (InStr(variables['AHKcode'] , "OnMouseClick:")):
         variables['AHKcodeOnMouseClickAdd'] = "\nAttw456543w45eqsubeotibebrawaaachingeventlistenertodocumentaddEventListeneThisfunnctionaftertouchends768ds798y9z7s7xcfy8s7d9fcx\n"
         variables['AHKcode'] = variables['AHKcodeOnMouseClickAdd']  +  "\n"  +  variables['AHKcode']  +  "\n"
     items = LoopParseFunc(variables['AHKcode'], "\n", "\r")
-    for A_Index31, A_LoopField31 in enumerate(items, start=1):
-        variables['A_Index31'] = A_Index31
-        variables['A_LoopField31'] = A_LoopField31
-        variables['out'] = variables['A_LoopField31']
+    for A_Index33, A_LoopField33 in enumerate(items, start=1):
+        variables['A_Index33'] = A_Index33
+        variables['A_LoopField33'] = A_LoopField33
+        variables['out'] = variables['A_LoopField33']
         if (SubStr(StrLower(variables['out']), 1 , 19)== StrLower("Gui, Add, Rectangle")) or(SubStr(StrLower(variables['out']), 1 , 16)== StrLower("Gui, Add, Circle")):
             variables['weUseCnanvasAtALL'] = 1
     items = LoopParseFunc(variables['AHKcode'], "\n", "\r")
-    for A_Index32, A_LoopField32 in enumerate(items, start=1):
-        variables['A_Index32'] = A_Index32
-        variables['A_LoopField32'] = A_LoopField32
+    for A_Index34, A_LoopField34 in enumerate(items, start=1):
+        variables['A_Index34'] = A_Index34
+        variables['A_LoopField34'] = A_LoopField34
         variables['lineDone'] = 0
-        if (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 15)== StrLower("OutputDebug, % ")):
-            variables['var1'] = StringTrimLeft(variables['A_LoopField32'], 14)
+        if (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 15)== StrLower("OutputDebug, % ")):
+            variables['var1'] = StringTrimLeft(variables['A_LoopField34'], 14)
             variables['var2'] = Trim(transpileVariables(variables['var1'] , variables['functionNames']))
             variables['out'] = "console.log("  +  variables['var2']  +  ")"
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 13)== StrLower("OutputDebug, ")) and(SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 15) != StrLower("OutputDebug, % ")):
-            variables['var1'] = StringTrimLeft(variables['A_LoopField32'], 12)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 13)== StrLower("OutputDebug, ")) and(SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 15) != StrLower("OutputDebug, % ")):
+            variables['var1'] = StringTrimLeft(variables['A_LoopField34'], 12)
             variables['OUTvarMsgLow'] = transpileLowVariables(variables['var1'])
             variables['out'] = "console.log("  +  variables['OUTvarMsgLow']  +  ")"
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 5)== StrLower("Gui, ")) or(SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 4)== StrLower("Gui ")):
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 6)== "sort, "):
+            variables['str1'] = StringTrimLeft(variables['A_LoopField34'], 6)
+            variables['str1'] = Trim(variables['str1'])
+            variables['weHaveAcommaFixSortCommand'] = 0
+            if (SubStr(variables['str1'] , 0)== Chr(44)):
+                #MsgBox, comma YES
+                variables['str1'] = StringTrimRight(variables['str1'], 1)
+                variables['weHaveAcommaFixSortCommand'] = 1
+            else:
+                #MsgBox, comma NO
+                variables['gg'] = 0
+            variables['s'] = StrSplit(variables['str1'] , "," , 1)
+            variables['out1'] = Trim(variables['s'])
+            variables['s'] = StrSplit(variables['str1'] , "," , 2)
+            variables['out2'] = Trim(variables['s'])
+            if (variables['weHaveAcommaFixSortCommand'] == 1):
+                variables['out2'] = variables['out2']  +  Chr(44)
+            variables['var1'] = "variables."  +  variables['out1']  +  " = SortLikeAHK(variables."  +  variables['out1']  +  ", "  +  Chr(34) +  variables['out2']  +  Chr(34) +  ")"
+            variables['lineDone'] = 1
+            variables['jsCode'] += variables['var1']  +  "\n"
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 5)== StrLower("Gui, ")) or(SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 4)== StrLower("Gui ")):
             variables['isFullScren'] = 0
-            variables['str1'] = variables['A_LoopField32']
+            variables['str1'] = variables['A_LoopField34']
             variables['gradient'] = StringTrimLeft(variables['str1'], 15)
             variables['str1'] = StrReplace(variables['str1'] , ": " , ", ")
             variables['s'] = StrSplit(variables['str1'] , "," , 1)
@@ -722,11 +755,11 @@ def compiler():
             if (variables['out2'] == "color"):
                 variables['guiColorShow'] = "linear-gradient(90deg, "  +  Chr(34) +  " + "  +  Chr(34) +  "#121212"  +  Chr(34) +  " + "  +  Chr(34) +  " 0"  +  Chr(37) +  ", "  +  Chr(34) +  " + "  +  Chr(34) +  "#121212"  +  Chr(34) +  " + "  +  Chr(34) +  " 100"  +  Chr(37) +  ")"
                 items = LoopParseFunc(variables['out3Good'], " ")
-                for A_Index33, A_LoopField33 in enumerate(items, start=1):
-                    variables['A_Index33'] = A_Index33
-                    variables['A_LoopField33'] = A_LoopField33
-                    if (SubStr(Trim(StrLower(variables['A_LoopField33'])) , 1 , 1)== StrLower("c")):
-                        variables['guiColorShow'] = Trim(variables['A_LoopField33'])
+                for A_Index35, A_LoopField35 in enumerate(items, start=1):
+                    variables['A_Index35'] = A_Index35
+                    variables['A_LoopField35'] = A_LoopField35
+                    if (SubStr(Trim(StrLower(variables['A_LoopField35'])) , 1 , 1)== StrLower("c")):
+                        variables['guiColorShow'] = Trim(variables['A_LoopField35'])
                         variables['guiColorShow'] = StringTrimLeft(variables['guiColorShow'], 1)
                         variables['var1'] = ""  +  Chr(34) +  " + "  +  Chr(34) +  "#"  +  variables['guiColorShow']  +  ""  +  Chr(34) +  " + "  +  Chr(34) +  ""
                         variables['guiColorShow'] = variables['var1']
@@ -737,7 +770,7 @@ def compiler():
                             #MsgBox, % out2
                             variables['var1'] = "linear-gradient(90deg, "  +  Chr(34) +  " + "  +  Chr(34) +  "#"  +  Chr(34) +  " + variables."  +  variables['out2']  +  " + "  +  Chr(34) +  ""  +  Chr(34) +  " + "  +  Chr(34) +  " 0"  +  Chr(37) +  ", "  +  Chr(34) +  " + "  +  Chr(34) +  "#"  +  Chr(34) +  " + variables."  +  variables['out2']  +  " + "  +  Chr(34) +  ""  +  Chr(34) +  " + "  +  Chr(34) +  " 100"  +  Chr(37) +  ")"
                             variables['guiColorShow'] = variables['var1']
-                    if (SubStr(Trim(StrLower(variables['A_LoopField33'])) , 1 , 3)== StrLower("gr-")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField35'])) , 1 , 3)== StrLower("gr-")):
                         variables['guiColorShow'] = variables['gradient']
                         #MsgBox, % linearGradient
                         if (InStr(variables['guiColorShow'] , "thisissemicolonattheendplaceokmansurebruh49475472472")):
@@ -751,11 +784,11 @@ def compiler():
                 #MsgBox, % guiColorShow
             if (variables['out2'] == "font"):
                 items = LoopParseFunc(variables['out3Good'], " ")
-                for A_Index34, A_LoopField34 in enumerate(items, start=1):
-                    variables['A_Index34'] = A_Index34
-                    variables['A_LoopField34'] = A_LoopField34
-                    if (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 1)== StrLower("s")):
-                        variables['guiFontShow'] = Trim(variables['A_LoopField34'])
+                for A_Index36, A_LoopField36 in enumerate(items, start=1):
+                    variables['A_Index36'] = A_Index36
+                    variables['A_LoopField36'] = A_LoopField36
+                    if (SubStr(Trim(StrLower(variables['A_LoopField36'])) , 1 , 1)== StrLower("s")):
+                        variables['guiFontShow'] = Trim(variables['A_LoopField36'])
                         variables['guiFontShow'] = StringTrimLeft(variables['guiFontShow'], 1)
                         if (InStr(variables['guiFontShow'] , "%")):
                             variables['str1'] = variables['guiFontShow']
@@ -763,8 +796,8 @@ def compiler():
                             variables['out2'] = variables['s']
                             variables['var1'] = ""  +  Chr(34) +  " + variables."  +  variables['out2']  +  " + "  +  Chr(34) +  ""
                             variables['guiFontShow'] = variables['var1']
-                    if (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 1)== StrLower("f")):
-                        variables['fontName'] = Trim(variables['A_LoopField34'])
+                    if (SubStr(Trim(StrLower(variables['A_LoopField36'])) , 1 , 1)== StrLower("f")):
+                        variables['fontName'] = Trim(variables['A_LoopField36'])
                         variables['fontName'] = StringTrimLeft(variables['fontName'], 1)
                         if (InStr(variables['fontName'] , "%")):
                             variables['str1'] = variables['fontName']
@@ -782,66 +815,66 @@ def compiler():
                     variables['guiOutOfTextH'] = 0
                     variables['guiOutOfTextV'] = 0
                     variables['guiOutOfTextG'] = 0
-                    for A_Index35 in range(1, 6 + 1):
-                        variables['A_Index35'] = A_Index35
-                        variables[f'guiOutOfText{variables["A_Index35"]}'] = ""
+                    for A_Index37 in range(1, 6 + 1):
+                        variables['A_Index37'] = A_Index37
+                        variables[f'guiOutOfText{variables["A_Index37"]}'] = ""
                     variables['guiOutOfText0'] = "black"
                     variables['dynamicGuiSet'] = 0
                     items = LoopParseFunc(variables['out4'], " ")
-                    for A_Index36, A_LoopField36 in enumerate(items, start=1):
-                        variables['A_Index36'] = A_Index36
-                        variables['A_LoopField36'] = A_LoopField36
-                        #MsgBox, |%A_LoopField36%|
+                    for A_Index38, A_LoopField38 in enumerate(items, start=1):
+                        variables['A_Index38'] = A_Index38
+                        variables['A_LoopField38'] = A_LoopField38
+                        #MsgBox, |%A_LoopField38%|
                         variables['guiOutOfTextNum'] += 1
-                        if (SubStr(Trim(StrLower(variables['A_LoopField36'])) , 1 , 1)== StrLower("c")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("c")):
                             variables['guiOutOfTextC'] = 1
-                            variables['guiOutOfText0'] = StrLower(variables['A_LoopField36'])
+                            variables['guiOutOfText0'] = StrLower(variables['A_LoopField38'])
                             if (InStr(variables['guiOutOfText0'] , "%")):
                                 variables['str1'] = variables['guiOutOfText0']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfText0'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfText0'] = StringTrimLeft(variables['guiOutOfText0'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField36'])) , 1 , 1)== StrLower("x")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("x")):
                             variables['guiOutOfTextX'] = 1
-                            variables['guiOutOfText1'] = variables['A_LoopField36']
+                            variables['guiOutOfText1'] = variables['A_LoopField38']
                             if (InStr(variables['guiOutOfText1'] , "%")):
                                 variables['str1'] = variables['guiOutOfText1']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfText1'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfText1'] = StringTrimLeft(variables['guiOutOfText1'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField36'])) , 1 , 1)== StrLower("y")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("y")):
                             variables['guiOutOfTextY'] = 1
-                            variables['guiOutOfText2'] = variables['A_LoopField36']
+                            variables['guiOutOfText2'] = variables['A_LoopField38']
                             if (InStr(variables['guiOutOfText2'] , "%")):
                                 variables['str1'] = variables['guiOutOfText2']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfText2'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfText2'] = StringTrimLeft(variables['guiOutOfText2'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField36'])) , 1 , 1)== StrLower("w")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("w")):
                             variables['guiOutOfTextW'] = 1
-                            variables['guiOutOfText3'] = variables['A_LoopField36']
+                            variables['guiOutOfText3'] = variables['A_LoopField38']
                             if (InStr(variables['guiOutOfText3'] , "%")):
                                 variables['str1'] = variables['guiOutOfText3']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfText3'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfText3'] = StringTrimLeft(variables['guiOutOfText3'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField36'])) , 1 , 1)== StrLower("h")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("h")):
                             variables['guiOutOfTextH'] = 1
-                            variables['guiOutOfText4'] = variables['A_LoopField36']
+                            variables['guiOutOfText4'] = variables['A_LoopField38']
                             if (InStr(variables['guiOutOfText4'] , "%")):
                                 variables['str1'] = variables['guiOutOfText4']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfText4'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfText4'] = StringTrimLeft(variables['guiOutOfText4'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField36'])) , 1 , 1)== StrLower("v")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("v")):
                             variables['guiOutOfTextV'] = 1
-                            variables['guiOutOfText5'] = variables['A_LoopField36']
-                            variables['guiOutOfText52'] = variables['A_LoopField36']
+                            variables['guiOutOfText5'] = variables['A_LoopField38']
+                            variables['guiOutOfText52'] = variables['A_LoopField38']
                             variables['dynamicGuiSet'] = 1
                             if (InStr(variables['guiOutOfText5'] , "%")):
                                 variables['str1'] = variables['guiOutOfText5']
@@ -851,9 +884,9 @@ def compiler():
                                 variables['guiOutOfText52'] = " "  +  Chr(34) +  " + [variables."  +  variables['var1']  +  "]"  +  " + "  +  ""  +  Chr(34) +  ""
                             variables['guiOutOfText5'] = StringTrimLeft(variables['guiOutOfText5'], 1)
                             variables['guiOutOfText52'] = StringTrimLeft(variables['guiOutOfText52'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField36'])) , 1 , 1)== StrLower("g")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("g")):
                             variables['guiOutOfTextG'] = 1
-                            variables['guiOutOfText6'] = variables['A_LoopField36']
+                            variables['guiOutOfText6'] = variables['A_LoopField38']
                             variables['guiOutOfText6'] = StringTrimLeft(variables['guiOutOfText6'], 1)
                     variables['NumOfTexts'] += 1
                     if (InStr(variables['out5'] , "%")):
@@ -900,18 +933,18 @@ def compiler():
                     variables['guiOutOfButtonV'] = 0
                     variables['guiOutOfButtonG'] = 0
                     variables['guiOutOfButtonC'] = 0
-                    for A_Index37 in range(1, 12 + 1):
-                        variables['A_Index37'] = A_Index37
-                        variables[f'guiOutOfButton{variables["A_Index37"]}'] = ""
+                    for A_Index39 in range(1, 12 + 1):
+                        variables['A_Index39'] = A_Index39
+                        variables[f'guiOutOfButton{variables["A_Index39"]}'] = ""
                     variables['dynamicGuiSet'] = 0
                     items = LoopParseFunc(variables['out4'], " ")
-                    for A_Index38, A_LoopField38 in enumerate(items, start=1):
-                        variables['A_Index38'] = A_Index38
-                        variables['A_LoopField38'] = A_LoopField38
-                        #MsgBox, |%A_LoopField38%|
+                    for A_Index40, A_LoopField40 in enumerate(items, start=1):
+                        variables['A_Index40'] = A_Index40
+                        variables['A_LoopField40'] = A_LoopField40
+                        #MsgBox, |%A_LoopField40%|
                         variables['guiOutOfButtonNum'] += 1
-                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("c")):
-                            variables['guiOutOfButton7'] = variables['A_LoopField38']
+                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("c")):
+                            variables['guiOutOfButton7'] = variables['A_LoopField40']
                             variables['guiOutOfButton7'] = StringTrimLeft(variables['guiOutOfButton7'], 1)
                             if (InStr(variables['guiOutOfButton7'] , "%")):
                                 variables['str1'] = variables['guiOutOfButton7']
@@ -920,16 +953,16 @@ def compiler():
                                 variables['guiOutOfButton7'] = "#"  +  Chr(34) +  " + variables."  +  variables['var1']  +  "//"
                             else:
                                 variables['guiOutOfButton7'] = "#"  +  variables['guiOutOfButton7']
-                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 3)== StrLower("gr-")):
-                            variables['guiOutOfButton11'] = variables['A_LoopField38']
+                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 3)== StrLower("gr-")):
+                            variables['guiOutOfButton11'] = variables['A_LoopField40']
                             variables['guiOutOfButton11'] = StringTrimLeft(variables['guiOutOfButton11'], 3)
                             if (InStr(variables['guiOutOfButton11'] , "%")):
                                 variables['str1'] = variables['guiOutOfButton11']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfButton11'] = ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  "//"
-                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("f")):
-                            variables['guiOutOfButton12'] = Trim(variables['A_LoopField38'])
+                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("f")):
+                            variables['guiOutOfButton12'] = Trim(variables['A_LoopField40'])
                             variables['guiOutOfButton12'] = StringTrimLeft(variables['guiOutOfButton12'], 1)
                             if (InStr(variables['guiOutOfButton12'] , "%")):
                                 variables['str1'] = variables['guiOutOfButton12']
@@ -937,8 +970,8 @@ def compiler():
                                 variables['out2'] = variables['s']
                                 variables['var1'] = ""  +  Chr(34) +  " + variables."  +  variables['out2']  +  " + "  +  Chr(34) +  ""
                                 variables['guiOutOfButton12'] = variables['var1']
-                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 2)== StrLower("bg")):
-                            variables['guiOutOfButton8'] = variables['A_LoopField38']
+                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 2)== StrLower("bg")):
+                            variables['guiOutOfButton8'] = variables['A_LoopField40']
                             variables['guiOutOfButton8'] = StringTrimLeft(variables['guiOutOfButton8'], 2)
                             if (InStr(variables['guiOutOfButton8'] , "%")):
                                 variables['str1'] = variables['guiOutOfButton8']
@@ -947,8 +980,8 @@ def compiler():
                                 variables['guiOutOfButton8'] = "#"  +  Chr(34) +  " + variables."  +  variables['var1']  +  "//"
                             else:
                                 variables['guiOutOfButton8'] = "#"  +  variables['guiOutOfButton8']
-                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("r")):
-                            variables['guiOutOfButton9'] = variables['A_LoopField38']
+                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("r")):
+                            variables['guiOutOfButton9'] = variables['A_LoopField40']
                             variables['guiOutOfButton9'] = StringTrimLeft(variables['guiOutOfButton9'], 1)
                             if (InStr(variables['guiOutOfButton9'] , "%")):
                                 variables['str1'] = variables['guiOutOfButton9']
@@ -957,8 +990,8 @@ def compiler():
                                 variables['guiOutOfButton9'] = ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  "px"
                             else:
                                 variables['guiOutOfButton9'] = variables['guiOutOfButton9']  +  "px"
-                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 7)== StrLower("-border")):
-                            variables['guiOutOfButton10'] = variables['A_LoopField38']
+                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 7)== StrLower("-border")):
+                            variables['guiOutOfButton10'] = variables['A_LoopField40']
                             variables['guiOutOfButton10'] = StringTrimLeft(variables['guiOutOfButton10'], 7)
                             variables['guiOutOfButton10'] = "none"
                             if (InStr(variables['guiOutOfButton10'] , "%")):
@@ -966,46 +999,46 @@ def compiler():
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfButton10'] = ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
-                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("x")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("x")):
                             variables['guiOutOfButtonX'] = 1
-                            variables['guiOutOfButton1'] = variables['A_LoopField38']
+                            variables['guiOutOfButton1'] = variables['A_LoopField40']
                             if (InStr(variables['guiOutOfButton1'] , "%")):
                                 variables['str1'] = variables['guiOutOfButton1']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfButton1'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfButton1'] = StringTrimLeft(variables['guiOutOfButton1'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("y")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("y")):
                             variables['guiOutOfButtonY'] = 1
-                            variables['guiOutOfButton2'] = variables['A_LoopField38']
+                            variables['guiOutOfButton2'] = variables['A_LoopField40']
                             if (InStr(variables['guiOutOfButton2'] , "%")):
                                 variables['str1'] = variables['guiOutOfButton2']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfButton2'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfButton2'] = StringTrimLeft(variables['guiOutOfButton2'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("w")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("w")):
                             variables['guiOutOfButtonW'] = 1
-                            variables['guiOutOfButton3'] = variables['A_LoopField38']
+                            variables['guiOutOfButton3'] = variables['A_LoopField40']
                             if (InStr(variables['guiOutOfButton3'] , "%")):
                                 variables['str1'] = variables['guiOutOfButton3']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfButton3'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfButton3'] = StringTrimLeft(variables['guiOutOfButton3'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("h")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("h")):
                             variables['guiOutOfButtonH'] = 1
-                            variables['guiOutOfButton4'] = variables['A_LoopField38']
+                            variables['guiOutOfButton4'] = variables['A_LoopField40']
                             if (InStr(variables['guiOutOfButton4'] , "%")):
                                 variables['str1'] = variables['guiOutOfButton4']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfButton4'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfButton4'] = StringTrimLeft(variables['guiOutOfButton4'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("v")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("v")):
                             variables['guiOutOfButtonV'] = 1
-                            variables['guiOutOfButton5'] = variables['A_LoopField38']
-                            variables['guiOutOfButton52'] = variables['A_LoopField38']
+                            variables['guiOutOfButton5'] = variables['A_LoopField40']
+                            variables['guiOutOfButton52'] = variables['A_LoopField40']
                             variables['dynamicGuiSet'] = 1
                             if (InStr(variables['guiOutOfButton5'] , "%")):
                                 variables['str1'] = variables['guiOutOfButton5']
@@ -1015,9 +1048,9 @@ def compiler():
                                 variables['guiOutOfButton52'] = " "  +  Chr(34) +  " + [variables."  +  variables['var1']  +  "]"  +  " + "  +  ""  +  Chr(34) +  ""
                             variables['guiOutOfButton5'] = StringTrimLeft(variables['guiOutOfButton5'], 1)
                             variables['guiOutOfButton52'] = StringTrimLeft(variables['guiOutOfButton52'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 1)== StrLower("g")) and  not (( SubStr(Trim(StrLower(variables['A_LoopField38'])) , 1 , 3)== StrLower("gr-"))):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("g")) and  not (( SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 3)== StrLower("gr-"))):
                             variables['guiOutOfButtonG'] = 1
-                            variables['guiOutOfButton6'] = variables['A_LoopField38']
+                            variables['guiOutOfButton6'] = variables['A_LoopField40']
                             variables['guiOutOfButton6'] = StringTrimLeft(variables['guiOutOfButton6'], 1)
                     variables['NumOfButtons'] += 1
                     if (InStr(variables['out5'] , "%")):
@@ -1063,18 +1096,18 @@ def compiler():
                     variables['guiOutOfEditH'] = 0
                     variables['guiOutOfEditV'] = 0
                     variables['guiOutOfEditG'] = 0
-                    for A_Index39 in range(1, 12 + 1):
-                        variables['A_Index39'] = A_Index39
-                        variables[f'guiOutOfEdit{variables["A_Index39"]}'] = ""
+                    for A_Index41 in range(1, 12 + 1):
+                        variables['A_Index41'] = A_Index41
+                        variables[f'guiOutOfEdit{variables["A_Index41"]}'] = ""
                     variables['dynamicGuiSet'] = 0
                     items = LoopParseFunc(variables['out4'], " ")
-                    for A_Index40, A_LoopField40 in enumerate(items, start=1):
-                        variables['A_Index40'] = A_Index40
-                        variables['A_LoopField40'] = A_LoopField40
-                        #MsgBox, |%A_LoopField40%|
+                    for A_Index42, A_LoopField42 in enumerate(items, start=1):
+                        variables['A_Index42'] = A_Index42
+                        variables['A_LoopField42'] = A_LoopField42
+                        #MsgBox, |%A_LoopField42%|
                         variables['guiOutOfEditNum'] += 1
-                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("c")):
-                            variables['guiOutOfEdit7'] = variables['A_LoopField40']
+                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("c")):
+                            variables['guiOutOfEdit7'] = variables['A_LoopField42']
                             variables['guiOutOfEdit7'] = StringTrimLeft(variables['guiOutOfEdit7'], 1)
                             if (InStr(variables['guiOutOfEdit7'] , "%")):
                                 variables['str1'] = variables['guiOutOfEdit7']
@@ -1083,16 +1116,16 @@ def compiler():
                                 variables['guiOutOfEdit7'] = "#"  +  Chr(34) +  " + variables."  +  variables['var1']  +  "//"
                             else:
                                 variables['guiOutOfEdit7'] = "#"  +  variables['guiOutOfEdit7']
-                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 3)== StrLower("gr-")):
-                            variables['guiOutOfEdit11'] = variables['A_LoopField40']
+                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 3)== StrLower("gr-")):
+                            variables['guiOutOfEdit11'] = variables['A_LoopField42']
                             variables['guiOutOfEdit11'] = StringTrimLeft(variables['guiOutOfEdit11'], 3)
                             if (InStr(variables['guiOutOfEdit11'] , "%")):
                                 variables['str1'] = variables['guiOutOfEdit11']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfEdit11'] = ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  "//"
-                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 2)== StrLower("bg")):
-                            variables['guiOutOfEdit8'] = variables['A_LoopField40']
+                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 2)== StrLower("bg")):
+                            variables['guiOutOfEdit8'] = variables['A_LoopField42']
                             variables['guiOutOfEdit8'] = StringTrimLeft(variables['guiOutOfEdit8'], 2)
                             if (InStr(variables['guiOutOfEdit8'] , "%")):
                                 variables['str1'] = variables['guiOutOfEdit8']
@@ -1101,8 +1134,8 @@ def compiler():
                                 variables['guiOutOfEdit8'] = "#"  +  Chr(34) +  " + variables."  +  variables['var1']  +  "//"
                             else:
                                 variables['guiOutOfEdit8'] = "#"  +  variables['guiOutOfEdit8']
-                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("f")):
-                            variables['guiOutOfEdit12'] = Trim(variables['A_LoopField40'])
+                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("f")):
+                            variables['guiOutOfEdit12'] = Trim(variables['A_LoopField42'])
                             variables['guiOutOfEdit12'] = StringTrimLeft(variables['guiOutOfEdit12'], 1)
                             if (InStr(variables['guiOutOfEdit12'] , "%")):
                                 variables['str1'] = variables['guiOutOfEdit12']
@@ -1110,8 +1143,8 @@ def compiler():
                                 variables['out2'] = variables['s']
                                 variables['var1'] = ""  +  Chr(34) +  " + variables."  +  variables['out2']  +  " + "  +  Chr(34) +  ""
                                 variables['guiOutOfEdit12'] = variables['var1']
-                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("r")):
-                            variables['guiOutOfEdit9'] = variables['A_LoopField40']
+                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("r")):
+                            variables['guiOutOfEdit9'] = variables['A_LoopField42']
                             variables['guiOutOfEdit9'] = StringTrimLeft(variables['guiOutOfEdit9'], 1)
                             if (InStr(variables['guiOutOfEdit9'] , "%")):
                                 variables['str1'] = variables['guiOutOfEdit9']
@@ -1120,8 +1153,8 @@ def compiler():
                                 variables['guiOutOfEdit9'] = ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  "px"
                             else:
                                 variables['guiOutOfEdit9'] = variables['guiOutOfEdit9']  +  "px"
-                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 7)== StrLower("-border")):
-                            variables['guiOutOfEdit10'] = variables['A_LoopField40']
+                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 7)== StrLower("-border")):
+                            variables['guiOutOfEdit10'] = variables['A_LoopField42']
                             variables['guiOutOfEdit10'] = StringTrimLeft(variables['guiOutOfEdit10'], 7)
                             variables['guiOutOfEdit10'] = "none"
                             if (InStr(variables['guiOutOfEdit10'] , "%")):
@@ -1129,46 +1162,46 @@ def compiler():
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfEdit10'] = ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
-                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("x")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("x")):
                             variables['guiOutOfEditX'] = 1
-                            variables['guiOutOfEdit1'] = variables['A_LoopField40']
+                            variables['guiOutOfEdit1'] = variables['A_LoopField42']
                             if (InStr(variables['guiOutOfEdit1'] , "%")):
                                 variables['str1'] = variables['guiOutOfEdit1']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfEdit1'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfEdit1'] = StringTrimLeft(variables['guiOutOfEdit1'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("y")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("y")):
                             variables['guiOutOfEditY'] = 1
-                            variables['guiOutOfEdit2'] = variables['A_LoopField40']
+                            variables['guiOutOfEdit2'] = variables['A_LoopField42']
                             if (InStr(variables['guiOutOfEdit2'] , "%")):
                                 variables['str1'] = variables['guiOutOfEdit2']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfEdit2'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfEdit2'] = StringTrimLeft(variables['guiOutOfEdit2'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("w")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("w")):
                             variables['guiOutOfEditW'] = 1
-                            variables['guiOutOfEdit3'] = variables['A_LoopField40']
+                            variables['guiOutOfEdit3'] = variables['A_LoopField42']
                             if (InStr(variables['guiOutOfEdit3'] , "%")):
                                 variables['str1'] = variables['guiOutOfEdit3']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfEdit3'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfEdit3'] = StringTrimLeft(variables['guiOutOfEdit3'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("h")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("h")):
                             variables['guiOutOfEditH'] = 1
-                            variables['guiOutOfEdit4'] = variables['A_LoopField40']
+                            variables['guiOutOfEdit4'] = variables['A_LoopField42']
                             if (InStr(variables['guiOutOfEdit4'] , "%")):
                                 variables['str1'] = variables['guiOutOfEdit4']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfEdit4'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfEdit4'] = StringTrimLeft(variables['guiOutOfEdit4'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("v")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("v")):
                             variables['guiOutOfEditV'] = 1
-                            variables['guiOutOfEdit5'] = variables['A_LoopField40']
-                            variables['guiOutOfEdit52'] = variables['A_LoopField40']
+                            variables['guiOutOfEdit5'] = variables['A_LoopField42']
+                            variables['guiOutOfEdit52'] = variables['A_LoopField42']
                             variables['dynamicGuiSet'] = 1
                             if (InStr(variables['guiOutOfEdit5'] , "%")):
                                 variables['str1'] = variables['guiOutOfEdit5']
@@ -1178,9 +1211,9 @@ def compiler():
                                 variables['guiOutOfEdit52'] = " "  +  Chr(34) +  " + [variables."  +  variables['var1']  +  "]"  +  " + "  +  ""  +  Chr(34) +  ""
                             variables['guiOutOfEdit52'] = StringTrimLeft(variables['guiOutOfEdit52'], 1)
                             variables['guiOutOfEdit5'] = StringTrimLeft(variables['guiOutOfEdit5'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 1)== StrLower("g")) and  not (( SubStr(Trim(StrLower(variables['A_LoopField40'])) , 1 , 3)== StrLower("gr-"))):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("g")) and  not (( SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 3)== StrLower("gr-"))):
                             variables['guiOutOfEditG'] = 1
-                            variables['guiOutOfEdit6'] = variables['A_LoopField40']
+                            variables['guiOutOfEdit6'] = variables['A_LoopField42']
                             variables['guiOutOfEdit6'] = StringTrimLeft(variables['guiOutOfEdit6'], 1)
                     variables['NumOfEdits'] += 1
                     if (InStr(variables['out5'] , "%")):
@@ -1227,56 +1260,56 @@ def compiler():
                     variables['guiOutOfPictureH'] = 0
                     variables['guiOutOfPictureV'] = 0
                     variables['guiOutOfPictureG'] = 0
-                    for A_Index41 in range(1, 6 + 1):
-                        variables['A_Index41'] = A_Index41
-                        variables[f'guiOutOfPicture{variables["A_Index41"]}'] = ""
+                    for A_Index43 in range(1, 6 + 1):
+                        variables['A_Index43'] = A_Index43
+                        variables[f'guiOutOfPicture{variables["A_Index43"]}'] = ""
                     variables['dynamicGuiSet'] = 0
                     items = LoopParseFunc(variables['out4'], " ")
-                    for A_Index42, A_LoopField42 in enumerate(items, start=1):
-                        variables['A_Index42'] = A_Index42
-                        variables['A_LoopField42'] = A_LoopField42
-                        #MsgBox, |%A_LoopField42%|
+                    for A_Index44, A_LoopField44 in enumerate(items, start=1):
+                        variables['A_Index44'] = A_Index44
+                        variables['A_LoopField44'] = A_LoopField44
+                        #MsgBox, |%A_LoopField44%|
                         variables['guiOutOfPictureNum'] += 1
-                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("x")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 1)== StrLower("x")):
                             variables['guiOutOfPictureX'] = 1
-                            variables['guiOutOfPicture1'] = variables['A_LoopField42']
+                            variables['guiOutOfPicture1'] = variables['A_LoopField44']
                             if (InStr(variables['guiOutOfPicture1'] , "%")):
                                 variables['str1'] = variables['guiOutOfPicture1']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfPicture1'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfPicture1'] = StringTrimLeft(variables['guiOutOfPicture1'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("y")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 1)== StrLower("y")):
                             variables['guiOutOfPictureY'] = 1
-                            variables['guiOutOfPicture2'] = variables['A_LoopField42']
+                            variables['guiOutOfPicture2'] = variables['A_LoopField44']
                             if (InStr(variables['guiOutOfPicture2'] , "%")):
                                 variables['str1'] = variables['guiOutOfPicture2']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfPicture2'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfPicture2'] = StringTrimLeft(variables['guiOutOfPicture2'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("w")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 1)== StrLower("w")):
                             variables['guiOutOfPictureW'] = 1
-                            variables['guiOutOfPicture3'] = variables['A_LoopField42']
+                            variables['guiOutOfPicture3'] = variables['A_LoopField44']
                             if (InStr(variables['guiOutOfPicture3'] , "%")):
                                 variables['str1'] = variables['guiOutOfPicture3']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfPicture3'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfPicture3'] = StringTrimLeft(variables['guiOutOfPicture3'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("h")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 1)== StrLower("h")):
                             variables['guiOutOfPictureH'] = 1
-                            variables['guiOutOfPicture4'] = variables['A_LoopField42']
+                            variables['guiOutOfPicture4'] = variables['A_LoopField44']
                             if (InStr(variables['guiOutOfPicture4'] , "%")):
                                 variables['str1'] = variables['guiOutOfPicture4']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfPicture4'] = " "  +  Chr(34) +  ""  +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfPicture4'] = StringTrimLeft(variables['guiOutOfPicture4'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("v")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 1)== StrLower("v")):
                             variables['guiOutOfPictureV'] = 1
-                            variables['guiOutOfPicture5'] = variables['A_LoopField42']
-                            variables['guiOutOfPicture52'] = variables['A_LoopField42']
+                            variables['guiOutOfPicture5'] = variables['A_LoopField44']
+                            variables['guiOutOfPicture52'] = variables['A_LoopField44']
                             variables['dynamicGuiSet'] = 1
                             if (InStr(variables['guiOutOfPicture5'] , "%")):
                                 variables['str1'] = variables['guiOutOfPicture5']
@@ -1289,9 +1322,9 @@ def compiler():
                             variables['weDontHaveAvImage'] = 0
                         else:
                             variables['weDontHaveAvImage'] = 1
-                        if (SubStr(Trim(StrLower(variables['A_LoopField42'])) , 1 , 1)== StrLower("g")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 1)== StrLower("g")):
                             variables['guiOutOfPictureG'] = 1
-                            variables['guiOutOfPicture6'] = variables['A_LoopField42']
+                            variables['guiOutOfPicture6'] = variables['A_LoopField44']
                             variables['guiOutOfPicture6'] = StringTrimLeft(variables['guiOutOfPicture6'], 1)
                     variables['NumOfPictures'] += 1
                     if (variables['weDontHaveAvImage'] == 1):
@@ -1363,62 +1396,62 @@ def compiler():
                 variables['guiOutOfSwitchV'] = 0
                 variables['guiOutOfSwitchG'] = 0
                 variables['guiOutOfSwitchOn'] = 0
-                for A_Index43 in range(1, 7 + 1):
-                    variables['A_Index43'] = A_Index43
-                    variables[f'guiOutOfSwitch{variables["A_Index43"]}'] = ""
+                for A_Index45 in range(1, 7 + 1):
+                    variables['A_Index45'] = A_Index45
+                    variables[f'guiOutOfSwitch{variables["A_Index45"]}'] = ""
                 variables['guiOutOfSwitch3'] = "60"
                 variables['guiOutOfSwitch4'] = "30"
                 variables['isThereArecId'] = 1
                 variables['dynamicGuiSet'] = 0
                 items = LoopParseFunc(variables['out4'], " ")
-                for A_Index44, A_LoopField44 in enumerate(items, start=1):
-                    variables['A_Index44'] = A_Index44
-                    variables['A_LoopField44'] = A_LoopField44
-                    #MsgBox, |%A_LoopField44%|
+                for A_Index46, A_LoopField46 in enumerate(items, start=1):
+                    variables['A_Index46'] = A_Index46
+                    variables['A_LoopField46'] = A_LoopField46
+                    #MsgBox, |%A_LoopField46%|
                     variables['guiOutOfSwitchNum'] += 1
-                    if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 1)== StrLower("x")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 1)== StrLower("x")):
                         variables['guiOutOfSwitchX'] = 1
-                        variables['guiOutOfSwitch1'] = variables['A_LoopField44']
+                        variables['guiOutOfSwitch1'] = variables['A_LoopField46']
                         if (InStr(variables['guiOutOfSwitch1'] , "%")):
                             variables['str1'] = variables['guiOutOfSwitch1']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfSwitch1'] = " variables."  +  variables['var1']
                         variables['guiOutOfSwitch1'] = StringTrimLeft(variables['guiOutOfSwitch1'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 1)== StrLower("y")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 1)== StrLower("y")):
                         variables['guiOutOfSwitchY'] = 1
-                        variables['guiOutOfSwitch2'] = variables['A_LoopField44']
+                        variables['guiOutOfSwitch2'] = variables['A_LoopField46']
                         if (InStr(variables['guiOutOfSwitch2'] , "%")):
                             variables['str1'] = variables['guiOutOfSwitch2']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfSwitch2'] = " variables."  +  variables['var1']
                         variables['guiOutOfSwitch2'] = StringTrimLeft(variables['guiOutOfSwitch2'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 1)== StrLower("w")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 1)== StrLower("w")):
                         variables['guiOutOfSwitchW'] = 1
-                        variables['guiOutOfSwitch3'] = variables['A_LoopField44']
+                        variables['guiOutOfSwitch3'] = variables['A_LoopField46']
                         if (InStr(variables['guiOutOfSwitch3'] , "%")):
                             variables['str1'] = variables['guiOutOfSwitch3']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfSwitch3'] = " variables."  +  variables['var1']
                         variables['guiOutOfSwitch3'] = StringTrimLeft(variables['guiOutOfSwitch3'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 1)== StrLower("h")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 1)== StrLower("h")):
                         variables['guiOutOfSwitchH'] = 1
-                        variables['guiOutOfSwitch4'] = variables['A_LoopField44']
+                        variables['guiOutOfSwitch4'] = variables['A_LoopField46']
                         if (InStr(variables['guiOutOfSwitch4'] , "%")):
                             variables['str1'] = variables['guiOutOfSwitch4']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfSwitch4'] = " variables."  +  variables['var1']
                         variables['guiOutOfSwitch4'] = StringTrimLeft(variables['guiOutOfSwitch4'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 1)== StrLower("v")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 1)== StrLower("v")):
                         variables['guiOutOfSwitchV'] = 1
-                        variables['guiOutOfSwitch5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField44']  +  ""  +  Chr(34) +  ""
-                        variables['guiOutOfSwitch5Fix'] = ""  +  Chr(34) +  ""  +  ""  +  variables['A_LoopField44']  +  ""  +  Chr(34) +  ""
+                        variables['guiOutOfSwitch5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField46']  +  ""  +  Chr(34) +  ""
+                        variables['guiOutOfSwitch5Fix'] = ""  +  Chr(34) +  ""  +  ""  +  variables['A_LoopField46']  +  ""  +  Chr(34) +  ""
                         variables['guiOutOfSwitch5Fix'] = StringTrimRight(variables['guiOutOfSwitch5Fix'], 1)
                         variables['guiOutOfSwitch5Fix'] = StringTrimLeft(variables['guiOutOfSwitch5Fix'], 2)
-                        variables['guiOutOfSwitch52'] = variables['A_LoopField44']
+                        variables['guiOutOfSwitch52'] = variables['A_LoopField46']
                         variables['dynamicGuiSet'] = 1
                         if (InStr(variables['guiOutOfSwitch5'] , "%")):
                             variables['str1'] = variables['guiOutOfSwitch5']
@@ -1427,16 +1460,16 @@ def compiler():
                             variables['guiOutOfSwitch5'] = " "  +  Chr(34) +  "Gui"  +  variables['GuiNumber']  +  ""  +  Chr(34) +  " + [variables."  +  variables['var1']  +  "]"
                             variables['guiOutOfSwitch5Fix'] = " + [variables."  +  variables['var1']  +  "]"
                         else:
-                            variables['A_LoopField44OutFixCnavas'] = StringTrimLeft(variables['A_LoopField44'], 1)
-                            variables['guiOutOfSwitch5'] = " "  +  ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField44OutFixCnavas']  +  ""  +  Chr(34) +  ""
+                            variables['A_LoopField46OutFixCnavas'] = StringTrimLeft(variables['A_LoopField46'], 1)
+                            variables['guiOutOfSwitch5'] = " "  +  ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField46OutFixCnavas']  +  ""  +  Chr(34) +  ""
                         variables['guiOutOfSwitch5'] = StringTrimLeft(variables['guiOutOfSwitch5'], 1)
                         variables['guiOutOfSwitch52'] = StringTrimLeft(variables['guiOutOfSwitch52'], 1)
                         variables['isThereArecId'] = 0
-                    if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 1)== StrLower("g")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 1)== StrLower("g")):
                         variables['guiOutOfSwitchG'] = 1
-                        variables['guiOutOfSwitch6'] = variables['A_LoopField44']
+                        variables['guiOutOfSwitch6'] = variables['A_LoopField46']
                         variables['guiOutOfSwitch6'] = StringTrimLeft(variables['guiOutOfSwitch6'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField44'])) , 1 , 2)== StrLower("on")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 2)== StrLower("on")):
                         variables['guiOutOfSwitchOn'] = 1
                 variables['switchId'] += 1
                 if (variables['isThereArecId'] == 1):
@@ -1459,62 +1492,62 @@ def compiler():
                 variables['guiOutOfCheckboxV'] = 0
                 variables['guiOutOfCheckboxG'] = 0
                 variables['guiOutOfCheckboxOn'] = "false"
-                for A_Index45 in range(1, 7 + 1):
-                    variables['A_Index45'] = A_Index45
-                    variables[f'guiOutOfCheckbox{variables["A_Index45"]}'] = ""
+                for A_Index47 in range(1, 7 + 1):
+                    variables['A_Index47'] = A_Index47
+                    variables[f'guiOutOfCheckbox{variables["A_Index47"]}'] = ""
                 variables['guiOutOfCheckbox3'] = "60"
                 variables['guiOutOfCheckbox4'] = "30"
                 variables['isThereArecId'] = 1
                 variables['dynamicGuiSet'] = 0
                 items = LoopParseFunc(variables['out4'], " ")
-                for A_Index46, A_LoopField46 in enumerate(items, start=1):
-                    variables['A_Index46'] = A_Index46
-                    variables['A_LoopField46'] = A_LoopField46
-                    #MsgBox, |%A_LoopField46%|
+                for A_Index48, A_LoopField48 in enumerate(items, start=1):
+                    variables['A_Index48'] = A_Index48
+                    variables['A_LoopField48'] = A_LoopField48
+                    #MsgBox, |%A_LoopField48%|
                     variables['guiOutOfCheckboxNum'] += 1
-                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 1)== StrLower("x")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("x")):
                         variables['guiOutOfCheckboxX'] = 1
-                        variables['guiOutOfCheckbox1'] = variables['A_LoopField46']
+                        variables['guiOutOfCheckbox1'] = variables['A_LoopField48']
                         if (InStr(variables['guiOutOfCheckbox1'] , "%")):
                             variables['str1'] = variables['guiOutOfCheckbox1']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfCheckbox1'] = " variables."  +  variables['var1']
                         variables['guiOutOfCheckbox1'] = StringTrimLeft(variables['guiOutOfCheckbox1'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 1)== StrLower("y")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("y")):
                         variables['guiOutOfCheckboxY'] = 1
-                        variables['guiOutOfCheckbox2'] = variables['A_LoopField46']
+                        variables['guiOutOfCheckbox2'] = variables['A_LoopField48']
                         if (InStr(variables['guiOutOfCheckbox2'] , "%")):
                             variables['str1'] = variables['guiOutOfCheckbox2']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfCheckbox2'] = " variables."  +  variables['var1']
                         variables['guiOutOfCheckbox2'] = StringTrimLeft(variables['guiOutOfCheckbox2'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 1)== StrLower("w")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("w")):
                         variables['guiOutOfCheckboxW'] = 1
-                        variables['guiOutOfCheckbox3'] = variables['A_LoopField46']
+                        variables['guiOutOfCheckbox3'] = variables['A_LoopField48']
                         if (InStr(variables['guiOutOfCheckbox3'] , "%")):
                             variables['str1'] = variables['guiOutOfCheckbox3']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfCheckbox3'] = " variables."  +  variables['var1']
                         variables['guiOutOfCheckbox3'] = StringTrimLeft(variables['guiOutOfCheckbox3'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 1)== StrLower("h")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("h")):
                         variables['guiOutOfCheckboxH'] = 1
-                        variables['guiOutOfCheckbox4'] = variables['A_LoopField46']
+                        variables['guiOutOfCheckbox4'] = variables['A_LoopField48']
                         if (InStr(variables['guiOutOfCheckbox4'] , "%")):
                             variables['str1'] = variables['guiOutOfCheckbox4']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfCheckbox4'] = " variables."  +  variables['var1']
                         variables['guiOutOfCheckbox4'] = StringTrimLeft(variables['guiOutOfCheckbox4'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 1)== StrLower("v")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("v")):
                         variables['guiOutOfCheckboxV'] = 1
-                        variables['guiOutOfCheckbox5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField46']  +  ""  +  Chr(34) +  ""
-                        variables['guiOutOfCheckbox5Fix'] = ""  +  Chr(34) +  ""  +  ""  +  variables['A_LoopField46']  +  ""  +  Chr(34) +  ""
+                        variables['guiOutOfCheckbox5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField48']  +  ""  +  Chr(34) +  ""
+                        variables['guiOutOfCheckbox5Fix'] = ""  +  Chr(34) +  ""  +  ""  +  variables['A_LoopField48']  +  ""  +  Chr(34) +  ""
                         variables['guiOutOfCheckbox5Fix'] = StringTrimRight(variables['guiOutOfCheckbox5Fix'], 1)
                         variables['guiOutOfCheckbox5Fix'] = StringTrimLeft(variables['guiOutOfCheckbox5Fix'], 2)
-                        variables['guiOutOfCheckbox52'] = variables['A_LoopField46']
+                        variables['guiOutOfCheckbox52'] = variables['A_LoopField48']
                         variables['dynamicGuiSet'] = 1
                         if (InStr(variables['guiOutOfCheckbox5'] , "%")):
                             variables['str1'] = variables['guiOutOfCheckbox5']
@@ -1523,16 +1556,16 @@ def compiler():
                             variables['guiOutOfCheckbox5'] = " "  +  Chr(34) +  "Gui"  +  variables['GuiNumber']  +  ""  +  Chr(34) +  " + [variables."  +  variables['var1']  +  "]"
                             variables['guiOutOfCheckbox5Fix'] = " + [variables."  +  variables['var1']  +  "]"
                         else:
-                            variables['A_LoopField46OutFixCnavas'] = StringTrimLeft(variables['A_LoopField46'], 1)
-                            variables['guiOutOfCheckbox5'] = " "  +  ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField46OutFixCnavas']  +  ""  +  Chr(34) +  ""
+                            variables['A_LoopField48OutFixCnavas'] = StringTrimLeft(variables['A_LoopField48'], 1)
+                            variables['guiOutOfCheckbox5'] = " "  +  ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField48OutFixCnavas']  +  ""  +  Chr(34) +  ""
                         variables['guiOutOfCheckbox5'] = StringTrimLeft(variables['guiOutOfCheckbox5'], 1)
                         variables['guiOutOfCheckbox52'] = StringTrimLeft(variables['guiOutOfCheckbox52'], 1)
                         variables['isThereArecId'] = 0
-                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 1)== StrLower("g")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("g")):
                         variables['guiOutOfCheckboxG'] = 1
-                        variables['guiOutOfCheckbox6'] = variables['A_LoopField46']
+                        variables['guiOutOfCheckbox6'] = variables['A_LoopField48']
                         variables['guiOutOfCheckbox6'] = StringTrimLeft(variables['guiOutOfCheckbox6'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField46'])) , 1 , 2)== StrLower("on")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 2)== StrLower("on")):
                         variables['guiOutOfCheckboxOn'] = "true"
                 variables['CheckboxId'] += 1
                 if (variables['isThereArecId'] == 1):
@@ -1552,81 +1585,81 @@ def compiler():
                 variables['guiOutOfIDEG'] = 0
                 variables['guiOutOfIDEL'] = 0
                 variables['guiOutOfIDES'] = 0
-                for A_Index47 in range(1, 8 + 1):
-                    variables['A_Index47'] = A_Index47
-                    variables[f'guiOutOfIDE{variables["A_Index47"]}'] = ""
+                for A_Index49 in range(1, 8 + 1):
+                    variables['A_Index49'] = A_Index49
+                    variables[f'guiOutOfIDE{variables["A_Index49"]}'] = ""
                 variables['guiOutOfIDE3'] = "300"
                 variables['guiOutOfIDE4'] = "300"
                 variables['guiOutOfIDE8'] = "18"
                 variables['isThereArecId'] = 1
                 variables['dynamicGuiSet'] = 0
                 items = LoopParseFunc(variables['out4'], " ")
-                for A_Index48, A_LoopField48 in enumerate(items, start=1):
-                    variables['A_Index48'] = A_Index48
-                    variables['A_LoopField48'] = A_LoopField48
-                    #MsgBox, |%A_LoopField48%|
+                for A_Index50, A_LoopField50 in enumerate(items, start=1):
+                    variables['A_Index50'] = A_Index50
+                    variables['A_LoopField50'] = A_LoopField50
+                    #MsgBox, |%A_LoopField50%|
                     variables['guiOutOfIDENum'] += 1
-                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("x")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("x")):
                         variables['guiOutOfIDEX'] = 1
-                        variables['guiOutOfIDE1'] = variables['A_LoopField48']
+                        variables['guiOutOfIDE1'] = variables['A_LoopField50']
                         if (InStr(variables['guiOutOfIDE1'] , "%")):
                             variables['str1'] = variables['guiOutOfIDE1']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfIDE1'] = " variables."  +  variables['var1']
                         variables['guiOutOfIDE1'] = StringTrimLeft(variables['guiOutOfIDE1'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("s")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("s")):
                         variables['guiOutOfIDES'] = 1
-                        variables['guiOutOfIDE8'] = variables['A_LoopField48']
+                        variables['guiOutOfIDE8'] = variables['A_LoopField50']
                         if (InStr(variables['guiOutOfIDE8'] , "%")):
                             variables['str1'] = variables['guiOutOfIDE8']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfIDE8'] = " variables."  +  variables['var1']
                         variables['guiOutOfIDE8'] = StringTrimLeft(variables['guiOutOfIDE8'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("l")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("l")):
                         variables['guiOutOfIDEL'] = 1
-                        variables['guiOutOfIDE7'] = variables['A_LoopField48']
+                        variables['guiOutOfIDE7'] = variables['A_LoopField50']
                         if (InStr(variables['guiOutOfIDE7'] , "%")):
                             variables['str1'] = variables['guiOutOfIDE7']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfIDE7'] = " variables."  +  variables['var1']
                         variables['guiOutOfIDE7'] = StringTrimLeft(variables['guiOutOfIDE7'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("y")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("y")):
                         variables['guiOutOfIDEY'] = 1
-                        variables['guiOutOfIDE2'] = variables['A_LoopField48']
+                        variables['guiOutOfIDE2'] = variables['A_LoopField50']
                         if (InStr(variables['guiOutOfIDE2'] , "%")):
                             variables['str1'] = variables['guiOutOfIDE2']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfIDE2'] = " variables."  +  variables['var1']
                         variables['guiOutOfIDE2'] = StringTrimLeft(variables['guiOutOfIDE2'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("w")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("w")):
                         variables['guiOutOfIDEW'] = 1
-                        variables['guiOutOfIDE3'] = variables['A_LoopField48']
+                        variables['guiOutOfIDE3'] = variables['A_LoopField50']
                         if (InStr(variables['guiOutOfIDE3'] , "%")):
                             variables['str1'] = variables['guiOutOfIDE3']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfIDE3'] = " variables."  +  variables['var1']
                         variables['guiOutOfIDE3'] = StringTrimLeft(variables['guiOutOfIDE3'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("h")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("h")):
                         variables['guiOutOfIDEH'] = 1
-                        variables['guiOutOfIDE4'] = variables['A_LoopField48']
+                        variables['guiOutOfIDE4'] = variables['A_LoopField50']
                         if (InStr(variables['guiOutOfIDE4'] , "%")):
                             variables['str1'] = variables['guiOutOfIDE4']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfIDE4'] = " variables."  +  variables['var1']
                         variables['guiOutOfIDE4'] = StringTrimLeft(variables['guiOutOfIDE4'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("v")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("v")):
                         variables['guiOutOfIDEV'] = 1
-                        variables['guiOutOfIDE5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField48']  +  ""  +  Chr(34) +  ""
-                        variables['guiOutOfIDE5Fix'] = ""  +  Chr(34) +  ""  +  ""  +  variables['A_LoopField48']  +  ""  +  Chr(34) +  ""
+                        variables['guiOutOfIDE5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField50']  +  ""  +  Chr(34) +  ""
+                        variables['guiOutOfIDE5Fix'] = ""  +  Chr(34) +  ""  +  ""  +  variables['A_LoopField50']  +  ""  +  Chr(34) +  ""
                         variables['guiOutOfIDE5Fix'] = StringTrimRight(variables['guiOutOfIDE5Fix'], 1)
                         variables['guiOutOfIDE5Fix'] = StringTrimLeft(variables['guiOutOfIDE5Fix'], 2)
-                        variables['guiOutOfIDE52'] = variables['A_LoopField48']
+                        variables['guiOutOfIDE52'] = variables['A_LoopField50']
                         variables['dynamicGuiSet'] = 1
                         if (InStr(variables['guiOutOfIDE5'] , "%")):
                             variables['str1'] = variables['guiOutOfIDE5']
@@ -1635,14 +1668,14 @@ def compiler():
                             variables['guiOutOfIDE5'] = " "  +  Chr(34) +  "Gui"  +  variables['GuiNumber']  +  ""  +  Chr(34) +  " + [variables."  +  variables['var1']  +  "]"
                             variables['guiOutOfIDE5Fix'] = " + [variables."  +  variables['var1']  +  "]"
                         else:
-                            variables['A_LoopField48OutFixCnavas'] = StringTrimLeft(variables['A_LoopField48'], 1)
-                            variables['guiOutOfIDE5'] = " "  +  ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField48OutFixCnavas']  +  ""  +  Chr(34) +  ""
+                            variables['A_LoopField50OutFixCnavas'] = StringTrimLeft(variables['A_LoopField50'], 1)
+                            variables['guiOutOfIDE5'] = " "  +  ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField50OutFixCnavas']  +  ""  +  Chr(34) +  ""
                         variables['guiOutOfIDE5'] = StringTrimLeft(variables['guiOutOfIDE5'], 1)
                         variables['guiOutOfIDE52'] = StringTrimLeft(variables['guiOutOfIDE52'], 1)
                         variables['isThereArecId'] = 0
-                    if (SubStr(Trim(StrLower(variables['A_LoopField48'])) , 1 , 1)== StrLower("g")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("g")):
                         variables['guiOutOfIDEG'] = 1
-                        variables['guiOutOfIDE6'] = variables['A_LoopField48']
+                        variables['guiOutOfIDE6'] = variables['A_LoopField50']
                         variables['guiOutOfIDE6'] = StringTrimLeft(variables['guiOutOfIDE6'], 1)
                 variables['IDEId'] += 1
                 if (variables['isThereArecId'] == 1):
@@ -1669,59 +1702,59 @@ def compiler():
                 variables['guiOutOfDropDownListH'] = 0
                 variables['guiOutOfDropDownListV'] = 0
                 variables['guiOutOfDropDownListG'] = 0
-                for A_Index49 in range(1, 7 + 1):
-                    variables['A_Index49'] = A_Index49
-                    variables[f'guiOutOfDropDownList{variables["A_Index49"]}'] = ""
+                for A_Index51 in range(1, 7 + 1):
+                    variables['A_Index51'] = A_Index51
+                    variables[f'guiOutOfDropDownList{variables["A_Index51"]}'] = ""
                 variables['isThereArecId'] = 1
                 variables['guiOutOfDropDownList3'] = "150"
                 variables['guiOutOfDropDownList4'] = "30"
                 variables['dynamicGuiSet'] = 0
                 items = LoopParseFunc(variables['out4'], " ")
-                for A_Index50, A_LoopField50 in enumerate(items, start=1):
-                    variables['A_Index50'] = A_Index50
-                    variables['A_LoopField50'] = A_LoopField50
-                    #MsgBox, |%A_LoopField50%|
+                for A_Index52, A_LoopField52 in enumerate(items, start=1):
+                    variables['A_Index52'] = A_Index52
+                    variables['A_LoopField52'] = A_LoopField52
+                    #MsgBox, |%A_LoopField52%|
                     variables['guiOutOfDropDownListNum'] += 1
-                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("x")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField52'])) , 1 , 1)== StrLower("x")):
                         variables['guiOutOfDropDownListX'] = 1
-                        variables['guiOutOfDropDownList1'] = variables['A_LoopField50']
+                        variables['guiOutOfDropDownList1'] = variables['A_LoopField52']
                         if (InStr(variables['guiOutOfDropDownList1'] , "%")):
                             variables['str1'] = variables['guiOutOfDropDownList1']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfDropDownList1'] = " variables."  +  variables['var1']
                         variables['guiOutOfDropDownList1'] = StringTrimLeft(variables['guiOutOfDropDownList1'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("y")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField52'])) , 1 , 1)== StrLower("y")):
                         variables['guiOutOfDropDownListY'] = 1
-                        variables['guiOutOfDropDownList2'] = variables['A_LoopField50']
+                        variables['guiOutOfDropDownList2'] = variables['A_LoopField52']
                         if (InStr(variables['guiOutOfDropDownList2'] , "%")):
                             variables['str1'] = variables['guiOutOfDropDownList2']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfDropDownList2'] = " variables."  +  variables['var1']
                         variables['guiOutOfDropDownList2'] = StringTrimLeft(variables['guiOutOfDropDownList2'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("w")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField52'])) , 1 , 1)== StrLower("w")):
                         variables['guiOutOfDropDownListW'] = 1
-                        variables['guiOutOfDropDownList3'] = variables['A_LoopField50']
+                        variables['guiOutOfDropDownList3'] = variables['A_LoopField52']
                         if (InStr(variables['guiOutOfDropDownList3'] , "%")):
                             variables['str1'] = variables['guiOutOfDropDownList3']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfDropDownList3'] = " variables."  +  variables['var1']
                         variables['guiOutOfDropDownList3'] = StringTrimLeft(variables['guiOutOfDropDownList3'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("h")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField52'])) , 1 , 1)== StrLower("h")):
                         variables['guiOutOfDropDownListH'] = 1
-                        variables['guiOutOfDropDownList4'] = variables['A_LoopField50']
+                        variables['guiOutOfDropDownList4'] = variables['A_LoopField52']
                         if (InStr(variables['guiOutOfDropDownList4'] , "%")):
                             variables['str1'] = variables['guiOutOfDropDownList4']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfDropDownList4'] = " variables."  +  variables['var1']
                         variables['guiOutOfDropDownList4'] = StringTrimLeft(variables['guiOutOfDropDownList4'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("v")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField52'])) , 1 , 1)== StrLower("v")):
                         variables['guiOutOfDropDownListV'] = 1
-                        variables['guiOutOfDropDownList5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField50']  +  ""  +  Chr(34) +  ""
-                        variables['guiOutOfDropDownList52'] = variables['A_LoopField50']
+                        variables['guiOutOfDropDownList5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField52']  +  ""  +  Chr(34) +  ""
+                        variables['guiOutOfDropDownList52'] = variables['A_LoopField52']
                         variables['dynamicGuiSet'] = 1
                         if (InStr(variables['guiOutOfDropDownList5'] , "%")):
                             variables['str1'] = variables['guiOutOfDropDownList5']
@@ -1729,14 +1762,14 @@ def compiler():
                             variables['var1'] = variables['s']
                             variables['guiOutOfDropDownList5'] = " "  +  Chr(34) +  "Gui"  +  variables['GuiNumber']  +  ""  +  Chr(34) +  " + [variables."  +  variables['var1']  +  "]"
                         else:
-                            variables['A_LoopField50OutFixCnavas'] = StringTrimLeft(variables['A_LoopField50'], 1)
-                            variables['guiOutOfDropDownList5'] = " "  +  ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField50OutFixCnavas']  +  ""  +  Chr(34) +  ""
+                            variables['A_LoopField52OutFixCnavas'] = StringTrimLeft(variables['A_LoopField52'], 1)
+                            variables['guiOutOfDropDownList5'] = " "  +  ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField52OutFixCnavas']  +  ""  +  Chr(34) +  ""
                         variables['guiOutOfDropDownList5'] = StringTrimLeft(variables['guiOutOfDropDownList5'], 1)
                         variables['guiOutOfDropDownList52'] = StringTrimLeft(variables['guiOutOfDropDownList52'], 1)
                         variables['isThereArecId'] = 0
-                    if (SubStr(Trim(StrLower(variables['A_LoopField50'])) , 1 , 1)== StrLower("g")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField52'])) , 1 , 1)== StrLower("g")):
                         variables['guiOutOfDropDownListG'] = 1
-                        variables['guiOutOfDropDownList6'] = variables['A_LoopField50']
+                        variables['guiOutOfDropDownList6'] = variables['A_LoopField52']
                         variables['guiOutOfDropDownList6'] = StringTrimLeft(variables['guiOutOfDropDownList6'], 1)
                 variables['DropDownListId'] += 1
                 if (variables['isThereArecId'] == 1):
@@ -1752,59 +1785,59 @@ def compiler():
                 variables['guiOutOfIframeH'] = 0
                 variables['guiOutOfIframeV'] = 0
                 variables['guiOutOfIframeG'] = 0
-                for A_Index51 in range(1, 7 + 1):
-                    variables['A_Index51'] = A_Index51
-                    variables[f'guiOutOfIframe{variables["A_Index51"]}'] = ""
+                for A_Index53 in range(1, 7 + 1):
+                    variables['A_Index53'] = A_Index53
+                    variables[f'guiOutOfIframe{variables["A_Index53"]}'] = ""
                 variables['isThereArecId'] = 1
                 variables['guiOutOfIframe3'] = "150"
                 variables['guiOutOfIframe4'] = "30"
                 variables['dynamicGuiSet'] = 0
                 items = LoopParseFunc(variables['out4'], " ")
-                for A_Index52, A_LoopField52 in enumerate(items, start=1):
-                    variables['A_Index52'] = A_Index52
-                    variables['A_LoopField52'] = A_LoopField52
-                    #MsgBox, |%A_LoopField52%|
+                for A_Index54, A_LoopField54 in enumerate(items, start=1):
+                    variables['A_Index54'] = A_Index54
+                    variables['A_LoopField54'] = A_LoopField54
+                    #MsgBox, |%A_LoopField54%|
                     variables['guiOutOfIframeNum'] += 1
-                    if (SubStr(Trim(StrLower(variables['A_LoopField52'])) , 1 , 1)== StrLower("x")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField54'])) , 1 , 1)== StrLower("x")):
                         variables['guiOutOfIframeX'] = 1
-                        variables['guiOutOfIframe1'] = variables['A_LoopField52']
+                        variables['guiOutOfIframe1'] = variables['A_LoopField54']
                         if (InStr(variables['guiOutOfIframe1'] , "%")):
                             variables['str1'] = variables['guiOutOfIframe1']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfIframe1'] = " variables."  +  variables['var1']
                         variables['guiOutOfIframe1'] = StringTrimLeft(variables['guiOutOfIframe1'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField52'])) , 1 , 1)== StrLower("y")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField54'])) , 1 , 1)== StrLower("y")):
                         variables['guiOutOfIframeY'] = 1
-                        variables['guiOutOfIframe2'] = variables['A_LoopField52']
+                        variables['guiOutOfIframe2'] = variables['A_LoopField54']
                         if (InStr(variables['guiOutOfIframe2'] , "%")):
                             variables['str1'] = variables['guiOutOfIframe2']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfIframe2'] = " variables."  +  variables['var1']
                         variables['guiOutOfIframe2'] = StringTrimLeft(variables['guiOutOfIframe2'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField52'])) , 1 , 1)== StrLower("w")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField54'])) , 1 , 1)== StrLower("w")):
                         variables['guiOutOfIframeW'] = 1
-                        variables['guiOutOfIframe3'] = variables['A_LoopField52']
+                        variables['guiOutOfIframe3'] = variables['A_LoopField54']
                         if (InStr(variables['guiOutOfIframe3'] , "%")):
                             variables['str1'] = variables['guiOutOfIframe3']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfIframe3'] = " variables."  +  variables['var1']
                         variables['guiOutOfIframe3'] = StringTrimLeft(variables['guiOutOfIframe3'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField52'])) , 1 , 1)== StrLower("h")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField54'])) , 1 , 1)== StrLower("h")):
                         variables['guiOutOfIframeH'] = 1
-                        variables['guiOutOfIframe4'] = variables['A_LoopField52']
+                        variables['guiOutOfIframe4'] = variables['A_LoopField54']
                         if (InStr(variables['guiOutOfIframe4'] , "%")):
                             variables['str1'] = variables['guiOutOfIframe4']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfIframe4'] = " variables."  +  variables['var1']
                         variables['guiOutOfIframe4'] = StringTrimLeft(variables['guiOutOfIframe4'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField52'])) , 1 , 1)== StrLower("v")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField54'])) , 1 , 1)== StrLower("v")):
                         variables['guiOutOfIframeV'] = 1
-                        variables['guiOutOfIframe5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField52']  +  ""  +  Chr(34) +  ""
-                        variables['guiOutOfIframe52'] = variables['A_LoopField52']
+                        variables['guiOutOfIframe5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField54']  +  ""  +  Chr(34) +  ""
+                        variables['guiOutOfIframe52'] = variables['A_LoopField54']
                         variables['dynamicGuiSet'] = 1
                         if (InStr(variables['guiOutOfIframe5'] , "%")):
                             variables['str1'] = variables['guiOutOfIframe5']
@@ -1812,14 +1845,14 @@ def compiler():
                             variables['var1'] = variables['s']
                             variables['guiOutOfIframe5'] = " "  +  Chr(34) +  "Gui"  +  variables['GuiNumber']  +  ""  +  Chr(34) +  " + [variables."  +  variables['var1']  +  "]"
                         else:
-                            variables['A_LoopField52OutFixCnavas'] = StringTrimLeft(variables['A_LoopField52'], 1)
-                            variables['guiOutOfIframe5'] = " "  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField52OutFixCnavas']  +  ""  +  Chr(34) +  ""
+                            variables['A_LoopField54OutFixCnavas'] = StringTrimLeft(variables['A_LoopField54'], 1)
+                            variables['guiOutOfIframe5'] = " "  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField54OutFixCnavas']  +  ""  +  Chr(34) +  ""
                         variables['guiOutOfIframe5'] = StringTrimLeft(variables['guiOutOfIframe5'], 1)
                         variables['guiOutOfIframe52'] = StringTrimLeft(variables['guiOutOfIframe52'], 1)
                         variables['isThereArecId'] = 0
-                    if (SubStr(Trim(StrLower(variables['A_LoopField52'])) , 1 , 1)== StrLower("r")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField54'])) , 1 , 1)== StrLower("r")):
                         variables['guiOutOfIframeG'] = 1
-                        variables['guiOutOfIframe6'] = variables['A_LoopField52']
+                        variables['guiOutOfIframe6'] = variables['A_LoopField54']
                         variables['guiOutOfIframe6'] = StringTrimLeft(variables['guiOutOfIframe6'], 1)
                 variables['IframeId'] += 1
                 if (variables['isThereArecId'] == 1):
@@ -1834,59 +1867,59 @@ def compiler():
                 variables['guiOutOfVideoH'] = 0
                 variables['guiOutOfVideoV'] = 0
                 variables['guiOutOfVideoG'] = 0
-                for A_Index53 in range(1, 7 + 1):
-                    variables['A_Index53'] = A_Index53
-                    variables[f'guiOutOfVideo{variables["A_Index53"]}'] = ""
+                for A_Index55 in range(1, 7 + 1):
+                    variables['A_Index55'] = A_Index55
+                    variables[f'guiOutOfVideo{variables["A_Index55"]}'] = ""
                 variables['guiOutOfVideo3'] = "480"
                 variables['guiOutOfVideo4'] = "300"
                 variables['isThereArecId'] = 1
                 variables['dynamicGuiSet'] = 0
                 items = LoopParseFunc(variables['out4'], " ")
-                for A_Index54, A_LoopField54 in enumerate(items, start=1):
-                    variables['A_Index54'] = A_Index54
-                    variables['A_LoopField54'] = A_LoopField54
-                    #MsgBox, |%A_LoopField54%|
+                for A_Index56, A_LoopField56 in enumerate(items, start=1):
+                    variables['A_Index56'] = A_Index56
+                    variables['A_LoopField56'] = A_LoopField56
+                    #MsgBox, |%A_LoopField56%|
                     variables['guiOutOfVideoNum'] += 1
-                    if (SubStr(Trim(StrLower(variables['A_LoopField54'])) , 1 , 1)== StrLower("x")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField56'])) , 1 , 1)== StrLower("x")):
                         variables['guiOutOfVideoX'] = 1
-                        variables['guiOutOfVideo1'] = variables['A_LoopField54']
+                        variables['guiOutOfVideo1'] = variables['A_LoopField56']
                         if (InStr(variables['guiOutOfVideo1'] , "%")):
                             variables['str1'] = variables['guiOutOfVideo1']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfVideo1'] = " variables."  +  variables['var1']
                         variables['guiOutOfVideo1'] = StringTrimLeft(variables['guiOutOfVideo1'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField54'])) , 1 , 1)== StrLower("y")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField56'])) , 1 , 1)== StrLower("y")):
                         variables['guiOutOfVideoY'] = 1
-                        variables['guiOutOfVideo2'] = variables['A_LoopField54']
+                        variables['guiOutOfVideo2'] = variables['A_LoopField56']
                         if (InStr(variables['guiOutOfVideo2'] , "%")):
                             variables['str1'] = variables['guiOutOfVideo2']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfVideo2'] = " variables."  +  variables['var1']
                         variables['guiOutOfVideo2'] = StringTrimLeft(variables['guiOutOfVideo2'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField54'])) , 1 , 1)== StrLower("w")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField56'])) , 1 , 1)== StrLower("w")):
                         variables['guiOutOfVideoW'] = 1
-                        variables['guiOutOfVideo3'] = variables['A_LoopField54']
+                        variables['guiOutOfVideo3'] = variables['A_LoopField56']
                         if (InStr(variables['guiOutOfVideo3'] , "%")):
                             variables['str1'] = variables['guiOutOfVideo3']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfVideo3'] = " variables."  +  variables['var1']
                         variables['guiOutOfVideo3'] = StringTrimLeft(variables['guiOutOfVideo3'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField54'])) , 1 , 1)== StrLower("h")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField56'])) , 1 , 1)== StrLower("h")):
                         variables['guiOutOfVideoH'] = 1
-                        variables['guiOutOfVideo4'] = variables['A_LoopField54']
+                        variables['guiOutOfVideo4'] = variables['A_LoopField56']
                         if (InStr(variables['guiOutOfVideo4'] , "%")):
                             variables['str1'] = variables['guiOutOfVideo4']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfVideo4'] = " variables."  +  variables['var1']
                         variables['guiOutOfVideo4'] = StringTrimLeft(variables['guiOutOfVideo4'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField54'])) , 1 , 1)== StrLower("v")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField56'])) , 1 , 1)== StrLower("v")):
                         variables['guiOutOfVideoV'] = 1
-                        variables['guiOutOfVideo5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField54']  +  ""  +  Chr(34) +  ""
-                        variables['guiOutOfVideo52'] = variables['A_LoopField54']
+                        variables['guiOutOfVideo5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField56']  +  ""  +  Chr(34) +  ""
+                        variables['guiOutOfVideo52'] = variables['A_LoopField56']
                         variables['dynamicGuiSet'] = 1
                         if (InStr(variables['guiOutOfVideo5'] , "%")):
                             variables['str1'] = variables['guiOutOfVideo5']
@@ -1894,14 +1927,14 @@ def compiler():
                             variables['var1'] = variables['s']
                             variables['guiOutOfVideo5'] = " "  +  Chr(34) +  "Gui"  +  variables['GuiNumber']  +  ""  +  Chr(34) +  " + [variables."  +  variables['var1']  +  "]"
                         else:
-                            variables['A_LoopField54OutFixCnavas'] = StringTrimLeft(variables['A_LoopField54'], 1)
-                            variables['guiOutOfVideo5'] = " "  +  ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField54OutFixCnavas']  +  ""  +  Chr(34) +  ""
+                            variables['A_LoopField56OutFixCnavas'] = StringTrimLeft(variables['A_LoopField56'], 1)
+                            variables['guiOutOfVideo5'] = " "  +  ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField56OutFixCnavas']  +  ""  +  Chr(34) +  ""
                         variables['guiOutOfVideo5'] = StringTrimLeft(variables['guiOutOfVideo5'], 1)
                         variables['guiOutOfVideo52'] = StringTrimLeft(variables['guiOutOfVideo52'], 1)
                         variables['isThereArecId'] = 0
-                    if (SubStr(Trim(StrLower(variables['A_LoopField54'])) , 1 , 1)== StrLower("g")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField56'])) , 1 , 1)== StrLower("g")):
                         variables['guiOutOfVideoG'] = 1
-                        variables['guiOutOfVideo6'] = variables['A_LoopField54']
+                        variables['guiOutOfVideo6'] = variables['A_LoopField56']
                         variables['guiOutOfVideo6'] = StringTrimLeft(variables['guiOutOfVideo6'], 1)
                 # 1 url
                 # 2 yt url
@@ -1946,57 +1979,57 @@ def compiler():
                 variables['guiOutOfRectangleH'] = 0
                 variables['guiOutOfRectangleV'] = 0
                 variables['guiOutOfRectangleG'] = 0
-                for A_Index55 in range(1, 6 + 1):
-                    variables['A_Index55'] = A_Index55
-                    variables[f'guiOutOfRectangle{variables["A_Index55"]}'] = ""
+                for A_Index57 in range(1, 6 + 1):
+                    variables['A_Index57'] = A_Index57
+                    variables[f'guiOutOfRectangle{variables["A_Index57"]}'] = ""
                 variables['dynamicGuiSet'] = 0
                 variables['isThereArecId'] = 1
                 items = LoopParseFunc(variables['out4'], " ")
-                for A_Index56, A_LoopField56 in enumerate(items, start=1):
-                    variables['A_Index56'] = A_Index56
-                    variables['A_LoopField56'] = A_LoopField56
-                    #MsgBox, |%A_LoopField56%|
+                for A_Index58, A_LoopField58 in enumerate(items, start=1):
+                    variables['A_Index58'] = A_Index58
+                    variables['A_LoopField58'] = A_LoopField58
+                    #MsgBox, |%A_LoopField58%|
                     variables['guiOutOfRectangleNum'] += 1
-                    if (SubStr(Trim(StrLower(variables['A_LoopField56'])) , 1 , 1)== StrLower("x")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 1)== StrLower("x")):
                         variables['guiOutOfRectangleX'] = 1
-                        variables['guiOutOfRectangle1'] = variables['A_LoopField56']
+                        variables['guiOutOfRectangle1'] = variables['A_LoopField58']
                         if (InStr(variables['guiOutOfRectangle1'] , "%")):
                             variables['str1'] = variables['guiOutOfRectangle1']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfRectangle1'] = " variables."  +  variables['var1']
                         variables['guiOutOfRectangle1'] = StringTrimLeft(variables['guiOutOfRectangle1'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField56'])) , 1 , 1)== StrLower("y")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 1)== StrLower("y")):
                         variables['guiOutOfRectangleY'] = 1
-                        variables['guiOutOfRectangle2'] = variables['A_LoopField56']
+                        variables['guiOutOfRectangle2'] = variables['A_LoopField58']
                         if (InStr(variables['guiOutOfRectangle2'] , "%")):
                             variables['str1'] = variables['guiOutOfRectangle2']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfRectangle2'] = " variables."  +  variables['var1']
                         variables['guiOutOfRectangle2'] = StringTrimLeft(variables['guiOutOfRectangle2'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField56'])) , 1 , 1)== StrLower("w")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 1)== StrLower("w")):
                         variables['guiOutOfRectangleW'] = 1
-                        variables['guiOutOfRectangle3'] = variables['A_LoopField56']
+                        variables['guiOutOfRectangle3'] = variables['A_LoopField58']
                         if (InStr(variables['guiOutOfRectangle3'] , "%")):
                             variables['str1'] = variables['guiOutOfRectangle3']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfRectangle3'] = " variables."  +  variables['var1']
                         variables['guiOutOfRectangle3'] = StringTrimLeft(variables['guiOutOfRectangle3'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField56'])) , 1 , 1)== StrLower("h")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 1)== StrLower("h")):
                         variables['guiOutOfRectangleH'] = 1
-                        variables['guiOutOfRectangle4'] = variables['A_LoopField56']
+                        variables['guiOutOfRectangle4'] = variables['A_LoopField58']
                         if (InStr(variables['guiOutOfRectangle4'] , "%")):
                             variables['str1'] = variables['guiOutOfRectangle4']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfRectangle4'] = " variables."  +  variables['var1']
                         variables['guiOutOfRectangle4'] = StringTrimLeft(variables['guiOutOfRectangle4'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField56'])) , 1 , 1)== StrLower("v")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 1)== StrLower("v")):
                         variables['guiOutOfRectangleV'] = 1
-                        variables['guiOutOfRectangle5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField56']  +  ""  +  Chr(34) +  ""
-                        variables['guiOutOfRectangle52'] = variables['A_LoopField56']
+                        variables['guiOutOfRectangle5'] = ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField58']  +  ""  +  Chr(34) +  ""
+                        variables['guiOutOfRectangle52'] = variables['A_LoopField58']
                         variables['dynamicGuiSet'] = 1
                         if (InStr(variables['guiOutOfRectangle5'] , "%")):
                             variables['str1'] = variables['guiOutOfRectangle5']
@@ -2004,14 +2037,14 @@ def compiler():
                             variables['var1'] = variables['s']
                             variables['guiOutOfRectangle5'] = " "  +  Chr(34) +  "Gui"  +  variables['GuiNumber']  +  ""  +  Chr(34) +  " + [variables."  +  variables['var1']  +  "]"
                         else:
-                            variables['A_LoopField56OutFixCnavas'] = StringTrimLeft(variables['A_LoopField56'], 1)
-                            variables['guiOutOfRectangle5'] = " "  +  ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField56OutFixCnavas']  +  ""  +  Chr(34) +  ""
+                            variables['A_LoopField58OutFixCnavas'] = StringTrimLeft(variables['A_LoopField58'], 1)
+                            variables['guiOutOfRectangle5'] = " "  +  ""  +  Chr(34) +  ""  +  "Gui"  +  variables['GuiNumber']  +  variables['A_LoopField58OutFixCnavas']  +  ""  +  Chr(34) +  ""
                         variables['guiOutOfRectangle5'] = StringTrimLeft(variables['guiOutOfRectangle5'], 1)
                         variables['guiOutOfRectangle52'] = StringTrimLeft(variables['guiOutOfRectangle52'], 1)
                         variables['isThereArecId'] = 0
-                    if (SubStr(Trim(StrLower(variables['A_LoopField56'])) , 1 , 1)== StrLower("g")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 1)== StrLower("g")):
                         variables['guiOutOfRectangleG'] = 1
-                        variables['guiOutOfRectangle6'] = variables['A_LoopField56']
+                        variables['guiOutOfRectangle6'] = variables['A_LoopField58']
                         variables['guiOutOfRectangle6'] = StringTrimLeft(variables['guiOutOfRectangle6'], 1)
                 variables['rectangleId'] += 1
                 if (variables['isThereArecId'] == 1):
@@ -2037,56 +2070,56 @@ def compiler():
                     variables['guiOutOfShowRound'] = "0"
                     variables['boderinGuiYes'] = "Gui"  +  variables['GuiNumber']  +  ".style.border = "  +  Chr(34) +  "2px solid white"  +  Chr(34) +  ";"
                     variables['boderinGuiYesCan'] = "canvas.style.border = "  +  Chr(34) +  "2px solid white"  +  Chr(34) +  ";"
-                    for A_Index57 in range(1, 4 + 1):
-                        variables['A_Index57'] = A_Index57
-                        variables[f'guiOutOfShow{variables["A_Index57"]}'] = ""
+                    for A_Index59 in range(1, 4 + 1):
+                        variables['A_Index59'] = A_Index59
+                        variables[f'guiOutOfShow{variables["A_Index59"]}'] = ""
                     items = LoopParseFunc(variables['out3'], " ")
-                    for A_Index58, A_LoopField58 in enumerate(items, start=1):
-                        variables['A_Index58'] = A_Index58
-                        variables['A_LoopField58'] = A_LoopField58
-                        if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 7)== StrLower("-border")):
+                    for A_Index60, A_LoopField60 in enumerate(items, start=1):
+                        variables['A_Index60'] = A_Index60
+                        variables['A_LoopField60'] = A_LoopField60
+                        if (SubStr(Trim(StrLower(variables['A_LoopField60'])) , 1 , 7)== StrLower("-border")):
                             variables['boderinGuiYes'] = "Gui"  +  variables['GuiNumber']  +  ".style.border = "  +  Chr(34) +  ""  +  Chr(34) +  ";"
                             variables['boderinGuiYesCan'] = "canvas.style.border = "  +  Chr(34) +  ""  +  Chr(34) +  ";"
-                        if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 12)== StrLower("+WebsiteMode")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField60'])) , 1 , 12)== StrLower("+WebsiteMode")):
                             variables['isFullScren'] = 1
-                        if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 1)== StrLower("x")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField60'])) , 1 , 1)== StrLower("x")):
                             variables['guiOutOfShowX'] = 1
-                            variables['guiOutOfShow1'] = variables['A_LoopField58']
+                            variables['guiOutOfShow1'] = variables['A_LoopField60']
                             if (InStr(variables['guiOutOfShow1'] , "%")):
                                 variables['str1'] = variables['guiOutOfShow1']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfShow1'] = " "  +  Chr(34) +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfShow1'] = StringTrimLeft(variables['guiOutOfShow1'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 1)== StrLower("y")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField60'])) , 1 , 1)== StrLower("y")):
                             variables['guiOutOfShowY'] = 1
-                            variables['guiOutOfShow2'] = variables['A_LoopField58']
+                            variables['guiOutOfShow2'] = variables['A_LoopField60']
                             if (InStr(variables['guiOutOfShow2'] , "%")):
                                 variables['str1'] = variables['guiOutOfShow2']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfShow2'] = " "  +  Chr(34) +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfShow2'] = StringTrimLeft(variables['guiOutOfShow2'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 1)== StrLower("w")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField60'])) , 1 , 1)== StrLower("w")):
                             variables['guiOutOfShowW'] = 1
-                            variables['guiOutOfShow3'] = variables['A_LoopField58']
+                            variables['guiOutOfShow3'] = variables['A_LoopField60']
                             if (InStr(variables['guiOutOfShow3'] , "%")):
                                 variables['str1'] = variables['guiOutOfShow3']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfShow3'] = " "  +  Chr(34) +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfShow3'] = StringTrimLeft(variables['guiOutOfShow3'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 1)== StrLower("h")):
+                        if (SubStr(Trim(StrLower(variables['A_LoopField60'])) , 1 , 1)== StrLower("h")):
                             variables['guiOutOfShowH'] = 1
-                            variables['guiOutOfShow4'] = variables['A_LoopField58']
+                            variables['guiOutOfShow4'] = variables['A_LoopField60']
                             if (InStr(variables['guiOutOfShow4'] , "%")):
                                 variables['str1'] = variables['guiOutOfShow4']
                                 variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                                 variables['var1'] = variables['s']
                                 variables['guiOutOfShow4'] = " "  +  Chr(34) +  Chr(34) +  " + variables."  +  variables['var1']  +  " + "  +  Chr(34) +  ""
                             variables['guiOutOfShow4'] = StringTrimLeft(variables['guiOutOfShow4'], 1)
-                        if (SubStr(Trim(StrLower(variables['A_LoopField58'])) , 1 , 1)== StrLower("r")):
-                            variables['guiOutOfShowRound'] = variables['A_LoopField58']
+                        if (SubStr(Trim(StrLower(variables['A_LoopField60'])) , 1 , 1)== StrLower("r")):
+                            variables['guiOutOfShowRound'] = variables['A_LoopField60']
                             variables['guiOutOfShowRound'] = StringTrimLeft(variables['guiOutOfShowRound'], 1)
                             if (InStr(variables['guiOutOfShowRound'] , "%")):
                                 variables['str1'] = variables['guiOutOfShowRound']
@@ -2148,8 +2181,8 @@ def compiler():
                         variables['weUseCnanvasAtALLEver'] = 1
                     variables['jsCode'] += "\n"  +  variables['jsCode0']  +  "\n"  +  variables['FullScrenFixCode']  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 12)== StrLower("GuiControl, ")) or(SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 11)== StrLower("GuiControl ")):
-            variables['str1'] = variables['A_LoopField32']
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 12)== StrLower("GuiControl, ")) or(SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 11)== StrLower("GuiControl ")):
+            variables['str1'] = variables['A_LoopField34']
             variables['str1'] = StrReplace(variables['str1'] , ": " , ", ")
             variables['s'] = StrSplit(variables['str1'] , "," , 1)
             variables['out1'] = Trim(variables['s'])
@@ -2178,43 +2211,43 @@ def compiler():
                 variables['guiOutOfMoveY'] = 0
                 variables['guiOutOfMoveW'] = 0
                 variables['guiOutOfMoveH'] = 0
-                for A_Index59 in range(1, 4 + 1):
-                    variables['A_Index59'] = A_Index59
-                    variables[f'guiOutOfMove{variables["A_Index59"]}'] = ""
+                for A_Index61 in range(1, 4 + 1):
+                    variables['A_Index61'] = A_Index61
+                    variables[f'guiOutOfMove{variables["A_Index61"]}'] = ""
                 items = LoopParseFunc(variables['out4'], " ")
-                for A_Index60, A_LoopField60 in enumerate(items, start=1):
-                    variables['A_Index60'] = A_Index60
-                    variables['A_LoopField60'] = A_LoopField60
-                    if (SubStr(Trim(StrLower(variables['A_LoopField60'])) , 1 , 1)== StrLower("x")):
+                for A_Index62, A_LoopField62 in enumerate(items, start=1):
+                    variables['A_Index62'] = A_Index62
+                    variables['A_LoopField62'] = A_LoopField62
+                    if (SubStr(Trim(StrLower(variables['A_LoopField62'])) , 1 , 1)== StrLower("x")):
                         variables['guiOutOfMoveX'] = 1
-                        variables['guiOutOfMove1'] = variables['A_LoopField60']
+                        variables['guiOutOfMove1'] = variables['A_LoopField62']
                         if (InStr(variables['guiOutOfMove1'] , "%")):
                             variables['str1'] = variables['guiOutOfMove1']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfMove1'] = " variables."  +  variables['var1']
                         variables['guiOutOfMove1'] = StringTrimLeft(variables['guiOutOfMove1'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField60'])) , 1 , 1)== StrLower("y")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField62'])) , 1 , 1)== StrLower("y")):
                         variables['guiOutOfMoveY'] = 1
-                        variables['guiOutOfMove2'] = variables['A_LoopField60']
+                        variables['guiOutOfMove2'] = variables['A_LoopField62']
                         if (InStr(variables['guiOutOfMove2'] , "%")):
                             variables['str1'] = variables['guiOutOfMove2']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfMove2'] = " variables."  +  variables['var1']
                         variables['guiOutOfMove2'] = StringTrimLeft(variables['guiOutOfMove2'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField60'])) , 1 , 1)== StrLower("w")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField62'])) , 1 , 1)== StrLower("w")):
                         variables['guiOutOfMoveW'] = 1
-                        variables['guiOutOfMove3'] = variables['A_LoopField60']
+                        variables['guiOutOfMove3'] = variables['A_LoopField62']
                         if (InStr(variables['guiOutOfMove3'] , "%")):
                             variables['str1'] = variables['guiOutOfMove3']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
                             variables['var1'] = variables['s']
                             variables['guiOutOfMove3'] = " variables."  +  variables['var1']
                         variables['guiOutOfMove3'] = StringTrimLeft(variables['guiOutOfMove3'], 1)
-                    if (SubStr(Trim(StrLower(variables['A_LoopField60'])) , 1 , 1)== StrLower("h")):
+                    if (SubStr(Trim(StrLower(variables['A_LoopField62'])) , 1 , 1)== StrLower("h")):
                         variables['guiOutOfMoveH'] = 1
-                        variables['guiOutOfMove4'] = variables['A_LoopField60']
+                        variables['guiOutOfMove4'] = variables['A_LoopField62']
                         if (InStr(variables['guiOutOfMove4'] , "%")):
                             variables['str1'] = variables['guiOutOfMove4']
                             variables['s'] = StrSplit(variables['str1'] , "%" , 2)
@@ -2285,8 +2318,8 @@ def compiler():
             variables['out0'] = StrReplace(variables['out0'] , Chr(44) +  Chr(32) +  Chr(44) +  Chr(32), "")
             variables['jsCode'] += variables['out0']  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 8)== StrLower("Random, ")):
-            variables['sstr1'] = variables['A_LoopField32']
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 8)== StrLower("Random, ")):
+            variables['sstr1'] = variables['A_LoopField34']
             variables['s'] = StrSplit(variables['sstr1'] , "," , 2)
             variables['out00'] = variables['s']
             variables['s'] = StrSplit(variables['sstr1'] , "," , 3)
@@ -2305,9 +2338,9 @@ def compiler():
             #MsgBox, % var1
             variables['lineDone'] = 1
             variables['jsCode'] += variables['var1']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 7)== "gosub, "):
-            #MsgBox, % A_LoopField32
-            variables['sstr1'] = variables['A_LoopField32']
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 7)== "gosub, "):
+            #MsgBox, % A_LoopField34
+            variables['sstr1'] = variables['A_LoopField34']
             variables['s'] = StrSplit(variables['sstr1'] , "," , 2)
             variables['out1'] = variables['s']
             variables['out1'] = Trim(variables['out1'])
@@ -2315,8 +2348,8 @@ def compiler():
             #MsgBox, % out2
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out2']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 10)== "settimer, "):
-            variables['sstr1'] = variables['A_LoopField32']
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 10)== "settimer, "):
+            variables['sstr1'] = variables['A_LoopField34']
             variables['s'] = StrSplit(variables['sstr1'] , "," , 2)
             variables['out1'] = Trim(variables['s'])
             variables['s'] = StrSplit(variables['sstr1'] , "," , 3)
@@ -2337,9 +2370,9 @@ def compiler():
             #MsgBox, % out3
             variables['jsCode'] += variables['out3']  +  "\n"
             variables['lineDone'] = 1
-        elif (RegExReplace(variables['A_LoopField32'] , "^\\w+:$" , "") != variables['A_LoopField32'])and(Trim(SubStr(variables['A_LoopField32'] , 0)) == ":")and(variables['lineDone']  != 1):
-            #MsgBox, % A_LoopField32
-            variables['out1'] = variables['A_LoopField32']
+        elif (RegExReplace(variables['A_LoopField34'] , "^\\w+:$" , "") != variables['A_LoopField34'])and(Trim(SubStr(variables['A_LoopField34'] , 0)) == ":")and(variables['lineDone']  != 1):
+            #MsgBox, % A_LoopField34
+            variables['out1'] = variables['A_LoopField34']
             variables['out1'] = Trim(variables['out1'])
             variables['out1'] = StringTrimRight(variables['out1'], 1)
             if (variables['out1'] == "OnKeyPress"):
@@ -2351,32 +2384,32 @@ def compiler():
             #MsgBox, % out1
             #~ MsgBox, % see
             variables['lineDone'] = 1
-        elif (RegExReplace(variables['A_LoopField32'] , "^.*::$" , "")== "")and(variables['lineDone']  != 1):
-            if (variables['A_LoopField32']  != ""):
-                variables['out1'] = variables['A_LoopField32']
+        elif (RegExReplace(variables['A_LoopField34'] , "^.*::$" , "")== "")and(variables['lineDone']  != 1):
+            if (variables['A_LoopField34']  != ""):
+                variables['out1'] = variables['A_LoopField34']
                 variables['out1'] = Trim(variables['out1'])
                 #MsgBox, % out1
                 variables['HotKeyShift'] = 0
                 variables['HotKeyAlt'] = 0
                 variables['HotKeyCtrl'] = 0
                 items = LoopParseFunc(variables['out1'])
-                for A_Index61, A_LoopField61 in enumerate(items, start=1):
-                    variables['A_Index61'] = A_Index61
-                    variables['A_LoopField61'] = A_LoopField61
-                    if (variables['A_LoopField61'] == "!"):
+                for A_Index63, A_LoopField63 in enumerate(items, start=1):
+                    variables['A_Index63'] = A_Index63
+                    variables['A_LoopField63'] = A_LoopField63
+                    if (variables['A_LoopField63'] == "!"):
                         variables['HotKeyAlt'] = 1
-                    if (variables['A_LoopField61'] == "+"):
+                    if (variables['A_LoopField63'] == "+"):
                         variables['HotKeyShift'] = 1
-                    if (variables['A_LoopField61'] == "^"):
+                    if (variables['A_LoopField63'] == "^"):
                         variables['HotKeyCtrl'] = 1
                 variables['HotKeylettersOnly'] = ""
                 variables['HotKeylettersOnly'] = RegExReplace(variables['out1'] , "[^a-zA-Z]" , "")
                 variables['HotKeylettersOnly'] = TitleCaseString(variables['HotKeylettersOnly'])
                 variables['HotKeylettersOnlySTRLEN'] = 0
                 items = LoopParseFunc(variables['HotKeylettersOnly'])
-                for A_Index62, A_LoopField62 in enumerate(items, start=1):
-                    variables['A_Index62'] = A_Index62
-                    variables['A_LoopField62'] = A_LoopField62
+                for A_Index64, A_LoopField64 in enumerate(items, start=1):
+                    variables['A_Index64'] = A_Index64
+                    variables['A_LoopField64'] = A_LoopField64
                     variables['HotKeylettersOnlySTRLEN'] += 1
                 if (variables['HotKeylettersOnlySTRLEN']  != 1):
                     variables['HotKeylettersOnly'] = "Arrow"  +  variables['HotKeylettersOnly']
@@ -2405,12 +2438,12 @@ def compiler():
                 #MsgBox, % out2
                 variables['jsCode'] += variables['out2']  +  "\n"
                 variables['lineDone'] = 1
-        elif (variables['A_LoopField32'] == "Return"):
+        elif (variables['A_LoopField34'] == "Return"):
             variables['jsCode'] += "}"  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 10)== "inputbox, "):
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 10)== "inputbox, "):
             variables['lineDone'] = 1
-            variables['out2'] = StringTrimLeft(variables['A_LoopField32'], 10)
+            variables['out2'] = StringTrimLeft(variables['A_LoopField34'], 10)
             variables['sstr1'] = variables['out2']
             variables['s'] = StrSplit(variables['sstr1'] , "," , 1)
             variables['ou1'] = variables['s']
@@ -2425,47 +2458,47 @@ def compiler():
                 variables['ou3'] = variables['ou2']
             variables['var1'] = "variables."  +  variables['ou1']  +  " = prompt('"  +  variables['ou3']  +  "');"
             variables['jsCode'] += variables['var1']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 17)== StrLower("StringTrimRight, ")):
-            variables['varr1'] = StrSplit(variables['A_LoopField32'] , "," , 2)
-            variables['varr2'] = StrSplit(variables['A_LoopField32'] , "," , 3)
-            variables['varr3'] = StrSplit(variables['A_LoopField32'] , "," , 4)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 17)== StrLower("StringTrimRight, ")):
+            variables['varr1'] = StrSplit(variables['A_LoopField34'] , "," , 2)
+            variables['varr2'] = StrSplit(variables['A_LoopField34'] , "," , 3)
+            variables['varr3'] = StrSplit(variables['A_LoopField34'] , "," , 4)
             variables['outt1'] = Trim(transpileVariables(variables['varr1'] , variables['functionNames']))
             variables['outt2'] = Trim(transpileVariables(variables['varr2'] , variables['functionNames']))
             variables['outt3'] = Trim(transpileVariables(variables['varr3'] , variables['functionNames']))
             variables['out'] = variables['outt1']  +  " = "  +  "StringTrimRight("  +  variables['outt2']  +  ", "  +  variables['outt3']  +  ")"
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 16)== StrLower("StringTrimLeft, ")):
-            variables['varr1'] = StrSplit(variables['A_LoopField32'] , "," , 2)
-            variables['varr2'] = StrSplit(variables['A_LoopField32'] , "," , 3)
-            variables['varr3'] = StrSplit(variables['A_LoopField32'] , "," , 4)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 16)== StrLower("StringTrimLeft, ")):
+            variables['varr1'] = StrSplit(variables['A_LoopField34'] , "," , 2)
+            variables['varr2'] = StrSplit(variables['A_LoopField34'] , "," , 3)
+            variables['varr3'] = StrSplit(variables['A_LoopField34'] , "," , 4)
             variables['outt1'] = Trim(transpileVariables(variables['varr1'] , variables['functionNames']))
             variables['outt2'] = Trim(transpileVariables(variables['varr2'] , variables['functionNames']))
             variables['outt3'] = Trim(transpileVariables(variables['varr3'] , variables['functionNames']))
             variables['out'] = variables['outt1']  +  " = "  +  "StringTrimLeft("  +  variables['outt2']  +  ", "  +  variables['outt3']  +  ")"
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 7)== StrLower("Run, % ")):
-            variables['sstr1'] = StringTrimLeft(variables['A_LoopField32'], 7)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 7)== StrLower("Run, % ")):
+            variables['sstr1'] = StringTrimLeft(variables['A_LoopField34'], 7)
             variables['out1'] = transpileVariables(variables['sstr1'] , variables['functionNames'])
             variables['out2'] = "window.open("  +  variables['out1']  +  ");"
             variables['jsCode'] += variables['out2']  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 5)== StrLower("Run, ")) and( not (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 7)== StrLower("Run, % "))):
-            variables['sstr1'] = StringTrimLeft(variables['A_LoopField32'], 5)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 5)== StrLower("Run, ")) and( not (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 7)== StrLower("Run, % "))):
+            variables['sstr1'] = StringTrimLeft(variables['A_LoopField34'], 5)
             variables['out1'] = transpileLowVariables(variables['sstr1'])
             variables['out2'] = "window.open("  +  variables['out1']  +  ");"
             variables['jsCode'] += variables['out2']  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 6)== StrLower("Run, %")):
-            variables['sstr1'] = StringTrimLeft(variables['A_LoopField32'], 6)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 6)== StrLower("Run, %")):
+            variables['sstr1'] = StringTrimLeft(variables['A_LoopField34'], 6)
             variables['out1'] = transpileLowVariables(variables['sstr1'])
             variables['out2'] = "window.open("  +  variables['out1']  +  ");"
             variables['jsCode'] += variables['out2']  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 13)== StrLower("MouseGetPos, ")):
-            variables['str1'] = variables['A_LoopField32']
-            variables['out2'] = StringTrimLeft(variables['A_LoopField32'], 13)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 13)== StrLower("MouseGetPos, ")):
+            variables['str1'] = variables['A_LoopField34']
+            variables['out2'] = StringTrimLeft(variables['A_LoopField34'], 13)
             #MsgBox, % out2
             variables['out2'] = Trim(variables['out2'])
             #MsgBox, |%out2%|
@@ -2490,9 +2523,9 @@ def compiler():
                 variables['var1'] = variables['line']  +  " = MouseGetPos("  +  Chr(34) +  "x"  +  Chr(34) +  ")"
                 variables['jsCode'] += variables['var1']  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 11)== StrLower("SoundPlay, ")):
-            variables['str1'] = variables['A_LoopField32']
-            variables['out2'] = StringTrimLeft(variables['A_LoopField32'], 11)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 11)== StrLower("SoundPlay, ")):
+            variables['str1'] = variables['A_LoopField34']
+            variables['out2'] = StringTrimLeft(variables['A_LoopField34'], 11)
             variables['out2'] = Trim(variables['out2'])
             #MsgBox, |%out2%|
             variables['str1'] = variables['out2']
@@ -2518,16 +2551,16 @@ def compiler():
                 variables['var1'] = "SoundPlay("  +  Chr(34) +  variables['str1']  +  Chr(34) +  ")"
             variables['jsCode'] += variables['var1']  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 6)== StrLower("Icon, ")):
-            variables['out2'] = StringTrimLeft(variables['A_LoopField32'], 6)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 6)== StrLower("Icon, ")):
+            variables['out2'] = StringTrimLeft(variables['A_LoopField34'], 6)
             variables['jsCode'] += "changeFavicon("  +  Chr(34) +  Trim(variables['out2']) +  Chr(34) +  ")"  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 7)== StrLower("Title, ")):
-            variables['str1'] = StringTrimLeft(variables['A_LoopField32'], 7)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 7)== StrLower("Title, ")):
+            variables['str1'] = StringTrimLeft(variables['A_LoopField34'], 7)
             variables['jsCode'] += "document.title = "  +  transpileLowVariables(Trim(variables['str1']))  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 12)== "fileappend, "):
-            variables['sstr1'] = variables['A_LoopField32']
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 12)== "fileappend, "):
+            variables['sstr1'] = variables['A_LoopField34']
             variables['s'] = StrSplit(variables['sstr1'] , "," , 2)
             variables['out1'] = Trim(variables['s'])
             variables['s'] = StrSplit(variables['sstr1'] , "," , 3)
@@ -2538,8 +2571,8 @@ def compiler():
             #MsgBox, % out3
             variables['jsCode'] += variables['out3']  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 10)== StrLower("FileRead, ")):
-            variables['sstr1'] = variables['A_LoopField32']
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 10)== StrLower("FileRead, ")):
+            variables['sstr1'] = variables['A_LoopField34']
             variables['s'] = StrSplit(variables['sstr1'] , ", " , 2)
             variables['out1'] = variables['s']
             variables['s'] = StrSplit(variables['sstr1'] , ", " , 3)
@@ -2560,20 +2593,20 @@ def compiler():
             variables['out3'] = "variables."  +  variables['out1']  +  " = "  +  "textData"  +  str(variables['numOfTextData'])
             variables['jsCode'] += "\n"  +  variables['out3']  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 9)== StrLower("Sleep, % ")):
-            variables['var1'] = StringTrimLeft(variables['A_LoopField32'], 9)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 9)== StrLower("Sleep, % ")):
+            variables['var1'] = StringTrimLeft(variables['A_LoopField34'], 9)
             variables['var2'] = transpileVariables(variables['var1'] , variables['functionNames'])
             variables['out2'] = "await sleep("  +  variables['var2']  +  ")"
             variables['jsCode'] += variables['out2']  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 7)== StrLower("Sleep, ")) and( not (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 9)== StrLower("Sleep, % "))):
-            variables['var1'] = StringTrimLeft(variables['A_LoopField32'], 7)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 7)== StrLower("Sleep, ")) and( not (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 9)== StrLower("Sleep, % "))):
+            variables['var1'] = StringTrimLeft(variables['A_LoopField34'], 7)
             variables['var2'] = transpileVariables(variables['var1'] , variables['functionNames'])
             variables['out2'] = "await sleep("  +  variables['var2']  +  ")"
             variables['jsCode'] += variables['out2']  +  "\n"
             variables['lineDone'] = 1
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 7)== StrLower("Msgbox,")) and( not (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 10)== StrLower("Msgbox, % ")))and(InStr(variables['A_LoopField32'] , " % ")) and(CountCommasWithoutBacktick(variables['A_LoopField32'])):
-            variables['sstr1'] = variables['A_LoopField32']
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 7)== StrLower("Msgbox,")) and( not (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 10)== StrLower("Msgbox, % ")))and(InStr(variables['A_LoopField34'] , " % ")) and(CountCommasWithoutBacktick(variables['A_LoopField34'])):
+            variables['sstr1'] = variables['A_LoopField34']
             variables['sstr1'] = StrReplace(variables['sstr1'] , ""  +  Chr(96) +  "," , "|comasdhkbdsjvfesvyessfe6uw7igfweiugvseuvk|la|")
             variables['s'] = StrSplit(variables['sstr1'] , "," , 2)
             variables['Options'] = variables['s']
@@ -2610,8 +2643,8 @@ def compiler():
             #MsgBox, % var1
             variables['lineDone'] = 1
             variables['jsCode'] += variables['var1']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 7)== StrLower("Msgbox,")) and( not (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 10)== StrLower("Msgbox, % ")))and( not (InStr(variables['A_LoopField32'] , " % ")))and(CountCommasWithoutBacktick(variables['A_LoopField32'])):
-            variables['sstr1'] = variables['A_LoopField32']
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 7)== StrLower("Msgbox,")) and( not (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 10)== StrLower("Msgbox, % ")))and( not (InStr(variables['A_LoopField34'] , " % ")))and(CountCommasWithoutBacktick(variables['A_LoopField34'])):
+            variables['sstr1'] = variables['A_LoopField34']
             variables['sstr1'] = StrReplace(variables['sstr1'] , Chr(96) +  "," , "|comasdhkbdsjvfesvyessfe6uw7igfweiugvseuvk|la|")
             variables['s'] = StrSplit(variables['sstr1'] , "," , 2)
             variables['Options'] = variables['s']
@@ -2624,13 +2657,13 @@ def compiler():
             variables['numOfProcentSings'] = 0
             #MsgBox, % var1
             items = LoopParseFunc(variables['var1'])
-            for A_Index63, A_LoopField63 in enumerate(items, start=1):
-                variables['A_Index63'] = A_Index63
-                variables['A_LoopField63'] = A_LoopField63
-                if (variables['A_LoopField63'] == "%"):
+            for A_Index65, A_LoopField65 in enumerate(items, start=1):
+                variables['A_Index65'] = A_Index65
+                variables['A_LoopField65'] = A_LoopField65
+                if (variables['A_LoopField65'] == "%"):
                     variables['numOfProcentSings'] += 1
-            for A_Index64 in range(1, variables['numOfProcentSings'] + 1):
-                variables['A_Index64'] = A_Index64
+            for A_Index66 in range(1, variables['numOfProcentSings'] + 1):
+                variables['A_Index66'] = A_Index66
                 # Find the position of the first occurrence of "%"
                 if (InStr(variables['var1'] , "%")):
                     variables['pos'] = InStr(variables['var1'] , "%")
@@ -2668,8 +2701,8 @@ def compiler():
             #MsgBox, % var1
             variables['lineDone'] = 1
             variables['jsCode'] += variables['var1']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 7)== StrLower("Msgbox,")) and( not (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 10)== StrLower("Msgbox, % ")))and( not (InStr(variables['A_LoopField32'] , " % ")))and(variables['lineDone']  != 1)and( not (CountCommasWithoutBacktick(variables['A_LoopField32']))):
-            variables['ALoopField'] = StrReplace(variables['A_LoopField32'] , ""  +  Chr(96) +  "," , "|comasdhkbdsjvfesvyessfe6uw7igfweiugvseuvk|la|")
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 7)== StrLower("Msgbox,")) and( not (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 10)== StrLower("Msgbox, % ")))and( not (InStr(variables['A_LoopField34'] , " % ")))and(variables['lineDone']  != 1)and( not (CountCommasWithoutBacktick(variables['A_LoopField34']))):
+            variables['ALoopField'] = StrReplace(variables['A_LoopField34'] , ""  +  Chr(96) +  "," , "|comasdhkbdsjvfesvyessfe6uw7igfweiugvseuvk|la|")
             variables['out2'] = StringTrimLeft(variables['ALoopField'], 7)
             variables['lineDone'] = 1
             #MsgBox, % out2
@@ -2685,9 +2718,9 @@ def compiler():
             variables['timeoutMsgbox'] = 0
             variables['var1'] = "await showCustomMessageBox({},"  +  Chr(34) +  variables['Title']  +  Chr(34) +  ", "  +  str(variables['var1']) +  ", "  +  str(variables['Options']) +  ", "  +  str(variables['timeoutMsgbox']) +  ")"
             variables['jsCode'] += variables['var1']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 9)== StrLower("Msgbox, %")):
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 9)== StrLower("Msgbox, %")):
             variables['lineDone'] = 1
-            variables['out2'] = StringTrimLeft(variables['A_LoopField32'], 9)
+            variables['out2'] = StringTrimLeft(variables['A_LoopField34'], 9)
             #MsgBox, % out2
             variables['out2'] = Trim(variables['out2'])
             #MsgBox, % out2
@@ -2696,37 +2729,37 @@ def compiler():
             variables['var1'] = "await showCustomMessageBox({},"  +  Chr(34) +  " "  +  Chr(34) +  ", "  +  str(variables['line']) +  ", "  +  "0"  +  ", "  +  "0."  +  ")"
             #MsgBox, % var1
             variables['jsCode'] += variables['var1']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 3)== StrLower("if ")):
-            variables['var1'] = StringTrimLeft(variables['A_LoopField32'], 3)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 3)== StrLower("if ")):
+            variables['var1'] = StringTrimLeft(variables['A_LoopField34'], 3)
             variables['var2'] = Trim(transpileVariables(variables['var1'] , variables['functionNames']))
             variables['out'] = "if ("  +  variables['var2']  +  ")"
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 8)== StrLower("else if ")):
-            variables['var1'] = StringTrimLeft(variables['A_LoopField32'], 8)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 8)== StrLower("else if ")):
+            variables['var1'] = StringTrimLeft(variables['A_LoopField34'], 8)
             variables['var2'] = Trim(transpileVariables(variables['var1'] , variables['functionNames']))
             variables['out'] = "else if ("  +  variables['var2']  +  ")"
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 3)== StrLower("if(")):
-            variables['var1'] = StringTrimLeft(variables['A_LoopField32'], 2)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 3)== StrLower("if(")):
+            variables['var1'] = StringTrimLeft(variables['A_LoopField34'], 2)
             variables['var2'] = Trim(transpileVariables(variables['var1'] , variables['functionNames']))
             variables['out'] = "if ("  +  variables['var2']  +  ")"
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 8)== StrLower("else if(")):
-            variables['var1'] = StringTrimLeft(variables['A_LoopField32'], 7)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 8)== StrLower("else if(")):
+            variables['var1'] = StringTrimLeft(variables['A_LoopField34'], 7)
             variables['var2'] = Trim(transpileVariables(variables['var1'] , variables['functionNames']))
             variables['out'] = "else if ("  +  variables['var2']  +  ")"
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out']  +  "\n"
-        elif (SubStr(Trim(variables['A_LoopField32']), 1 , 7)== "return "):
-            variables['sstrFormReturn'] = StringTrimLeft(variables['A_LoopField32'], 7)
+        elif (SubStr(Trim(variables['A_LoopField34']), 1 , 7)== "return "):
+            variables['sstrFormReturn'] = StringTrimLeft(variables['A_LoopField34'], 7)
             variables['var12312'] = transpileVariables(variables['sstrFormReturn'] , variables['functionNames'])
             variables['out'] = "return "  +  variables['var12312']
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out']  +  "\n"
-        elif (StrLower(variables['A_LoopField32'])== "loop"):
+        elif (StrLower(variables['A_LoopField34'])== "loop"):
             # infinity loops
             variables['haveWeEverUsedAloop'] = 1
             variables['lineDone'] = 1
@@ -2740,8 +2773,8 @@ def compiler():
             variables['AHKcodeLoopfixa1'] = "nl|itsaersdtgtgfergsdgfsegdfsedAA|"  +  str(variables['AindexcharLength'])
             variables['AindexcharLength'] += 1
             variables['jsCode'] += variables['AHKcodeLoopfixa1']  +  "\n"  +  variables['var1']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 6)== "loop, ")and(SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 8) != "loop, % ")and(SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 7) != "loop % ")and(SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 11) != StrLower("Loop, Parse")):
-            variables['sstr123'] = variables['A_LoopField32']
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 6)== "loop, ")and(SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 8) != "loop, % ")and(SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 7) != "loop % ")and(SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 11) != StrLower("Loop, Parse")):
+            variables['sstr123'] = variables['A_LoopField34']
             #MsgBox, % sstr123
             variables['out2'] = StringTrimLeft(variables['sstr123'], 6)
             #MsgBox % out2
@@ -2762,8 +2795,8 @@ def compiler():
             variables['AindexcharLength'] += 1
             variables['lineDone'] = 1
             variables['jsCode'] += variables['AHKcodeLoopfixa1']  +  "\n"  +  variables['var1']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 8)== "loop, % "):
-            variables['sstr123'] = variables['A_LoopField32']
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 8)== "loop, % "):
+            variables['sstr123'] = variables['A_LoopField34']
             #MsgBox, % sstr123
             variables['out2'] = StringTrimLeft(variables['sstr123'], 8)
             #MsgBox % out2
@@ -2784,8 +2817,8 @@ def compiler():
             variables['AindexcharLength'] += 1
             variables['lineDone'] = 1
             variables['jsCode'] += variables['AHKcodeLoopfixa1']  +  "\n"  +  variables['var1']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 13)== StrLower("Loop, Parse, ")):
-            variables['var1'] = variables['A_LoopField32']
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 13)== StrLower("Loop, Parse, ")):
+            variables['var1'] = variables['A_LoopField34']
             variables['lineDone'] = 1
             variables['var1'] = Trim(variables['var1'])
             variables['var1'] = StringTrimLeft(variables['var1'], 13)
@@ -2824,34 +2857,34 @@ def compiler():
             variables['AHKcodeLoopfixa1'] = "lp|itsaersdtgtgfergsdgfsegdfsedAA|"  +  str(variables['AindexcharLength'])
             variables['AindexcharLength'] += 1
             variables['jsCode'] += variables['AHKcodeLoopfixa1']  +  "\n"  +  variables['var1out']  +  "\n"
-        elif (SubStr(variables['A_LoopField32'] , -1)== "++"):
-            variables['sstr123'] = Trim(variables['A_LoopField32'])
+        elif (SubStr(variables['A_LoopField34'] , -1)== "++"):
+            variables['sstr123'] = Trim(variables['A_LoopField34'])
             variables['sstr123'] = StringTrimRight(variables['sstr123'], 2)
             variables['sstr123'] = Trim(transpileVariables(variables['sstr123'] , variables['functionNames']))
             variables['out'] = variables['sstr123']  +  " += 1"
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out']  +  "\n"
-        elif (SubStr(variables['A_LoopField32'] , -1)== "--"):
-            variables['sstr123'] = Trim(variables['A_LoopField32'])
+        elif (SubStr(variables['A_LoopField34'] , -1)== "--"):
+            variables['sstr123'] = Trim(variables['A_LoopField34'])
             variables['sstr123'] = StringTrimRight(variables['sstr123'], 2)
             variables['sstr123'] = Trim(transpileVariables(variables['sstr123'] , variables['functionNames']))
             variables['out'] = variables['sstr123']  +  " -= 1"
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out']  +  "\n"
-        elif (( InStr(variables['A_LoopField32'] , " := ")) or(InStr(variables['A_LoopField32'] , " .= ")) or(InStr(variables['A_LoopField32'] , " += ")) or(InStr(variables['A_LoopField32'] , " -= ")) or(InStr(variables['A_LoopField32'] , " *= ")) and(variables['lineDone'] == 0)and( not (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 1)== Chr(59)))):
-            if ( not (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 1)== Chr(59))):
+        elif (( InStr(variables['A_LoopField34'] , " := ")) or(InStr(variables['A_LoopField34'] , " .= ")) or(InStr(variables['A_LoopField34'] , " += ")) or(InStr(variables['A_LoopField34'] , " -= ")) or(InStr(variables['A_LoopField34'] , " *= ")) and(variables['lineDone'] == 0)and( not (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 1)== Chr(59)))):
+            if ( not (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 1)== Chr(59))):
                 variables['lineDone'] = 1
-                variables['sstr123'] = variables['A_LoopField32']
+                variables['sstr123'] = variables['A_LoopField34']
                 variables['whatVarWeUse'] = ""
-                if (InStr(variables['A_LoopField32'] , " := ")):
+                if (InStr(variables['A_LoopField34'] , " := ")):
                     variables['whatVarWeUse'] = " = "
-                if (InStr(variables['A_LoopField32'] , " .= ")):
+                if (InStr(variables['A_LoopField34'] , " .= ")):
                     variables['whatVarWeUse'] = " += "
-                if (InStr(variables['A_LoopField32'] , " += ")):
+                if (InStr(variables['A_LoopField34'] , " += ")):
                     variables['whatVarWeUse'] = " += "
-                if (InStr(variables['A_LoopField32'] , " -= ")):
+                if (InStr(variables['A_LoopField34'] , " -= ")):
                     variables['whatVarWeUse'] = " -= "
-                if (InStr(variables['A_LoopField32'] , " *= ")):
+                if (InStr(variables['A_LoopField34'] , " *= ")):
                     variables['whatVarWeUse'] = " *= "
                 variables['sstr123'] = StrReplace(variables['sstr123'] , ":=" , "=")
                 variables['sstr123'] = StrReplace(variables['sstr123'] , ".=" , "=")
@@ -2865,24 +2898,24 @@ def compiler():
                 variables['varOUT2avavavavva'] = transpileVariables(variables['var2avavavavva'] , variables['functionNames'])
                 variables['out'] = variables['varOUT1avavavavva']  +  variables['whatVarWeUse']  +  variables['varOUT2avavavavva']
                 variables['jsCode'] += variables['out']  +  "\n"
-        elif (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 1)== Chr(59)) and(variables['lineDone'] == 0):
-            variables['sstr123'] = StringTrimLeft(variables['A_LoopField32'], 1)
+        elif (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 1)== Chr(59)) and(variables['lineDone'] == 0):
+            variables['sstr123'] = StringTrimLeft(variables['A_LoopField34'], 1)
             variables['sstr123'] = "//"  +  variables['sstr123']
             variables['out'] = variables['sstr123']
             variables['lineDone'] = 1
             variables['jsCode'] += variables['out']  +  "\n"
-        elif (SubStr(variables['A_LoopField32'] , 0)== ")")and(variables['lineDone'] == 0):
-            variables['AIndex'] = variables['A_Index32'] + 1
+        elif (SubStr(variables['A_LoopField34'] , 0)== ")")and(variables['lineDone'] == 0):
+            variables['AIndex'] = variables['A_Index34'] + 1
             if ( not (variables[f'fixFuncSyntaxBugFixNum{variables["AIndex"]}'] == "{")):
-                variables['var1'] = StrSplit(variables['A_LoopField32'] , "(" , 1)
+                variables['var1'] = StrSplit(variables['A_LoopField34'] , "(" , 1)
                 if (InStr(variables['var1'] , "%")):
                     variables['numOfCharsToTrimFuncFixRun'] = 0
                     items = LoopParseFunc(variables['var1'])
-                    for A_Index65, A_LoopField65 in enumerate(items, start=1):
-                        variables['A_Index65'] = A_Index65
-                        variables['A_LoopField65'] = A_LoopField65
+                    for A_Index67, A_LoopField67 in enumerate(items, start=1):
+                        variables['A_Index67'] = A_Index67
+                        variables['A_LoopField67'] = A_LoopField67
                         variables['numOfCharsToTrimFuncFixRun'] += 1
-                    variables['var2'] = StringTrimLeft(variables['A_LoopField32'], variables['numOfCharsToTrimFuncFixRun'])
+                    variables['var2'] = StringTrimLeft(variables['A_LoopField34'], variables['numOfCharsToTrimFuncFixRun'])
                     variables['var12'] = StrSplit(variables['var1'] , "%" , 1)
                     variables['var13'] = StrSplit(variables['var1'] , "%" , 2)
                     variables['var1'] = "funcs"  +  "["  +  Chr(34) +  variables['var12']  +  Chr(34) +  " + variables."  +  variables['var13']  +  "]"
@@ -2892,19 +2925,19 @@ def compiler():
                 else:
                     variables['numOfCharsToTrimFuncFixRun'] = 0
                     items = LoopParseFunc(variables['var1'])
-                    for A_Index66, A_LoopField66 in enumerate(items, start=1):
-                        variables['A_Index66'] = A_Index66
-                        variables['A_LoopField66'] = A_LoopField66
+                    for A_Index68, A_LoopField68 in enumerate(items, start=1):
+                        variables['A_Index68'] = A_Index68
+                        variables['A_LoopField68'] = A_LoopField68
                         variables['numOfCharsToTrimFuncFixRun'] += 1
-                    variables['var2'] = StringTrimLeft(variables['A_LoopField32'], variables['numOfCharsToTrimFuncFixRun'])
+                    variables['var2'] = StringTrimLeft(variables['A_LoopField34'], variables['numOfCharsToTrimFuncFixRun'])
                     variables['out'] = "await "  +  variables['var1']  +  transpileVariables(variables['var2'] , variables['functionNames'])
                     variables['lineDone'] = 1
                     variables['jsCode'] += variables['out']  +  "\n"
             else:
-                if ( not (( SubStr(StrLower(variables['A_LoopField32']), 1 , 4)== variables['CheckIFandElsesss1'])or(SubStr(StrLower(variables['A_LoopField32']), 1 , 3)== variables['CheckIFandElsesss2'])or(SubStr(StrLower(variables['A_LoopField32']), 1 , 5)== variables['CheckIFandElsesss3'])or(SubStr(StrLower(variables['A_LoopField32']), 1 , 4)== variables['CheckIFandElsesss4'])or(SubStr(StrLower(variables['A_LoopField32']), 1 , 9)== variables['CheckIFandElsesss5'])or(SubStr(StrLower(variables['A_LoopField32']), 1 , 8)== variables['CheckIFandElsesss6'])or(SubStr(StrLower(variables['A_LoopField32']), 1 , 10)== variables['CheckIFandElsesss7'])or(SubStr(StrLower(variables['A_LoopField32']), 1 , 9)== variables['CheckIFandElsesss8'])or(SubStr(StrLower(variables['A_LoopField32']), 1 , 5)== "loop,"))):
+                if ( not (( SubStr(StrLower(variables['A_LoopField34']), 1 , 4)== variables['CheckIFandElsesss1'])or(SubStr(StrLower(variables['A_LoopField34']), 1 , 3)== variables['CheckIFandElsesss2'])or(SubStr(StrLower(variables['A_LoopField34']), 1 , 5)== variables['CheckIFandElsesss3'])or(SubStr(StrLower(variables['A_LoopField34']), 1 , 4)== variables['CheckIFandElsesss4'])or(SubStr(StrLower(variables['A_LoopField34']), 1 , 9)== variables['CheckIFandElsesss5'])or(SubStr(StrLower(variables['A_LoopField34']), 1 , 8)== variables['CheckIFandElsesss6'])or(SubStr(StrLower(variables['A_LoopField34']), 1 , 10)== variables['CheckIFandElsesss7'])or(SubStr(StrLower(variables['A_LoopField34']), 1 , 9)== variables['CheckIFandElsesss8'])or(SubStr(StrLower(variables['A_LoopField34']), 1 , 5)== "loop,"))):
                     # not a func
-                    #OutputDebug, %A_LoopField32%
-                    variables['sstr23IfFuncIn'] = variables['A_LoopField32']
+                    #OutputDebug, %A_LoopField34%
+                    variables['sstr23IfFuncIn'] = variables['A_LoopField34']
                     variables['sstr23IfFuncInNAME'] = StrSplit(variables['sstr23IfFuncIn'] , Chr(40), 1)
                     variables['sstr23IfFuncIn'] = StrSplit(variables['sstr23IfFuncIn'] , Chr(40), 2)
                     variables['nothing'] = ""
@@ -2914,11 +2947,11 @@ def compiler():
                     variables['theVarsPArmFormTheFunc'] = ""
                     if (variables['sstr23IfFuncInALL']  != ""):
                         items = LoopParseFunc(variables['sstr23IfFuncInALL'], ",")
-                        for A_Index67, A_LoopField67 in enumerate(items, start=1):
-                            variables['A_Index67'] = A_Index67
-                            variables['A_LoopField67'] = A_LoopField67
+                        for A_Index69, A_LoopField69 in enumerate(items, start=1):
+                            variables['A_Index69'] = A_Index69
+                            variables['A_LoopField69'] = A_LoopField69
                             variables['wasHereInfuncAndgetingVar1'] = 1
-                            variables['var1'] = Trim(variables['A_LoopField67'])
+                            variables['var1'] = Trim(variables['A_LoopField69'])
                             variables['theVarsPArmFormTheFunc'] += "variables."  +  variables['var1']  +  " = "  +  variables['var1']  +  "\n"
                     variables['funcs'] += "  "  +  ""  +  variables['sstr23IfFuncInNAME']  +  ""  +  ": "  +  variables['sstr23IfFuncInNAME']  +  ","  +  "\n"
                     variables['doWeEvenDecAnyFuncHUH'] = 1
@@ -2928,17 +2961,17 @@ def compiler():
                         variables['skipLeftCuleyForFuncPLS'] = 1
                     else:
                         variables['sstr234567'] = "async function "  +  variables['sstr23IfFuncInNAME']  +  Chr(40) +  variables['sstr23IfFuncInALL']  +  Chr(41) +  ""
-                    for A_Index68 in range(1, variables['sstr23IfFuncInNAMEnum'] + 1):
-                        variables['A_Index68'] = A_Index68
-                        if (variables[f'sstr23IfFuncInNAME{variables["A_Index68"]}'] == variables['sstr23IfFuncInNAME']):
+                    for A_Index70 in range(1, variables['sstr23IfFuncInNAMEnum'] + 1):
+                        variables['A_Index70'] = A_Index70
+                        if (variables[f'sstr23IfFuncInNAME{variables["A_Index70"]}'] == variables['sstr23IfFuncInNAME']):
                             variables['var12312'] = ""
                             if (variables['sstr23IfFuncInALL']  != ""):
                                 items = LoopParseFunc(variables['sstr23IfFuncInALL'], ",")
-                                for A_Index69, A_LoopField69 in enumerate(items, start=1):
-                                    variables['A_Index69'] = A_Index69
-                                    variables['A_LoopField69'] = A_LoopField69
+                                for A_Index71, A_LoopField71 in enumerate(items, start=1):
+                                    variables['A_Index71'] = A_Index71
+                                    variables['A_LoopField71'] = A_LoopField71
                                     variables['wasHereInfuncAndgetingVar1'] = 1
-                                    variables['var1'] = Trim(variables['A_LoopField69'])
+                                    variables['var1'] = Trim(variables['A_LoopField71'])
                                     variables['var12312'] += transpileVariables(variables['var1'] , variables['functionNames']) +  ", "
                                 variables['var12312'] = StringTrimRight(variables['var12312'], 2)
                             if (variables['wasHereInfuncAndgetingVar1'] == 0):
@@ -2957,23 +2990,23 @@ def compiler():
             # this is THE else
             if (variables['lineDone']  != 1):
                 if (variables['skipLeftCuleyForFuncPLS']  != 1):
-                    if (SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 1)== Chr(125)):
-                        variables['maybeWeHaveCommentInClosingCurlyBracket'] = variables['A_LoopField32']
+                    if (SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 1)== Chr(125)):
+                        variables['maybeWeHaveCommentInClosingCurlyBracket'] = variables['A_LoopField34']
                         if (InStr(variables['maybeWeHaveCommentInClosingCurlyBracket'] , Chr(59))):
                             variables['maybeWeHaveCommentInClosingCurlyBracket'] = StrReplace(variables['maybeWeHaveCommentInClosingCurlyBracket'] , Chr(59), "//")
                             variables['jsCode'] += variables['maybeWeHaveCommentInClosingCurlyBracket']  +  "\n"
                         else:
                             variables['jsCode'] += Chr(125) +  "\n"
                     else:
-                        if (variables['jsCodeAcurlyBraceAddSomeVrasFixLP'] == 1)and(SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 1)== Chr(123)):
+                        if (variables['jsCodeAcurlyBraceAddSomeVrasFixLP'] == 1)and(SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 1)== Chr(123)):
                             variables['jsCodeAcurlyBraceAddSomeVrasFixLP'] = 0
-                            variables['jsCode'] += variables['A_LoopField32']  +  "\n"  +  variables['theFixTextLoopLP']  +  "\n"
+                            variables['jsCode'] += variables['A_LoopField34']  +  "\n"  +  variables['theFixTextLoopLP']  +  "\n"
                         else:
-                            if (variables['jsCodeAcurlyBraceAddSomeVrasFixNL'] == 1)and(SubStr(Trim(StrLower(variables['A_LoopField32'])) , 1 , 1)== Chr(123)):
+                            if (variables['jsCodeAcurlyBraceAddSomeVrasFixNL'] == 1)and(SubStr(Trim(StrLower(variables['A_LoopField34'])) , 1 , 1)== Chr(123)):
                                 variables['jsCodeAcurlyBraceAddSomeVrasFixNL'] = 0
-                                variables['jsCode'] += variables['A_LoopField32']  +  "\n"  +  variables['theFixTextLoopNL']  +  "\n"
+                                variables['jsCode'] += variables['A_LoopField34']  +  "\n"  +  variables['theFixTextLoopNL']  +  "\n"
                             else:
-                                variables['jsCode'] += variables['A_LoopField32']  +  "\n"
+                                variables['jsCode'] += variables['A_LoopField34']  +  "\n"
                 else:
                     variables['skipLeftCuleyForFuncPLS'] = 0
     #s
@@ -2982,11 +3015,11 @@ def compiler():
         #OutputDebug, |%AHKcodeLoopfixa%|
         variables['AIndexLoopCurlyFix'] = 1
         items = LoopParseFunc(variables['AHKcodeLoopfixa'], "\n", "\r")
-        for A_Index70, A_LoopField70 in enumerate(items, start=1):
-            variables['A_Index70'] = A_Index70
-            variables['A_LoopField70'] = A_LoopField70
-            variables['sstr123'] = variables['A_LoopField70']
-            variables['fixLoopLokingFor'] = variables['A_LoopField70']
+        for A_Index72, A_LoopField72 in enumerate(items, start=1):
+            variables['A_Index72'] = A_Index72
+            variables['A_LoopField72'] = A_LoopField72
+            variables['sstr123'] = variables['A_LoopField72']
+            variables['fixLoopLokingFor'] = variables['A_LoopField72']
             variables['fixLoopLokingForfound'] = 1
             variables['out1'] = StrSplit(variables['sstr123'] , "|" , 1)
             variables['out2'] = StrSplit(variables['sstr123'] , "|" , 3)
@@ -3008,16 +3041,16 @@ def compiler():
                 variables['foundTheTopLoop'] = 0
                 variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] = ""
                 items = LoopParseFunc(variables['jsCode'], "\n", "\r")
-                for A_Index71, A_LoopField71 in enumerate(items, start=1):
-                    variables['A_Index71'] = A_Index71
-                    variables['A_LoopField71'] = A_LoopField71
+                for A_Index73, A_LoopField73 in enumerate(items, start=1):
+                    variables['A_Index73'] = A_Index73
+                    variables['A_LoopField73'] = A_LoopField73
                     #MsgBox, dsfgsdefgesrdg1
-                    #MsgBox, |%A_LoopField71%|`n|%fixLoopLokingFor%|
-                    if (InStr(variables['A_LoopField71'] , variables['fixLoopLokingFor'])) and(variables['insdeAnestedLoopBAD']  != 1):
+                    #MsgBox, |%A_LoopField73%|`n|%fixLoopLokingFor%|
+                    if (InStr(variables['A_LoopField73'] , variables['fixLoopLokingFor'])) and(variables['insdeAnestedLoopBAD']  != 1):
                         variables['fixLoopLokingForNum'] = 1
                         #MsgBox, do we came here 1
-                    if (InStr(variables['A_LoopField71'] , "for (/*")) and(variables['weAreDoneHereCurly']  != 1)and(variables['insdeAnestedLoopBAD']  != 1)and(variables['fixLoopLokingForNum'] == 1):
-                        variables['s'] = StrSplit(variables['A_LoopField71'] , "A"  +  Chr(95) +  "Index" , 2)
+                    if (InStr(variables['A_LoopField73'] , "for (/*")) and(variables['weAreDoneHereCurly']  != 1)and(variables['insdeAnestedLoopBAD']  != 1)and(variables['fixLoopLokingForNum'] == 1):
+                        variables['s'] = StrSplit(variables['A_LoopField73'] , "A"  +  Chr(95) +  "Index" , 2)
                         variables['out1z'] = variables['s']
                         variables['s'] = StrSplit(variables['out1z'] , " " , 1)
                         variables['out1z'] = Trim(variables['s'])
@@ -3026,49 +3059,49 @@ def compiler():
                         variables['fixLoopLokingForNum'] = 0
                         variables['foundTheTopLoop'] += 1
                         variables['inTarget'] = 1
-                        #MsgBox, % A_LoopField71
+                        #MsgBox, % A_LoopField73
                         variables['dontSaveStr'] = 1
-                        variables['ALoopField'] = variables['A_LoopField71']
+                        variables['ALoopField'] = variables['A_LoopField73']
                         variables['DeleayOneCuzOfLoopParse'] = 1
                         variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] += variables['ALoopField']  +  "\n"
-                    if (variables['inTarget'] == 1)and(InStr(variables['A_LoopField71'] , Chr(123)))and(variables['insdeAnestedLoopBAD']  != 1):
+                    if (variables['inTarget'] == 1)and(InStr(variables['A_LoopField73'] , Chr(123)))and(variables['insdeAnestedLoopBAD']  != 1):
                         variables['insideBracket'] = 1
-                    if (variables['insideBracket'] == 1)and(InStr(variables['A_LoopField71'] , Chr(123)))and(variables['insdeAnestedLoopBAD']  != 1):
+                    if (variables['insideBracket'] == 1)and(InStr(variables['A_LoopField73'] , Chr(123)))and(variables['insdeAnestedLoopBAD']  != 1):
                         variables['netsedCurly'] += 1
-                    if (variables['insideBracket'] == 1)and(InStr(variables['A_LoopField71'] , Chr(125)))and(variables['insdeAnestedLoopBAD']  != 1):
+                    if (variables['insideBracket'] == 1)and(InStr(variables['A_LoopField73'] , Chr(125)))and(variables['insdeAnestedLoopBAD']  != 1):
                         variables['netsedCurly'] -= 1
                         variables['readyToEnd'] = 1
-                    if (InStr(variables['A_LoopField71'] , "for (/*")) and(variables['insdeAnestedLoopBAD']  != 1)and(variables['foundTheTopLoop'] >= 2):
+                    if (InStr(variables['A_LoopField73'] , "for (/*")) and(variables['insdeAnestedLoopBAD']  != 1)and(variables['foundTheTopLoop'] >= 2):
                         variables['insdeAnestedLoopBAD'] = 1
                         variables['insideBracket1'] = 0
                         variables['netsedCurly1'] = 0
                     if (variables['inTarget'] == 1):
                         variables['foundTheTopLoop'] += 1
                     if (variables['insdeAnestedLoopBAD'] == 1):
-                        if (InStr(variables['A_LoopField71'] , Chr(123))):
+                        if (InStr(variables['A_LoopField73'] , Chr(123))):
                             variables['insideBracket1'] = 1
-                        if (variables['insideBracket1'] == 1)and(InStr(variables['A_LoopField71'] , Chr(123))):
+                        if (variables['insideBracket1'] == 1)and(InStr(variables['A_LoopField73'] , Chr(123))):
                             variables['netsedCurly1'] += 1
-                        if (variables['insideBracket1'] == 1)and(InStr(variables['A_LoopField71'] , Chr(125))):
+                        if (variables['insideBracket1'] == 1)and(InStr(variables['A_LoopField73'] , Chr(125))):
                             variables['netsedCurly1'] -= 1
                             variables['readyToEnd1'] = 1
-                        if (InStr(variables['A_LoopField71'] , Chr(125)))and(variables['readyToEnd1'] == 1)and(variables['netsedCurly1'] == 0)and(variables['insideBracket'] == 1):
-                            #MsgBox, % A_LoopField71
+                        if (InStr(variables['A_LoopField73'] , Chr(125)))and(variables['readyToEnd1'] == 1)and(variables['netsedCurly1'] == 0)and(variables['insideBracket'] == 1):
+                            #MsgBox, % A_LoopField73
                             variables['eldLoopNestedBADlol'] = 1
-                        variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] += variables['A_LoopField71']  +  "\n"
+                        variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] += variables['A_LoopField73']  +  "\n"
                     if (variables['inTarget'] == 1)and(variables['dontSaveStr']  != 1)and(variables['fixLoopLokingForNum']  != 1)and(variables['insdeAnestedLoopBAD']  != 1):
-                        variables['ALoopField'] = variables['A_LoopField71']
+                        variables['ALoopField'] = variables['A_LoopField73']
                         # Replace "A_Index" with or without a following digit with "A_Index" + out1z
                         variables['ALoopField'] = RegExReplace(variables['ALoopField'] , "A"  +  Chr(95) +  "Index(?:\\d+)?" , "A"  +  Chr(95) +  "Index"  +  variables['out1z'])
                         variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] += variables['ALoopField']  +  "\n"
-                    if (variables['inTarget'] == 1)and(InStr(variables['A_LoopField71'] , Chr(125)))and(variables['readyToEnd'] == 1)and(variables['netsedCurly'] == 0)and(variables['weAreDoneHereCurly'] == 0)and(variables['dontSaveStr']  != 1)and(variables['insdeAnestedLoopBAD']  != 1):
-                        #MsgBox, % A_LoopField71
+                    if (variables['inTarget'] == 1)and(InStr(variables['A_LoopField73'] , Chr(125)))and(variables['readyToEnd'] == 1)and(variables['netsedCurly'] == 0)and(variables['weAreDoneHereCurly'] == 0)and(variables['dontSaveStr']  != 1)and(variables['insdeAnestedLoopBAD']  != 1):
+                        #MsgBox, % A_LoopField73
                         variables['weAreDoneHereCurly'] = 1
                         variables['inTarget'] = 0
                         variables['endBracketDOntPutThere'] = 1
                     variables['dontSaveStr'] = 0
                     if (variables['inTarget']  != 1)and(variables['endBracketDOntPutThere']  != 1)and(variables['insdeAnestedLoopBAD']  != 1):
-                        variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] += variables['A_LoopField71']  +  "\n"
+                        variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] += variables['A_LoopField73']  +  "\n"
                     variables['endBracketDOntPutThere'] = 0
                     if (variables['eldLoopNestedBADlol'] == 1):
                         variables['insdeAnestedLoopBAD'] = 0
@@ -3093,14 +3126,14 @@ def compiler():
                 variables['foundTheTopLoop'] = 0
                 variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] = ""
                 items = LoopParseFunc(variables['jsCode'], "\n", "\r")
-                for A_Index72, A_LoopField72 in enumerate(items, start=1):
-                    variables['A_Index72'] = A_Index72
-                    variables['A_LoopField72'] = A_LoopField72
-                    if (InStr(variables['A_LoopField72'] , variables['fixLoopLokingFor'])) and(variables['insdeAnestedLoopBAD']  != 1):
+                for A_Index74, A_LoopField74 in enumerate(items, start=1):
+                    variables['A_Index74'] = A_Index74
+                    variables['A_LoopField74'] = A_LoopField74
+                    if (InStr(variables['A_LoopField74'] , variables['fixLoopLokingFor'])) and(variables['insdeAnestedLoopBAD']  != 1):
                         variables['fixLoopLokingForNum'] = 1
                         #MsgBox, do we came here 3
-                    if (InStr(variables['A_LoopField72'] , "for (/*")) and(variables['weAreDoneHereCurly']  != 1)and(variables['insdeAnestedLoopBAD']  != 1)and(variables['fixLoopLokingForNum'] == 1):
-                        variables['s'] = StrSplit(variables['A_LoopField72'] , "A"  +  Chr(95) +  "Index" , 2)
+                    if (InStr(variables['A_LoopField74'] , "for (/*")) and(variables['weAreDoneHereCurly']  != 1)and(variables['insdeAnestedLoopBAD']  != 1)and(variables['fixLoopLokingForNum'] == 1):
+                        variables['s'] = StrSplit(variables['A_LoopField74'] , "A"  +  Chr(95) +  "Index" , 2)
                         variables['out1z'] = variables['s']
                         variables['s'] = StrSplit(variables['out1z'] , " " , 1)
                         variables['out1z'] = Trim(variables['s'])
@@ -3109,51 +3142,51 @@ def compiler():
                         #MsgBox, do we came here 4
                         variables['foundTheTopLoop'] += 1
                         variables['inTarget'] = 1
-                        #MsgBox, % A_LoopField72
+                        #MsgBox, % A_LoopField74
                         variables['dontSaveStr'] = 1
-                        variables['ALoopField'] = variables['A_LoopField72']
+                        variables['ALoopField'] = variables['A_LoopField74']
                         variables['DeleayOneCuzOfLoopParse'] = 1
                         variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] += variables['ALoopField']  +  "\n"
-                    if (variables['inTarget'] == 1)and(InStr(variables['A_LoopField72'] , Chr(123)))and(variables['insdeAnestedLoopBAD']  != 1):
+                    if (variables['inTarget'] == 1)and(InStr(variables['A_LoopField74'] , Chr(123)))and(variables['insdeAnestedLoopBAD']  != 1):
                         variables['insideBracket'] = 1
-                    if (variables['insideBracket'] == 1)and(InStr(variables['A_LoopField72'] , Chr(123)))and(variables['insdeAnestedLoopBAD']  != 1):
+                    if (variables['insideBracket'] == 1)and(InStr(variables['A_LoopField74'] , Chr(123)))and(variables['insdeAnestedLoopBAD']  != 1):
                         variables['netsedCurly'] += 1
-                    if (variables['insideBracket'] == 1)and(InStr(variables['A_LoopField72'] , Chr(125)))and(variables['insdeAnestedLoopBAD']  != 1):
+                    if (variables['insideBracket'] == 1)and(InStr(variables['A_LoopField74'] , Chr(125)))and(variables['insdeAnestedLoopBAD']  != 1):
                         variables['netsedCurly'] -= 1
                         variables['readyToEnd'] = 1
-                    if (InStr(variables['A_LoopField72'] , "for (/*")) and(variables['insdeAnestedLoopBAD']  != 1)and(variables['foundTheTopLoop'] >= 2):
+                    if (InStr(variables['A_LoopField74'] , "for (/*")) and(variables['insdeAnestedLoopBAD']  != 1)and(variables['foundTheTopLoop'] >= 2):
                         variables['insdeAnestedLoopBAD'] = 1
                         variables['insideBracket1'] = 0
                         variables['netsedCurly1'] = 0
                     if (variables['inTarget'] == 1):
                         variables['foundTheTopLoop'] += 1
                     if (variables['insdeAnestedLoopBAD'] == 1):
-                        if (InStr(variables['A_LoopField72'] , Chr(123))):
+                        if (InStr(variables['A_LoopField74'] , Chr(123))):
                             variables['insideBracket1'] = 1
-                        if (variables['insideBracket1'] == 1)and(InStr(variables['A_LoopField72'] , Chr(123))):
+                        if (variables['insideBracket1'] == 1)and(InStr(variables['A_LoopField74'] , Chr(123))):
                             variables['netsedCurly1'] += 1
-                        if (variables['insideBracket1'] == 1)and(InStr(variables['A_LoopField72'] , Chr(125))):
+                        if (variables['insideBracket1'] == 1)and(InStr(variables['A_LoopField74'] , Chr(125))):
                             variables['netsedCurly1'] -= 1
                             variables['readyToEnd1'] = 1
-                        if (InStr(variables['A_LoopField72'] , Chr(125)))and(variables['readyToEnd1'] == 1)and(variables['netsedCurly1'] == 0)and(variables['insideBracket'] == 1):
-                            #MsgBox, % A_LoopField72
+                        if (InStr(variables['A_LoopField74'] , Chr(125)))and(variables['readyToEnd1'] == 1)and(variables['netsedCurly1'] == 0)and(variables['insideBracket'] == 1):
+                            #MsgBox, % A_LoopField74
                             variables['eldLoopNestedBADlol'] = 1
-                        variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] += variables['A_LoopField72']  +  "\n"
+                        variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] += variables['A_LoopField74']  +  "\n"
                     if (variables['inTarget'] == 1)and(variables['dontSaveStr']  != 1)and(variables['fixLoopLokingForNum']  != 1)and(variables['insdeAnestedLoopBAD']  != 1):
-                        variables['ALoopField'] = variables['A_LoopField72']
+                        variables['ALoopField'] = variables['A_LoopField74']
                         # Replace "A_Index" with or without a following digit with "A_Index" + out1z
                         variables['ALoopField'] = RegExReplace(variables['ALoopField'] , "A"  +  Chr(95) +  "Index(?:\\d+)?" , "A"  +  Chr(95) +  "Index"  +  variables['out1z'])
                         # Replace "A_Index" with or without a following digit with "A_Index" + out1z
                         variables['ALoopField'] = RegExReplace(variables['ALoopField'] , "A"  +  Chr(95) +  "LoopField(?:\\d+)?" , "A"  +  Chr(95) +  "LoopField"  +  variables['out1z'])
                         variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] += variables['ALoopField']  +  "\n"
-                    if (( variables['inTarget'] == 1)and(InStr(variables['A_LoopField72'] , Chr(125)))and(variables['readyToEnd'] == 1)and(variables['netsedCurly'] == 0)and(variables['weAreDoneHereCurly'] == 0)and(variables['dontSaveStr']  != 1)and(variables['insdeAnestedLoopBAD']  != 1)):
-                        #MsgBox, % A_LoopField72
+                    if (( variables['inTarget'] == 1)and(InStr(variables['A_LoopField74'] , Chr(125)))and(variables['readyToEnd'] == 1)and(variables['netsedCurly'] == 0)and(variables['weAreDoneHereCurly'] == 0)and(variables['dontSaveStr']  != 1)and(variables['insdeAnestedLoopBAD']  != 1)):
+                        #MsgBox, % A_LoopField74
                         variables['weAreDoneHereCurly'] = 1
                         variables['inTarget'] = 0
                         variables['endBracketDOntPutThere'] = 1
                     variables['dontSaveStr'] = 0
                     if (variables['inTarget']  != 1)and(variables['endBracketDOntPutThere']  != 1)and(variables['insdeAnestedLoopBAD']  != 1):
-                        variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] += variables['A_LoopField72']  +  "\n"
+                        variables[f'out4758686d86d86d86578991a{variables["AIndexLoopCurlyFix"]}'] += variables['A_LoopField74']  +  "\n"
                     variables['endBracketDOntPutThere'] = 0
                     if (variables['eldLoopNestedBADlol'] == 1):
                         variables['insdeAnestedLoopBAD'] = 0
@@ -3169,36 +3202,36 @@ def compiler():
         variables['out4758686d86dgt8r754444444'] = ""
         variables['hold'] = 0
         items = LoopParseFunc(variables['jsCode'], "\n", "\r")
-        for A_Index73, A_LoopField73 in enumerate(items, start=1):
-            variables['A_Index73'] = A_Index73
-            variables['A_LoopField73'] = A_LoopField73
+        for A_Index75, A_LoopField75 in enumerate(items, start=1):
+            variables['A_Index75'] = A_Index75
+            variables['A_LoopField75'] = A_LoopField75
             variables['ignore'] = 0
-            if (InStr(variables['A_LoopField73'] , "for (/*")):
-                if (variables['hold'] == 1)and(variables['holdText'] == variables['A_LoopField73']):
+            if (InStr(variables['A_LoopField75'] , "for (/*")):
+                if (variables['hold'] == 1)and(variables['holdText'] == variables['A_LoopField75']):
                     variables['ignore'] = 1
                 else:
-                    variables['holdText'] = variables['A_LoopField73']
+                    variables['holdText'] = variables['A_LoopField75']
                     variables['hold'] = 1
             if ( not (variables['ignore'])):
-                variables['out4758686d86dgt8r754444444'] += variables['A_LoopField73']  +  "\n"
+                variables['out4758686d86dgt8r754444444'] += variables['A_LoopField75']  +  "\n"
         variables['out4758686d86dgt8r754444444'] = StringTrimRight(variables['out4758686d86dgt8r754444444'], 1)
         variables['jsCode'] = variables['out4758686d86dgt8r754444444']
     variables['AHKcodeOut1234565432'] = ""
     items = LoopParseFunc(variables['jsCode'], "\n", "\r")
-    for A_Index74, A_LoopField74 in enumerate(items, start=1):
-        variables['A_Index74'] = A_Index74
-        variables['A_LoopField74'] = A_LoopField74
-        variables['out'] = variables['A_LoopField74']
+    for A_Index76, A_LoopField76 in enumerate(items, start=1):
+        variables['A_Index76'] = A_Index76
+        variables['A_LoopField76'] = A_LoopField76
+        variables['out'] = variables['A_LoopField76']
         if ( not (InStr(variables['out'] , "|itsaersdtgtgfergsdgfsegdfsedAA|"))):
             variables['AHKcodeOut1234565432'] += variables['out']  +  "\n"
     variables['jsCode'] = StringTrimRight(variables['AHKcodeOut1234565432'], 1)
     variables['Attw456543w45eqsubeotibebrawaaachi'] = "\n        // Attaching event listener to document\n        document.addEventListener("  +  Chr(34) +  "mouseup"  +  Chr(34) +  ", OnMouseRelease);\n        document.addEventListener("  +  Chr(34) +  "touchend"  +  Chr(34) +  ", OnTouchEnd);\n\n        function OnMouseRelease(event) {\n          // This function will be called when the mouse button is released\n          // You can perform your desired actions here\n          //console.log("  +  Chr(34) +  "Mouse released"  +  Chr(34) +  ");\n          // Call your main function after mouse release\n          OnMouseClick(event);\n        }\n\n        function OnTouchEnd(event) {\n          // This function will be called when the touch is lifted\n          // You can perform your desired actions here\n          //console.log("  +  Chr(34) +  "Touch ended"  +  Chr(34) +  ");\n          // Call your main function after touch ends\n          OnMouseClick(event);\n        }\n"
     variables['outJScodeLastTime'] = ""
     items = LoopParseFunc(variables['jsCode'], "\n", "\r")
-    for A_Index75, A_LoopField75 in enumerate(items, start=1):
-        variables['A_Index75'] = A_Index75
-        variables['A_LoopField75'] = A_LoopField75
-        variables['sstr1'] = variables['A_LoopField75']
+    for A_Index77, A_LoopField77 in enumerate(items, start=1):
+        variables['A_Index77'] = A_Index77
+        variables['A_LoopField77'] = A_LoopField77
+        variables['sstr1'] = variables['A_LoopField77']
         variables['sstr1'] = StrReplace(variables['sstr1'] , "variables.A_ScreenWidth" , "BuildInVars("  +  Chr(34) +  "A_ScreenWidth"  +  Chr(34) +  ")")
         variables['sstr1'] = StrReplace(variables['sstr1'] , "variables.A_ScreenHeight" , "BuildInVars("  +  Chr(34) +  "A_ScreenHeight"  +  Chr(34) +  ")")
         variables['sstr1'] = StrReplace(variables['sstr1'] , "variables.A_GuiControl" , "A_GuiControl")
@@ -3225,7 +3258,7 @@ def compiler():
         variables['sstr1'] = StrReplace(variables['sstr1'] , "< ==" , "<=")
         variables['sstr1'] = StrReplace(variables['sstr1'] , "> ==" , ">=")
         variables['sstr1'] = StrReplace(variables['sstr1'] , Chr(96), Chr(92))
-        if (SubStr(Trim(StrLower(variables['A_LoopField75'])) , 1 , 10)== StrLower("IfMsgBox, ")):
+        if (SubStr(Trim(StrLower(variables['A_LoopField77'])) , 1 , 10)== StrLower("IfMsgBox, ")):
             variables['sstr1'] = ".then(async (result) => {\n"  +  variables['sstr1']
             variables['sstr1'] = StrReplace(variables['sstr1'] , " Yes" , " OK")
             variables['sstr1'] = StrReplace(variables['sstr1'] , " Retry" , " OK")
@@ -3233,7 +3266,7 @@ def compiler():
             variables['sstr1'] = StrReplace(variables['sstr1'] , "Else" , "else")
             variables['sstr1'] = StrReplace(variables['sstr1'] , "IfMsgBox, " , "if (result === "  +  Chr(34))
             variables['sstr1'] = variables['sstr1']  +  Chr(34) +  ")\n"
-        if (SubStr(Trim(StrLower(variables['A_LoopField75'])) , 1 , 20)== StrLower("} // end of ifmsgbox")):
+        if (SubStr(Trim(StrLower(variables['A_LoopField77'])) , 1 , 20)== StrLower("} // end of ifmsgbox")):
             variables['sstr1'] = variables['sstr1']  +  "\n});\n"
         if (StrLower(variables['sstr1'])== "exitapp"):
             variables['sstr1'] = "window.close()"
@@ -3241,15 +3274,15 @@ def compiler():
             variables['sstr1'] = "location.reload()"
         variables['outJScodeLastTime'] += variables['sstr1']  +  "\n"
     variables['jsCode'] = StringTrimRight(variables['outJScodeLastTime'], 1)
-    for A_Index76 in range(1, variables['theIdNumOfThe34'] + 1):
-        variables['A_Index76'] = A_Index76
-        variables['jsCode'] = StrReplace(variables['jsCode'] , "ihuiuuhuuhtheidFor--asas-theuhturtyphoutr-"  +  Chr(65) +  Chr(65) +  str(variables['A_Index76']) +  Chr(65) +  Chr(65), variables[f'theIdNumOfThe34theVar{variables["A_Index76"]}'])
+    for A_Index78 in range(1, variables['theIdNumOfThe34'] + 1):
+        variables['A_Index78'] = A_Index78
+        variables['jsCode'] = StrReplace(variables['jsCode'] , "ihuiuuhuuhtheidFor--asas-theuhturtyphoutr-"  +  Chr(65) +  Chr(65) +  str(variables['A_Index78']) +  Chr(65) +  Chr(65), variables[f'theIdNumOfThe34theVar{variables["A_Index78"]}'])
     variables['outJScodeLastTime2'] = ""
     items = LoopParseFunc(variables['jsCode'], "\n", "\r")
-    for A_Index77, A_LoopField77 in enumerate(items, start=1):
-        variables['A_Index77'] = A_Index77
-        variables['A_LoopField77'] = A_LoopField77
-        variables['sstr1'] = variables['A_LoopField77']
+    for A_Index79, A_LoopField79 in enumerate(items, start=1):
+        variables['A_Index79'] = A_Index79
+        variables['A_LoopField79'] = A_LoopField79
+        variables['sstr1'] = variables['A_LoopField79']
         variables['sstr1'] = StrReplace(variables['sstr1'] , "GetKeyState ("  +  Chr(34) +  "Up" , "GetKeyState ("  +  Chr(34) +  "ArrowUp")
         variables['sstr1'] = StrReplace(variables['sstr1'] , "GetKeyState ("  +  Chr(34) +  "Down" , "GetKeyState ("  +  Chr(34) +  "ArrowDown")
         variables['sstr1'] = StrReplace(variables['sstr1'] , "GetKeyState ("  +  Chr(34) +  "Left" , "GetKeyState ("  +  Chr(34) +  "ArrowLeft")
@@ -3261,11 +3294,11 @@ def compiler():
     variables['funcs'] += "}"
     variables['funcsOutFixBug'] = ""
     items = LoopParseFunc(variables['funcs'], "\n", "\r")
-    for A_Index78, A_LoopField78 in enumerate(items, start=1):
-        variables['A_Index78'] = A_Index78
-        variables['A_LoopField78'] = A_LoopField78
-        if ( not (InStr(variables['A_LoopField78'] , "else if"))):
-            variables['funcsOutFixBug'] += variables['A_LoopField78']  +  "\n"
+    for A_Index80, A_LoopField80 in enumerate(items, start=1):
+        variables['A_Index80'] = A_Index80
+        variables['A_LoopField80'] = A_LoopField80
+        if ( not (InStr(variables['A_LoopField80'] , "else if"))):
+            variables['funcsOutFixBug'] += variables['A_LoopField80']  +  "\n"
     variables['funcs'] = StringTrimRight(variables['funcsOutFixBug'], 1)
     if (variables['doWeEvenDecAnyFuncHUH'] == 0):
         variables['jsCode'] = "\n"  +  variables['onKeyPress']  +  "\n\n"  +  variables['jsCodeGui']  +  "\n\n"  +  variables['HotKeyCalledHotKyes']  +  "\n\n"  +  variables['jsCode']
@@ -3334,6 +3367,7 @@ def compiler():
     variables['addFuncIfWeUseIt_runPyCode'] = "\n        async function runPyCode(code) {\n            return new Promise((resolve, reject) => {\n                const checkReady = () => {\n                    if (window.runPythonCode) {\n                        resolve(window.runPythonCode(code));\n                    } else {\n                        setTimeout(checkReady, 100);\n                    }\n                };\n                checkReady();\n            });\n        }\n"
     variables['addFuncIfWeUseIt_LoopParseFunc'] = "\nfunction LoopParseFunc(varString, delimiter1="  +  Chr(34) +  ""  +  Chr(34) +  ", delimiter2="  +  Chr(34) +  ""  +  Chr(34) +  ") {\n    let items;\n    if (!delimiter1 && !delimiter2) {\n        // If no delimiters are provided, return an array of characters\n        items = [...varString];\n    } else {\n        // Construct the regular expression pattern for splitting the string\n        let pattern = new RegExp('[' + delimiter1.replace(/[.*+?^${}()|["  +  Chr(92) +  "]"  +  Chr(92) +  ""  +  Chr(92) +  "]/g, '"  +  Chr(92) +  ""  +  Chr(92) +  "$&') + delimiter2.replace(/[.*+?^${}()|["  +  Chr(92) +  "]"  +  Chr(92) +  ""  +  Chr(92) +  "]/g, '"  +  Chr(92) +  ""  +  Chr(92) +  "$&') + ']+');\n        // Split the string using the constructed pattern\n        items = varString.split(pattern);\n    }\n    return items;\n}\n"
     variables['addFuncIfWeUseIt_runHTML'] = "\n\n      function runHTML(parent, id, scale, leftPos, topPos, width, height, HTMLcode) {\n        // Calculate the scale based on the actual width and height of the iframe\n        const scaleX = width / window.innerWidth;\n        const scaleY = height / window.innerHeight;\n        const scaleFactor = Math.min(scaleX, scaleY);\n\n        // Calculate the scaled width and height to maintain aspect ratio\n        const scaledWidth = Math.floor(window.innerWidth * scaleFactor);\n        const scaledHeight = Math.floor(window.innerHeight * scaleFactor);\n\n        // Calculate offsets to center the content\n        const offsetX = Math.floor((width - scaledWidth) / 2);\n        const offsetY = Math.floor((height - scaledHeight) / 2);\n\n        // Create iframe element\n        let iframeElement = document.createElement("  +  Chr(34) +  "iframe"  +  Chr(34) +  ");\n\n        // Set attributes\n        iframeElement.id = id;\n        iframeElement.style.position = "  +  Chr(34) +  "absolute"  +  Chr(34) +  ";\n        iframeElement.style.left = leftPos + offsetX + "  +  Chr(34) +  "px"  +  Chr(34) +  ";\n        iframeElement.style.top = topPos + offsetY + "  +  Chr(34) +  "px"  +  Chr(34) +  ";\n        iframeElement.style.width = window.innerWidth + "  +  Chr(34) +  "px"  +  Chr(34) +  "; // Set the iframe's viewport width\n        iframeElement.style.height = window.innerHeight + "  +  Chr(34) +  "px"  +  Chr(34) +  "; // Set the iframe's viewport height\n        iframeElement.style.transformOrigin = "  +  Chr(34) +  "top left"  +  Chr(34) +  ";\n        iframeElement.style.transform = "  +  Chr(96) +  "scale(${scaleFactor})"  +  Chr(96) +  ";\n\n        // Set srcdoc attribute to load content\n        iframeElement.srcdoc = HTMLcode;\n\n        // Append iframe to parent element\n        parent.appendChild(iframeElement);\n      }\n\n"
+    variables['addFuncIfWeUseIt_SortLikeAHK'] = "\nfunction SortLikeAHK(varName, options = "  +  Chr(34) +  ""  +  Chr(34) +  ") {\n    let delimiter = '"  +  Chr(92) +  "n'; // Default delimiter\n    let delimiterIndex = options.indexOf('D');\n\n    if (delimiterIndex !== -1) {\n        let delimiterChar = options[delimiterIndex + 1];\n        delimiter = delimiterChar === '' ? ',' : delimiterChar;\n    }\n\n    let items = varName.split(new RegExp(delimiter === ',' ? ',' : '"  +  Chr(92) +  ""  +  Chr(92) +  "' + delimiter));\n\n    // Remove empty items and trim whitespace\n    items = items.filter(item => item.trim() !== '');\n\n    // Apply sorting based on options\n    if (options.includes('N')) {\n        // Numeric sort\n        items.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));\n    } else if (options.includes('Random')) {\n        // Random sort\n        for (let i = items.length - 1; i > 0; i--) {\n            const j = Math.floor(Math.random() * (i + 1));\n            [items[i], items[j]] = [items[j], items[i]];\n        }\n    } else {\n        // Default alphabetical sort\n        items.sort((a, b) => {\n            const keyA = options.includes('C') ? a : a.toLowerCase();\n            const keyB = options.includes('C') ? b : b.toLowerCase();\n            if (keyA < keyB) return -1;\n            if (keyA > keyB) return 1;\n            return 0;\n        });\n    }\n\n    // Reverse if 'R' option is present\n    if (options.includes('R')) {\n        items.reverse();\n    }\n\n    // Remove duplicates if 'U' option is present\n    if (options.includes('U')) {\n        const seen = new Map();\n        items = items.filter(item => {\n            const key = options.includes('C') ? item : item.toLowerCase();\n            if (!seen.has(key)) {\n                seen.set(key, item);\n                return true;\n            }\n            return false;\n        });\n    }\n\n    // Join the sorted items back into a string\n    const sortedVar = items.join(delimiter === ',' ? ',' : '"  +  Chr(92) +  "n');\n\n    return sortedVar;\n}\n"
     variables['allFuncThatWeNeedToUse'] = ""
     variables['ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile'] = ""
     variables['ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile'] = ""
@@ -3456,6 +3490,8 @@ def compiler():
         variables['allFuncThatWeNeedToUse'] += variables['addFuncIfWeUseIt_LoopParseFunc']  +  "\n"
     if (InStr(variables['jsCode'] , "runHTML(")) or(InStr(variables['jsCode'] , "runHTML (")):
         variables['allFuncThatWeNeedToUse'] += variables['addFuncIfWeUseIt_runHTML']  +  "\n"
+    if (InStr(variables['jsCode'] , "SortLikeAHK(")) or(InStr(variables['jsCode'] , "SortLikeAHK (")):
+        variables['allFuncThatWeNeedToUse'] += variables['addFuncIfWeUseIt_SortLikeAHK']  +  "\n"
     if (InStr(variables['jsCode'] , "AddIDE(")) or(InStr(variables['jsCode'] , "AddIDE (")):
         variables['ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile'] = "\n"  +  Chr(60) +  Chr(33) +  Chr(45) +  Chr(45) +  Chr(32) +  Chr(73) +  Chr(110) +  Chr(99) +  Chr(108) +  Chr(117) +  Chr(100) +  Chr(101) +  Chr(32) +  Chr(65) +  Chr(99) +  Chr(101) +  Chr(32) +  Chr(69) +  Chr(100) +  Chr(105) +  Chr(116) +  Chr(111) +  Chr(114) +  Chr(32) +  Chr(67) +  Chr(68) +  Chr(78) +  Chr(32) +  Chr(45) +  Chr(45) +  Chr(62) +  "\n    "  +  Chr(60) +  Chr(115) +  Chr(99) +  Chr(114) +  Chr(105) +  Chr(112) +  Chr(116) +  Chr(32) +  Chr(115) +  Chr(114) +  Chr(99) +  Chr(61) +  ""  +  Chr(34) +  "https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ace.js"  +  Chr(34) +  " integrity="  +  Chr(34) +  "sha512-JLIRlxWh96sND3uUgI2RVHZJpgkWHg3+xoUY8XkgTPKpqRaqdk7zD/ck/XHXFSMW84o6GrP67dlqN3b98NB/yA=="  +  Chr(34) +  " crossorigin="  +  Chr(34) +  "anonymous"  +  Chr(34) +  " referrerpolicy="  +  Chr(34) +  "no-referrer"  +  Chr(34) +  ""  +  Chr(62) +  Chr(60) +  Chr(47) +  Chr(115) +  Chr(99) +  Chr(114) +  Chr(105) +  Chr(112) +  Chr(116) +  Chr(62) +  "\n    "  +  Chr(60) +  Chr(115) +  Chr(99) +  Chr(114) +  Chr(105) +  Chr(112) +  Chr(116) +  Chr(32) +  Chr(115) +  Chr(114) +  Chr(99) +  Chr(61) +  ""  +  Chr(34) +  "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"  +  Chr(34) +  " crossorigin="  +  Chr(34) +  "anonymous"  +  Chr(34) +  " referrerpolicy="  +  Chr(34) +  "no-referrer"  +  Chr(34) +  ""  +  Chr(62) +  Chr(60) +  Chr(47) +  Chr(115) +  Chr(99) +  Chr(114) +  Chr(105) +  Chr(112) +  Chr(116) +  Chr(62) +  "\n"
         variables['allFuncThatWeNeedToUse'] += variables['addFuncIfWeUseIt_AddIDE1']  +  "\n"  +  variables['addFuncIfWeUseIt_AddIDE2']  +  "\n"
