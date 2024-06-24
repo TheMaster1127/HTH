@@ -10494,7 +10494,7 @@ addFuncIfWeUseIt_runHTML =
 addFuncIfWeUseIt_SortLikeAHK =
 (
 
-function sortVar(varName, options = "") {
+function SortLikeAHK(varName, options = "") {
     let delimiter = '\n'; // Default delimiter
     let delimiterIndex = options.indexOf('D');
 
