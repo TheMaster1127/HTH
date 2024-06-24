@@ -185,6 +185,7 @@ else
 - Simple dynamically function calls. Example: `func%num%()` cant do `%num%func()` also not `func%num%name()` you can only have one `%var%` at the end.
 - Assignment operators (`:=`, `.=`, `+=`, `-=`, `*=`)
 - Comments dont use comments in the same line as the code (Note: Comments might be translated in some cases)
+- Sort
 - runPyCode and runHTML
 - PlaySound
 - MouseGetPos and OnMouseClick
