@@ -213,6 +213,7 @@ else
 - Chr
 - InStr
 - RegExMatch
+- RegExReplace
 - GetKeyState
 - StrLen
 - SubStr
