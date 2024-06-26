@@ -1,0 +1,855 @@
+
+winW := A_ScreenWidth - 50
+winH := A_ScreenHeight - 50
+
+BorderWidth := winW
+BorderHeight := winH
+
+;~ if (A_ScreenWidth < 1707)
+;~ {
+;~ MsgBox, Your Screen is too small try pressing Ctrl+Numpad Minus and press F5
+;~ return
+;~ }
+
+;~ if (A_ScreenWidth > 1800)
+;~ {
+;~ MsgBox, Your Screen is too big try pressing Ctrl+Numpad Plus and press F5
+;~ return
+;~ }
+
+
+Gui, Show, w%winW% h%winH%
+
+roomNum := 1
+room := "Room " . roomNum
+
+Gui, Color, 121212
+Gui, Font, s20
+Gui, Add, Text, cWhite x5 y5 w%winW% h30 vroomText, %room%
+Gui, Font, s12
+
+PlayerX := 80 - 25
+PlayerY := winH - 100 - 50 - 25
+PlayerW := 50
+PlayerH := 50
+
+Speed := 2
+acceleration := 0
+accelerationMax := 3
+accelerationNum := 0.008
+
+jump := 0
+
+platforms := 5
+
+platformX1 := 10
+platformY1 := winH - 100
+platformW1 := 150
+platformH1 := 100
+
+Random, platformYran, 101, 250
+
+platformX2 := 450
+platformY2 := winH - platformYran
+platformW2 := 150
+platformH2 := 100
+
+Random, platformYran, 130, 270
+
+platformX3 := 800
+platformY3 := winH - platformYran
+platformW3 := 150
+platformH3 := 100
+
+Random, platformYran, 160, 300
+
+platformX4 := 1200
+platformY4 := winH - platformYran
+platformW4 := 150
+platformH4 := 100
+
+Random, platformYran, 190, 330
+
+platformX5 := 1500
+platformY5 := winH - platformYran
+platformW5 := 150
+platformH5 := 100
+
+
+
+Gui, Add, Button, x%platformX1% y%platformY1% w%platformW1% h%platformH1% vplatform1
+Gui, Add, Button, x%platformX2% y%platformY2% w%platformW2% h%platformH2% vplatform2
+Gui, Add, Button, x%platformX3% y%platformY3% w%platformW3% h%platformH3% vplatform3
+Gui, Add, Button, x%platformX4% y%platformY4% w%platformW4% h%platformH4% vplatform4
+Gui, Add, Button, x%platformX5% y%platformY5% w%platformW5% h%platformH5% vplatform5
+
+
+Gui, Add, Button, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH% vPlayer, Player
+Gui, Font, s15
+
+Last := "U"
+canMove := 1
+canClimb := 0
+gravity := 1
+fixBugGoIntoBlockNearTheBorder := 1.1
+elev1 := 0
+elev2 := 0
+elev3 := 0
+elev4 := 0
+elev5 := 0
+elevMode1 := 1
+elevMode2 := 1
+elevMode3 := 1
+elevMode4 := 1
+elevMode5 := 1
+SetTimer, ElevLoop1, 30
+SetTimer, ElevLoop2, 17
+SetTimer, ElevLoop3, 24
+SetTimer, ElevLoop4, 34
+SetTimer, ElevLoop5, 21
+SetTimer, code, 2
+SetTimer, gravity, 2
+return
+
+ElevLoop1:
+elev1++
+
+if (elevMode1 = 1)
+{
+    platformH1++
+    platformY1--
+	platformH1++
+    platformY1--
+	platformH1++
+    platformY1--
+
+}
+
+if (elevMode1 = 2)
+{
+    platformH1--
+    platformY1++
+	platformH1--
+    platformY1++
+	platformH1--
+    platformY1++
+}
+
+if (elev1 = 130)
+{
+elevMode1 := 2
+}
+
+if (elev1 = 260)
+{
+    elevMode1 := 1
+    elev1 := 0
+}
+
+GuiControl, Move, platform1, x%platformX1% y%platformY1% w%platformW1% h%platformH1%
+Return
+
+ElevLoop2:
+elev2++
+
+if (elevMode2 = 1)
+{
+    platformH2++
+    platformH2++
+    platformH2++
+    platformY2--
+    platformY2--
+    platformY2--
+}
+
+if (elevMode2 = 2)
+{
+    platformH2--
+    platformH2--
+    platformH2--
+    platformY2++
+    platformY2++
+    platformY2++
+}
+
+if (elev2 = 130)
+{
+elevMode2 := 2
+}
+
+if (elev2 = 260)
+{
+    elevMode2 := 1
+    elev2 := 0
+}
+
+GuiControl, Move, platform2, x%platformX2% y%platformY2% w%platformW2% h%platformH2%
+Return
+
+
+ElevLoop3:
+elev3++
+
+if (elevMode3 = 1)
+{
+    platformH3++
+    platformH3++
+    platformH3++
+    platformY3--
+    platformY3--
+    platformY3--
+}
+
+if (elevMode3 = 2)
+{
+    platformH3--
+    platformH3--
+    platformH3--
+    platformY3++
+    platformY3++
+    platformY3++
+}
+
+if (elev3 = 130)
+{
+elevMode3 := 2
+}
+
+if (elev3 = 260)
+{
+    elevMode3 := 1
+    elev3 := 0
+}
+
+GuiControl, Move, platform3, x%platformX3% y%platformY3% w%platformW3% h%platformH3%
+Return
+
+ElevLoop4:
+elev4++
+
+if (elevMode4 = 1)
+{
+    platformH4++
+    platformH4++
+    platformH4++
+    platformY4--
+    platformY4--
+    platformY4--
+}
+
+if (elevMode4 = 2)
+{
+    platformH4--
+    platformH4--
+    platformH4--
+    platformY4++
+    platformY4++
+    platformY4++
+}
+
+if (elev4 = 130)
+{
+elevMode4 := 2
+}
+
+if (elev4 = 260)
+{
+    elevMode4 := 1
+    elev4 := 0
+}
+
+GuiControl, Move, platform4, x%platformX4% y%platformY4% w%platformW4% h%platformH4%
+Return
+
+
+ElevLoop5:
+elev5++
+
+if (elevMode5 = 1)
+{
+    platformH5++
+    platformH5++
+    platformH5++
+    platformY5--
+    platformY5--
+    platformY5--
+}
+
+if (elevMode5 = 2)
+{
+    platformH5--
+    platformH5--
+    platformH5--
+    platformY5++
+    platformY5++
+    platformY5++
+}
+
+if (elev5 = 130)
+{
+elevMode5 := 2
+}
+
+if (elev5 = 260)
+{
+    elevMode5 := 1
+    elev5 := 0
+}
+
+GuiControl, Move, platform5, x%platformX5% y%platformY5% w%platformW5% h%platformH5%
+Return
+
+
+
+gravity:
+
+if (gravity = 1)
+{
+if !(Collision())
+{
+
+if !(GetKeyState("Up", "D")) && (canMove = 1)
+{
+Last := "D"
+PlayerY := PlayerY + 1
+
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+;OutputDebug, moving
+}
+
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+}
+else
+{
+;jump := 1
+PlayerY := PlayerY - fixBugGoIntoBlockNearTheBorder
+Last := "D"
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+}
+}
+
+Return
+
+
+H::
+if (gravity = 1)
+{
+if (canMove = 1)
+{
+PlayerY := PlayerY - (A_ScreenHeight / 2)
+PlayerX := PlayerX - 91
+canMove := 0
+Last := "U"
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+}
+}
+Return
+
+
+J::
+if (gravity = 1)
+{
+if (canMove = 1)
+{
+PlayerY := PlayerY - (A_ScreenHeight / 2)
+canMove := 0
+Last := "U"
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+}
+}
+Return
+
+
+K::
+if (gravity = 1)
+{
+if (canMove = 1)
+{
+PlayerY := PlayerY - (A_ScreenHeight / 2)
+PlayerX := PlayerX + 110
+canMove := 0
+Last := "U"
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+}
+}
+Return
+
+
+G::
+if (gravity = 1)
+{
+gravity := 0
+Speed := 0.5
+acceleration := 0
+accelerationMax := 1.4
+accelerationNum := 0.008
+return
+}
+if (gravity = 0)
+{
+gravity := 1
+Speed := 2
+acceleration := 0
+accelerationMax := 3
+accelerationNum := 0.008
+return
+}
+
+Return
+
+C::
+if (gravity = 1)
+{
+
+if (canClimb = 0)
+{
+canClimb := 1
+return
+}
+
+if (canClimb = 1)
+{
+canClimb := 0
+return
+}
+
+}
+Return
+
+
+
+code:
+
+if (canMove = 1)
+{
+if !(Collision())
+{
+
+
+if ((GetKeyState("Up", "D")) && !(Collision())) && (gravity = 1)
+{
+
+if (jump = 1)
+{
+jump := 0
+Loop, 20
+{
+Sleep, 10
+PlayerY := PlayerY - (Speed + acceleration + A_Index)
+if !(acceleration > accelerationMax)
+{
+acceleration := acceleration + accelerationNum
+}
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+if (Collision())
+{
+Last := "U"
+break
+}
+}
+;OutputDebug, moving
+}
+else
+{
+PlayerY := PlayerY + 2
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+}
+;Last := "U"
+}
+else if ((GetKeyState("Up", "D")) && !(Collision())) && (gravity = 0)
+{
+Last := "U"
+PlayerY := PlayerY - (Speed + acceleration)
+if !(acceleration > accelerationMax)
+{
+acceleration := acceleration + accelerationNum
+}
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+;OutputDebug, moving
+}
+else if ((GetKeyState("Down", "D")) && !(Collision())) && (gravity = 0)
+{
+Last := "D"
+PlayerY := PlayerY + (Speed + acceleration)
+if !(acceleration > accelerationMax)
+{
+acceleration := acceleration + accelerationNum
+}
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+;OutputDebug, moving
+}
+else if ((GetKeyState("Left", "D")) && !(Collision()))
+{
+Last := "L"
+PlayerX := PlayerX - (Speed + acceleration)
+if !(acceleration > accelerationMax)
+{
+acceleration := acceleration + accelerationNum
+}
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+;OutputDebug, moving
+}
+else if ((GetKeyState("Right", "D")) && !(Collision()))
+{
+Last := "R"
+PlayerX := PlayerX + (Speed + acceleration)
+if !(acceleration > accelerationMax)
+{
+acceleration := acceleration + accelerationNum
+}
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+;OutputDebug, moving
+}
+else if ((GetKeyState("Up", "U")) && (GetKeyState("Down", "U")) && (GetKeyState("Left", "U")) && (GetKeyState("Right", "U")))
+{
+; not moving
+;OutputDebug, no moving
+acceleration := 0
+}
+}
+
+}
+Return
+
+
+Collision()
+{
+
+x1 := PlayerX
+y1 := PlayerY
+
+x2 := PlayerX + PlayerW
+y2 := PlayerY
+
+x3 := PlayerX
+; so the player dsoent seem to float
+y3 := PlayerY + PlayerH - 1
+
+x4 := PlayerX + PlayerW
+; so the player dsoent seem to float
+y4 := PlayerY + PlayerH - 1
+
+x5 := PlayerX
+y5 := PlayerY + (PlayerH / 2)
+
+x6 := PlayerX + PlayerW
+y6 := PlayerY + (PlayerH / 2)
+
+; Loop through each point
+Loop, 6
+{
+loop6AIndex := A_Index
+XCoordinate := x%A_Index%
+YCoordinate := y%A_Index%
+
+; Loop through the platforms
+Loop, %platforms%
+{
+PlatformX := platformX%A_Index%
+PlatformY := platformY%A_Index%
+PlatformW := platformW%A_Index%
+PlatformH := platformH%A_Index%
+
+
+
+
+
+
+
+
+; Check collision with current platform
+if (XCoordinate >= PlatformX && XCoordinate <= PlatformX + PlatformW && YCoordinate >= PlatformY && YCoordinate <= PlatformY + PlatformH)
+{
+
+
+
+if (gravity = 1)
+{
+
+; Define the rectangular area
+blockX := PlatformX
+blockY := PlatformY
+blockW := PlatformW
+blockH := PlatformH
+
+;OutputDebug, %blockX%
+;OutputDebug, %blockY%
+;OutputDebug, %blockW%
+;OutputDebug, %blockH%
+
+; Define the point location to test
+pointX := x3
+pointY := y3
+pointX1 := x4
+pointY1 := y4
+
+
+layer0 := ""
+Loop, 7
+{
+layer%A_Index% := ""
+}
+
+Loop, % blockW - 0
+{
+layer0 .= "|" . (A_Index + blockX) . "," . (blockY - 1)
+}
+layer0 .= "|"
+Loop, % blockW - 0
+{
+layer1 .= "|" . (A_Index + blockX) . "," . (blockY)
+}
+layer1 .= "|"
+Loop, % blockW - 2
+{
+AIndex := A_Index + 1
+layer2 .= "|" . (AIndex + blockX) . "," . (blockY + 1)
+}
+layer2 .= "|"
+Loop, % blockW - 4
+{
+AIndex := A_Index + 2
+layer3 .= "|" . (AIndex + blockX) . "," . (blockY + 2)
+}
+layer3 .= "|"
+Loop, % blockW - 6
+{
+AIndex := A_Index + 3
+layer4 .= "|" . (AIndex + blockX) . "," . (blockY + 3)
+}
+layer4 .= "|"
+
+
+layerUp := layer0 . "`n" . layer1 . "`n" . layer2 . "`n" . layer3 . "`n" . layer4
+;MsgBox, % layerUp
+
+point1 := "|" . Floor(pointX) . "," . Floor(pointY) . "|"
+point2 := "|" . Floor(pointX1) . "," . Floor(pointY1) . "|"
+;OutputDebug, %point%
+areWeOnTop := 0
+jump := 0
+if (InStr(layerUp, point1)) or (InStr(layerUp, point2))
+{
+areWeOnTop := 1
+canMove := 1
+jump := 1
+}
+;OutputDebug, %areWeOnTop%
+}
+
+
+
+
+; Set collision flag for current point
+b%loop6AIndex% := 1
+; No need to check collisions with other platforms for this point
+break
+}
+else
+{
+b%loop6AIndex% := 0
+}
+}
+}
+
+if (gravity = 1)
+{
+fixBugGoIntoBlockNearTheBorder := 1.1
+if (PlayerX >= -1) && (PlayerX <= 3)
+{
+fixBugGoIntoBlockNearTheBorder := 6
+;OutputDebug, fixBugGoIntoBlockNearTheBorder11111111
+}
+if (PlayerX + PlayerW >= winW - 3) && (PlayerX + PlayerW <= winW + 1)
+{
+fixBugGoIntoBlockNearTheBorder := 6
+;OutputDebug, fixBugGoIntoBlockNearTheBorder22222222222
+}
+}
+
+
+if (PlayerX <= 1)
+{
+PlayerX := PlayerX + 1
+if (gravity = 1)
+{
+PlayerY := PlayerY + 3
+}
+jump := 0
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+return true
+}
+else if (PlayerX >= winW - PlayerW)
+{
+PlayerX := PlayerX - 1
+if (gravity = 1)
+{
+PlayerY := PlayerY + 3
+}
+jump := 0
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+return true
+}
+else if (PlayerY >= winH - PlayerH)
+{
+PlayerY := PlayerY - 3
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+jump := 1
+canMove := 1
+return true
+}
+else if (PlayerY <= 1)
+{
+jump := 0
+PlayerY := PlayerY + 3
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+return true
+}
+
+
+
+
+
+if (b1 = 1) or (b2 = 1) or (b3 = 1) or (b4 = 1) or (b5 = 1) or (b6 = 1)
+{
+
+;OutputDebug, %b1% %b2% %b3% %b4% %b5% %b6%
+
+
+
+
+
+
+
+
+
+
+
+if (gravity = 1)
+{
+
+if (canClimb = 0)
+{
+
+if (areWeOnTop = 0)
+{
+if (b1 = 0) && (b2 = 1) && (b3 = 0) && (b4 = 1) && (b5 = 0) && (b6 = 1)
+{
+;OutputDebug, SIDE R
+Last := "R"
+}
+if (b1 = 0) && (b2 = 1) && (b3 = 0) && (b4 = 0) && (b5 = 0) && (b6 = 1)
+{
+;OutputDebug, SIDE R
+Last := "R"
+}
+if (b1 = 0) && (b2 = 0) && (b3 = 0) && (b4 = 1) && (b5 = 0) && (b6 = 1)
+{
+;OutputDebug, SIDE R
+Last := "R"
+}
+if (b1 = 0) && (b2 = 1) && (b3 = 0) && (b4 = 0) && (b5 = 0) && (b6 = 0)
+{
+;OutputDebug, SIDE R
+Last := "R"
+}
+if (b1 = 0) && (b2 = 0) && (b3 = 0) && (b4 = 1) && (b5 = 0) && (b6 = 0)
+{
+;OutputDebug, SIDE R
+Last := "R"
+}
+
+if (b1 = 1) && (b2 = 0) && (b3 = 1) && (b4 = 0) && (b5 = 1) && (b6 = 0)
+{
+;OutputDebug, SIDE L
+Last := "L"
+}
+if (b1 = 0) && (b2 = 0) && (b3 = 1) && (b4 = 0) && (b5 = 1) && (b6 = 0)
+{
+;OutputDebug, SIDE L
+Last := "L"
+}
+if (b1 = 1) && (b2 = 0) && (b3 = 0) && (b4 = 0) && (b5 = 1) && (b6 = 0)
+{
+;OutputDebug, SIDE L
+Last := "L"
+}
+if (b1 = 1) && (b2 = 0) && (b3 = 0) && (b4 = 0) && (b5 = 0) && (b6 = 0)
+{
+;OutputDebug, SIDE L
+Last := "L"
+}
+if (b1 = 0) && (b2 = 0) && (b3 = 1) && (b4 = 0) && (b5 = 0) && (b6 = 0)
+{
+;OutputDebug, SIDE L
+Last := "L"
+}
+}
+}
+}
+
+acceleration := 0
+;OutputDebug, %Last%
+
+if (Last = "L")
+{
+jump := 0
+PlayerX := PlayerX + 1
+if (gravity = 1)
+{
+PlayerY := PlayerY + 1
+}
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+return true
+}
+
+
+if (Last = "R")
+{
+jump := 0
+PlayerX := PlayerX - 1
+if (gravity = 1)
+{
+PlayerY := PlayerY + 1
+}
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+return true
+}
+
+if (Last = "U")
+{
+PlayerX := PlayerX
+PlayerY := PlayerY + 6
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+return true
+}
+
+
+if (Last = "D") && (gravity = 0)
+{
+PlayerX := PlayerX
+PlayerY := PlayerY - 1
+GuiControl, Move, Player, x%PlayerX% y%PlayerY% w%PlayerW% h%PlayerH%
+return true
+}
+
+
+
+return true
+}
+else
+{
+return false
+}
+
+
+
+
+
+}
+
+
+
+
+
+
