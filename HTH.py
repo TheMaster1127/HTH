@@ -365,12 +365,24 @@ def transpileVariables(sstr123455, functionNames):
     variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , Chr(92) +  Chr(92), Chr(96))
     variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "cyiasasasasstAYtheummonlyemlpystringya-a-"  +  Chr(100), Chr(34) +  Chr(34))
     #OutputDebug, %outOftranspileVariables%
-    variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.true" , "true")
-    variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.false" , "false")
-    variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.if" , "if")
-    variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.else" , "else")
-    variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.and" , "&&")
-    variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.or" , "||")
+    # Check and replace "variables.false"
+    if (SubStr(variables['outOftranspileVariables'] , -14)== "variables.false"):
+        variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.false" , "false")
+    variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.false " , "false ")
+    # Check and replace "variables.if"
+    if (SubStr(variables['outOftranspileVariables'] , -11)== "variables.if"):
+        variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.if" , "if")
+    variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.if " , "if ")
+    # Check and replace "variables.else"
+    if (SubStr(variables['outOftranspileVariables'] , -13)== "variables.else"):
+        variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.else" , "else")
+    variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.else " , "else ")
+    # Check and replace "variables.true"
+    if (SubStr(variables['outOftranspileVariables'] , -13)== "variables.true"):
+        variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.true" , "true")
+    variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.true " , "true ")
+    variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.and " , "&& ")
+    variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , "variables.or " , "|| ")
     variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , " = " , " == ")
     variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , " = " , " == ")
     variables['outOftranspileVariables'] = StrReplace(variables['outOftranspileVariables'] , " ( " , " (")
@@ -3516,4 +3528,3 @@ variables['filePathOfCode'] = "index.html"
 FileDelete("" + variables['filePathOfCode'] + "")
 FileAppend("" + variables['jsCodeOut'] + "", "" + variables['filePathOfCode'] + "")
 print("Transpiled!")
-

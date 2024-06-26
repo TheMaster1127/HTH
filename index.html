@@ -984,30 +984,81 @@ function isConnectedToBackend() {
             }
 
 
-      function StoreLocally(operation, saveLocation, data) {
-        if (operation === "s") {
-          // Save data to local storage under specified saveLocation
-          localStorage.setItem(saveLocation, String(data));
-          return true; // Indicate success
-        } else if (operation === "d") {
-          // Delete data from local storage under specified saveLocation
-          localStorage.removeItem(saveLocation);
-          return true; // Indicate success
-        } else if (operation === "r") {
-          // Retrieve data from local storage under specified saveLocation
-          return localStorage.getItem(saveLocation) || null; // Return stored data or null if not found
-        } else if (operation === "dALL") {
-          // Delete all data from local storage (clear all keys)
-          localStorage.clear();
-          return true; // Indicate success
-        } else if (operation === "e") {
-          // Check if local storage is empty (no keys present)
-          return localStorage.length === 0; // Return true if empty, false if not empty
-        } else {
-          console.error("Invalid operation specified.");
-          return false; // Indicate failure
+// Define the StoreLocally function with embedded getLocalStorageUsagePercentage logic
+function StoreLocally(operation, saveLocation, data) {
+    if (operation === "s") {
+        // Save data to local storage under specified saveLocation
+        localStorage.setItem(saveLocation, String(data));
+        return true; // Indicate success
+    } else if (operation === "d") {
+        // Delete data from local storage under specified saveLocation
+        localStorage.removeItem(saveLocation);
+        return true; // Indicate success
+    } else if (operation === "r") {
+        // Retrieve data from local storage under specified saveLocation
+        return localStorage.getItem(saveLocation) || null; // Return stored data or null if not found
+    } else if (operation === "dALL") {
+        // Delete all data from local storage (clear all keys)
+        localStorage.clear();
+        return true; // Indicate success
+    } else if (operation === "e") {
+        // Check if local storage is empty (no keys present)
+        return localStorage.length === 0; // Return true if empty, false if not empty
+    } else if (operation === "u") {
+        // Embed the logic of getLocalStorageUsagePercentage function
+
+        var store = localStorage;
+        var testKey = "$_test";
+
+        // Function to test storage capacity
+        function testCapacity(size) {
+            try {
+                store.setItem(testKey, new Array(size + 1).join('0'));
+                store.removeItem(testKey);
+                return true;
+            } catch (ex) {
+                return false;
+            }
         }
-      }
+
+        // Binary search to find maximum size
+        var low = 0,
+            high = 1,
+            upperLimit = (1024 * 1024 * 1024) / 2; // Default upper limit (1 GB)
+
+        while (testCapacity(high) && high < upperLimit) {
+            low = high;
+            high *= 2;
+        }
+
+        // Refine the estimate using binary search
+        var precision = 8; // Number of iterations for precision
+        while (precision--) {
+            var mid = (low + high) / 2;
+            if (testCapacity(mid)) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+
+        var totalBytes = Math.ceil(high) * 2; // Total storage limit in bytes
+
+        // Calculate used storage size directly
+        var usedBytes = Object.keys(store).reduce(function(total, key) {
+            return total + key.length + store[key].length * 2;
+        }, 0);
+
+        // Calculate percentage used
+        var usedPercentage = (usedBytes / totalBytes) * 100;
+        usedPercentage = usedPercentage.toFixed(2); // Round to 2 decimal places
+
+        return usedPercentage;
+    } else {
+        console.error("Invalid operation specified.");
+        return false; // Indicate failure
+    }
+}
 
 
       // Function to create a toggle switch with width and height
@@ -2493,12 +2544,32 @@ variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVa
 variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , await Chr (92) + await Chr (92) , await Chr (96) )
 variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "cyiasasasasstAYtheummonlyemlpystringya-a-" + await Chr (100) , await Chr (34) + await Chr (34) )
 //OutputDebug, %outOftranspileVariables%
-variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.true" , "true" )
+// Check and replace "variables.false"
+if (( await SubStr (variables.outOftranspileVariables , -14) == "variables.false" ))
+{
 variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.false" , "false" )
+}
+variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.false " , "false " )
+// Check and replace "variables.if"
+if (( await SubStr (variables.outOftranspileVariables , -11) == "variables.if" ))
+{
 variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.if" , "if" )
+}
+variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.if " , "if " )
+// Check and replace "variables.else"
+if (( await SubStr (variables.outOftranspileVariables , -13) == "variables.else" ))
+{
 variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.else" , "else" )
-variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.and" , "&&" )
-variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.or" , "||" )
+}
+variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.else " , "else " )
+// Check and replace "variables.true"
+if (( await SubStr (variables.outOftranspileVariables , -13) == "variables.true" ))
+{
+variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.true" , "true" )
+}
+variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.true " , "true " )
+variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.and " , "&& " )
+variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , "variables.or " , "|| " )
 variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , " = " , " == " )
 variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , " = " , " == " )
 variables.outOftranspileVariables = await StrReplace (variables.outOftranspileVariables , " ( " , " (" )
@@ -2647,8 +2718,8 @@ variables.base64iconList = ""
 variables.out123456 = ""
 variables.textAfterSemicolonNum = 0
 variables.out123456ggFixTrim = ""
-ifWeUseCanvasThenAddUpdateFunc1 = ""
-ifWeUseCanvasThenAddUpdateFunc2 = ""
+variables.ifWeUseCanvasThenAddUpdateFunc1 = ""
+variables.ifWeUseCanvasThenAddUpdateFunc2 = ""
 variables.varOutJsCanvasFixTranspernat = ""
 variables.rectangleId = 0
 variables.switchId = 0
@@ -2657,7 +2728,7 @@ variables.IDEId = 0
 variables.videoId = 0
 variables.IframeId = 0
 variables.DropDownListId = 0
-ifWeUseCanvas = 0
+variables.ifWeUseCanvas = 0
 variables.weUseCnanvasAtALL = 0
 variables.weUseCnanvasAtALLEver = 0
 variables.libNum = 0
@@ -2673,7 +2744,7 @@ variables.jsCode01CanvasW = ""
 variables.jsCode01CanvasH = ""
 variables.skipLeftCuleyForFuncPLS = 0
 variables.eavbnsalvbaslv = 0
-ifWeUseCanvas = 0
+variables.ifWeUseCanvas = 0
 variables.weUseCnanvasAtALL = 0
 variables.numOfTextData = 0
 variables.funcs = "let funcs = {\n"
@@ -4745,9 +4816,9 @@ variables.jsCode += "\n" + variables.videoOut + "\n"
 }
 if (( variables.out3 == "rectangle") || (variables.out3 == "circle" ))
 {
-ifWeUseCanvasThenAddUpdateFunc1 = "updateRectangle(id, param1, param2, param3, param4);\nredrawCanvas(); // Redraw the canvas with updated rectangles"
-ifWeUseCanvasThenAddUpdateFunc2 = "updateRectangleColor(id, param1);\nredrawCanvas(); // Redraw the canvas with updated rectangles"
-ifWeUseCanvas = 1
+variables.ifWeUseCanvasThenAddUpdateFunc1 = "updateRectangle(id, param1, param2, param3, param4);\nredrawCanvas(); // Redraw the canvas with updated rectangles"
+variables.ifWeUseCanvasThenAddUpdateFunc2 = "updateRectangleColor(id, param1);\nredrawCanvas(); // Redraw the canvas with updated rectangles"
+variables.ifWeUseCanvas = 1
 variables.rectangleOut = ""
 variables.guiOutOfRectangleNum = 0
 variables.guiOutOfRectangleX = 0
@@ -6699,12 +6770,12 @@ variables.addFuncIfWeUseIt_LoopParseFunc = "\nfunction LoopParseFunc(varString, 
 variables.addFuncIfWeUseIt_runHTML = "\n\n      function runHTML(parent, id, scale, leftPos, topPos, width, height, HTMLcode) {\n        // Calculate the scale based on the actual width and height of the iframe\n        const scaleX = width / window.innerWidth;\n        const scaleY = height / window.innerHeight;\n        const scaleFactor = Math.min(scaleX, scaleY);\n\n        // Calculate the scaled width and height to maintain aspect ratio\n        const scaledWidth = Math.floor(window.innerWidth * scaleFactor);\n        const scaledHeight = Math.floor(window.innerHeight * scaleFactor);\n\n        // Calculate offsets to center the content\n        const offsetX = Math.floor((width - scaledWidth) / 2);\n        const offsetY = Math.floor((height - scaledHeight) / 2);\n\n        // Create iframe element\n        let iframeElement = document.createElement(" + await Chr (34) + "iframe" + await Chr (34) + ");\n\n        // Set attributes\n        iframeElement.id = id;\n        iframeElement.style.position = " + await Chr (34) + "absolute" + await Chr (34) + ";\n        iframeElement.style.left = leftPos + offsetX + " + await Chr (34) + "px" + await Chr (34) + ";\n        iframeElement.style.top = topPos + offsetY + " + await Chr (34) + "px" + await Chr (34) + ";\n        iframeElement.style.width = window.innerWidth + " + await Chr (34) + "px" + await Chr (34) + "; // Set the iframe's viewport width\n        iframeElement.style.height = window.innerHeight + " + await Chr (34) + "px" + await Chr (34) + "; // Set the iframe's viewport height\n        iframeElement.style.transformOrigin = " + await Chr (34) + "top left" + await Chr (34) + ";\n        iframeElement.style.transform = " + await Chr (96) + "scale(${scaleFactor})" + await Chr (96) + ";\n\n        // Set srcdoc attribute to load content\n        iframeElement.srcdoc = HTMLcode;\n\n        // Append iframe to parent element\n        parent.appendChild(iframeElement);\n      }\n\n"
 variables.addFuncIfWeUseIt_SortLikeAHK = "\nfunction SortLikeAHK(varName, options = " + await Chr (34) + "" + await Chr (34) + ") {\n    let delimiter = '" + await Chr (92) + "n'; // Default delimiter\n    let delimiterIndex = options.indexOf('D');\n\n    if (delimiterIndex !== -1) {\n        let delimiterChar = options[delimiterIndex + 1];\n        delimiter = delimiterChar === '' ? ',' : delimiterChar;\n    }\n\n    let items = varName.split(new RegExp(delimiter === ',' ? ',' : '" + await Chr (92) + "" + await Chr (92) + "' + delimiter));\n\n    // Remove empty items and trim whitespace\n    items = items.filter(item => item.trim() !== '');\n\n    // Apply sorting based on options\n    if (options.includes('N')) {\n        // Numeric sort\n        items.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));\n    } else if (options.includes('Random')) {\n        // Random sort\n        for (let i = items.length - 1; i > 0; i--) {\n            const j = Math.floor(Math.random() * (i + 1));\n            [items[i], items[j]] = [items[j], items[i]];\n        }\n    } else {\n        // Default alphabetical sort\n        items.sort((a, b) => {\n            const keyA = options.includes('C') ? a : a.toLowerCase();\n            const keyB = options.includes('C') ? b : b.toLowerCase();\n            if (keyA < keyB) return -1;\n            if (keyA > keyB) return 1;\n            return 0;\n        });\n    }\n\n    // Reverse if 'R' option is present\n    if (options.includes('R')) {\n        items.reverse();\n    }\n\n    // Remove duplicates if 'U' option is present\n    if (options.includes('U')) {\n        const seen = new Map();\n        items = items.filter(item => {\n            const key = options.includes('C') ? item : item.toLowerCase();\n            if (!seen.has(key)) {\n                seen.set(key, item);\n                return true;\n            }\n            return false;\n        });\n    }\n\n    // Join the sorted items back into a string\n    const sortedVar = items.join(delimiter === ',' ? ',' : '" + await Chr (92) + "n');\n\n    return sortedVar;\n}\n"
 variables.allFuncThatWeNeedToUse = ""
-ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile = ""
-ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile = ""
+variables.ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile = ""
+variables.ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile = ""
 if (( await InStr (variables.jsCode , "showCustomMessageBox(") ) || (await InStr (variables.jsCode , "showCustomMessageBox (") ))
 {
 variables.allFuncThatWeNeedToUse += variables.addFuncIfWeUseIt_showCustomMessageBox + "\n"
-ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile = await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (32) + await Chr (115) + await Chr (114) + await Chr (99) + await Chr (61) + await Chr (34) + "https://cdn.jsdelivr.net/npm/sweetalert2@11" + await Chr (34) + await Chr (62) + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62 )
+variables.ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile = await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (32) + await Chr (115) + await Chr (114) + await Chr (99) + await Chr (61) + await Chr (34) + "https://cdn.jsdelivr.net/npm/sweetalert2@11" + await Chr (34) + await Chr (62) + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62 )
 }
 if (( await InStr (variables.jsCode , "BuildInVars(") ) || (await InStr (variables.jsCode , "BuildInVars (") ))
 {
@@ -6944,23 +7015,23 @@ variables.allFuncThatWeNeedToUse += variables.addFuncIfWeUseIt_SortLikeAHK + "\n
 }
 if (( await InStr (variables.jsCode , "AddIDE(") ) || (await InStr (variables.jsCode , "AddIDE (") ))
 {
-ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile = "\n" + await Chr (60) + await Chr (33) + await Chr (45) + await Chr (45) + await Chr (32) + await Chr (73) + await Chr (110) + await Chr (99) + await Chr (108) + await Chr (117) + await Chr (100) + await Chr (101) + await Chr (32) + await Chr (65) + await Chr (99) + await Chr (101) + await Chr (32) + await Chr (69) + await Chr (100) + await Chr (105) + await Chr (116) + await Chr (111) + await Chr (114) + await Chr (32) + await Chr (67) + await Chr (68) + await Chr (78) + await Chr (32) + await Chr (45) + await Chr (45) + await Chr (62) + "\n    " + await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (32) + await Chr (115) + await Chr (114) + await Chr (99) + await Chr (61) + "" + await Chr (34) + "https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ace.js" + await Chr (34) + " integrity=" + await Chr (34) + "sha512-JLIRlxWh96sND3uUgI2RVHZJpgkWHg3+xoUY8XkgTPKpqRaqdk7zD/ck/XHXFSMW84o6GrP67dlqN3b98NB/yA==" + await Chr (34) + " crossorigin=" + await Chr (34) + "anonymous" + await Chr (34) + " referrerpolicy=" + await Chr (34) + "no-referrer" + await Chr (34) + "" + await Chr (62) + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62) + "\n    " + await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (32) + await Chr (115) + await Chr (114) + await Chr (99) + await Chr (61) + "" + await Chr (34) + "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js" + await Chr (34) + " crossorigin=" + await Chr (34) + "anonymous" + await Chr (34) + " referrerpolicy=" + await Chr (34) + "no-referrer" + await Chr (34) + "" + await Chr (62) + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62) + "\n"
+variables.ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile = "\n" + await Chr (60) + await Chr (33) + await Chr (45) + await Chr (45) + await Chr (32) + await Chr (73) + await Chr (110) + await Chr (99) + await Chr (108) + await Chr (117) + await Chr (100) + await Chr (101) + await Chr (32) + await Chr (65) + await Chr (99) + await Chr (101) + await Chr (32) + await Chr (69) + await Chr (100) + await Chr (105) + await Chr (116) + await Chr (111) + await Chr (114) + await Chr (32) + await Chr (67) + await Chr (68) + await Chr (78) + await Chr (32) + await Chr (45) + await Chr (45) + await Chr (62) + "\n    " + await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (32) + await Chr (115) + await Chr (114) + await Chr (99) + await Chr (61) + "" + await Chr (34) + "https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ace.js" + await Chr (34) + " integrity=" + await Chr (34) + "sha512-JLIRlxWh96sND3uUgI2RVHZJpgkWHg3+xoUY8XkgTPKpqRaqdk7zD/ck/XHXFSMW84o6GrP67dlqN3b98NB/yA==" + await Chr (34) + " crossorigin=" + await Chr (34) + "anonymous" + await Chr (34) + " referrerpolicy=" + await Chr (34) + "no-referrer" + await Chr (34) + "" + await Chr (62) + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62) + "\n    " + await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (32) + await Chr (115) + await Chr (114) + await Chr (99) + await Chr (61) + "" + await Chr (34) + "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js" + await Chr (34) + " crossorigin=" + await Chr (34) + "anonymous" + await Chr (34) + " referrerpolicy=" + await Chr (34) + "no-referrer" + await Chr (34) + "" + await Chr (62) + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62) + "\n"
 variables.allFuncThatWeNeedToUse += variables.addFuncIfWeUseIt_AddIDE1 + "\n" + variables.addFuncIfWeUseIt_AddIDE2 + "\n"
 }
-ifWeUseBrythonWeWillAddTheLinkInTheHTMLfile = ""
+variables.ifWeUseBrythonWeWillAddTheLinkInTheHTMLfile = ""
 variables.regularOrBrythonBodyINNIT = await Chr (60) + await Chr (98) + await Chr (111) + await Chr (100) + await Chr (121) + await Chr (62 )
 if (( await InStr (variables.jsCode , "runPyCode(") ) || (await InStr (variables.jsCode , "runPyCode (") ))
 {
-ifWeUseBrythonWeWillAddTheLinkInTheHTMLfile = "\n        " + await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (32) + await Chr (115) + await Chr (114) + await Chr (99) + await Chr (61) + "" + await Chr (34) + "https://cdn.jsdelivr.net/npm/brython@3.10.5/brython.min.js" + await Chr (34) + "" + await Chr (62) + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62) + "\n        " + await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (32) + await Chr (115) + await Chr (114) + await Chr (99) + await Chr (61) + "" + await Chr (34) + "https://cdn.jsdelivr.net/npm/brython@3.10.5/brython_stdlib.js" + await Chr (34) + "" + await Chr (62) + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62) + "\n"
+variables.ifWeUseBrythonWeWillAddTheLinkInTheHTMLfile = "\n        " + await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (32) + await Chr (115) + await Chr (114) + await Chr (99) + await Chr (61) + "" + await Chr (34) + "https://cdn.jsdelivr.net/npm/brython@3.10.5/brython.min.js" + await Chr (34) + "" + await Chr (62) + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62) + "\n        " + await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (32) + await Chr (115) + await Chr (114) + await Chr (99) + await Chr (61) + "" + await Chr (34) + "https://cdn.jsdelivr.net/npm/brython@3.10.5/brython_stdlib.js" + await Chr (34) + "" + await Chr (62) + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62) + "\n"
 variables.regularOrBrythonBodyINNIT = "    " + await Chr (60) + await Chr (98) + await Chr (111) + await Chr (100) + await Chr (121) + await Chr (32) + await Chr (111) + await Chr (110) + await Chr (108) + await Chr (111) + await Chr (97) + await Chr (100) + await Chr (61) + "" + await Chr (34) + "brython()" + await Chr (34) + ">\n        " + await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (32) + await Chr (116) + await Chr (121) + await Chr (112) + await Chr (101) + await Chr (61) + "" + await Chr (34) + "text/python" + await Chr (34) + ">\n            import io\n            import sys\n            from browser import document, window\n\n            def runPythonCode(code):\n                try:\n                    # Redirect stdout to capture output\n                    sys.stdout = io.StringIO()\n                    exec(code)\n                    # Get the captured output\n                    output = sys.stdout.getvalue()\n                    # Reset stdout\n                    sys.stdout = sys.__stdout__\n                    return output\n                except Exception as e:\n                    return f" + await Chr (34) + "Error: {str(e)}" + await Chr (34) + "\n\n            # Expose the runPythonCode function to the browser's window object\n            window.runPythonCode = runPythonCode\n        " + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62) + "\n\n\n"
 variables.allFuncThatWeNeedToUse += variables.addFuncIfWeUseIt_runPyCode + "\n"
 }
 variables.addFuncIfWeUseIt_AllCanvasFunctions = "\n      // Function to draw a rectangle with rounded corners on the canvas\n      function drawRoundedRectangle(ctx, x, y, width, height, radius, fillColor, id) {\n        // Draw the rounded rectangle\n        ctx.fillStyle = fillColor;\n        ctx.beginPath();\n        ctx.moveTo(x + radius, y);\n        ctx.arcTo(x + width, y, x + width, y + height, radius);\n        ctx.arcTo(x + width, y + height, x, y + height, radius);\n        ctx.arcTo(x, y + height, x, y, radius);\n        ctx.arcTo(x, y, x + width, y, radius);\n        ctx.closePath();\n        ctx.fill();\n\n        // Return the rectangle information\n        return { id: id, x: x, y: y, width: width, height: height, radius, fillColor: fillColor };\n      }\n\n      // Function to update the position and size of a rectangle\n      function updateRectangle(id, x, y, width, height) {\n        const index = rectangles.findIndex((rectangle) => rectangle.id === id);\n        if (index !== -1) {\n          rectangles[index].x = x;\n          rectangles[index].y = y;\n          rectangles[index].width = width;\n          rectangles[index].height = height;\n        }\n      }\n\n      // Function to update the color of a rectangle\n      function updateRectangleColor(id, color) {\n        const index = rectangles.findIndex((rectangle) => rectangle.id === id);\n        if (index !== -1) {\n          rectangles[index].fillColor = color;\n        }\n      }\n\n      // Function to redraw all rectangles on the canvas\n      function redrawCanvas() {\n        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas\n        rectangles.forEach((rectangle) => {\n          drawRoundedRectangle(ctx, rectangle.x, rectangle.y, rectangle.width, rectangle.height, rectangle.radius, rectangle.fillColor, rectangle.id);\n        });\n      }\n"
-if (( ifWeUseCanvas == 1 ))
+if (( variables.ifWeUseCanvas == 1 ))
 {
 variables.allFuncThatWeNeedToUse += variables.addFuncIfWeUseIt_AllCanvasFunctions + "\n"
 }
-variables.upCode1 = await Chr (60) + await Chr (33) + await Chr (100) + await Chr (111) + await Chr (99) + await Chr (116) + await Chr (121) + await Chr (112) + await Chr (101) + await Chr (32) + await Chr (104) + await Chr (116) + await Chr (109) + await Chr (108) + await Chr (62) + await Chr (10) + await Chr (60) + await Chr (104) + await Chr (116) + await Chr (109) + await Chr (108) + await Chr (32) + await Chr (108) + await Chr (97) + await Chr (110) + await Chr (103) + await Chr (61) + await Chr (34) + await Chr (101) + await Chr (110) + await Chr (34) + await Chr (62) + await Chr (10) + await Chr (32) + await Chr (32) + await Chr (60) + await Chr (104) + await Chr (101) + await Chr (97) + await Chr (100) + await Chr (62) + await Chr (10) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (60) + await Chr (109) + await Chr (101) + await Chr (116) + await Chr (97) + await Chr (32) + await Chr (99) + await Chr (104) + await Chr (97) + await Chr (114) + await Chr (115) + await Chr (101) + await Chr (116) + await Chr (61) + await Chr (34) + await Chr (85) + await Chr (84) + await Chr (70) + await Chr (45) + await Chr (56) + await Chr (34) + await Chr (32) + await Chr (47) + await Chr (62) + await Chr (10) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (60) + await Chr (109) + await Chr (101) + await Chr (116) + await Chr (97) + await Chr (32) + await Chr (110) + await Chr (97) + await Chr (109) + await Chr (101) + await Chr (61) + await Chr (34) + await Chr (118) + await Chr (105) + await Chr (101) + await Chr (119) + await Chr (112) + await Chr (111) + await Chr (114) + await Chr (116) + await Chr (34) + await Chr (32) + await Chr (99) + await Chr (111) + await Chr (110) + await Chr (116) + await Chr (101) + await Chr (110) + await Chr (116) + await Chr (61) + await Chr (34) + await Chr (119) + await Chr (105) + await Chr (100) + await Chr (116) + await Chr (104) + await Chr (61) + await Chr (100) + await Chr (101) + await Chr (118) + await Chr (105) + await Chr (99) + await Chr (101) + await Chr (45) + await Chr (119) + await Chr (105) + await Chr (100) + await Chr (116) + await Chr (104) + await Chr (44) + await Chr (32) + await Chr (105) + await Chr (110) + await Chr (105) + await Chr (116) + await Chr (105) + await Chr (97) + await Chr (108) + await Chr (45) + await Chr (115) + await Chr (99) + await Chr (97) + await Chr (108) + await Chr (101) + await Chr (61) + await Chr (49) + await Chr (46) + await Chr (48) + await Chr (34) + await Chr (32) + await Chr (47) + await Chr (62) + await Chr (10) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (60) + await Chr (116) + await Chr (105) + await Chr (116) + await Chr (108) + await Chr (101) + await Chr (62) + "" + variables.filenameOfHTH + "" + await Chr (60) + await Chr (47) + await Chr (116) + await Chr (105) + await Chr (116) + await Chr (108) + await Chr (101) + await Chr (62) + "\n    " + await Chr (60) + await Chr (115) + await Chr (116) + await Chr (121) + await Chr (108) + await Chr (101) + await Chr (62) + "\n      body {\n        background-color: #202020;\n        font-family:\n          " + await Chr (34) + "Open Sans" + await Chr (34) + ",\n          -apple-system,\n          BlinkMacSystemFont,\n          " + await Chr (34) + "Segoe UI" + await Chr (34) + ",\n          Roboto,\n          Oxygen-Sans,\n          Ubuntu,\n          Cantarell,\n          " + await Chr (34) + "Helvetica Neue" + await Chr (34) + ",\n          Helvetica,\n          Arial,\n          sans-serif;\n      }\n    " + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (116) + await Chr (121) + await Chr (108) + await Chr (101) + await Chr (62) + "\n    " + ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile + "\n\n    " + ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile + "\n\n    " + ifWeUseBrythonWeWillAddTheLinkInTheHTMLfile + "\n\n  " + await Chr (60) + await Chr (47) + await Chr (104) + await Chr (101) + await Chr (97) + await Chr (100) + await Chr (62) + "\n  " + variables.regularOrBrythonBodyINNIT + "\n    " + await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62) + "\n\n      " + variables.TextData + "\n\n      " + variables.base64ImageData + "\n\n      " + variables.base64soundList + "\n\n      " + variables.base64iconList + "\n\n      " + variables.base64VideoData + "\n\n      // JavaScript equivalent code with variables\n\n      function changeFaviconAtTheBeginning(faviconUrl) {\n        // Create a new favicon link element\n        const newFavicon = document.createElement(" + await Chr (34) + "link" + await Chr (34) + ");\n        newFavicon.rel = " + await Chr (34) + "icon" + await Chr (34) + ";\n        newFavicon.href = faviconUrl;\n\n        // Get the current favicon element (if exists)\n        const existingFavicon = document.querySelector('link[rel=" + await Chr (34) + "icon" + await Chr (34) + "]');\n\n        // Replace the current favicon with the new one\n        if (existingFavicon) {\n          // If a favicon exists, replace it\n          document.head.removeChild(existingFavicon); // Remove the existing favicon\n        }\n\n        // Append the new favicon to the head\n        document.head.appendChild(newFavicon);\n      }\n\n      // Call the function with the desired favicon URL\n      changeFaviconAtTheBeginning(" + await Chr (34) + "https://i.ibb.co/Jpty1B8/305182938-1a0efe63-726e-49ca-a13c-d0ed627f2ea7.png" + await Chr (34) + ");\n\n      " + variables.allFuncThatWeNeedToUse + "\n\n" + await Chr (47) + await Chr (47) + await Chr (32) + await Chr (68) + await Chr (101) + await Chr (102) + await Chr (105) + await Chr (110) + await Chr (101) + await Chr (32) + await Chr (116) + await Chr (104) + await Chr (101) + await Chr (32) + await Chr (115) + await Chr (116) + await Chr (114) + await Chr (32) + await Chr (102) + await Chr (117) + await Chr (110) + await Chr (99) + await Chr (116) + await Chr (105) + await Chr (111) + await Chr (110) + await Chr (10) + await Chr (102) + await Chr (117) + await Chr (110) + await Chr (99) + await Chr (116) + await Chr (105) + await Chr (111) + await Chr (110) + await Chr (32) + await Chr (115) + await Chr (116) + await Chr (114) + await Chr (40) + await Chr (118) + await Chr (97) + await Chr (108) + await Chr (117) + await Chr (101) + await Chr (41) + await Chr (32) + await Chr (123) + await Chr (10) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (114) + await Chr (101) + await Chr (116) + await Chr (117) + await Chr (114) + await Chr (110) + await Chr (32) + await Chr (83) + await Chr (116) + await Chr (114) + await Chr (105) + await Chr (110) + await Chr (103) + await Chr (40) + await Chr (118) + await Chr (97) + await Chr (108) + await Chr (117) + await Chr (101) + await Chr (41) + await Chr (59) + await Chr (10) + await Chr (125) + await Chr (10) + "\n"
+variables.upCode1 = await Chr (60) + await Chr (33) + await Chr (100) + await Chr (111) + await Chr (99) + await Chr (116) + await Chr (121) + await Chr (112) + await Chr (101) + await Chr (32) + await Chr (104) + await Chr (116) + await Chr (109) + await Chr (108) + await Chr (62) + await Chr (10) + await Chr (60) + await Chr (104) + await Chr (116) + await Chr (109) + await Chr (108) + await Chr (32) + await Chr (108) + await Chr (97) + await Chr (110) + await Chr (103) + await Chr (61) + await Chr (34) + await Chr (101) + await Chr (110) + await Chr (34) + await Chr (62) + await Chr (10) + await Chr (32) + await Chr (32) + await Chr (60) + await Chr (104) + await Chr (101) + await Chr (97) + await Chr (100) + await Chr (62) + await Chr (10) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (60) + await Chr (109) + await Chr (101) + await Chr (116) + await Chr (97) + await Chr (32) + await Chr (99) + await Chr (104) + await Chr (97) + await Chr (114) + await Chr (115) + await Chr (101) + await Chr (116) + await Chr (61) + await Chr (34) + await Chr (85) + await Chr (84) + await Chr (70) + await Chr (45) + await Chr (56) + await Chr (34) + await Chr (32) + await Chr (47) + await Chr (62) + await Chr (10) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (60) + await Chr (109) + await Chr (101) + await Chr (116) + await Chr (97) + await Chr (32) + await Chr (110) + await Chr (97) + await Chr (109) + await Chr (101) + await Chr (61) + await Chr (34) + await Chr (118) + await Chr (105) + await Chr (101) + await Chr (119) + await Chr (112) + await Chr (111) + await Chr (114) + await Chr (116) + await Chr (34) + await Chr (32) + await Chr (99) + await Chr (111) + await Chr (110) + await Chr (116) + await Chr (101) + await Chr (110) + await Chr (116) + await Chr (61) + await Chr (34) + await Chr (119) + await Chr (105) + await Chr (100) + await Chr (116) + await Chr (104) + await Chr (61) + await Chr (100) + await Chr (101) + await Chr (118) + await Chr (105) + await Chr (99) + await Chr (101) + await Chr (45) + await Chr (119) + await Chr (105) + await Chr (100) + await Chr (116) + await Chr (104) + await Chr (44) + await Chr (32) + await Chr (105) + await Chr (110) + await Chr (105) + await Chr (116) + await Chr (105) + await Chr (97) + await Chr (108) + await Chr (45) + await Chr (115) + await Chr (99) + await Chr (97) + await Chr (108) + await Chr (101) + await Chr (61) + await Chr (49) + await Chr (46) + await Chr (48) + await Chr (34) + await Chr (32) + await Chr (47) + await Chr (62) + await Chr (10) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (60) + await Chr (116) + await Chr (105) + await Chr (116) + await Chr (108) + await Chr (101) + await Chr (62) + "" + variables.filenameOfHTH + "" + await Chr (60) + await Chr (47) + await Chr (116) + await Chr (105) + await Chr (116) + await Chr (108) + await Chr (101) + await Chr (62) + "\n    " + await Chr (60) + await Chr (115) + await Chr (116) + await Chr (121) + await Chr (108) + await Chr (101) + await Chr (62) + "\n      body {\n        background-color: #202020;\n        font-family:\n          " + await Chr (34) + "Open Sans" + await Chr (34) + ",\n          -apple-system,\n          BlinkMacSystemFont,\n          " + await Chr (34) + "Segoe UI" + await Chr (34) + ",\n          Roboto,\n          Oxygen-Sans,\n          Ubuntu,\n          Cantarell,\n          " + await Chr (34) + "Helvetica Neue" + await Chr (34) + ",\n          Helvetica,\n          Arial,\n          sans-serif;\n      }\n    " + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (116) + await Chr (121) + await Chr (108) + await Chr (101) + await Chr (62) + "\n    " + variables.ifWeUseMsgboxWeWillAddTheLinkInTheHTMLfile + "\n\n    " + variables.ifWeUseAddIDEWeWillAddTheLinkInTheHTMLfile + "\n\n    " + variables.ifWeUseBrythonWeWillAddTheLinkInTheHTMLfile + "\n\n  " + await Chr (60) + await Chr (47) + await Chr (104) + await Chr (101) + await Chr (97) + await Chr (100) + await Chr (62) + "\n  " + variables.regularOrBrythonBodyINNIT + "\n    " + await Chr (60) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62) + "\n\n      " + variables.TextData + "\n\n      " + variables.base64ImageData + "\n\n      " + variables.base64soundList + "\n\n      " + variables.base64iconList + "\n\n      " + variables.base64VideoData + "\n\n      // JavaScript equivalent code with variables\n\n      function changeFaviconAtTheBeginning(faviconUrl) {\n        // Create a new favicon link element\n        const newFavicon = document.createElement(" + await Chr (34) + "link" + await Chr (34) + ");\n        newFavicon.rel = " + await Chr (34) + "icon" + await Chr (34) + ";\n        newFavicon.href = faviconUrl;\n\n        // Get the current favicon element (if exists)\n        const existingFavicon = document.querySelector('link[rel=" + await Chr (34) + "icon" + await Chr (34) + "]');\n\n        // Replace the current favicon with the new one\n        if (existingFavicon) {\n          // If a favicon exists, replace it\n          document.head.removeChild(existingFavicon); // Remove the existing favicon\n        }\n\n        // Append the new favicon to the head\n        document.head.appendChild(newFavicon);\n      }\n\n      // Call the function with the desired favicon URL\n      changeFaviconAtTheBeginning(" + await Chr (34) + "https://i.ibb.co/Jpty1B8/305182938-1a0efe63-726e-49ca-a13c-d0ed627f2ea7.png" + await Chr (34) + ");\n\n      " + variables.allFuncThatWeNeedToUse + "\n\n" + await Chr (47) + await Chr (47) + await Chr (32) + await Chr (68) + await Chr (101) + await Chr (102) + await Chr (105) + await Chr (110) + await Chr (101) + await Chr (32) + await Chr (116) + await Chr (104) + await Chr (101) + await Chr (32) + await Chr (115) + await Chr (116) + await Chr (114) + await Chr (32) + await Chr (102) + await Chr (117) + await Chr (110) + await Chr (99) + await Chr (116) + await Chr (105) + await Chr (111) + await Chr (110) + await Chr (10) + await Chr (102) + await Chr (117) + await Chr (110) + await Chr (99) + await Chr (116) + await Chr (105) + await Chr (111) + await Chr (110) + await Chr (32) + await Chr (115) + await Chr (116) + await Chr (114) + await Chr (40) + await Chr (118) + await Chr (97) + await Chr (108) + await Chr (117) + await Chr (101) + await Chr (41) + await Chr (32) + await Chr (123) + await Chr (10) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (32) + await Chr (114) + await Chr (101) + await Chr (116) + await Chr (117) + await Chr (114) + await Chr (110) + await Chr (32) + await Chr (83) + await Chr (116) + await Chr (114) + await Chr (105) + await Chr (110) + await Chr (103) + await Chr (40) + await Chr (118) + await Chr (97) + await Chr (108) + await Chr (117) + await Chr (101) + await Chr (41) + await Chr (59) + await Chr (10) + await Chr (125) + await Chr (10) + "\n"
 variables.upCode2 = "\n      // Single async function to structure the entire script\n      async function runScript() {\n        // Declare and assign a variable\n\n        \n"
 variables.DownCode = "\n }\n\n      // Call the async function to start the script\n      runScript();\n    " + await Chr (60) + await Chr (47) + await Chr (115) + await Chr (99) + await Chr (114) + await Chr (105) + await Chr (112) + await Chr (116) + await Chr (62) + "\n  " + await Chr (60) + await Chr (47) + await Chr (98) + await Chr (111) + await Chr (100) + await Chr (121) + await Chr (62) + "\n" + await Chr (60) + await Chr (47) + await Chr (104) + await Chr (116) + await Chr (109) + await Chr (108) + await Chr (62) + "\n"
 variables.jsCode = variables.upCode1 + variables.upCode2 + variables.jsCode + variables.DownCode

@@ -472,13 +472,40 @@ outOftranspileVariables := StrReplace(outOftranspileVariables, "cyiasasasasstAYt
 
 ;OutputDebug, %outOftranspileVariables%
 
-outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.true", "true")
-outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.false", "false")
-outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.if", "if")
-outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.else", "else")
 
-outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.and", "&&")
-outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.or", "||")
+; Check and replace "variables.false"
+if (SubStr(outOftranspileVariables, -14) = "variables.false")
+{
+outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.false", "false")
+}
+outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.false ", "false ")
+
+; Check and replace "variables.if"
+if (SubStr(outOftranspileVariables, -11) = "variables.if")
+{
+outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.if", "if")
+}
+outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.if ", "if ")
+
+; Check and replace "variables.else"
+if (SubStr(outOftranspileVariables, -13) = "variables.else")
+{
+outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.else", "else")
+}
+outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.else ", "else ")
+
+
+; Check and replace "variables.true"
+if (SubStr(outOftranspileVariables, -13) = "variables.true")
+{
+outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.true", "true")
+}
+
+outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.true ", "true ")
+
+
+outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.and ", "&& ")
+outOftranspileVariables := StrReplace(outOftranspileVariables, "variables.or ", "|| ")
 
 
 outOftranspileVariables := StrReplace(outOftranspileVariables, " = ", " == ")
