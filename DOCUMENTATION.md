@@ -167,19 +167,20 @@ Explore the various features offered by the HTH programming language in this sec
 22. [Run, Reload and ExitApp](#run-reload-and-exitapp)
 23. [#Include (ONLY in HTH v1)](#include)
 24. [Comments](#hth-comments)
-25. [runPyCode and runHTML](#runpycode-and-runhtml)
-26. [PlaySound](#play-sound)
-27. [MouseGetPos and OnMouseClick](#getmousepos-and-onmouseclick)
-28. [Title and Icon](#title-and-icon)
-29. [StoreLocally](#store-locally)
-30. [getUrlParams and reloadWithParams](#geturlparams-and-reloadwithparams)
-31. [getDataFromAPI and getDataFromJSON](#getdatafromapi-and-getdatafromjson)
-32. [getDataFromEndpoint](#getdatafromendpoint)
-33. [isMobileDevice](#ismobiledevice)
-34. [isConnectedToBackend](#isconnectedtobackend)
-35. [Math Functions](#math-functions)
-36. [Build-in Functions](#build-in-functions)
-37. [Build-in Variables](#build-in-variables)
+25. [Sort](#sort)
+26. [runPyCode and runHTML](#runpycode-and-runhtml)
+27. [PlaySound](#play-sound)
+28. [MouseGetPos and OnMouseClick](#getmousepos-and-onmouseclick)
+29. [Title and Icon](#title-and-icon)
+30. [StoreLocally](#store-locally)
+31. [getUrlParams and reloadWithParams](#geturlparams-and-reloadwithparams)
+32. [getDataFromAPI and getDataFromJSON](#getdatafromapi-and-getdatafromjson)
+33. [getDataFromEndpoint](#getdatafromendpoint)
+34. [isMobileDevice](#ismobiledevice)
+35. [isConnectedToBackend](#isconnectedtobackend)
+36. [Math Functions](#math-functions)
+37. [Build-in Functions](#build-in-functions)
+38. [Build-in Variables](#build-in-variables)
 
 ---
 
@@ -2637,6 +2638,90 @@ Comments in HeavenToHell (HTH) are invaluable tools for improving code comprehen
 
 ---
 
+### Sort <a id="sort"></a>
+
+[Go back](#features)
+
+The `Sort` command in AutoHotkey arranges the contents of a variable in alphabetical, numerical, or random order, and optionally removes duplicates.
+
+#### Syntax:
+
+```ahk
+Sort, VarName , Options
+```
+
+#### Parameters:
+
+- **VarName**: The name of the variable whose contents will be sorted. This cannot be an expression.
+
+- **Options**: A string of one or more options (in any order, with optional spaces in between) from the Options section below.
+
+#### Options:
+
+- **C**: Case-sensitive sort (ignored if the `N` option is also present). If both `C` and `CL` are omitted, uppercase letters A-Z are considered identical to their lowercase counterparts for sorting purposes.
+
+- **Dx**: Specifies `x` as the delimiter character for `VarName`. Default delimiter is linefeed (`n).
+
+- **N**: Numeric sort. Treats each item as a number rather than a string for sorting purposes.
+
+- **R**: Sorts in reverse order (alphabetically or numerically depending on other options).
+
+- **Random**: Sorts in random order. Overrides other options except `D`, `Z`, and `U`.
+
+- **U**: Removes duplicate items from the list so that every item is unique. Sets ErrorLevel to the number of items removed.
+
+#### Examples:
+
+```ahk
+; Example 1: Sort alphabetically (default) with linefeed delimiter
+MyVar := "apple`norange`nbanana`ngrape`napple`nbanana"
+; ONLY in HTH v2 in HTH v1 we will have an error!
+Sort, MyVar
+MsgBox, % "Sorted Alphabetically:`n" . MyVar
+
+; Example 2: Sort alphabetically case-insensitively with removal of duplicates
+MyVar := "Apple`nOrange`nbanana`nGRAPE`nApple`nBanana"
+Sort, MyVar, CU
+MsgBox, % "Sorted Case-Insensitive with Unique:`n" . MyVar
+
+; Example 3: Sort numerically
+MyVar := "10`n2`n30`n4`n25`n1"
+Sort, MyVar, N
+MsgBox, % "Sorted Numerically:`n" . MyVar
+
+; Example 4: Sort in reverse alphabetical order
+MyVar := "apple`norange`nbanana`ngrape"
+Sort, MyVar, R
+MsgBox, % "Sorted Reverse Alphabetically:`n" . MyVar
+
+; Example 5: Sort alphabetically with a custom delimiter (comma)
+MyVar := "apple,orange,banana,grape"
+Sort, MyVar, D,
+MsgBox, % "Sorted with Custom Delimiter (comma):`n" . MyVar
+
+; Example 6: Sort randomly and remove duplicates case-insensitively
+MyVar := "apple`norange`nbanana`norange`napple`ngrape"
+Sort, MyVar, Random
+MsgBox, % "Sorted Randomly with Unique:`n" . MyVar
+
+; Example 7: Sort numerically in reverse order with case-sensitive removal of duplicates
+MyVar := "10`n2`n30`n2`n25`n1"
+Sort, MyVar, NRUC
+MsgBox, % "Sorted Numerically in Reverse with Unique and Case-Sensitive:`n" . MyVar
+```
+
+#### Remarks:
+
+- This command is primarily used to sort a variable containing a list of lines, typically separated by linefeed (`n) characters.
+- To populate a variable with lines from a file, use `FileRead` to load the entire file content into `VarName`.
+
+#### Notes:
+
+- Ensure proper understanding of sorting behavior based on chosen options (`C`, `CL`, `N`, etc.) to achieve desired sorting results.
+- Consider performance implications, especially when using `CL` option due to locale-based sorting.
+
+---
+
 ### runPyCode and runHTML <a id="runpycode-and-runhtml"></a>
 
 [Go back](#features)
@@ -3080,6 +3165,7 @@ StoreLocally(action, key, value)
   - `s`: Store `value` into the specified `key`.
   - `d`: Delete data associated with the specified `key`.
   - `dALL`: Delete all data from the entire local storage.
+  - `u`: Calculate and return the percentage of local storage used.
 - `key`: The key used to identify the data in the local storage.
 - `value`: (Optional) The value to store in the local storage when performing the `s` action.
 
@@ -3103,14 +3189,15 @@ else
     StoreLocally("s", "var1", data)
 }
 
-; Display a message based on the stored data
-MsgBox, This is your %data% visit!
+; Calculate and display the percentage of local storage used
+localUsagePercentage := StoreLocally("u")
+MsgBox, Percentage of local storage used: %localUsagePercentage%
 ```
 
 #### Notes:
 
 - The `StoreLocally` function allows for common operations on the browser's local storage.
-- Use `action` to specify the desired operation (`e` for checking emptiness, `r` for retrieving, `s` for storing, `d` for deleting by key, and `dALL` for clearing the entire local storage).
+- Use `action` to specify the desired operation (`e` for checking emptiness, `r` for retrieving, `s` for storing, `d` for deleting by key, `dALL` for clearing the entire local storage, and `u` for calculating the percentage of storage used).
 - Retrieve stored data using `StoreLocally("r", key)` and store data using `StoreLocally("s", key, value)`.
 - Ensure proper initialization and error handling based on the expected state of local storage keys during script execution.
 
@@ -3884,15 +3971,16 @@ A collection of Build-in Function available in HTH.
 1. [Chr](#chr)
 2. [InStr](#instr)
 3. [RegExMatch](#regexmatch)
-4. [GetKeyState](#getkeystate)
-5. [StrLen](#strlen)
-6. [SubStr](#substr)
-7. [Trim](#trim)
-8. [StrReplace](#strreplace)
-9. [Mod](#mod)
-10. [Asc](#asc)
-11. [ParseInt](#parseint)
-12. [StrLower](#strlower)
+4. [RegExReplace](#regexreplace)
+5. [GetKeyState](#getkeystate)
+6. [StrLen](#strlen)
+7. [SubStr](#substr)
+8. [Trim](#trim)
+9. [StrReplace](#strreplace)
+10. [Mod](#mod)
+11. [Asc](#asc)
+12. [ParseInt](#parseint)
+13. [StrLower](#strlower)
 
 ---
 
@@ -3983,12 +4071,88 @@ result := RegExMatch(subject, regexPattern, outputArray)
 
 - Returns the position of the match within the string. If outputArray is provided, it also stores the position and length of the match in the specified array.
 
-#### Example:
+### Example
 
 ```ahk
-matchPosition := RegExMatch("Hello World", "World", matchArray)
-MsgBox, The position of the match is %matchPosition%
+; Example
+input := "Hello World"
+regex := "World"
+matchPosition := RegExMatch(input, regex)
+if (matchPosition > 0)
+{
+    MsgBox, Found '%regex%' at position %matchPosition%
+}
+else
+{
+    MsgBox, No match found.
+}
 ```
+
+- **Explanation:** 
+  - **`input := "Hello World"`**: Defines a string `input` containing "Hello World".
+  - **`regex := "World"`**: Specifies a regular expression pattern to search for the substring "World".
+  - **`matchPosition := RegExMatch(input, regex)`**: Calls the `RegExMatch` function to find the position of the substring defined by `regex` within `input`.
+  - **`if (matchPosition > 0)`**: Checks if a match was found (`matchPosition` greater than 0).
+  - **`MsgBox, Found '%regex%' at position %matchPosition%`**: Displays a message box indicating the position where the match was found if `regex` matches `input`.
+  - **`else`**: Executes if no match is found, displaying "No match found."
+
+
+These examples demonstrate the usage of the `RegExMatch` function in HTH, using the provided implementation to perform regex matches and handle output as specified. Each example illustrates different scenarios where `RegExMatch` is used to find matches within strings using regular expressions in HTH.
+
+---
+
+### RegExReplace <a id="regexreplace"></a>
+
+[Go back](#build-in-functions)
+
+**RegExReplace**: Searches for and replaces occurrences of a regular expression pattern within a string.
+
+#### Syntax:
+
+```ahk
+result := RegExReplace(subject, regexPattern, replacement)
+```
+
+#### Parameters:
+
+- _subject_: The string in which to search for replacements using the regular expression pattern.
+- _regexPattern_: The regular expression pattern to search for within the string.
+- _replacement_: The replacement string to substitute in place of matches found.
+
+
+#### Return Value:
+
+- Returns the modified string with replacements performed. If _outputVar_ is provided, the modified string is stored in _outputVar_.
+
+#### Example 1:
+
+```ahk
+modifiedString := RegExReplace("Hello World", "World", "Universe")
+MsgBox, %modifiedString%
+```
+
+#### Example 2:
+
+```ahk
+original := "The quick brown fox jumps over the lazy dog."
+modified := RegExReplace(original, "\\b\\w{4}\\b", "****")
+MsgBox, Original: %original% Modified: %modified%
+```
+
+#### Example 3:
+
+```ahk
+original := "123-456-7890"
+formatted := RegExReplace(original, "(\\d{3})-(\\d{3})-(\\d{4})", "($1) $2-$3")
+MsgBox, Original: %original% Formatted: %formatted%
+```
+
+In these examples:
+- Example 1 replaces "World" with "Universe" in the string "Hello World".
+- Example 2 replaces all 4-letter words with "****" in a given string.
+- Example 3 formats a phone number from "123-456-7890" to "(123) 456-7890" using capturing groups and replacement patterns.
+
+Each example demonstrates different uses of the `RegExReplace` function to manipulate strings based on regular expression patterns.
 
 ---
 
