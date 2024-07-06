@@ -48,6 +48,10 @@ In HTH, variables are declared and assigned using the Allman style, and variable
 myNumber := 42
 myString := "Hello, World!"
 isFlagSet := true
+
+num := 5
+var%num% := "hello"
+MsgBox, % var5
 ```
 
 HTH supports various data types, including numeric, string, and boolean types.
@@ -2642,7 +2646,7 @@ Comments in HeavenToHell (HTH) are invaluable tools for improving code comprehen
 
 [Go back](#features)
 
-The `Sort` command in AutoHotkey arranges the contents of a variable in alphabetical, numerical, or random order, and optionally removes duplicates.
+The `Sort` command in HTH arranges the contents of a variable in alphabetical, numerical, or random order, and optionally removes duplicates.
 
 #### Syntax:
 
