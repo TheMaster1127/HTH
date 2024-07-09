@@ -2672,7 +2672,7 @@ Sort, VarName , Options
 
 - **Random**: Sorts in random order. Overrides other options except `D`, `Z`, and `U`.
 
-- **U**: Removes duplicate items from the list so that every item is unique. Sets ErrorLevel to the number of items removed.
+- **U**: Removes duplicate items from the list so that every item is unique.
 
 #### Examples:
 
