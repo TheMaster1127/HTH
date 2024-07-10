@@ -156,6 +156,7 @@ removeCurlyBracet := 0
 variables .= "  " . "A_Index" . ": null," . "`n"
 variables .= "  " . "A_LoopField" . ": null," . "`n"
 variables .= "  " . "characters" . ": null," . "`n"
+variables .= "  " . "null" . ": null," . "`n"
 
 jsCodeGui := ""
 
@@ -6474,6 +6475,14 @@ GuiControl("%out2%", "Gui%GuiNumber%%out3%);
 )
 }
 
+if (out2 = "destroy")
+{
+out0 =
+(
+GuiControl("%out2%", "Gui%GuiNumber%%out3%);
+)
+}
+
 if (out2 = "enable")
 {
 out0 =
@@ -9258,7 +9267,10 @@ addFuncIfWeUseIt_GuiControl =
           } else if (action === "font") {
             // Set font size
             element.style.fontSize = param1 + "px";
-          } else if (action === "color") {
+          } else if (action === "destroy") {
+      	    // Remove the element from the DOM
+    	    element.parentNode.removeChild(element);
+    	  } else if (action === "color") {
             // Set color
             element.style.color = param1;
           } else if (action === "picture") {
