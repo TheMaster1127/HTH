@@ -2320,6 +2320,7 @@ out1 := Trim(s)
 s:=StrSplit(str,",").3
 out2 := Trim(s)
 
+
 if (InStr(out1, "%"))
 {
 out1 := varTraspiler(out1, 0)
