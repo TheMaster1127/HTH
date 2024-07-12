@@ -6002,6 +6002,7 @@ Gui%GuiNumber%.style.fontFamily = "%fontName%, sans-serif"; // Specify your desi
 Gui%GuiNumber%.style.zIndex = "%GuiNumber%0";
 
 
+
 %varOutJsCanvasFixTranspernat%
 
 document.body.appendChild(Gui%GuiNumber%); // Append the GUI window to the body
