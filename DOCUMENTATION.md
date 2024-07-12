@@ -256,6 +256,8 @@ Return
 
 and so on but dont do `1:` since it's the defalut one.
 
+Also the limit is Gui 99:
+
 The `SubCommand`, `Value1`, `Value2`, and `Value3` parameters are dependent upon each other, and their usage is described below.
 
 ### Table of Contents
