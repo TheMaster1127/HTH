@@ -256,7 +256,7 @@ Return
 
 and so on but dont do `1:` since it's the defalut one.
 
-Also the limit is Gui 99:
+Also, the limit is `Gui 99:`. However, if you never use the Msgbox command, you can create more GUIs. In such cases, the Msgbox command will not display, and you will need to create a custom message box using a new Gui, perhaps `Gui 100:`.
 
 The `SubCommand`, `Value1`, `Value2`, and `Value3` parameters are dependent upon each other, and their usage is described below.
 
