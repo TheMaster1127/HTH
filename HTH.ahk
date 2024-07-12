@@ -2451,7 +2451,7 @@ out5 := Trim(s)
 
 if (onceGuiAdd = 1)
 {
-jsCodeGui .= "`nlet Gui" . GuiNumber . " = {};`nGui" . GuiNumber . " = document.createElement(""div"")`;`n"
+jsCodeGui .= "`nvar Gui" . GuiNumber . " = {}`nGui" . GuiNumber . " = document.createElement(" . Chr(34) . "div" . Chr(34) . ")`n" . "Gui" . GuiNumber . ".id = " . Chr(34) . "Gui" . GuiNumber . Chr(34) . "`n"
 NumOfButtons := 0
 }
 onceGuiAdd++
@@ -10515,16 +10515,25 @@ addFuncIfWeUseIt_runPyCode =
 addFuncIfWeUseIt_runHTML =
 (
 
-
       function runHTML(parent, id, scale, leftPos, topPos, width, height, HTMLcode) {
+
+        // Concatenate parent.id with id
+        id = parent.id + id;
+
+        // Check if an iframe with the same id already exists and remove it
+        const existingIframe = document.getElementById(id);
+        if (existingIframe) {
+          existingIframe.remove();
+        }
+
         // Calculate the scale based on the actual width and height of the iframe
-        const scaleX = width / window.innerWidth;
-        const scaleY = height / window.innerHeight;
+        const scaleX = (width / (window.innerWidth / scale));
+        const scaleY = (height / (window.innerHeight / scale));
         const scaleFactor = Math.min(scaleX, scaleY);
 
         // Calculate the scaled width and height to maintain aspect ratio
-        const scaledWidth = Math.floor(window.innerWidth * scaleFactor);
-        const scaledHeight = Math.floor(window.innerHeight * scaleFactor);
+        const scaledWidth = Math.floor((window.innerWidth / scale) * scaleFactor);
+        const scaledHeight = Math.floor((window.innerHeight / scale) * scaleFactor);
 
         // Calculate offsets to center the content
         const offsetX = Math.floor((width - scaledWidth) / 2);
@@ -10538,8 +10547,8 @@ addFuncIfWeUseIt_runHTML =
         iframeElement.style.position = "absolute";
         iframeElement.style.left = leftPos + offsetX + "px";
         iframeElement.style.top = topPos + offsetY + "px";
-        iframeElement.style.width = window.innerWidth + "px"; // Set the iframe's viewport width
-        iframeElement.style.height = window.innerHeight + "px"; // Set the iframe's viewport height
+        iframeElement.style.width = (window.innerWidth / scale) + "px"; // Set the iframe's viewport width
+        iframeElement.style.height = (window.innerHeight / scale) + "px"; // Set the iframe's viewport height
         iframeElement.style.transformOrigin = "top left";
         iframeElement.style.transform = ``scale(${scaleFactor})``;
 
@@ -10549,7 +10558,6 @@ addFuncIfWeUseIt_runHTML =
         // Append iframe to parent element
         parent.appendChild(iframeElement);
       }
-
 
 )
 
