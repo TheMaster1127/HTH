@@ -5982,7 +5982,7 @@ if (weUseCnanvasAtALL = 1)
 varOutJsCanvasFixTranspernat =
 (
 Gui1.style.backgroundColor = "transparent";
-Gui1.style.zIndex = "100";
+Gui1.style.zIndex = "5";
 )
 
 
@@ -5999,7 +5999,7 @@ Gui%GuiNumber%.style.fontSize = "15px";
 Gui%GuiNumber%.style.padding = "0px";
 Gui%GuiNumber%.style.borderRadius = "%guiOutOfShowRound%px";
 Gui%GuiNumber%.style.fontFamily = "%fontName%, sans-serif"; // Specify your desired font here
-Gui%GuiNumber%.style.zIndex = "%GuiNumber%00";
+Gui%GuiNumber%.style.zIndex = "%GuiNumber%0";
 
 
 %varOutJsCanvasFixTranspernat%
@@ -6022,7 +6022,7 @@ Gui%GuiNumber%.style.fontSize = "15px";
 Gui%GuiNumber%.style.borderRadius = "%guiOutOfShowRound%px";
 Gui%GuiNumber%.style.padding = "0px";
 %boderinGuiYes%
-Gui%GuiNumber%.style.zIndex = "%GuiNumber%00";
+Gui%GuiNumber%.style.zIndex = "%GuiNumber%0";
 Gui%GuiNumber%.style.fontFamily = "%fontName%, sans-serif"; // Specify your desired font here
 
 // Calculate center position
@@ -6059,7 +6059,7 @@ Gui%GuiNumber%.style.fontSize = "15px";
 Gui%GuiNumber%.style.padding = "0px";
 Gui%GuiNumber%.style.borderRadius = "%guiOutOfShowRound%px";
 Gui%GuiNumber%.style.fontFamily = "%fontName%, sans-serif"; // Specify your desired font here
-Gui%GuiNumber%.style.zIndex = "%GuiNumber%00";
+Gui%GuiNumber%.style.zIndex = "%GuiNumber%0";
 
 
 %varOutJsCanvasFixTranspernat%
@@ -6085,7 +6085,7 @@ Gui%GuiNumber%.style.borderRadius = "%guiOutOfShowRound%px";
 Gui%GuiNumber%.style.padding = "0px";
 %boderinGuiYes%
 Gui%GuiNumber%.style.fontFamily = "%fontName%, sans-serif"; // Specify your desired font here
-Gui%GuiNumber%.style.zIndex = "%GuiNumber%00";
+Gui%GuiNumber%.style.zIndex = "%GuiNumber%0";
 
 // Calculate center position
 %jsCode01%
