@@ -801,22 +801,22 @@ Example 3
 ; Lest use Loops to made a 3x3 button grid
 
 ; you can also change those values
-rows := 3
 columns := 3
+rows := 3
 
 ; if one button is w140 h40
 
-w := 10 + (150 * rows)
-h := 10 + (50 * columns)
+w := 10 + (150 * columns)
+h := 10 + (50 * rows)
 
 Gui 2: Show, w%w% h%h%
 
 x := 10
 y := 10
 ButtonNum := 0
-Loop, %rows%
+Loop, %columns%
 {
-    Loop, %columns%
+    Loop, %rows%
     {
         ButtonNum++
         NameOfButton := "Button" . ButtonNum
