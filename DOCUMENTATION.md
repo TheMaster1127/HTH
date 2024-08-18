@@ -912,6 +912,7 @@ GuiControl, Action, ControlID, Param1, Param2, Param3, Param4
   - `Move`: Move and resize the control.
   - `Focus`: Set focus on the control.
   - `Text`: Set the text content of the control.
+  - `TextIDE`: Set the text content of the IDE.
   - `Picture`: Changes the image of the specified ID to a different image, provided that ONLY a URL is valid.
   - `Hide`: Hide the control.
   - `Show`: Show the control.
